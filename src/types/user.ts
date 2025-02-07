@@ -5,7 +5,7 @@ export interface UserProfile {
   email: string;
   age?: number;
   gender?: "male" | "female" | "non-binary" | "other";
-  trainingLevel: "beginner" | "intermediate" | "advanced";
+  VO2Max?: number;
   goals: string[];
   avatarUrl?: string
 }
