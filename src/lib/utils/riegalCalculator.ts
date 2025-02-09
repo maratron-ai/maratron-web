@@ -6,7 +6,10 @@
  * @param newDistM - The target race distance in meters.
  * @param fatigueFactor - (Optional) The fatigue factor; defaults to 1.06.
  *
- * @returns Predicted race time for the new distance in seconds.
+ * @returns {Object} An object containing:
+ * @property {number} totalTimeSec - Predicted total race time in seconds.
+ * @property {string} pacePerKm - Predicted pace per kilometer (mm:ss format).
+ * @property {string} pacePerMile - Predicted pace per mile (mm:ss format).
  */
 
 export const riegelPrediction = (
