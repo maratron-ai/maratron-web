@@ -17,9 +17,8 @@ bun dev
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 
-## Maratron Documentation (WIP)
-Below is a sample markdown documentation that you can share with your pair. It outlines how to create a SQL user and database, set up the .env file, start the database, and access/view the data via the terminal and Prisma Studio.
- ---
+# Maratron Documentation (WIP)
+
 
 ## Database Setup and Access Documentation
 
