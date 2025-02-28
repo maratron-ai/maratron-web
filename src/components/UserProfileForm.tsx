@@ -1,30 +1,55 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, ChangeEvent, FormEvent } from "react";
 import { useUserStore } from "@store/userStore";
-import { updateUserProfile } from "@lib/api/user";
+import { updateUserProfile, createUserProfile } from "@lib/api/user/user";
 import { UserProfile } from "@types/user";
 import * as Yup from "yup";
 
-// Define a Yup validation schema for the form
+// Yup validation schema with number transformation
 const validationSchema = Yup.object().shape({
   name: Yup.string().required("Name is required"),
   email: Yup.string().email("Invalid email").required("Email is required"),
-  age: Yup.number().min(10, "Age must be at least 10").nullable(),
+  age: Yup.number()
+    .transform((value, originalValue) =>
+      originalValue === "" ? undefined : Number(originalValue)
+    )
+    .min(10, "Age must be at least 10")
+    .nullable(),
   gender: Yup.string(),
   trainingLevel: Yup.string()
     .oneOf(["beginner", "intermediate", "advanced"])
     .required("Training level is required"),
-  VO2Max: Yup.number().min(10, "VO2Max must be at least 10").nullable(),
+  VO2Max: Yup.number()
+    .transform((value, originalValue) =>
+      originalValue === "" ? undefined : Number(originalValue)
+    )
+    .min(10, "VO2Max must be at least 10")
+    .nullable(),
   goals: Yup.array().of(Yup.string()),
   avatarUrl: Yup.string().url("Invalid URL").nullable(),
-  // New fields
   yearsRunning: Yup.number()
+    .transform((value, originalValue) =>
+      originalValue === "" ? undefined : Number(originalValue)
+    )
     .min(0, "Years running cannot be negative")
     .nullable(),
   weeklyMileage: Yup.number()
+    .transform((value, originalValue) =>
+      originalValue === "" ? undefined : Number(originalValue)
+    )
     .min(0, "Weekly mileage cannot be negative")
     .nullable(),
-  height: Yup.number().min(0, "Height must be positive").nullable(),
-  weight: Yup.number().min(0, "Weight must be positive").nullable(),
+  height: Yup.number()
+    .transform((value, originalValue) =>
+      originalValue === "" ? undefined : Number(originalValue)
+    )
+    .min(0, "Height must be positive")
+    .nullable(),
+  weight: Yup.number()
+    .transform((value, originalValue) =>
+      originalValue === "" ? undefined : Number(originalValue)
+    )
+    .min(0, "Weight must be positive")
+    .nullable(),
   injuryHistory: Yup.string(),
   preferredTrainingDays: Yup.string(),
   preferredTrainingEnvironment: Yup.string()
@@ -33,83 +58,86 @@ const validationSchema = Yup.object().shape({
   device: Yup.string(),
 });
 
+const initialFormData: UserProfile = {
+  id: "", // New users have an empty id so the backend will generate one
+  name: "",
+  email: "",
+  age: undefined,
+  gender: "",
+  trainingLevel: "beginner",
+  VO2Max: undefined,
+  goals: [],
+  avatarUrl: "",
+  yearsRunning: undefined,
+  weeklyMileage: undefined,
+  height: undefined,
+  weight: undefined,
+  injuryHistory: "",
+  preferredTrainingDays: "",
+  preferredTrainingEnvironment: "outdoor",
+  device: "",
+};
+
 const UserProfileForm = () => {
   const { user, setUser } = useUserStore();
-  const [formData, setFormData] = useState<UserProfile>({
-    id: "",
-    name: "",
-    email: "",
-    age: undefined,
-    gender: "",
-    trainingLevel: "beginner",
-    VO2Max: undefined,
-    goals: [],
-    avatarUrl: "",
-    // New fields
-    yearsRunning: undefined,
-    weeklyMileage: undefined,
-    height: undefined,
-    weight: undefined,
-    injuryHistory: "",
-    preferredTrainingDays: "",
-    preferredTrainingEnvironment: "outdoor",
-    device: "",
-  });
-
+  const [formData, setFormData] = useState<UserProfile>(initialFormData);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [validationErrors, setValidationErrors] = useState<string[]>([]);
 
-  // Load user data into form when user state changes
   useEffect(() => {
     if (user) {
       setFormData(user);
     }
   }, [user]);
 
-  // Handle standard input changes
   const handleChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
-    >
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   ) => {
-    const { name, value } = e.target;
+    const { name, value, type } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: value,
+      [name]:
+        type === "number" ? (value === "" ? undefined : Number(value)) : value,
     }));
   };
 
-  // Handle goals array (comma-separated input)
-  const handleGoalsChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+  const handleGoalsChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setFormData((prev) => ({
       ...prev,
       goals: e.target.value.split(",").map((goal) => goal.trim()),
     }));
   };
 
-  // Handle form submission with Yup validation
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setMessage("");
     setValidationErrors([]);
 
     try {
-      // Validate formData using the schema (will throw if invalid)
-      await validationSchema.validate(formData, { abortEarly: false });
-      // If valid, update the user profile via your API
-      await updateUserProfile(formData.id, formData);
-      setUser(formData); // Update Zustand store
-      setMessage("Profile updated successfully!");
+      const validData = await validationSchema.validate(formData, {
+        abortEarly: false,
+        stripUnknown: true,
+      });
+      let returnedUser: UserProfile;
+      const { id, ...payload } = validData;
+
+      if (!id) {
+        returnedUser = await createUserProfile(payload);
+        setMessage("User created successfully!");
+      } else {
+        returnedUser = await updateUserProfile(id, payload);
+        setMessage("Profile updated successfully!");
+      }
+      setUser(returnedUser);
     } catch (err: any) {
-      // If there are validation errors, set them for display
       if (err.inner) {
         const errors = err.inner.map((error: any) => error.message);
         setValidationErrors(errors);
         setMessage("Validation failed. Please check the form.");
       } else {
-        setMessage("Failed to update profile.");
+        setMessage("Failed to save profile: " + (err.message || ""));
       }
     } finally {
       setLoading(false);
@@ -134,7 +162,7 @@ const UserProfileForm = () => {
       <input
         type="text"
         name="name"
-        value={formData.name}
+        value={formData.name ?? ""}
         onChange={handleChange}
         required
       />
@@ -143,7 +171,7 @@ const UserProfileForm = () => {
       <input
         type="email"
         name="email"
-        value={formData.email}
+        value={formData.email ?? ""}
         onChange={handleChange}
         required
       />
@@ -157,7 +185,11 @@ const UserProfileForm = () => {
       />
 
       <label>Gender:</label>
-      <select name="gender" value={formData.gender} onChange={handleChange}>
+      <select
+        name="gender"
+        value={formData.gender ?? ""}
+        onChange={handleChange}
+      >
         <option value="">Select</option>
         <option value="male">Male</option>
         <option value="female">Female</option>
@@ -168,7 +200,7 @@ const UserProfileForm = () => {
       <label>Training Level:</label>
       <select
         name="trainingLevel"
-        value={formData.trainingLevel}
+        value={formData.trainingLevel ?? ""}
         onChange={handleChange}
       >
         <option value="beginner">Beginner</option>
@@ -187,7 +219,7 @@ const UserProfileForm = () => {
       <label>Goals (comma-separated):</label>
       <textarea
         name="goals"
-        value={formData.goals.join(", ")}
+        value={formData.goals.join(", ") ?? ""}
         onChange={handleGoalsChange}
       />
 
@@ -195,11 +227,9 @@ const UserProfileForm = () => {
       <input
         type="text"
         name="avatarUrl"
-        value={formData.avatarUrl}
+        value={formData.avatarUrl ?? ""}
         onChange={handleChange}
       />
-
-      {/* Additional Fields */}
 
       <label>Years Running:</label>
       <input
@@ -236,7 +266,7 @@ const UserProfileForm = () => {
       <label>Injury History:</label>
       <textarea
         name="injuryHistory"
-        value={formData.injuryHistory}
+        value={formData.injuryHistory ?? ""}
         onChange={handleChange}
       />
 
@@ -244,14 +274,14 @@ const UserProfileForm = () => {
       <input
         type="text"
         name="preferredTrainingDays"
-        value={formData.preferredTrainingDays}
+        value={formData.preferredTrainingDays ?? ""}
         onChange={handleChange}
       />
 
       <label>Preferred Training Environment:</label>
       <select
         name="preferredTrainingEnvironment"
-        value={formData.preferredTrainingEnvironment}
+        value={formData.preferredTrainingEnvironment ?? ""}
         onChange={handleChange}
       >
         <option value="outdoor">Outdoor</option>
@@ -264,7 +294,7 @@ const UserProfileForm = () => {
       <input
         type="text"
         name="device"
-        value={formData.device}
+        value={formData.device ?? ""}
         onChange={handleChange}
       />
 

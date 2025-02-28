@@ -1,0 +1,45 @@
+// prisma/schema.prisma
+
+datasource db {
+  provider = "postgresql" // change to "sqlite" if you prefer
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum TrainingLevel {
+  beginner
+  intermediate
+  advanced
+}
+
+enum TrainingEnvironment {
+  outdoor
+  treadmill
+  indoor
+  mixed
+}
+
+model UserProfile {
+  id                           String              @id @default(uuid())
+  name                         String
+  email                        String              @unique
+  age                          Int?
+  gender                       String?
+  trainingLevel                TrainingLevel
+  VO2Max                       Int?
+  goals                        String[]            // For Postgres; for SQLite consider using Json
+  avatarUrl                    String?
+  yearsRunning                 Int?
+  weeklyMileage                Int?
+  height                       Int?
+  weight                       Int?
+  injuryHistory                String?
+  preferredTrainingDays        String?
+  preferredTrainingEnvironment TrainingEnvironment
+  device                       String?
+  createdAt                    DateTime            @default(now())
+  updatedAt                    DateTime            @updatedAt
+}
