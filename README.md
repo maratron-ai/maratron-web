@@ -16,21 +16,107 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Maratron Documentation (WIP)
+Below is a sample markdown documentation that you can share with your pair. It outlines how to create a SQL user and database, set up the .env file, start the database, and access/view the data via the terminal and Prisma Studio.
+ ---
 
-## Learn More
+## Database Setup and Access Documentation
 
-To learn more about Next.js, take a look at the following resources:
+This guide will help you set up your PostgreSQL database for our project.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 1. Creating a SQL User and Database
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1.1 Create a PostgreSQL User
+Open your terminal and run the following command to create a new PostgreSQL user. Replace `maratron` and `yourpassword` with your preferred username and password:
 
-## Deploy on Vercel
+```bash
+createuser --interactive --pwprompt maratron
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Alternatively, if you prefer to create a superuser (for development purposes):
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+createuser -s maratron
+```
+
+1.2 Create a Database
+After creating the user, create a new database. Replace `maratrondb` with your desired database name:
+
+```bash
+createdb maratrondb -U maratron
+```
+
+This command creates a new database called `maratrondb` owned by the user `maratron`.
+
+### 2. Setting Up the .env File
+
+In your project root, create or update the `.env` file with the following content:
+
+```env
+DATABASE_URL="postgresql://maratron:yourpassword@localhost:5432/maratrondb"
+```
+
+- **maratron:** Your PostgreSQL username.
+- **yourpassword:** The password you set for the PostgreSQL user.
+- **localhost:** The database host (for local development).
+- **5432:** The default PostgreSQL port.
+- **maratrondb:** The database name you created.
+
+### 3. Starting Up the Database
+
+3.1 Start PostgreSQL Service
+If you're using Homebrew on macOS, you can start the PostgreSQL service with the following command. (For PostgreSQL 15, for example):
+
+```bash
+brew services start postgresql@15
+```
+
+If you have a different version, specify the version accordingly.
+
+3.2 Verify the Database Connection
+To ensure that the database is running and accessible, you can connect to it via the terminal using `psql`:
+
+```bash
+psql -d maratrondb -U maratron
+```
+
+If the connection is successful, you will see a prompt like:
+
+```
+maratrondb=>
+```
+
+### 4. Accessing and Viewing the Database
+
+4.1 Using the Terminal (psql)
+Once connected with `psql`, you can run the following commands to interact with your database:
+
+- **List Tables:**
+
+  ```sql
+  \dt
+  ```
+
+- **Query a Table (e.g., UserProfile):**
+
+  ```sql
+  SELECT * FROM "UserProfile";
+  ```
+
+- **Exit psql:**
+
+  ```sql
+  \q
+  ```
+
+4.2 Using Prisma Studio (Recommended)
+Prisma Studio is a web-based GUI that makes it easy to view and edit your database records.
+
+1. In your project directory, run the following command:
+
+   ```bash
+   npx prisma studio
+   ```
+
+2. This command will open a new browser window where you can navigate your database tables and records.
