@@ -1,12 +1,24 @@
 // prisma/schema.prisma
 
 datasource db {
-  provider = "postgresql" // change to "sqlite" if you prefer
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
 generator client {
   provider = "prisma-client-js"
+}
+
+enum DistanceUnit {
+  miles
+  kilometers
+}
+
+enum elevationGainUnit {
+  miles
+  kilometers
+  meters
+  feet
 }
 
 enum TrainingLevel {
@@ -22,7 +34,7 @@ enum TrainingEnvironment {
   mixed
 }
 
-model UserProfile {
+model User {
   id                           String              @id @default(uuid())
   name                         String
   email                        String              @unique
@@ -42,4 +54,32 @@ model UserProfile {
   device                       String?
   createdAt                    DateTime            @default(now())
   updatedAt                    DateTime            @updatedAt
+
+  // Relation: one user can have many runs
+  runs                         Run[]
+
+  // name database users
+  @@map("Users")
+}
+
+model Run {
+  id                  String              @id @default(uuid())
+  date                DateTime
+  duration            String              // Format: "HH:MM"
+  distance            Float
+  distanceUnit        DistanceUnit
+  trainingEnvironment TrainingEnvironment? // optional
+  pace                String?             // e.g., "mm:ss" (calculated pace)
+  paceUnit            DistanceUnit?       // unit for the pace, typically matching distanceUnit
+  elevationGain       Float?
+  elevationGainUnit   elevationGainUnit?
+  notes               String?
+  createdAt           DateTime            @default(now())
+  updatedAt           DateTime            @updatedAt
+
+  // Foreign key: each run is connected to a specific user
+  userId    String
+  user      User   @relation(fields: [userId], references: [id])
+
+  @@map("Runs")
 }
