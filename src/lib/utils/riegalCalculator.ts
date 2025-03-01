@@ -12,7 +12,7 @@
  * @property {string} pacePerMile - Predicted pace per mile (mm:ss format).
  */
 
-export const riegelPrediction = (
+export const riegalCalculator = (
   knownTimeSec: number,
   knownDistM: number,
   newDistM: number,
