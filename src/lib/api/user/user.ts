@@ -1,5 +1,5 @@
 import axios from "axios";
-import { UserProfile } from "@types/user";
+import { UserProfile } from "@maratypes/user";
 
 
 // updates

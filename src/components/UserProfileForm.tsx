@@ -1,65 +1,19 @@
 import { useState, useEffect, ChangeEvent, FormEvent } from "react";
 import { useUserStore } from "@store/userStore";
 import { updateUserProfile, createUserProfile } from "@lib/api/user/user";
-import { UserProfile } from "@types/user";
+import { UserProfile } from "@maratypes/user";
 import * as Yup from "yup";
+import userProfileSchema from "@lib/schemas/userProfileSchema";
 
-// Yup validation schema with number transformation
-const validationSchema = Yup.object().shape({
-  name: Yup.string().required("Name is required"),
-  email: Yup.string().email("Invalid email").required("Email is required"),
-  age: Yup.number()
-    .transform((value, originalValue) =>
-      originalValue === "" ? undefined : Number(originalValue)
-    )
-    .min(10, "Age must be at least 10")
-    .nullable(),
-  gender: Yup.string(),
-  trainingLevel: Yup.string()
-    .oneOf(["beginner", "intermediate", "advanced"])
-    .required("Training level is required"),
-  VO2Max: Yup.number()
-    .transform((value, originalValue) =>
-      originalValue === "" ? undefined : Number(originalValue)
-    )
-    .min(10, "VO2Max must be at least 10")
-    .nullable(),
-  goals: Yup.array().of(Yup.string()),
-  avatarUrl: Yup.string().url("Invalid URL").nullable(),
-  yearsRunning: Yup.number()
-    .transform((value, originalValue) =>
-      originalValue === "" ? undefined : Number(originalValue)
-    )
-    .min(0, "Years running cannot be negative")
-    .nullable(),
-  weeklyMileage: Yup.number()
-    .transform((value, originalValue) =>
-      originalValue === "" ? undefined : Number(originalValue)
-    )
-    .min(0, "Weekly mileage cannot be negative")
-    .nullable(),
-  height: Yup.number()
-    .transform((value, originalValue) =>
-      originalValue === "" ? undefined : Number(originalValue)
-    )
-    .min(0, "Height must be positive")
-    .nullable(),
-  weight: Yup.number()
-    .transform((value, originalValue) =>
-      originalValue === "" ? undefined : Number(originalValue)
-    )
-    .min(0, "Weight must be positive")
-    .nullable(),
-  injuryHistory: Yup.string(),
-  preferredTrainingDays: Yup.string(),
-  preferredTrainingEnvironment: Yup.string()
-    .oneOf(["outdoor", "treadmill", "indoor", "mixed"])
-    .required("Preferred training environment is required"),
-  device: Yup.string(),
-});
+// type guard
+function isYupValidationError(
+  err: unknown
+): err is { inner: Yup.ValidationError[] } {
+  return typeof err === "object" && err !== null && "inner" in err;
+}
 
 const initialFormData: UserProfile = {
-  id: "", // New users have an empty id so the backend will generate one
+  id: "",
   name: "",
   email: "",
   age: undefined,
@@ -67,15 +21,15 @@ const initialFormData: UserProfile = {
   trainingLevel: "beginner",
   VO2Max: undefined,
   goals: [],
-  avatarUrl: "",
+  avatarUrl: undefined,
   yearsRunning: undefined,
   weeklyMileage: undefined,
   height: undefined,
   weight: undefined,
-  injuryHistory: "",
-  preferredTrainingDays: "",
-  preferredTrainingEnvironment: "outdoor",
-  device: "",
+  injuryHistory: undefined,
+  preferredTrainingDays: undefined,
+  preferredTrainingEnvironment: undefined,
+  device: undefined,
 };
 
 const UserProfileForm = () => {
@@ -116,12 +70,36 @@ const UserProfileForm = () => {
     setValidationErrors([]);
 
     try {
-      const validData = await validationSchema.validate(formData, {
+      // Validate and transform the data using Yup
+      const validData = await userProfileSchema.validate(formData, {
         abortEarly: false,
         stripUnknown: true,
       });
+
+      // Final normalization: convert any remaining nulls to undefined,
+      // and ensure the goals array contains only strings.
+      const cleanData = {
+        ...validData,
+        age: validData.age === null ? undefined : validData.age,
+        VO2Max: validData.VO2Max === null ? undefined : validData.VO2Max,
+        yearsRunning:
+          validData.yearsRunning === null ? undefined : validData.yearsRunning,
+        weeklyMileage:
+          validData.weeklyMileage === null
+            ? undefined
+            : validData.weeklyMileage,
+        height: validData.height === null ? undefined : validData.height,
+        weight: validData.weight === null ? undefined : validData.weight,
+        avatarUrl:
+          validData.avatarUrl === null ? undefined : validData.avatarUrl,
+        // Filter goals to ensure they are strings
+        goals: (validData.goals ?? []).filter(
+          (goal): goal is string => goal !== undefined
+        ),
+      };
+
       let returnedUser: UserProfile;
-      const { id, ...payload } = validData;
+      const { id, ...payload } = cleanData;
 
       if (!id) {
         returnedUser = await createUserProfile(payload);
@@ -131,13 +109,17 @@ const UserProfileForm = () => {
         setMessage("Profile updated successfully!");
       }
       setUser(returnedUser);
-    } catch (err: any) {
-      if (err.inner) {
-        const errors = err.inner.map((error: any) => error.message);
+    } catch (err: unknown) {
+      if (isYupValidationError(err)) {
+        const errors = err.inner.map(
+          (error: Yup.ValidationError) => error.message
+        );
         setValidationErrors(errors);
         setMessage("Validation failed. Please check the form.");
+      } else if (err instanceof Error) {
+        setMessage("Failed to save profile: " + err.message);
       } else {
-        setMessage("Failed to save profile: " + (err.message || ""));
+        setMessage("Failed to save profile.");
       }
     } finally {
       setLoading(false);

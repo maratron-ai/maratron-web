@@ -14,6 +14,6 @@ export interface UserProfile {
   weight?: number;
   injuryHistory?: string;
   preferredTrainingDays?: string;
-  preferredTrainingEnvironment: "outdoor" | "treadmill" | "indoor" | "mixed";
+  preferredTrainingEnvironment?: "outdoor" | "treadmill" | "indoor" | "mixed";
   device?: string;
 }
