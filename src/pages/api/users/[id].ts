@@ -10,7 +10,7 @@ export default async function handler(
 
   if (req.method === "GET") {
     try {
-      const user = await prisma.userProfile.findUnique({
+      const user = await prisma.user.findUnique({
         where: { id: id as string },
       });
       if (!user) {
@@ -23,7 +23,7 @@ export default async function handler(
     }
   } else if (req.method === "PUT") {
     try {
-      const updatedUser = await prisma.userProfile.update({
+      const updatedUser = await prisma.user.update({
         where: { id: id as string },
         data: req.body,
       });
@@ -34,7 +34,7 @@ export default async function handler(
     }
   } else if (req.method === "DELETE") {
     try {
-      await prisma.userProfile.delete({
+      await prisma.user.delete({
         where: { id: id as string },
       });
       return res.status(200).json({ message: "User deleted" });

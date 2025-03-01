@@ -16,7 +16,8 @@ const userProfileSchema = Yup.object().shape({
   gender: Yup.string(),
   trainingLevel: Yup.string()
     .oneOf(["beginner", "intermediate", "advanced"])
-    .required("Training level is required"),
+    .required("Training level is required")
+    .default("beginner"),
   VO2Max: Yup.number()
     .transform((value, originalValue) =>
       originalValue === "" || originalValue === null
@@ -70,12 +71,12 @@ const userProfileSchema = Yup.object().shape({
     .min(0, "Weight must be positive")
     .nullable()
     .default(undefined),
-  injuryHistory: Yup.string(),
-  preferredTrainingDays: Yup.string(),
+  injuryHistory: Yup.string().nullable().default(undefined),
+  preferredTrainingDays: Yup.string().nullable().default(undefined),
   preferredTrainingEnvironment: Yup.string()
     .oneOf(["outdoor", "treadmill", "indoor", "mixed"])
-    .required("Preferred training environment is required"),
-  device: Yup.string(),
+    .default("mixed"),
+  device: Yup.string().nullable().default(undefined),
 });
 
 export default userProfileSchema;

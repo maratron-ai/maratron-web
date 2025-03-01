@@ -1,16 +1,11 @@
 import { useState, useEffect, ChangeEvent, FormEvent } from "react";
+import axios from "axios";
 import { useUserStore } from "@store/userStore";
 import { updateUserProfile, createUserProfile } from "@lib/api/user/user";
 import { UserProfile } from "@maratypes/user";
 import * as Yup from "yup";
 import userProfileSchema from "@lib/schemas/userProfileSchema";
-
-// type guard
-function isYupValidationError(
-  err: unknown
-): err is { inner: Yup.ValidationError[] } {
-  return typeof err === "object" && err !== null && "inner" in err;
-}
+import isYupValidationError from "@utils/isYupValidationError";
 
 const initialFormData: UserProfile = {
   id: "",
@@ -111,11 +106,17 @@ const UserProfileForm = () => {
       setUser(returnedUser);
     } catch (err: unknown) {
       if (isYupValidationError(err)) {
-        const errors = err.inner.map(
-          (error: Yup.ValidationError) => error.message
-        );
+        const errors = err.inner.map((e: Yup.ValidationError) => e.message);
         setValidationErrors(errors);
         setMessage("Validation failed. Please check the form.");
+      } else if (axios.isAxiosError(err)) {
+        if (err.response?.status === 409) {
+          setMessage(
+            "A user with this email already exists. Please use a different email or update your profile."
+          );
+        } else {
+          setMessage("Failed to save profile: " + err.message);
+        }
       } else if (err instanceof Error) {
         setMessage("Failed to save profile: " + err.message);
       } else {
