@@ -3,29 +3,21 @@ import React, { useState, FormEvent } from "react";
 import { useAuth } from "../hooks/useAuth";
 
 const AuthTest: React.FC = () => {
-  const { user, login, logout } = useAuth();
+  const { user, login, logout, error } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
 
   const handleLogin = async (e: FormEvent) => {
     e.preventDefault();
-    setError("");
     try {
       await login(email, password);
-    } catch (err) {
-      console.error("Login failed", err);
-      setError("Login failed. Please check your credentials.");
+    } catch (error) {
+      console.error("Unexpected error in handleLogin:", error);
     }
   };
 
   const handleLogout = async () => {
-    try {
-      await logout();
-    } catch (err) {
-      console.error("Logout failed", err);
-      setError("Logout failed. Please try again.");
-    }
+    await logout();
   };
 
   return (
