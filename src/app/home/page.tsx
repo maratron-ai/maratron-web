@@ -52,8 +52,8 @@ export default function HomePage() {
         <h2 className="text-3xl font-bold text-center mb-8">Why Maratron?</h2>
         <p className="max-w-3xl mx-auto text-lg text-center">
           Maratron leverages advanced AI algorithms to provide coaching and
-          training insights that evolve with you. Whether you're a beginner or a
-          seasoned runner, our app adapts to your needs, ensuring every run
+          training insights that evolve with you. Whether you&aposre a beginner
+          or a seasoned runner, our app adapts to your needs, ensuring every run
           counts.
         </p>
       </section>
