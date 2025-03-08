@@ -1,65 +1,63 @@
-// pages/api/runs/index.ts
-import type { NextApiRequest, NextApiResponse } from "next";
+// src/app/api/runs/route.ts
+import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@lib/prisma";
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
-  if (req.method === "POST") {
-    try {
-      const {
-        date,
+export async function GET(request: NextRequest) {
+  try {
+    const runs = await prisma.run.findMany();
+    return NextResponse.json(runs, { status: 200 });
+  } catch (error) {
+    console.error("Error fetching runs:", error);
+    return NextResponse.json(
+      { error: error instanceof Error ? error.message : "Error fetching runs" },
+      { status: 500 }
+    );
+  }
+}
+
+export async function POST(request: NextRequest) {
+  try {
+    const body = await request.json();
+    const {
+      date,
+      duration,
+      distance,
+      distanceUnit,
+      trainingEnvironment,
+      pace, // expected format: { pace: string, unit: "miles" | "kilometers" } or null
+      elevationGain,
+      elevationGainUnit,
+      notes,
+      userId,
+    } = body;
+
+    const newRun = await prisma.run.create({
+      data: {
+        date: new Date(date),
         duration,
-        distance,
+        distance: Number(distance),
         distanceUnit,
-        trainingEnvironment,
-        pace, // expected format: { pace: string, unit: "miles" | "kilometers" } or null
-        elevationGain,
-        elevationGainUnit,
-        notes,
-        userId, // use userId as sent from the client
-      } = req.body;
+        trainingEnvironment: trainingEnvironment || null,
+        pace: pace ? pace.pace : null,
+        paceUnit: pace ? pace.unit : null,
+        elevationGain: elevationGain ? Number(elevationGain) : null,
+        elevationGainUnit:
+          elevationGainUnit && elevationGainUnit.trim() !== ""
+            ? elevationGainUnit
+            : null,
+        notes: notes || null,
+        user: { connect: { id: userId } },
+      },
+    });
 
-      const newRun = await prisma.run.create({
-        data: {
-          date: new Date(date),
-          duration,
-          distance: Number(distance),
-          distanceUnit,
-          trainingEnvironment: trainingEnvironment || null,
-          pace: pace ? pace.pace : null,
-          paceUnit: pace ? pace.unit : null,
-          elevationGain: elevationGain ? Number(elevationGain) : null,
-          elevationGainUnit:
-            elevationGainUnit && elevationGainUnit.trim() !== ""
-              ? elevationGainUnit
-              : null,
-          notes: notes || null,
-          // Connect this run with the user using the provided userId
-          user: { connect: { id: userId } },
-        },
-      });
-
-      return res.status(201).json(newRun);
-    } catch (error) {
-      console.error("Error creating run:", error);
-      return res.status(500).json({
+    return NextResponse.json(newRun, { status: 201 });
+  } catch (error) {
+    console.error("Error creating run:", error);
+    return NextResponse.json(
+      {
         error: error instanceof Error ? error.message : "Error creating run",
-      });
-    }
-  } else if (req.method === "GET") {
-    try {
-      const runs = await prisma.run.findMany();
-      return res.status(200).json(runs);
-    } catch (error) {
-      console.error("Error fetching runs:", error);
-      return res.status(500).json({
-        error: error instanceof Error ? error.message : "Error fetching runs",
-      });
-    }
-  } else {
-    res.setHeader("Allow", ["GET", "POST"]);
-    return res.status(405).end(`Method ${req.method} Not Allowed`);
+      },
+      { status: 500 }
+    );
   }
 }

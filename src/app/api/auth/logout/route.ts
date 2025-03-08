@@ -1,22 +1,19 @@
-// pages/api/auth/logout.ts
-import type { NextApiRequest, NextApiResponse } from "next";
+// app/api/auth/logout/route.ts
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
-  if (req.method === "POST") {
-    try {
-      // Here you would normally clear cookies, session tokens, etc.
-      return res.status(200).json({ message: "Logged out successfully" });
-    } catch (error) {
-      console.error("Error during logout:", error);
-      return res.status(500).json({
-        error: error instanceof Error ? error.message : "Server error",
-      });
-    }
-  } else {
-    res.setHeader("Allow", ["POST"]);
-    return res.status(405).end(`Method ${req.method} Not Allowed`);
+import { NextRequest, NextResponse } from "next/server";
+
+export async function POST(request: NextRequest) {
+  try {
+    // Here you would normally clear cookies, session tokens, etc.
+    return NextResponse.json(
+      { message: "Logged out successfully" },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error("Error during logout:", error);
+    return NextResponse.json(
+      { error: error instanceof Error ? error.message : "Server error" },
+      { status: 500 }
+    );
   }
 }

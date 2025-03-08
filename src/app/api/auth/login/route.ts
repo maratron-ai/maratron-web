@@ -1,47 +1,49 @@
-// pages/api/auth/login.ts
-import type { NextApiRequest, NextApiResponse } from "next";
-import { prisma } from "@lib/prisma";
-// import bcrypt from "bcrypt"; // Uncomment if/ when we hash passwords
+// app/api/auth/login/route.ts
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
-  if (req.method === "POST") {
-    const { email, password } = req.body;
+
+import { NextRequest, NextResponse } from "next/server";
+import { prisma } from "@lib/prisma";
+// import bcrypt from "bcrypt"; // Uncomment if/when you hash passwords
+
+export async function POST(request: NextRequest) {
+  try {
+    const body = await request.json();
+    const { email, password } = body;
 
     // Basic input validation
     if (!email || !password) {
-      return res.status(400).json({ error: "Email and password are required" });
+      return NextResponse.json(
+        { error: "Email and password are required" },
+        { status: 400 }
+      );
     }
 
-    try {
-      // Look up the user by email
-      const user = await prisma.user.findUnique({
-        where: { email },
-      });
+    // Look up the user by email
+    const user = await prisma.user.findUnique({
+      where: { email },
+    });
 
-      if (!user) {
-        console.log(`User not found for email: ${email}`);
-        return res.status(401).json({ error: "Invalid email or password" });
-      }
-
-      // In a production app, compare the provided password with the stored hashed password:
-      // const passwordValid = await bcrypt.compare(password, user.password);
-      // if (!passwordValid) {
-      //   return res.status(401).json({ error: "Invalid email or password" });
-      // }
-
-      // rn we assume the provided password is valid.
-      return res.status(200).json(user);
-    } catch (error) {
-      console.error("Error during login:", error);
-      return res.status(500).json({
-        error: error instanceof Error ? error.message : "Server error",
-      });
+    if (!user) {
+      console.log(`User not found for email: ${email}`);
+      return NextResponse.json(
+        { error: "Invalid email or password" },
+        { status: 401 }
+      );
     }
-  } else {
-    res.setHeader("Allow", ["POST"]);
-    return res.status(405).end(`Method ${req.method} Not Allowed`);
+
+    // In a production app, compare the provided password with the stored hashed password:
+    // const passwordValid = await bcrypt.compare(password, user.password);
+    // if (!passwordValid) {
+    //   return NextResponse.json({ error: "Invalid email or password" }, { status: 401 });
+    // }
+
+    // For now, assume the provided password is valid.
+    return NextResponse.json(user, { status: 200 });
+  } catch (error) {
+    console.error("Error during login:", error);
+    return NextResponse.json(
+      { error: error instanceof Error ? error.message : "Server error" },
+      { status: 500 }
+    );
   }
 }
