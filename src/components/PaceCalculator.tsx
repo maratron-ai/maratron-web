@@ -1,4 +1,6 @@
 // src/components/PaceCalculator.tsx
+"use client";
+
 import React, { useState } from "react";
 import {
   RacePrediction,

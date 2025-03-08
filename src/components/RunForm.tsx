@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState, ChangeEvent, FormEvent } from "react";
 import * as Yup from "yup";
 import { Run, Pace } from "@maratypes/run";

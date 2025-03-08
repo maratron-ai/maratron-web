@@ -1,9 +1,11 @@
+"use client";
+
 import axios from "axios";
 import { useState } from "react";
 import { useUserStore } from "../store/userStore";
 import { UserProfile } from "@maratypes/user";
 
-// this just calls the functions written in pages/api/auth/ 
+// this just calls the functions written in pages/api/auth/
 
 export const useAuth = () => {
   const { user, setUser, clearUser } = useUserStore();

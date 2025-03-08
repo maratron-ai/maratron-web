@@ -1,21 +1,90 @@
+/* Import Tailwind CSS layers */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* Define custom properties for theming */
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --primary: #813fdc;
+  --secondary: #9b6edbe1;
+  --accent: #bac4d6;
 }
 
+/* Dark mode styles using the prefers-color-scheme media query */
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
+    --primary: #813fdc;
+    --secondary: #9b6edbe1;
+    --accent: #bac4d6;
   }
 }
 
+/* Global base styles */
+html,
 body {
+  padding: 0;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+    Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  background-color: var(--background);
   color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Improve text rendering on some devices */
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Anchor tag styling */
+a {
+  color: var(--primary);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Add a border-box box-sizing model */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Utility classes for container width */
+.container {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Example global heading styles */
+h1, h2, h3, h4, h5, h6 {
+  margin: 0 0 1rem 0;
+  font-weight: 600;
+}
+
+/* Example paragraph styling */
+p {
+  margin: 0 0 1rem 0;
+  line-height: 1.6;
+}
+
+
+input,
+select,
+textarea {
+  @apply bg-gray-300 text-black border border-gray-300 rounded px-2 py-1
+         focus:outline-none focus:ring-2 focus:ring-primary;
+}
+
+button {
+  @apply bg-gray-400 text-black px-4 py-2 rounded hover:bg-gray-400
+         transition-colors focus:outline-none focus:ring-2 focus:ring-primary;
 }
