@@ -1,4 +1,5 @@
 // src/components/AuthTest.tsx
+"use client";
 import React, { useState, FormEvent } from "react";
 import { useAuth } from "../hooks/useAuth";
 

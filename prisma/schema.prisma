@@ -57,6 +57,7 @@ model User {
 
   // Relation: one user can have many runs
   runs                         Run[]
+  runningPlans                 RunningPlan[]
 
   // name database users
   @@map("Users")
@@ -94,4 +95,7 @@ model RunningPlan {
   updatedAt DateTime @updatedAt
 
   user      User     @relation(fields: [userId], references: [id])
+
+  @@map("RunningPlans")
 }
+

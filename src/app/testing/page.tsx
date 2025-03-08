@@ -1,6 +1,7 @@
+
 import UserProfileForm from "@components/UserProfileForm";
 import PaceCalculator from "@components/PaceCalculator";
-import NewRunPage from "@pages/new-run";
+import NewRunPage from "@components/NewRun";
 import AuthTest from "@components/AuthTest";
 import PlanGenerator from "@components/PlanGenerator";
 

@@ -2,7 +2,7 @@
 
 // This is boilerplate... need to import zustand and figure how to actually use
 import { create } from "zustand";
-import { UserProfile } from "@types/user";
+import { UserProfile } from "@maratypes/user";
 
 interface UserState {
   user: UserProfile | null;
