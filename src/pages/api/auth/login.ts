@@ -32,7 +32,7 @@ export default async function handler(
       //   return res.status(401).json({ error: "Invalid email or password" });
       // }
 
-      // For demonstration, we assume the provided password is valid.
+      // rn we assume the provided password is valid.
       return res.status(200).json(user);
     } catch (error) {
       console.error("Error during login:", error);

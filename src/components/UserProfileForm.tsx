@@ -77,16 +77,15 @@ const UserProfileForm = () => {
         ...validData,
         age: validData.age === null ? undefined : validData.age,
         VO2Max: validData.VO2Max === null ? undefined : validData.VO2Max,
-        yearsRunning:
-          validData.yearsRunning === null ? undefined : validData.yearsRunning,
-        weeklyMileage:
-          validData.weeklyMileage === null
-            ? undefined
-            : validData.weeklyMileage,
+        yearsRunning: validData.yearsRunning === null ? undefined : validData.yearsRunning,
+        weeklyMileage: validData.weeklyMileage === null? undefined: validData.weeklyMileage,
         height: validData.height === null ? undefined : validData.height,
         weight: validData.weight === null ? undefined : validData.weight,
-        avatarUrl:
-          validData.avatarUrl === null ? undefined : validData.avatarUrl,
+        avatarUrl: validData.avatarUrl === null ? undefined : validData.avatarUrl,
+        injuryHistory: validData.injuryHistory === null ? undefined : validData.injuryHistory,
+        preferredTrainingDays: validData.preferredTrainingDays === null ? undefined : validData.preferredTrainingDays,
+        preferredTrainingEnvironment: validData.preferredTrainingEnvironment === null ? undefined : validData.preferredTrainingEnvironment,
+        device: validData.device === null ? undefined : validData.device,
         // Filter goals to ensure they are strings
         goals: (validData.goals ?? []).filter(
           (goal): goal is string => goal !== undefined
