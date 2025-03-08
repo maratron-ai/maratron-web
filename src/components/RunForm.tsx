@@ -3,10 +3,10 @@
 import React, { useState, ChangeEvent, FormEvent } from "react";
 import * as Yup from "yup";
 import { Run, Pace } from "@maratypes/run";
-import isYupValidationError from "@utils/isYupValidationError";
+import isYupValidationError from "@lib/utils/validation/isYupValidationError";
 import { useAuth } from "../hooks/useAuth"; // adjust the import path as needed
 import runSchema from "@lib/schemas/runSchema";
-import calculatePace from "@lib/utils/calculatePace";
+import calculatePace from "@lib/utils/running/calculatePace";
 
 interface RunFormData {
   date: string;

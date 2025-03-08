@@ -5,7 +5,7 @@ import React, { useState } from "react";
 import {
   RacePrediction,
   calculateRacePaces,
-} from "@lib/utils/calculateRacePaces";
+} from "@lib/utils/running/calculateRacePaces";
 
 const PaceCalculator: React.FC = () => {
   const [raceTime, setRaceTime] = useState(""); // Known race time in minutes

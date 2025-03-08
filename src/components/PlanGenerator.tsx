@@ -4,13 +4,17 @@ import React, { useState } from "react";
 import {
   generateRunningPlan,
   RunningPlanData,
-} from "../lib/utils/generateRunningPlan";
+} from "@utils/running/plans/baseRunningPlan";
+import ToggleSwitch from "./ToggleSwitch";
+
 
 const PlanGenerator = () => {
-  // Local state for plan inputs. These are unique to each plan generated.
   const [weeks, setWeeks] = useState<number>(12);
-  const [targetDistance, setTargetDistance] = useState<number>(5); // Target race distance in miles.
-  const [targetPace, setTargetPace] = useState<string>("7:00"); // Target pace (goal race pace) in mm:ss.
+  const [targetDistance, setTargetDistance] = useState<number>(5); // Target race distance in chosen unit.
+  const [distanceUnit, setDistanceUnit] = useState<"miles" | "kilometers">("miles");
+  const [useTotalTime, setUseTotalTime] = useState<boolean>(false);
+  const [targetPace, setTargetPace] = useState<string>("7:00");
+  const [targetTotalTime, setTargetTotalTime] = useState<string>("0:40:00");
   const [vo2max, setVo2max] = useState<number>(45); // User's current VO₂ max.
   const [planData, setPlanData] = useState<RunningPlanData | null>(null);
 
@@ -20,8 +24,10 @@ const PlanGenerator = () => {
     const generatedPlan = generateRunningPlan(
       weeks,
       targetDistance,
-      targetPace,
-      vo2max
+      distanceUnit,
+      vo2max,
+      useTotalTime ? undefined : targetPace,
+      useTotalTime ? targetTotalTime : undefined,
     );
     setPlanData(generatedPlan);
   };
@@ -40,7 +46,9 @@ const PlanGenerator = () => {
           />
         </div>
         <div>
-          <label htmlFor="targetDistance">Target Distance (miles):</label>
+          <label htmlFor="targetDistance">
+            Target Distance ({distanceUnit}):
+          </label>
           <input
             id="targetDistance"
             type="number"
@@ -50,14 +58,48 @@ const PlanGenerator = () => {
           />
         </div>
         <div>
-          <label htmlFor="targetPace">Target Pace (mm:ss):</label>
-          <input
-            id="targetPace"
-            type="text"
-            value={targetPace}
-            onChange={(e) => setTargetPace(e.target.value)}
+          <label htmlFor="distanceUnit">Unit:</label>
+          <ToggleSwitch
+            checked={distanceUnit === "kilometers"}
+            onChange={(checked) =>
+              setDistanceUnit(checked ? "kilometers" : "miles")
+            }
+            leftLabel="Miles"
+            rightLabel="Kilometers"
           />
         </div>
+        <div>
+          <label htmlFor="inputMode">Use Target Total Time?</label>
+          <ToggleSwitch
+            checked={useTotalTime}
+            onChange={(checked) => setUseTotalTime(checked)}
+            leftLabel="Pace"
+            rightLabel="Total Time"
+          />
+        </div>
+        {useTotalTime ? (
+          <div>
+            <label htmlFor="targetTotalTime">
+              Target Total Time (hh:mm:ss or mm:ss):
+            </label>
+            <input
+              id="targetTotalTime"
+              type="text"
+              value={targetTotalTime}
+              onChange={(e) => setTargetTotalTime(e.target.value)}
+            />
+          </div>
+        ) : (
+          <div>
+            <label htmlFor="targetPace">Target Pace (mm:ss):</label>
+            <input
+              id="targetPace"
+              type="text"
+              value={targetPace}
+              onChange={(e) => setTargetPace(e.target.value)}
+            />
+          </div>
+        )}
         <div>
           <label htmlFor="vo2max">VO₂ Max:</label>
           <input

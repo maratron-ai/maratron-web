@@ -1,5 +1,5 @@
 // src/lib/utils/calculateRacePaces.ts
-import { riegalCalculator } from "@utils/riegalCalculator";
+import { riegalCalculator } from "@lib/utils/running/riegalCalculator";
 
 export interface RacePrediction {
   target: string;         // e.g., "5K", "10K", "Half Marathon", "Marathon"

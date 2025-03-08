@@ -9,20 +9,21 @@ export interface RunningPlan {
   updatedAt?: Date;
 }
 
-// single run
 export interface PlannedRun {
-  type: "easy" | "tempo" | "interval" | "long";
+  type: "easy" | "tempo" | "interval" | "long" | "marathon";
+  unit: "miles" | "kilometers";
   targetPace: Pace;
   mileage: number;
+  notes?: string;
 }
 
-// week of runs
 export interface WeekPlan {
   weekNumber: number;
+  weeklyMileage: number;
+  unit: "miles" | "kilometers";
   runs: PlannedRun[];
 }
 
-// data
 export interface RunningPlanData {
   weeks: number;
   schedule: WeekPlan[];

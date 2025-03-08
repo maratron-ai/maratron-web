@@ -1,4 +1,4 @@
-import { calculateVO2MaxJackDaniels } from "../jackDaniels";
+import { calculateVO2MaxJackDaniels } from "../running/jackDaniels";
 
 describe("VO2 Max Calculator", () => {
   it("calculates VO2 max for a 5K race in 20 minutes", () => {

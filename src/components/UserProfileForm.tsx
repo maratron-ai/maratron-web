@@ -7,7 +7,7 @@ import { updateUserProfile, createUserProfile } from "@lib/api/user/user";
 import { UserProfile } from "@maratypes/user";
 import * as Yup from "yup";
 import userProfileSchema from "@lib/schemas/userProfileSchema";
-import isYupValidationError from "@utils/isYupValidationError";
+import isYupValidationError from "@lib/utils/validation/isYupValidationError";
 
 const initialFormData: UserProfile = {
   id: "",
