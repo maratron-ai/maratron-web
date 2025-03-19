@@ -7,6 +7,11 @@ export default function Navbar() {
     <nav className="bg-gray-800 text-white px-4 py-2">
       <ul className="flex space-x-6">
         <li>
+          <Link href="/" className="hover:underline">
+            Landing (/)
+          </Link>
+        </li>
+        <li>
           <Link href="/home" className="hover:underline">
             Home
           </Link>

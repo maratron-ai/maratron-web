@@ -1,4 +1,4 @@
-// @utils/lerp
+// @utils/math/lerp
 
 // linear estimator, takes in start, end, and  and returns the interpolated value
 
