@@ -31,6 +31,16 @@ export default function Navbar() {
             testing
           </Link>
         </li>
+        <li>
+          <Link href="/userProfile" className="hover:underline">
+            User Profile
+          </Link>
+        </li>
+        <li>
+          <Link href="/login" className="hover:underline">
+            Login Page
+          </Link>
+        </li>
         {/* Add additional links as needed */}
       </ul>
     </nav>
