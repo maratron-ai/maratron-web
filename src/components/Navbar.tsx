@@ -41,6 +41,11 @@ export default function Navbar() {
             Login Page
           </Link>
         </li>
+        <li>
+          <Link href="/plan-generator" className="hover:underline">
+            Plan Generator Page
+          </Link>
+        </li>
         {/* Add additional links as needed */}
       </ul>
     </nav>
