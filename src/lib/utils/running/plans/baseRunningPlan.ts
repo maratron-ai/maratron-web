@@ -1,32 +1,7 @@
 import { calculatePaceForVO2Max } from "../jackDaniels";
+// import { Pace } from "@maratypes/run";
+import { WeekPlan, RunningPlanData } from "@maratypes/runningPlan";
 
-export interface Pace {
-  unit: "miles" | "kilometers";
-  pace: string; // "mm:ss" format per unit
-}
-
-// single run
-export interface PlannedRun {
-  type: "easy" | "tempo" | "interval" | "long";
-  unit: "miles" | "kilometers";
-  targetPace: Pace;
-  mileage: number;
-  notes?: string;
-}
-
-// week of runs
-export interface WeekPlan {
-  weekNumber: number;
-  weeklyMileage: number;
-  unit: "miles" | "kilometers";
-  runs: PlannedRun[];
-}
-
-// complete plan data
-export interface RunningPlanData {
-  weeks: number;
-  schedule: WeekPlan[];
-}
 
 /**
  * Generate a running plan.

@@ -1,10 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
-import {
-  generateRunningPlan,
-  RunningPlanData,
-} from "@utils/running/plans/baseRunningPlan";
+import { generateRunningPlan } from "@utils/running/plans/baseRunningPlan";
+import { RunningPlanData } from "@maratypes/runningPlan";
 import ToggleSwitch from "./ToggleSwitch";
 import RunningPlanDisplay from "./RunningPlanDisplay"; // Import your new component
 
