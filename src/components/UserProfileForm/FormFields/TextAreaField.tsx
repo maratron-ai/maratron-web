@@ -1,9 +1,11 @@
+import { UserProfile } from "@maratypes/user";
+
 interface Props {
   label: string;
-  name: string;
+  name: keyof UserProfile;
   value: string;
   editing: boolean;
-  onChange: (field: string, value: string) => void;
+  onChange: (field: keyof UserProfile, value: string) => void;
 }
 
 export function TextAreaField({
