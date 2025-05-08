@@ -1,3 +1,5 @@
+//src/lib/api/user/user.ts
+
 import axios from "axios";
 import { UserProfile } from "@maratypes/user";
 
@@ -17,5 +19,11 @@ export const updateUserProfile = async (
 export const createUserProfile = async (data: Partial<UserProfile>) => {
   // post req
   const response = await axios.post(`/api/users`, data);
+  return response.data;
+};
+
+// fetch by id
+export const getUserProfile = async (userId: string): Promise<UserProfile> => {
+  const response = await axios.get(`/api/users/${userId}`);
   return response.data;
 };

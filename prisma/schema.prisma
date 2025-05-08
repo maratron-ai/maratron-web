@@ -34,12 +34,39 @@ enum TrainingEnvironment {
   mixed
 }
 
+enum DayOfWeek {
+  Monday
+  Tuesday
+  Wednesday
+  Thursday
+  Friday
+  Saturday
+  Sunday
+}
+
+enum Device {
+  Garmin
+  Polar
+  Suunto
+  Fitbit
+  AppleWatch          @map("Apple Watch")
+  SamsungGalaxyWatch  @map("Samsung Galaxy Watch")
+  Coros
+  Other
+}
+
+enum Gender {
+  Male
+  Female
+  Other
+}
+
 model User {
   id                           String              @id @default(uuid())
   name                         String
   email                        String              @unique
   age                          Int?
-  gender                       String?
+  gender                       Gender?
   trainingLevel                TrainingLevel?
   VO2Max                       Int?
   goals                        String[]            // For Postgres; for SQLite consider using Json
@@ -49,9 +76,9 @@ model User {
   height                       Int?
   weight                       Int?
   injuryHistory                String?
-  preferredTrainingDays        String?
+  preferredTrainingDays        DayOfWeek[]
   preferredTrainingEnvironment TrainingEnvironment?
-  device                       String?
+  device                       Device?
   createdAt                    DateTime            @default(now())
   updatedAt                    DateTime            @updatedAt
 
@@ -98,4 +125,3 @@ model RunningPlan {
 
   @@map("RunningPlans")
 }
-

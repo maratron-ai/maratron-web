@@ -4,11 +4,12 @@ import { prisma } from "@lib/prisma";
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params;
   try {
     const user = await prisma.user.findUnique({
-      where: { id: params.id },
+      where: { id },
     });
     if (!user) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
@@ -25,12 +26,13 @@ export async function GET(
 
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params;
   try {
     const body = await request.json();
     const updatedUser = await prisma.user.update({
-      where: { id: params.id },
+      where: { id },
       data: body,
     });
     return NextResponse.json(updatedUser, { status: 200 });
@@ -45,11 +47,12 @@ export async function PUT(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params;
   try {
     await prisma.user.delete({
-      where: { id: params.id },
+      where: { id },
     });
     return NextResponse.json({ message: "User deleted" }, { status: 200 });
   } catch (error) {
