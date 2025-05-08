@@ -1,4 +1,5 @@
 import * as Yup from "yup";
+import type { DayOfWeek, TrainingLevel, TrainingEnvironment, Device } from "@maratypes/user";
 
 const userProfileSchema = Yup.object().shape({
   id: Yup.string().nullable(),
@@ -13,10 +14,13 @@ const userProfileSchema = Yup.object().shape({
     .min(10, "Age must be at least 10")
     .nullable()
     .default(undefined),
-  gender: Yup.string(),
+  gender: Yup.string()
+    .oneOf(["Male", "Female", "Other"])
+    .nullable()
+    .default(undefined),
   trainingLevel: Yup.string()
-    .oneOf(["beginner", "intermediate", "advanced"])
-    .required("Training level is required")
+    .oneOf(["beginner", "intermediate", "advanced"] as TrainingLevel[])
+    .nullable()
     .default("beginner"),
   VO2Max: Yup.number()
     .transform((value, originalValue) =>
@@ -82,14 +86,27 @@ const userProfileSchema = Yup.object().shape({
         "Friday",
         "Saturday",
         "Sunday",
-      ])
+      ] as DayOfWeek[])
     )
     .nullable()
     .default([]),
   preferredTrainingEnvironment: Yup.string()
-    .oneOf(["outdoor", "treadmill", "indoor", "mixed"])
+    .oneOf(["outdoor", "treadmill", "indoor", "mixed"] as TrainingEnvironment[])
+    .nullable()
     .default("mixed"),
-  device: Yup.string().nullable().default(undefined),
+  device: Yup.string()
+    .oneOf([
+      "Garmin",
+      "Polar",
+      "Suunto",
+      "Fitbit",
+      "Apple Watch",
+      "Samsung Galaxy Watch",
+      "Coros",
+      "Other",
+    ] as Device[])
+    .nullable()
+    .default(undefined),
 });
 
 export default userProfileSchema;

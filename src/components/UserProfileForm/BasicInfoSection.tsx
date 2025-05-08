@@ -1,6 +1,16 @@
 import { TextField, SelectField } from "./FormFields";
 import { UserProfile } from "@maratypes/user";
 import styles from "./Section.module.css";
+import type { Gender } from "@maratypes/user";
+
+// runtime list of gender options
+const genderValues: Gender[] = ["Male", "Female", "Other"];
+
+// derive select options for Gender
+const genderOptions = genderValues.map((g) => ({
+  label: g,
+  value: g,
+}));
 
 interface Props {
   formData: Partial<UserProfile>;
@@ -31,7 +41,7 @@ export default function BasicInfoSection({
             name="email"
             type="email"
             value={formData.email || ""}
-            editing={isEditing}
+            editing={false}
             onChange={onChange}
             required
           />
@@ -43,9 +53,10 @@ export default function BasicInfoSection({
             editing={isEditing}
             onChange={onChange}
           />
-          <TextField
+          <SelectField
             label="Gender"
             name="gender"
+            options={genderOptions}
             value={formData.gender || ""}
             editing={isEditing}
             onChange={onChange}
@@ -62,14 +73,15 @@ export default function BasicInfoSection({
             editing={isEditing}
             onChange={onChange}
           />
-          <TextField
+          {/* Currently don't allow for editing of VO₂ Max */}
+          {/* <TextField
             label="VO₂ Max"
             name="VO2Max"
             type="number"
             value={formData.VO2Max ?? ""}
             editing={isEditing}
             onChange={onChange}
-          />
+          /> */}
         </div>
       ) : (
         <dl className={styles.list}>
@@ -95,10 +107,10 @@ export default function BasicInfoSection({
               {formData.trainingLevel || "N/A"}
             </dd>
           </div>
-          <div>
+          {/* <div>
             <dt className={styles.label}>VO₂ Max</dt>
             <dd className={styles.value}>{formData.VO2Max ?? "N/A"}</dd>
-          </div>
+          </div> */}
         </dl>
       )}
     </section>

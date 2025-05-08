@@ -10,9 +10,17 @@ import { useUserProfileForm } from "@hooks/useUserProfileForm";
 interface Props {
   initialUser: UserProfile;
   onSave: (u: UserProfile) => void;
+  /** always show fields in edit mode */
+  alwaysEdit?: boolean;
+  submitLabel?: string;
 }
 
-export default function UserProfileForm({ initialUser, onSave }: Props) {
+export default function UserProfileForm({ 
+  initialUser, 
+  onSave, 
+  alwaysEdit = false, 
+  submitLabel = "Save Profile"
+}: Props) {
   const {
     formData,
     isEditing,
@@ -21,6 +29,8 @@ export default function UserProfileForm({ initialUser, onSave }: Props) {
     handleSave,
     toggleEditing,
   } = useUserProfileForm(initialUser, onSave);
+  // if alwaysEdit, override hook state
+  const editing = alwaysEdit ? true : isEditing;
 
   return (
     <form
@@ -32,17 +42,19 @@ export default function UserProfileForm({ initialUser, onSave }: Props) {
     >
       <div className="flex justify-between items-center border-b border-gray-700 pb-4">
         <h2 className="text-3xl font-bold text-white">Your Profile</h2>
-        <button
-          type="button"
-          onClick={toggleEditing}
-          className={`px-4 py-2 rounded font-medium text-white ${
-            isEditing
-              ? "bg-gray-600 hover:bg-gray-500"
-              : "bg-blue-600 hover:bg-blue-700"
-          }`}
-        >
-          {isEditing ? "Cancel" : "Edit"}
-        </button>
+        {!alwaysEdit && (
+          <button
+            type="button"
+            onClick={toggleEditing}
+            className={`px-4 py-2 rounded font-medium text-white ${
+              editing
+                ? "bg-gray-600 hover:bg-gray-500"
+                : "bg-blue-600 hover:bg-blue-700"
+            }`}
+          >
+            {editing ? "Cancel" : "Edit"}
+          </button>
+        )}
       </div>
 
       {validationErrors.length > 0 && (
@@ -57,32 +69,32 @@ export default function UserProfileForm({ initialUser, onSave }: Props) {
 
       <BasicInfoSection
         formData={formData}
-        isEditing={isEditing}
+        isEditing={editing}
         onChange={handleChange}
       />
       <PhysicalStatsSection
         formData={formData}
-        isEditing={isEditing}
+        isEditing={editing}
         onChange={handleChange}
       />
       <GoalsSection
         formData={formData}
-        isEditing={isEditing}
+        isEditing={editing}
         onChange={handleChange}
       />
       <PreferencesSection
         formData={formData}
-        isEditing={isEditing}
+        isEditing={editing}
         onChange={handleChange}
       />
 
-      {isEditing && (
+      {editing && (
         <div className="mt-6 flex justify-end">
           <button
             type="submit"
             className="w-full sm:w-auto bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-2 rounded transition-colors"
           >
-            Save Profile
+            {submitLabel}
           </button>
         </div>
       )}

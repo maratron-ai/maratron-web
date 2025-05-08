@@ -43,14 +43,15 @@ export default function PhysicalStatsSection({
             editing={isEditing}
             onChange={onChange}
           />
-          <TextField
+          {/* Weekly mileage shouldn't be editable by user */}
+          {/* <TextField
             label="Weekly Mileage"
             name="weeklyMileage"
             type="number"
             value={formData.weeklyMileage ?? ""}
             editing={isEditing}
             onChange={onChange}
-          />
+          /> */}
         </div>
       ) : (
         <dl className={styles.list}>
@@ -66,10 +67,10 @@ export default function PhysicalStatsSection({
             <dt className={styles.label}>Years Running</dt>
             <dd className={styles.value}>{formData.yearsRunning ?? "N/A"}</dd>
           </div>
-          <div>
+          {/* <div>
             <dt className={styles.label}>Weekly Mileage</dt>
             <dd className={styles.value}>{formData.weeklyMileage ?? "N/A"}</dd>
-          </div>
+          </div> */}
         </dl>
       )}
     </section>

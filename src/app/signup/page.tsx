@@ -2,12 +2,14 @@
 import { useState, FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { createUserProfile } from "@lib/api/user/user"; // Adjust path if necessary
+import { useUserStore } from "@store/userStore";
 
 export default function SignupPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const { setUser } = useUserStore();
   const router = useRouter();
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -19,12 +21,11 @@ export default function SignupPage() {
     }
 
     try {
-      // Call your function to create a new user profil
-
       // add password here >
-      await createUserProfile({ name, email });
-      // On success, navigate to the welcome page
-      router.push("/home");
+      const newUser = await createUserProfile({ name, email });
+      setUser(newUser);
+      // On success, navigate to profile set up
+      router.push("/signup/profile");
     } catch (err) {
       console.error(err);
       setError("Signup failed. Please try again.");

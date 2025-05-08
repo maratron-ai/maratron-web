@@ -1,11 +1,26 @@
-import { TextField, SelectField } from "./FormFields";
+import { SelectField } from "./FormFields";
+import { CheckboxGroupField } from "./FormFields/CheckboxGroupField";
 import { UserProfile } from "@maratypes/user";
 import { ChangeHandler } from "./GoalsSection";
 import styles from "./Section.module.css";
-import {DayOfWeek} from "@maratypes/user";
+import type { DayOfWeek } from "@maratypes/user";
+import type { Device } from "@maratypes/user";
+
+// derive select options for Device
+const deviceValues: Device[] = [
+  "Garmin",
+  "Polar",
+  "Suunto",
+  "Fitbit",
+  "Apple Watch",
+  "Samsung Galaxy Watch",
+  "Coros",
+  "Other",
+];
+const deviceOptions = deviceValues.map((d) => ({ label: d, value: d }));
 
 interface Props {
-  formData: Partial<UserProfile & { preferredTrainingDays?: DayOfWeek[] }>;
+  formData: Partial<UserProfile>;
   isEditing: boolean;
   onChange: ChangeHandler;
 }
@@ -20,39 +35,22 @@ export default function PreferencesSection({
       <h3 className={styles.title}>Preferences & Device</h3>
       {isEditing ? (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {/* Preferred Training Days */}
-          <div className="col-span-full flex flex-wrap gap-4">
-            {([
-              "Monday",
-              "Tuesday",
-              "Wednesday",
-              "Thursday",
-              "Friday",
-              "Saturday",
-              "Sunday"
-            ] as DayOfWeek[]).map((day) => (
-              <label key={day} className="inline-flex items-center">
-                <input
-                  type="checkbox"
-                  checked={Array.isArray(formData.preferredTrainingDays) ? formData.preferredTrainingDays.includes(day) : false}
-                  onChange={(e) => {
-                    const current = Array.isArray(formData.preferredTrainingDays)
-                      ? [...formData.preferredTrainingDays]
-                      : [];
-                    if (e.target.checked) {
-                      current.push(day);
-                    } else {
-                      const idx = current.indexOf(day);
-                      if (idx > -1) current.splice(idx, 1);
-                    }
-                    onChange("preferredTrainingDays", current);
-                  }}
-                  className="form-checkbox h-4 w-4 text-blue-600"
-                />
-                <span className="ml-2 text-white">{day}</span>
-              </label>
-            ))}
-          </div>
+          <CheckboxGroupField<DayOfWeek>
+            label="Preferred Training Days"
+            name="preferredTrainingDays"
+            options={[
+              { label: "Monday", value: "Monday" },
+              { label: "Tuesday", value: "Tuesday" },
+              { label: "Wednesday", value: "Wednesday" },
+              { label: "Thursday", value: "Thursday" },
+              { label: "Friday", value: "Friday" },
+              { label: "Saturday", value: "Saturday" },
+              { label: "Sunday", value: "Sunday" },
+            ]}
+            value={formData.preferredTrainingDays || []}
+            editing={isEditing}
+            onChange={onChange}
+          />
           <SelectField
             label="Environment"
             name="preferredTrainingEnvironment"
@@ -62,13 +60,14 @@ export default function PreferencesSection({
               { label: "Indoor", value: "indoor" },
               { label: "Mixed", value: "mixed" },
             ]}
-            value={formData.preferredTrainingEnvironment || "outdoor"}
+            value={formData.preferredTrainingEnvironment || ""}
             editing={isEditing}
             onChange={onChange}
           />
-          <TextField
+          <SelectField
             label="Device"
             name="device"
+            options={deviceOptions}
             value={formData.device || ""}
             editing={isEditing}
             onChange={onChange}

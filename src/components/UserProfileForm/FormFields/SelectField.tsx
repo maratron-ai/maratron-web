@@ -1,27 +1,27 @@
 import { UserProfile } from "@maratypes/user";
 
-export interface Option<V extends string = string> {
+interface Option {
   label: string;
-  value: V;
+  value: string;
 }
 
-interface Props<V extends string = string> {
+interface Props {
   label: string;
   name: keyof UserProfile;
-  options: Option<V>[];
-  value: V;
+  options: Option[];
+  value: string;
   editing: boolean;
   onChange: (field: keyof UserProfile, value: string) => void;
 }
 
-export function SelectField<V extends string = string>({
+export function SelectField({
   label,
   name,
   options,
   value,
   editing,
   onChange,
-}: Props<V>) {
+}: Props) {
   return (
     <div>
       <label className="block font-medium">{label}</label>
@@ -29,9 +29,12 @@ export function SelectField<V extends string = string>({
         <select
           name={name}
           value={value}
-          onChange={(e) => onChange(name, e.target.value as V)}
+          onChange={(e) => onChange(name, e.target.value)}
           className="mt-1 w-full border rounded px-2 py-1"
         >
+          <option value="" disabled hidden>
+            Select {label}
+          </option>
           {options.map((opt) => (
             <option key={opt.value} value={opt.value}>
               {opt.label}
