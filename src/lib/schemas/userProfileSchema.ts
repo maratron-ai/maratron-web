@@ -72,7 +72,20 @@ const userProfileSchema = Yup.object().shape({
     .nullable()
     .default(undefined),
   injuryHistory: Yup.string().nullable().default(undefined),
-  preferredTrainingDays: Yup.string().nullable().default(undefined),
+  preferredTrainingDays: Yup.array()
+    .of(
+      Yup.string().oneOf([
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday",
+      ])
+    )
+    .nullable()
+    .default([]),
   preferredTrainingEnvironment: Yup.string()
     .oneOf(["outdoor", "treadmill", "indoor", "mixed"])
     .default("mixed"),

@@ -1,3 +1,12 @@
+export type DayOfWeek =
+  | "Monday"
+  | "Tuesday"
+  | "Wednesday"
+  | "Thursday"
+  | "Friday"
+  | "Saturday"
+  | "Sunday";
+
 export interface UserProfile {
   id: string;
   name: string;
@@ -13,7 +22,7 @@ export interface UserProfile {
   height?: number;
   weight?: number;
   injuryHistory?: string;
-  preferredTrainingDays?: string;
+  preferredTrainingDays?: DayOfWeek[];
   preferredTrainingEnvironment?: "outdoor" | "treadmill" | "indoor" | "mixed";
   device?: string;
 }
