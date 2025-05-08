@@ -100,8 +100,8 @@ const userProfileSchema = Yup.object().shape({
       "Polar",
       "Suunto",
       "Fitbit",
-      "Apple Watch",
-      "Samsung Galaxy Watch",
+      "AppleWatch",
+      "SamsungGalaxyWatch",
       "Coros",
       "Other",
     ] as Device[])

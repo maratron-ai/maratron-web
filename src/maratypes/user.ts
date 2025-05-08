@@ -23,8 +23,8 @@ export type Device =
   | "Polar"
   | "Suunto"
   | "Fitbit"
-  | "Apple Watch"
-  | "Samsung Galaxy Watch"
+  | "AppleWatch"
+  | "SamsungGalaxyWatch"
   | "Coros"
   | "Other";
 

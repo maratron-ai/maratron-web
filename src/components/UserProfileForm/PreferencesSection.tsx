@@ -4,20 +4,18 @@ import { UserProfile } from "@maratypes/user";
 import { ChangeHandler } from "./GoalsSection";
 import styles from "./Section.module.css";
 import type { DayOfWeek } from "@maratypes/user";
-import type { Device } from "@maratypes/user";
 
-// derive select options for Device
-const deviceValues: Device[] = [
-  "Garmin",
-  "Polar",
-  "Suunto",
-  "Fitbit",
-  "Apple Watch",
-  "Samsung Galaxy Watch",
-  "Coros",
-  "Other",
+// Options for Device: label shown to user, value is Prisma enum key
+const deviceOptions = [
+  { label: "Garmin", value: "Garmin" },
+  { label: "Polar", value: "Polar" },
+  { label: "Suunto", value: "Suunto" },
+  { label: "Fitbit", value: "Fitbit" },
+  { label: "Apple Watch", value: "AppleWatch" },
+  { label: "Samsung Galaxy Watch", value: "SamsungGalaxyWatch" },
+  { label: "Coros", value: "Coros" },
+  { label: "Other", value: "Other" },
 ];
-const deviceOptions = deviceValues.map((d) => ({ label: d, value: d }));
 
 interface Props {
   formData: Partial<UserProfile>;
