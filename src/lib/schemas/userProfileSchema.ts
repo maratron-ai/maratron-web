@@ -1,5 +1,9 @@
 import * as Yup from "yup";
-import type { DayOfWeek, TrainingLevel, TrainingEnvironment, Device } from "@maratypes/user";
+import { DayOfWeek, TrainingLevel, TrainingEnvironment, Device } from "@maratypes/user";
+
+
+const trainingLevelValues = Object.values(TrainingLevel) as TrainingLevel[];
+
 
 const userProfileSchema = Yup.object().shape({
   id: Yup.string().nullable(),
@@ -18,10 +22,10 @@ const userProfileSchema = Yup.object().shape({
     .oneOf(["Male", "Female", "Other"])
     .nullable()
     .default(undefined),
-  trainingLevel: Yup.string()
-    .oneOf(["beginner", "intermediate", "advanced"] as TrainingLevel[])
+  trainingLevel: Yup.mixed<TrainingLevel>()
+    .oneOf(trainingLevelValues, "Invalid training level")
     .nullable()
-    .default("beginner"),
+    .default(TrainingLevel.Beginner),
   VO2Max: Yup.number()
     .transform((value, originalValue) =>
       originalValue === "" || originalValue === null
