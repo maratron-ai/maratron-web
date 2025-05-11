@@ -7,10 +7,11 @@ export type DayOfWeek =
   | "Saturday"
   | "Sunday";
 
-export type TrainingLevel =
-  | "beginner"
-  | "intermediate"
-  | "advanced";
+export enum TrainingLevel {
+  Beginner = "beginner",
+  Intermediate = "intermediate",
+  Advanced = "advanced",
+}
 
 export type TrainingEnvironment =
   | "outdoor"

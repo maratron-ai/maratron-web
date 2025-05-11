@@ -4,33 +4,45 @@ import React, { useState } from "react";
 import { generateRunningPlan } from "@utils/running/plans/baseRunningPlan";
 import { RunningPlanData } from "@maratypes/runningPlan";
 import ToggleSwitch from "./ToggleSwitch";
-import RunningPlanDisplay from "./RunningPlanDisplay"; // Import your new component
+import RunningPlanDisplay from "./RunningPlanDisplay";
 
-const PlanGenerator = () => {
-  const [weeks, setWeeks] = useState<number>(12);
-  const [targetDistance, setTargetDistance] = useState<number>(5); // Target race distance in chosen unit.
+export enum TrainingLevel {
+  Beginner = "beginner",
+  Intermediate = "intermediate",
+  Advanced = "advanced",
+}
+
+const PlanGenerator: React.FC = () => {
+  const [weeks, setWeeks] = useState<number>(16);
+  const [targetDistance, setTargetDistance] = useState<number>(26.2);
   const [distanceUnit, setDistanceUnit] = useState<"miles" | "kilometers">(
     "miles"
   );
+  const [startingWeeklyMileage, setstartingWeeklyMileage] = useState<number>(20);
+  const [vo2max, setVo2max] = useState<number>(45);
   const [useTotalTime, setUseTotalTime] = useState<boolean>(false);
-  const [targetPace, setTargetPace] = useState<string>("7:00");
-  const [targetTotalTime, setTargetTotalTime] = useState<string>("0:40:00");
-  const [vo2max, setVo2max] = useState<number>(45); // User's current VO₂ max.
+  const [targetPace, setTargetPace] = useState<string>("10:00");
+  const [targetTotalTime, setTargetTotalTime] = useState<string>("3:45:00");
   const [planData, setPlanData] = useState<RunningPlanData | null>(null);
-  const [showJson, setShowJson] = useState<boolean>(false); // State to toggle JSON display
+  const [showJson, setShowJson] = useState<boolean>(false);
 
-  // Handler to generate the plan when the form is submitted.
-  const handleGenerate = (e: React.FormEvent<HTMLFormElement>) => {
+  const [trainingLevel, setTrainingLevel] =
+    useState<TrainingLevel>(TrainingLevel.Beginner); //// Change this to the users info
+
+  const handleGenerate = (e: React.FormEvent) => {
     e.preventDefault();
-    const generatedPlan = generateRunningPlan(
+    const plan = generateRunningPlan(
       weeks,
       targetDistance,
       distanceUnit,
+      trainingLevel,
       vo2max,
+      startingWeeklyMileage,
       useTotalTime ? undefined : targetPace,
       useTotalTime ? targetTotalTime : undefined
     );
-    setPlanData(generatedPlan);
+
+    setPlanData(plan);
   };
 
   return (
@@ -38,7 +50,9 @@ const PlanGenerator = () => {
       <h1 className="text-2xl font-bold text-center mb-4">
         Generate Your Running Plan
       </h1>
+
       <form onSubmit={handleGenerate} className="space-y-4">
+        {/* Weeks */}
         <div className="flex flex-col">
           <label htmlFor="weeks" className="mb-1">
             Weeks:
@@ -46,11 +60,14 @@ const PlanGenerator = () => {
           <input
             id="weeks"
             type="number"
+            min={8}
             value={weeks}
             onChange={(e) => setWeeks(Number(e.target.value))}
             className="border p-2 rounded"
           />
         </div>
+
+        {/* Target Distance */}
         <div className="flex flex-col">
           <label htmlFor="targetDistance" className="mb-1">
             Target Distance ({distanceUnit}):
@@ -64,30 +81,82 @@ const PlanGenerator = () => {
             className="border p-2 rounded"
           />
         </div>
+
+        {/* Unit Toggle */}
         <div className="flex flex-col">
           <label htmlFor="distanceUnit" className="mb-1">
             Unit:
           </label>
           <ToggleSwitch
             checked={distanceUnit === "kilometers"}
-            onChange={(checked) =>
-              setDistanceUnit(checked ? "kilometers" : "miles")
-            }
+            onChange={(c) => setDistanceUnit(c ? "kilometers" : "miles")}
             leftLabel="Miles"
             rightLabel="Kilometers"
           />
         </div>
+
+        {/* Current Weekly Mileage */}
+        <div className="flex flex-col">
+          <label htmlFor="currentMileage" className="mb-1">
+            Starting Weekly Mileage ({distanceUnit}):
+          </label>
+          <input
+            id="currentMileage"
+            type="number"
+            step="1"
+            value={startingWeeklyMileage}
+            onChange={(e) => setstartingWeeklyMileage(Number(e.target.value))}
+            className="border p-2 rounded"
+          />
+        </div>
+
+        {/* VO₂ Max */}
+        <div className="flex flex-col">
+          <label htmlFor="vo2max" className="mb-1">
+            VO₂ Max:
+          </label>
+          <input
+            id="vo2max"
+            type="number"
+            step="1"
+            value={vo2max}
+            onChange={(e) => setVo2max(Number(e.target.value))}
+            className="border p-2 rounded"
+          />
+        </div>
+        {/* Training Level */}
+        <div className="flex flex-col">
+          <label htmlFor="trainingLevel" className="mb-1">
+            Training Level:
+          </label>
+          <select
+            id="trainingLevel"
+            value={trainingLevel}
+            onChange={(e) =>
+              setTrainingLevel(e.target.value as TrainingLevel)
+            }
+            className="border p-2 rounded"
+          >
+            <option value="beginner">Beginner</option>
+            <option value="intermediate">Intermediate</option>
+            <option value="advanced">Advanced</option>
+          </select>
+        </div>
+
+        {/* Goal Input Mode */}
         <div className="flex flex-col">
           <label htmlFor="inputMode" className="mb-1">
-            Input Mode:
+            Goal Input:
           </label>
           <ToggleSwitch
             checked={useTotalTime}
-            onChange={(checked) => setUseTotalTime(checked)}
+            onChange={(c) => setUseTotalTime(c)}
             leftLabel="Pace"
             rightLabel="Total Time"
           />
         </div>
+
+        {/* Target Pace or Total Time */}
         {useTotalTime ? (
           <div className="flex flex-col">
             <label htmlFor="targetTotalTime" className="mb-1">
@@ -115,19 +184,7 @@ const PlanGenerator = () => {
             />
           </div>
         )}
-        <div className="flex flex-col">
-          <label htmlFor="vo2max" className="mb-1">
-            VO₂ Max:
-          </label>
-          <input
-            id="vo2max"
-            type="number"
-            step="0.1"
-            value={vo2max}
-            onChange={(e) => setVo2max(Number(e.target.value))}
-            className="border p-2 rounded"
-          />
-        </div>
+
         <button
           type="submit"
           className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
@@ -138,39 +195,39 @@ const PlanGenerator = () => {
 
       {planData && (
         <div className="mt-6">
-          <RunningPlanDisplay planData={planData} /> {/* DELETE THIS LATER... ONLY VIEWING JSON FOR EASE OF COPYING*/}
-            <div className="mt-4">
+          <RunningPlanDisplay planData={planData} />
+
+          <div className="mt-4">
             <label className="flex items-center space-x-2">
               <input
-              type="checkbox"
-              id="showJson"
-              onChange={(e) => setShowJson(e.target.checked)}
-              className="form-checkbox"
+                type="checkbox"
+                checked={showJson}
+                onChange={(e) => setShowJson(e.target.checked)}
+                className="form-checkbox"
               />
-                <span>Show JSON</span>
-                {showJson && (
+              <span>Show JSON</span>
+              {showJson && (
                 <button
                   type="button"
                   onClick={() => {
-                  navigator.clipboard.writeText(JSON.stringify(planData, null, 2));
-                  alert("JSON copied to clipboard!");
+                    navigator.clipboard.writeText(
+                      JSON.stringify(planData, null, 2)
+                    );
+                    alert("JSON copied to clipboard!");
                   }}
                   className="ml-2 text-blue-500 underline"
                 >
                   Copy JSON
                 </button>
-                )}
+              )}
             </label>
             {showJson && (
               <pre className="bg-gray-100 p-4 rounded overflow-x-auto mt-2 text-gray-800">
-              {JSON.stringify(planData, null, 2)}
+                {JSON.stringify(planData, null, 2)}
               </pre>
             )}
-            </div>
+          </div>
         </div>
-        
-
-        
       )}
     </div>
   );

@@ -1,3 +1,5 @@
+// @maratypes/run.ts
+
 export interface Run {
   id?: string;
   date: Date; // date and time of run
@@ -16,3 +18,5 @@ export interface Pace {
   unit: "miles" | "kilometers";
   pace: string; // e.g., in mm:ss format per unit
 }
+
+export type PaceZone = "E" | "M" | "T" | "I" | "R";

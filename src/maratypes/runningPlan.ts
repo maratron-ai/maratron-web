@@ -1,3 +1,5 @@
+// @maratypes/runningPlan.ts
+
 import { Pace } from "./run";
 
 // main type
@@ -22,9 +24,11 @@ export interface WeekPlan {
   weeklyMileage: number;
   unit: "miles" | "kilometers";
   runs: PlannedRun[];
+  notes?: string;
 }
 
 export interface RunningPlanData {
   weeks: number;
   schedule: WeekPlan[];
+  notes?: string;
 }
