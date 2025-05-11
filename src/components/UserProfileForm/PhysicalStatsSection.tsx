@@ -1,4 +1,4 @@
-import { TextField } from "./FormFields";
+import { TextField } from "@components/FormFields";
 import { UserProfile } from "@maratypes/user";
 import { ChangeHandler } from "./GoalsSection";
 import styles from "./Section.module.css";

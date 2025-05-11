@@ -1,5 +1,5 @@
 import styles from "./Section.module.css";
-import { TextAreaField } from "./FormFields";
+import { TextAreaField } from "@components/FormFields";
 import { UserProfile } from "@maratypes/user";
 
 // Generic change handler for exactly matching UserProfile field types

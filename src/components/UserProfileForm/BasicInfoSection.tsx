@@ -1,4 +1,4 @@
-import { TextField, SelectField } from "./FormFields";
+import { TextField, SelectField } from "@components/FormFields";
 import { UserProfile } from "@maratypes/user";
 import styles from "./Section.module.css";
 import type { Gender } from "@maratypes/user";
