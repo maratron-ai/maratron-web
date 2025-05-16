@@ -5,8 +5,18 @@ import RunForm from "@components/RunForm";
 import { createRun } from "@lib/api/run";
 import { Run } from "@maratypes/run";
 
-const NewRun: React.FC = () => {
+import { useUserStore } from "@store/userStore"; // Adjust the import path as necessary
+
+
+const CreateRun: React.FC = () => {
+
+  const user = useUserStore((state) => state.user);
+
+  console.log("User from store:", user);
+
   const handleRunSubmit = async (run: Run) => {
+
+    console.log("TEST")
     try {
       // attach the current user's ID here
       // For example, if you have an auth hook:
@@ -28,4 +38,4 @@ const NewRun: React.FC = () => {
   );
 };
 
-export default NewRun;
+export default CreateRun;

@@ -1,5 +1,5 @@
 import PaceCalculator from "@components/PaceCalculator";
-import NewRunPage from "@components/NewRun";
+import CreateRun from "@components/CreateRun";
 import AuthTest from "@components/AuthTest";
 import PlanGenerator from "@components/PlanGenerator";
 
@@ -9,7 +9,7 @@ const ProfilePage = () => {
       <h1>Profile Page</h1>
       <PaceCalculator />
       <hr />
-      <NewRunPage />
+      <CreateRun />
       <hr />
       <AuthTest />
       <hr />
