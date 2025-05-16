@@ -1,40 +1,35 @@
 "use client";
 
-import React, { useState, ChangeEvent, FormEvent } from "react";
-import * as Yup from "yup";
-import { Run, Pace } from "@maratypes/run";
-import isYupValidationError from "@lib/utils/validation/isYupValidationError";
+import React, { useState, FormEvent } from "react";
+import type { Run, Pace } from "@maratypes/run";
 import runSchema from "@lib/schemas/runSchema";
 import calculatePace from "@lib/utils/running/calculatePace";
-import { useAuth } from "../hooks/useAuth";
+import isYupValidationError from "@lib/utils/validation/isYupValidationError";
+import { useAuth } from "@hooks/useAuth";
 
+import { Card, Button } from "@components/ui";
 import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardContent,
-  CardFooter,
-} from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectTrigger,
-  SelectValue,
-  SelectContent,
-  SelectItem,
-} from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
+  TextField,
+  SelectField,
+  TextAreaField,
+} from "@components/ui/FormField";
 
-interface RunFormData {
+import { getLocalDateTime } from "@utils/time/getLocalDateTime";
+
+// Options matching @maratypes/run types
+const distanceUnits = ["miles", "kilometers"] as const;
+const environments = ["outdoor", "treadmill", "indoor", "mixed"] as const;
+const gainUnits = ["miles", "kilometers", "meters", "feet"] as const;
+
+interface FormData {
   date: string;
-  duration: string;
+  hours: number;
+  minutes: number;
   distance: number;
-  distanceUnit: "miles" | "kilometers";
-  trainingEnvironment?: string;
+  distanceUnit: (typeof distanceUnits)[number];
+  trainingEnvironment?: (typeof environments)[number];
   elevationGain?: number;
-  elevationGainUnit?: "miles" | "kilometers" | "meters" | "feet";
+  elevationGainUnit?: (typeof gainUnits)[number];
   notes?: string;
 }
 
@@ -42,32 +37,34 @@ interface RunFormProps {
   onSubmit: (run: Run) => void;
 }
 
-export const RunForm: React.FC<RunFormProps> = ({ onSubmit }) => {
+const RunForm: React.FC<RunFormProps> = ({ onSubmit }) => {
   const { user } = useAuth();
-  const defaultDateTime = new Date().toISOString().slice(0, 16);
+  const now = getLocalDateTime();
 
-  const initial: RunFormData = {
-    date: defaultDateTime,
-    duration: "",
+  const initialData: FormData = {
+    date: now,
+    hours: 0,
+    minutes: 0,
     distance: 0,
-    distanceUnit: "miles",
+    distanceUnit: distanceUnits[0],
     trainingEnvironment: undefined,
     elevationGain: undefined,
     elevationGainUnit: undefined,
-    notes: undefined,
+    notes: "",
   };
 
-  const [form, setForm] = useState<RunFormData>(initial);
+  const [form, setForm] = useState<FormData>(initialData);
   const [errors, setErrors] = useState<string[]>([]);
   const [success, setSuccess] = useState<string>("");
 
-  const handleChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value, type } = e.target;
+  // Generic field updater handles strings and numbers
+  const handleFieldChange = (name: string, value: string) => {
     setForm((prev) => ({
       ...prev,
-      [name]: type === "number" ? Number(value) : value,
+      [name as keyof FormData]:
+        typeof prev[name as keyof FormData] === "number"
+          ? Number(value)
+          : value,
     }));
   };
 
@@ -77,12 +74,27 @@ export const RunForm: React.FC<RunFormProps> = ({ onSubmit }) => {
     setSuccess("");
 
     try {
-      const valid = await runSchema.validate(form as any, {
+      // Combine hours/minutes into duration string
+      const duration = `${form.hours.toString().padStart(2, "0")}:${form.minutes
+        .toString()
+        .padStart(2, "0")}:00`;
+      const payload = {
+        date: form.date,
+        duration,
+        distance: form.distance,
+        distanceUnit: form.distanceUnit,
+        trainingEnvironment: form.trainingEnvironment,
+        elevationGain: form.elevationGain,
+        elevationGainUnit: form.elevationGainUnit,
+        notes: form.notes,
+      };
+
+      const valid = await runSchema.validate(payload, {
         abortEarly: false,
         stripUnknown: true,
       });
 
-      if (!user) throw new Error("Please log in to add a run.");
+      if (!user) throw new Error("You must be logged in to submit a run.");
 
       const paceValue = calculatePace(valid.duration, valid.distance);
       const run: Run = {
@@ -90,183 +102,131 @@ export const RunForm: React.FC<RunFormProps> = ({ onSubmit }) => {
         duration: valid.duration,
         distance: valid.distance,
         distanceUnit: valid.distanceUnit,
-        trainingEnvironment: valid.trainingEnvironment,
-        elevationGain: valid.elevationGain,
-        elevationGainUnit: valid.elevationGainUnit,
-        notes: valid.notes,
+        trainingEnvironment: valid.trainingEnvironment || undefined,
+        elevationGain: valid.elevationGain || undefined,
+        elevationGainUnit: valid.elevationGainUnit || undefined,
+        notes: valid.notes || undefined,
         pace: { unit: valid.distanceUnit, pace: paceValue } as Pace,
         userId: user.id,
       };
 
       onSubmit(run);
       setSuccess("Run added successfully!");
-      setForm(initial);
-    } catch (err) {
+      setForm(initialData);
+    } catch (err: unknown) {
       if (isYupValidationError(err)) {
-        setErrors(err.inner.map((e) => e.message));
+        setErrors(err.inner.map((e: Error) => e.message));
       } else if (err instanceof Error) {
         setErrors([err.message]);
       } else {
-        setErrors(["An unknown error occurred."]);
+        setErrors(["An unexpected error occurred."]);
       }
     }
   };
 
   return (
-    <Card className="max-w-lg mx-auto p-4">
-      <CardHeader>
-        <CardTitle className="text-xl">Add a Run</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          {success && <p className="text-green-600">{success}</p>}
-          {errors.length > 0 && (
-            <div className="space-y-1">
-              {errors.map((err, i) => (
-                <p key={i} className="text-red-600 text-sm">
-                  {err}
-                </p>
-              ))}
-            </div>
-          )}
+    <Card className="p-6 max-w-lg mx-auto">
+      <h2 className="text-2xl font-semibold mb-4">Add a Run</h2>
 
-          <div className="grid grid-cols-2 gap-4">
-            <div className="col-span-2">
-              <Label htmlFor="date">Date &amp; Time</Label>
-              <Input
-                id="date"
-                name="date"
-                type="datetime-local"
-                value={form.date}
-                onChange={handleChange}
-                required
-              />
-            </div>
+      {success && <p className="text-green-600 mb-4">{success}</p>}
+      {errors.length > 0 && (
+        <div className="space-y-1 mb-4">
+          {errors.map((err, i) => (
+            <p key={i} className="text-red-600 text-sm">
+              {err}
+            </p>
+          ))}
+        </div>
+      )}
 
-            <div>
-              <Label htmlFor="duration">Duration</Label>
-              <Input
-                id="duration"
-                name="duration"
-                type="text"
-                placeholder="HH:MM:SS"
-                pattern="^[0-9]{1,2}:[0-5][0-9]:[0-5][0-9]$"
-                title="Format hh:mm:ss"
-                value={form.duration}
-                onChange={handleChange}
-                required
-              />
-            </div>
+      <form onSubmit={handleSubmit} className="space-y-6">
+        <TextField
+          label="Date & Time"
+          name="date"
+          type="datetime-local"
+          value={form.date}
+          onChange={handleFieldChange}
+          required
+        />
 
-            <div>
-              <Label htmlFor="distance">Distance</Label>
-              <Input
-                id="distance"
-                name="distance"
-                type="number"
-                value={form.distance || ""}
-                onChange={handleChange}
-                required
-              />
-            </div>
+        <div className="grid grid-cols-2 gap-4">
+          <TextField
+            label="Hours"
+            name="hours"
+            type="number"
+            min="0"
+            value={form.hours}
+            onChange={handleFieldChange}
+            required
+          />
+          <TextField
+            label="Minutes"
+            name="minutes"
+            type="number"
+            min="0"
+            max="59"
+            value={form.minutes}
+            onChange={handleFieldChange}
+            required
+          />
+        </div>
 
-            <div>
-              <Label htmlFor="distanceUnit">Unit</Label>
-              <Select
-                id="distanceUnit"
-                name="distanceUnit"
-                value={form.distanceUnit}
-                onChange={(val) =>
-                  setForm((prev) => ({ ...prev, distanceUnit: val as any }))
-                }
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Miles" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="miles">Miles</SelectItem>
-                  <SelectItem value="kilometers">Kilometers</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
+        <div className="grid grid-cols-2 gap-4">
+          <TextField
+            label="Distance"
+            name="distance"
+            type="number"
+            value={form.distance}
+            onChange={handleFieldChange}
+            required
+          />
+          <SelectField
+            label="Distance Unit"
+            name="distanceUnit"
+            options={distanceUnits.map((u) => ({ value: u, label: u }))}
+            value={form.distanceUnit}
+            onChange={handleFieldChange}
+            required
+          />
+        </div>
 
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <Label htmlFor="trainingEnvironment">Environment</Label>
-              <Select
-                id="trainingEnvironment"
-                name="trainingEnvironment"
-                value={form.trainingEnvironment || ""}
-                onChange={(val) =>
-                  setForm((prev) => ({ ...prev, trainingEnvironment: val }))
-                }
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Select" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="outdoor">Outdoor</SelectItem>
-                  <SelectItem value="treadmill">Treadmill</SelectItem>
-                  <SelectItem value="indoor">Indoor</SelectItem>
-                  <SelectItem value="mixed">Mixed</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
+        <SelectField
+          label="Training Environment"
+          name="trainingEnvironment"
+          options={environments.map((e) => ({ value: e, label: e }))}
+          value={form.trainingEnvironment || ""}
+          onChange={handleFieldChange}
+        />
 
-            <div>
-              <Label htmlFor="elevationGain">Elevation Gain</Label>
-              <Input
-                id="elevationGain"
-                name="elevationGain"
-                type="number"
-                value={form.elevationGain || ""}
-                onChange={handleChange}
-              />
-            </div>
+        <div className="grid grid-cols-2 gap-4">
+          <TextField
+            label="Elevation Gain"
+            name="elevationGain"
+            type="number"
+            value={form.elevationGain || 0}
+            onChange={handleFieldChange}
+          />
+          <SelectField
+            label="Elevation Gain Unit"
+            name="elevationGainUnit"
+            options={gainUnits.map((u) => ({ value: u, label: u }))}
+            value={form.elevationGainUnit || ""}
+            onChange={handleFieldChange}
+          />
+        </div>
 
-            <div>
-              <Label htmlFor="elevationGainUnit">Gain Unit</Label>
-              <Select
-                id="elevationGainUnit"
-                name="elevationGainUnit"
-                value={form.elevationGainUnit || ""}
-                onChange={(val) =>
-                  setForm((prev) => ({
-                    ...prev,
-                    elevationGainUnit: val as any,
-                  }))
-                }
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Select" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="meters">Meters</SelectItem>
-                  <SelectItem value="feet">Feet</SelectItem>
-                  <SelectItem value="miles">Miles</SelectItem>
-                  <SelectItem value="kilometers">Kilometers</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
+        <TextAreaField
+          label="Notes"
+          name="notes"
+          value={form.notes || ""}
+          onChange={handleFieldChange}
+          rows={3}
+        />
 
-          <div>
-            <Label htmlFor="notes">Notes</Label>
-            <Textarea
-              id="notes"
-              name="notes"
-              rows={3}
-              value={form.notes || ""}
-              onChange={handleChange}
-            />
-          </div>
-
-          <CardFooter className="flex justify-end">
-            <Button type="submit">Add Run</Button>
-          </CardFooter>
-        </form>
-      </CardContent>
+        <div className="flex justify-end">
+          <Button type="submit">Add Run</Button>
+        </div>
+      </form>
     </Card>
   );
 };
