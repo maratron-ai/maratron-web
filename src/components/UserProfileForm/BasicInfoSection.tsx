@@ -1,4 +1,4 @@
-import { TextField, SelectField } from "@components/FormFields";
+import { TextField, SelectField } from "@components/ui";
 import { UserProfile } from "@maratypes/user";
 import styles from "./Section.module.css";
 import type { Gender } from "@maratypes/user";
@@ -23,17 +23,19 @@ export default function BasicInfoSection({
   isEditing,
   onChange,
 }: Props) {
+  const handleFieldChange = (name: string, value: string) => onChange(name as keyof UserProfile, value);
+
   return (
     <section className={styles.card}>
       <h3 className={styles.title}>Basic Information</h3>
       {isEditing ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
           <TextField
             label="Name"
             name="name"
             value={formData.name || ""}
             editing={isEditing}
-            onChange={onChange}
+            onChange={handleFieldChange}
             required
           />
           <TextField
@@ -42,7 +44,7 @@ export default function BasicInfoSection({
             type="email"
             value={formData.email || ""}
             editing={false}
-            onChange={onChange}
+            onChange={handleFieldChange}
             required
           />
           <TextField
@@ -51,7 +53,7 @@ export default function BasicInfoSection({
             type="number"
             value={formData.age ?? ""}
             editing={isEditing}
-            onChange={onChange}
+            onChange={handleFieldChange}
           />
           <SelectField
             label="Gender"
@@ -59,7 +61,7 @@ export default function BasicInfoSection({
             options={genderOptions}
             value={formData.gender || ""}
             editing={isEditing}
-            onChange={onChange}
+            onChange={handleFieldChange}
           />
           <SelectField
             label="Training Level"
@@ -71,7 +73,7 @@ export default function BasicInfoSection({
             ]}
             value={formData.trainingLevel || "beginner"}
             editing={isEditing}
-            onChange={onChange}
+            onChange={handleFieldChange}
           />
           {/* Currently don't allow for editing of VO₂ Max */}
           {/* <TextField

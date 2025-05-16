@@ -1,5 +1,5 @@
 import styles from "./Section.module.css";
-import { TextAreaField } from "@components/FormFields";
+import { TextAreaField } from "@components/ui";
 import { UserProfile } from "@maratypes/user";
 
 // Generic change handler for exactly matching UserProfile field types
@@ -25,8 +25,8 @@ export default function GoalsSection({ formData, isEditing, onChange }: Props) {
             name="goals"
             value={(formData.goals || []).join(", ")}
             editing={isEditing}
-            onChange={(field, value: string) =>
-              onChange(field, value.split(",").map((s) => s.trim()))
+            onChange={(_, value: string) =>
+              onChange("goals", value.split(",").map((s) => s.trim()))
             }
           />
           <TextAreaField
@@ -34,7 +34,7 @@ export default function GoalsSection({ formData, isEditing, onChange }: Props) {
             name="injuryHistory"
             value={formData.injuryHistory || ""}
             editing={isEditing}
-            onChange={onChange}
+            onChange={(name, value) => onChange(name as keyof UserProfile, value)}
           />
         </div>
       ) : (

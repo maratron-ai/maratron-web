@@ -1,8 +1,8 @@
-import { SelectField, CheckboxGroupField } from "@components/FormFields";
+import { SelectField, CheckboxGroupField } from "@components/ui";
 import { UserProfile } from "@maratypes/user";
 import { ChangeHandler } from "./GoalsSection";
 import styles from "./Section.module.css";
-import type { DayOfWeek } from "@maratypes/user";
+// import type { DayOfWeek } from "@maratypes/user";
 
 // Options for Device: label shown to user, value is Prisma enum key
 const deviceOptions = [
@@ -32,7 +32,7 @@ export default function PreferencesSection({
       <h3 className={styles.title}>Preferences & Device</h3>
       {isEditing ? (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <CheckboxGroupField<DayOfWeek>
+          <CheckboxGroupField
             label="Preferred Training Days"
             name="preferredTrainingDays"
             options={[
@@ -46,7 +46,9 @@ export default function PreferencesSection({
             ]}
             value={formData.preferredTrainingDays || []}
             editing={isEditing}
-            onChange={onChange}
+            onChange={(name, value) =>
+              onChange(name as keyof UserProfile, value)
+            }
           />
           <SelectField
             label="Environment"
@@ -59,7 +61,9 @@ export default function PreferencesSection({
             ]}
             value={formData.preferredTrainingEnvironment || ""}
             editing={isEditing}
-            onChange={onChange}
+            onChange={(name, value) =>
+              onChange(name as keyof UserProfile, value)
+            }
           />
           <SelectField
             label="Device"
@@ -67,7 +71,9 @@ export default function PreferencesSection({
             options={deviceOptions}
             value={formData.device || ""}
             editing={isEditing}
-            onChange={onChange}
+            onChange={(name, value) =>
+              onChange(name as keyof UserProfile, value)
+            }
           />
         </div>
       ) : (
@@ -75,7 +81,9 @@ export default function PreferencesSection({
           <div>
             <dt className={styles.label}>Preferred Training Days</dt>
             <dd className={styles.value}>
-              {(Array.isArray(formData.preferredTrainingDays) ? formData.preferredTrainingDays.join(", ") : "N/A")}
+              {Array.isArray(formData.preferredTrainingDays)
+                ? formData.preferredTrainingDays.join(", ")
+                : "N/A"}
             </dd>
           </div>
           <div>
@@ -86,9 +94,7 @@ export default function PreferencesSection({
           </div>
           <div>
             <dt className={styles.label}>Device</dt>
-            <dd className={styles.value}>
-              {formData.device || "N/A"}
-            </dd>
+            <dd className={styles.value}>{formData.device || "N/A"}</dd>
           </div>
         </dl>
       )}
