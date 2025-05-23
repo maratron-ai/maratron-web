@@ -1,9 +1,14 @@
 import * as Yup from "yup";
-import { DayOfWeek, TrainingLevel, TrainingEnvironment, Device } from "@maratypes/user";
+import { DayOfWeek } from "@maratypes/basics";
+import {
+  TrainingLevel,
+  TrainingEnvironment,
+  Device,
+} from "@maratypes/user";
 
 
+// Training level values
 const trainingLevelValues = Object.values(TrainingLevel) as TrainingLevel[];
-
 
 const userProfileSchema = Yup.object().shape({
   id: Yup.string().nullable(),

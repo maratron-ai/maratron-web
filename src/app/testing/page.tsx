@@ -2,6 +2,7 @@ import PaceCalculator from "@components/PaceCalculator";
 import CreateRun from "@components/CreateRun";
 import AuthTest from "@components/AuthTest";
 import PlanGenerator from "@components/PlanGenerator";
+import CreateShoe from "@components/CreateShoe";
 
 const ProfilePage = () => {
   return (
@@ -14,6 +15,8 @@ const ProfilePage = () => {
       <AuthTest />
       <hr />
       <PlanGenerator />
+      <hr />
+      <CreateShoe />
     </div>
   );
 };

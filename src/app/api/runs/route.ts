@@ -2,7 +2,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@lib/prisma";
 
-export async function GET(request: NextRequest) {
+export async function GET() {
+  // used to have request: NextRequest as a param
   try {
     const runs = await prisma.run.findMany();
     return NextResponse.json(runs, { status: 200 });

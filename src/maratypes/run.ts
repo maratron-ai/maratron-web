@@ -11,7 +11,10 @@ export interface Run {
   elevationGain?: number;
   elevationGainUnit?: "miles" | "kilometers" | "meters" | "feet";
   notes?: string;
-  userId?: string;
+
+  userId: string; // required ?? should change to optional ??
+
+  shoeId?: string;
 }
 
 export interface Pace {

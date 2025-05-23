@@ -35,6 +35,11 @@ const runSchema = Yup.object().shape({
     )
     .notRequired(),
   notes: Yup.string().notRequired(),
+
+  // 👟 Add optional shoeId field
+  shoeId: Yup.string()
+    .transform((value, original) => (original === "" ? undefined : value))
+    .notRequired(),
 });
 
 export default runSchema;

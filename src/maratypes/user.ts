@@ -1,11 +1,5 @@
-export type DayOfWeek =
-  | "Monday"
-  | "Tuesday"
-  | "Wednesday"
-  | "Thursday"
-  | "Friday"
-  | "Saturday"
-  | "Sunday";
+import { DayOfWeek } from "./basics";
+import { Shoe } from "./shoe"; // Import your shoe type
 
 export enum TrainingLevel {
   Beginner = "beginner",
@@ -13,13 +7,9 @@ export enum TrainingLevel {
   Advanced = "advanced",
 }
 
-export type TrainingEnvironment =
-  | "outdoor"
-  | "treadmill"
-  | "indoor"
-  | "mixed";
+export type TrainingEnvironment = "outdoor" | "treadmill" | "indoor" | "mixed";
 
-export type Device = 
+export type Device =
   | "Garmin"
   | "Polar"
   | "Suunto"
@@ -29,11 +19,7 @@ export type Device =
   | "Coros"
   | "Other";
 
-export type Gender =
-  | "Male"
-  | "Female"
-  | "Other";
-
+export type Gender = "Male" | "Female" | "Other";
 
 export interface UserProfile {
   id: string;
@@ -53,4 +39,7 @@ export interface UserProfile {
   preferredTrainingDays?: DayOfWeek[];
   preferredTrainingEnvironment?: TrainingEnvironment;
   device?: Device;
+
+  shoes?: Shoe[];
+  defaultShoeId?: string;
 }
