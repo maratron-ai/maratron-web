@@ -1,5 +1,3 @@
-// prisma/schema.prisma
-
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
@@ -69,7 +67,7 @@ model User {
   gender                       Gender?
   trainingLevel                TrainingLevel?
   VO2Max                       Int?
-  goals                        String[]            // For Postgres; for SQLite consider using Json
+  goals                        String[]
   avatarUrl                    String?
   yearsRunning                 Int?
   weeklyMileage                Int?
@@ -82,42 +80,71 @@ model User {
   createdAt                    DateTime            @default(now())
   updatedAt                    DateTime            @updatedAt
 
-  // Relation: one user can have many runs
   runs                         Run[]
   runningPlans                 RunningPlan[]
+  shoes                        Shoe[]    @relation("UserShoes")
 
-  // name database users
+  // Default shoe relation
+  defaultShoeId                String?   @unique
+  defaultShoe                  Shoe?     @relation("UserDefaultShoe", fields: [defaultShoeId], references: [id])
+
   @@map("Users")
+}
+
+model Shoe {
+  id                String   @id @default(uuid())
+  name              String
+  notes             String?
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+
+  currentDistance   Float       @default(0) // Usage so far (in distanceUnit)
+  distanceUnit      DistanceUnit
+  maxDistance       Float       // When shoe “expires” (in distanceUnit)
+  retired           Boolean     @default(false)
+
+  // Owner
+  userId            String
+  user              User     @relation("UserShoes", fields: [userId], references: [id])
+
+  // Back-ref for default shoe relation
+  defaultForUser    User?    @relation("UserDefaultShoe")
+
+  runs              Run[]
+
+  @@map("Shoes")
 }
 
 model Run {
   id                  String              @id @default(uuid())
   date                DateTime
-  duration            String              // Format: "HH:MM"
+  duration            String
   distance            Float
   distanceUnit        DistanceUnit
-  trainingEnvironment TrainingEnvironment? // optional
-  pace                String?             // e.g., "mm:ss" (calculated pace)
-  paceUnit            DistanceUnit?       // unit for the pace, typically matching distanceUnit
+  trainingEnvironment TrainingEnvironment?
+  pace                String?
+  paceUnit            DistanceUnit?
   elevationGain       Float?
   elevationGainUnit   elevationGainUnit?
   notes               String?
   createdAt           DateTime            @default(now())
   updatedAt           DateTime            @updatedAt
 
-  // Foreign key: each run is connected to a specific user
-  userId    String
-  user      User   @relation(fields: [userId], references: [id])
+  userId              String
+  user                User   @relation(fields: [userId], references: [id])
+
+  // Shoe used in this run (optional for legacy runs)
+  shoeId              String?
+  shoe                Shoe?  @relation(fields: [shoeId], references: [id])
 
   @@map("Runs")
 }
-
 
 model RunningPlan {
   id        String   @id @default(uuid())
   userId    String
   weeks     Int
-  planData  Json     // Store the plan structure (weeks, runs, paces, etc.)
+  planData  Json
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
