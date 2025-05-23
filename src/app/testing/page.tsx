@@ -1,3 +1,5 @@
+"use client";
+
 import PaceCalculator from "@components/PaceCalculator";
 import CreateRun from "@components/CreateRun";
 import AuthTest from "@components/AuthTest";

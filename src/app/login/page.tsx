@@ -2,26 +2,45 @@
 
 import React, { useState, FormEvent } from "react";
 import { useRouter } from "next/navigation";
-import { useAuth } from "@hooks/useAuth";
+import { signIn, useSession } from "next-auth/react";
 
 const LoginPage: React.FC = () => {
-  const { user, login, error } = useAuth();
+  const { data: session, status } = useSession();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const router = useRouter();
 
+  // Handles form submit using NextAuth signIn
   const handleLogin = async (e: FormEvent) => {
-    e.preventDefault(); 
-    try {
-      await login(email, password);
-      router.push("/"); // after successful login, redirect to home page
-    } catch (err) {
-      console.error("Login failed:", err);
+    e.preventDefault();
+    setError("");
+    const res = await signIn("credentials", {
+      redirect: false, // We'll handle redirection manually
+      email,
+      password,
+    });
+
+    if (res?.error) {
+      setError("Invalid email or password.");
+      return;
     }
+
+    // On successful login, redirect to home page
+    router.push("/");
   };
 
-  // check if user already logged in
-  if (user) {
+  // Show loading state while NextAuth checks session (optional)
+  if (status === "loading") {
+    return (
+      <div className="max-w-4xl mx-auto p-6">
+        <h1 className="text-2xl">Loading...</h1>
+      </div>
+    );
+  }
+
+  // If already logged in
+  if (session?.user) {
     return (
       <div className="max-w-4xl mx-auto p-6">
         <div className="flex justify-center mb-6">
@@ -39,7 +58,7 @@ const LoginPage: React.FC = () => {
     );
   }
 
-  // if user not logged in, show log in form
+  // If not logged in, show the login form
   return (
     <div className="max-w-4xl mx-auto p-6">
       <div className="flex justify-center mb-6">

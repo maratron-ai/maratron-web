@@ -4,7 +4,7 @@ import React, { useState, FormEvent } from "react";
 import { Shoe } from "@maratypes/shoe";
 import { shoeSchema } from "@lib/schemas/shoeSchema";
 import isYupValidationError from "@lib/utils/validation/isYupValidationError";
-import { useAuth } from "@hooks/useAuth"; // <<--- add this!
+import { useSession } from "next-auth/react";
 
 import { Card, Button } from "@components/ui";
 import {
@@ -41,7 +41,7 @@ const initialForm: FormData = {
 };
 
 const ShoeForm: React.FC<ShoeFormProps> = ({ onSubmit, initialData }) => {
-  const { user } = useAuth(); // <--- AUTH HOOK HERE!
+  const { data: session, status } = useSession();
   const [form, setForm] = useState<FormData>({
     ...initialForm,
     ...initialData,
@@ -68,7 +68,8 @@ const ShoeForm: React.FC<ShoeFormProps> = ({ onSubmit, initialData }) => {
     setSuccess("");
 
     try {
-      if (!user) throw new Error("You must be logged in to add a shoe.");
+      if (!session?.user?.id)
+        throw new Error("You must be logged in to add a shoe.");
 
       const valid = await shoeSchema.validate(form, {
         abortEarly: false,
@@ -76,12 +77,12 @@ const ShoeForm: React.FC<ShoeFormProps> = ({ onSubmit, initialData }) => {
       });
 
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { id, createdAt, updatedAt, ...rest } = valid; // using spread operator here... look at runForm could explicitly define object
+      const { id, createdAt, updatedAt, ...rest } = valid;
 
       const shoe: Shoe = {
         ...rest,
         notes: valid.notes || "",
-        userId: user.id, // Attach userId here!
+        userId: session.user.id, // Attach userId from NextAuth session!
       };
 
       onSubmit(shoe);
@@ -97,6 +98,8 @@ const ShoeForm: React.FC<ShoeFormProps> = ({ onSubmit, initialData }) => {
       }
     }
   };
+
+  if (status === "loading") return <div>Loading...</div>;
 
   return (
     <Card className="p-6 max-w-lg mx-auto">

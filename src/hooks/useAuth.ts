@@ -1,15 +1,46 @@
 "use client";
 
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useUserStore } from "../store/userStore";
 import { UserProfile } from "@maratypes/user";
 
-// this just calls the functions written in pages/api/auth/
-
+// Client-side auth hook
 export const useAuth = () => {
   const { user, setUser, clearUser } = useUserStore();
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(true); // Add a loading state for hydration
+
+  useEffect(() => {
+    let cancelled = false;
+
+    // Only hydrate if no user is set already
+    if (!user) {
+      setLoading(true);
+      axios
+        .get("/api/auth/me")
+        .then((res) => {
+          if (!cancelled && res.data && res.data.id) {
+            setUser(res.data as UserProfile);
+          }
+        })
+        .catch(() => {
+          if (!cancelled) {
+            clearUser();
+          }
+        })
+        .finally(() => {
+          if (!cancelled) setLoading(false);
+        });
+    } else {
+      setLoading(false);
+    }
+
+    return () => {
+      cancelled = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const login = async (email: string, password: string): Promise<void> => {
     setError("");
@@ -40,5 +71,6 @@ export const useAuth = () => {
     }
   };
 
-  return { user, error, login, logout };
+  // Expose a loading state so you can block UI until hydration is done, if desired
+  return { user, error, login, logout, loading };
 };

@@ -1,3 +1,5 @@
+"use client";
+
 import PlanGenerator from "@components/PlanGenerator";
 
 const PlanGeneratorPage = () => {
