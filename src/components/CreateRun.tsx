@@ -7,16 +7,13 @@ import { Run } from "@maratypes/run";
 
 // import { useUserStore } from "@store/userStore"; // Adjust the import path as necessary
 
-
 const CreateRun: React.FC = () => {
-
   // const user = useUserStore((state) => state.user);
 
   // // console.log("User from store:", user);
 
   const handleRunSubmit = async (run: Run) => {
-
-    console.log("TEST")
+    console.log("TEST");
     try {
       // attach the current user's ID here
       // For example, if you have an auth hook:

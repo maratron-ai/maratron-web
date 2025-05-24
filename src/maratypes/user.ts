@@ -27,9 +27,9 @@ export interface UserProfile {
   email: string;
   age?: number;
   gender?: Gender;
-  trainingLevel: TrainingLevel;
+  trainingLevel?: TrainingLevel;
   VO2Max?: number;
-  goals: string[];
+  goals?: string[];
   avatarUrl?: string;
   yearsRunning?: number;
   weeklyMileage?: number;

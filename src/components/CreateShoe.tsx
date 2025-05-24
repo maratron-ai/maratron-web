@@ -1,30 +1,35 @@
 "use client";
 
 import React from "react";
-import ShoeForm from "@components/ShoeForm"; // You’ll need a form similar to RunForm
-import { createShoe } from "@lib/api/shoe"; // Your API call function
+import ShoeForm from "@components/ShoeForm";
+import { createShoe } from "@lib/api/shoe";
 import { Shoe } from "@maratypes/shoe";
-// import { useUserStore } from "@store/userStore"; // Adjust import path
+import { useSession } from "next-auth/react";
 
 const CreateShoe: React.FC = () => {
+  const { data: session, status } = useSession();
 
   const handleShoeSubmit = async (shoe: Shoe) => {
+    if (!session?.user?.id) {
+      alert("You must be logged in to add a shoe.");
+      return;
+    }
     try {
-      // if (!user?.id) throw new Error("User not authenticated!!!");
-      // // Attach the user's ID
-      // const shoeWithUser: Shoe = {
-      //   ...shoe,
-      //   userId: user.id,
-      // };
-
-      const createdShoe = await createShoe(shoe);
+      // Attach the logged-in user's ID to the shoe object
+      const shoeWithUser: Shoe = {
+        ...shoe,
+        userId: session.user.id,
+      };
+      const createdShoe = await createShoe(shoeWithUser);
       console.log("Shoe created successfully:", createdShoe);
       // Optionally: Show a success message, redirect, or update UI
     } catch (error) {
       console.error("Error creating shoe:", error);
-      // Handle error (show a notification, etc.)
+      // Optionally, show an error notification
     }
   };
+
+  if (status === "loading") return <div>Loading...</div>;
 
   return (
     <div>

@@ -5,7 +5,7 @@ import type { Run, Pace } from "@maratypes/run";
 import runSchema from "@lib/schemas/runSchema";
 import calculatePace from "@lib/utils/running/calculatePace";
 import isYupValidationError from "@lib/utils/validation/isYupValidationError";
-import { useAuth } from "@hooks/useAuth";
+import { useSession } from "next-auth/react";
 
 import { Card, Button } from "@components/ui";
 import {
@@ -38,7 +38,7 @@ interface RunFormProps {
 }
 
 const RunForm: React.FC<RunFormProps> = ({ onSubmit }) => {
-  const { user } = useAuth();
+  const { data: session, status } = useSession();
   const now = getLocalDateTime();
 
   const initialData: FormData = {
@@ -94,7 +94,9 @@ const RunForm: React.FC<RunFormProps> = ({ onSubmit }) => {
         stripUnknown: true,
       });
 
-      if (!user) throw new Error("You must be logged in to submit a run.");
+      // ----- AUTH CHECK (NextAuth) -----
+      if (!session?.user?.id)
+        throw new Error("You must be logged in to submit a run.");
 
       const paceValue = calculatePace(valid.duration, valid.distance);
       const run: Run = {
@@ -107,7 +109,7 @@ const RunForm: React.FC<RunFormProps> = ({ onSubmit }) => {
         elevationGainUnit: valid.elevationGainUnit || undefined,
         notes: valid.notes || undefined,
         pace: { unit: valid.distanceUnit, pace: paceValue } as Pace,
-        userId: user.id,
+        userId: session.user.id, // <- From NextAuth
       };
 
       onSubmit(run);
@@ -123,6 +125,8 @@ const RunForm: React.FC<RunFormProps> = ({ onSubmit }) => {
       }
     }
   };
+
+  if (status === "loading") return <div>Loading...</div>;
 
   return (
     <Card className="p-6 max-w-lg mx-auto">
