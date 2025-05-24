@@ -1,7 +1,4 @@
 // app/api/auth/[...nextauth]/route.ts
-
-'use client';
-
 import NextAuth, { NextAuthOptions, Session, User } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { prisma } from "@lib/prisma";

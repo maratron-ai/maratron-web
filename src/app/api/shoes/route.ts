@@ -1,6 +1,4 @@
 // src/app/api/shoes/route.ts
-"use client";
-
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@lib/prisma";
 import { shoeSchema } from "@lib/schemas/shoeSchema";

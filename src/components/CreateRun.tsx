@@ -1,42 +1,38 @@
 "use client";
 
 import React from "react";
-import ShoeForm from "@components/ShoeForm";
-import { createShoe } from "@lib/api/shoe";
-import { Shoe } from "@maratypes/shoe";
-import { useSession } from "next-auth/react";
+import RunForm from "@components/RunForm";
+import { createRun } from "@lib/api/run";
+import { Run } from "@maratypes/run";
 
-const CreateShoe: React.FC = () => {
-  const { data: session, status } = useSession();
+// import { useUserStore } from "@store/userStore"; // Adjust the import path as necessary
 
-  const handleShoeSubmit = async (shoe: Shoe) => {
-    if (!session?.user?.id) {
-      alert("You must be logged in to add a shoe.");
-      return;
-    }
+const CreateRun: React.FC = () => {
+  // const user = useUserStore((state) => state.user);
+
+  // // console.log("User from store:", user);
+
+  const handleRunSubmit = async (run: Run) => {
+    console.log("TEST");
     try {
-      // Attach the user's ID from the session
-      const shoeWithUser: Shoe = {
-        ...shoe,
-        userId: session.user.id,
-      };
-      const createdShoe = await createShoe(shoeWithUser);
-      console.log("Shoe created successfully:", createdShoe);
-      // Optionally show a success message, redirect, or update UI
+      // attach the current user's ID here
+      // For example, if you have an auth hook:
+      // run.userProfileId = currentUserId;
+
+      const createdRun = await createRun(run);
+      console.log("Run created successfully:", createdRun);
     } catch (error) {
-      console.error("Error creating shoe:", error);
+      console.error("Error creating run:", error);
       // Handle error (show a notification, etc.)
     }
   };
 
-  if (status === "loading") return <div>Loading...</div>;
-
   return (
     <div>
-      <h1>Add a New Shoe</h1>
-      <ShoeForm onSubmit={handleShoeSubmit} />
+      <h1>Create a New Run</h1>
+      <RunForm onSubmit={handleRunSubmit} />
     </div>
   );
 };
 
-export default CreateShoe;
+export default CreateRun;

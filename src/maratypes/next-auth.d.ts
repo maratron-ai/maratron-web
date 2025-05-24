@@ -1,3 +1,5 @@
+// @maratypes/next-auth.d.ts
+
 import { DefaultSession } from "next-auth";
 
 declare module "next-auth" {
@@ -7,7 +9,7 @@ declare module "next-auth" {
       name?: string;
       email?: string;
       image?: string;
-    } & DefaultSession["user"];
+    } & DefaultSession["user"]; // Also include everything the default session user has
   }
   interface User {
     id: string;
