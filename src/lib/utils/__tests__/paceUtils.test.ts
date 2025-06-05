@@ -9,10 +9,10 @@ describe("pace utilities", () => {
   it("calculates training paces from race pace", () => {
     const paces = getPacesFromRacePace(330);
     expect(paces).toEqual({
-      easy: "6:53",
-      marathon: "5:47",
-      threshold: "5:14",
-      interval: "4:57",
+      easy: "7:00",
+      marathon: "5:45",
+      threshold: "5:15",
+      interval: "5:00",
       race: "5:30",
     });
   });

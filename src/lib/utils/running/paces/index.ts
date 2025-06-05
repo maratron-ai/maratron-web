@@ -4,8 +4,10 @@ export function parsePace(pace: string): number {
 }
 
 export function formatPace(seconds: number): string {
-  const m = Math.floor(seconds / 60);
-  const s = Math.round(seconds % 60);
+  const interval = 15;
+  const rounded = Math.round(seconds / interval) * interval;
+  const m = Math.floor(rounded / 60);
+  const s = Math.round(rounded % 60);
   return `${m}:${s.toString().padStart(2, "0")}`;
 }
 
