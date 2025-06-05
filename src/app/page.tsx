@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 
 interface Message {
   text: string;
@@ -38,33 +37,6 @@ export default function ChatPage() {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      {/* Header & Navigation */}
-      <header className="bg-background/90 backdrop-blur-md border-b border-accent/20 fixed w-full z-50">
-        <div className="container flex justify-between items-center py-4">
-          <h1 className="text-2xl font-bold text-primary">marathon.ai</h1>
-          <nav className="flex gap-6">
-            <Link
-              href="/"
-              className="text-foreground hover:text-primary transition-colors"
-            >
-              Home
-            </Link>
-            <Link
-              href="/about"
-              className="text-foreground hover:text-primary transition-colors"
-            >
-              About
-            </Link>
-            <Link
-              href="/training-plan"
-              className="text-foreground hover:text-primary transition-colors"
-            >
-              Training Plan
-            </Link>
-          </nav>
-        </div>
-      </header>
-
       {/* Hero Section */}
       <section className="pt-24 pb-16">
         <div className="container text-center">
