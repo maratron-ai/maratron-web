@@ -8,7 +8,8 @@ import { useState } from "react";
 export default function Navbar() {
   const { data: session, status } = useSession();
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [desktopMenuOpen, setDesktopMenuOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navLinks = [
     { href: "/home", label: "Home" },
@@ -18,15 +19,15 @@ export default function Navbar() {
 
   return (
     <nav className="bg-background border-b border-accent/20">
-      <div className="container flex items-center justify-between py-4">
+      <div className="w-full px-4 md:px-8 flex items-center justify-between py-4">
         {/* Left: Logo and links */}
         <div className="flex items-center">
-          <Link href="/" className="text-xl font-bold mr-4">
+          <Link href="/" className="text-xl font-bold mr-2">
             <Image
               src="/maratron-name.svg"
               alt="Maratron Logo"
-              width={200}
-              height={100}
+              width={160}
+              height={40}
               className="h-8 w-auto"
             />
           </Link>
@@ -61,29 +62,26 @@ export default function Navbar() {
         </div>
 
         {/* Right: utilities and session (desktop) */}
-        <div className="hidden md:flex items-center space-x-4">
+        <div className="hidden md:flex items-center space-x-4 ml-auto">
           {status === "loading" ? null : session?.user ? (
             <>
               {/* User Avatar + Dropdown */}
               <div className="relative">
                 <button
-                  onClick={() => setMenuOpen((o) => !o)}
+                  onClick={() => setDesktopMenuOpen((o) => !o)}
                   aria-label="Toggle user menu"
-                  aria-expanded={menuOpen}
-                  className="focus:outline-none bg-transparent p-0 hover:bg-transparent focus:outline-none focus:ring-0"
+                  aria-expanded={desktopMenuOpen}
+                  className="focus:outline-none bg-transparent p-0 hover:bg-transparent focus:ring-0"
                 >
-                  {/* Circular wrapper: 32×32 px, clips child into a circle */}
-                  <div className="w-8 h-8 rounded-full overflow-hidden flex items-center justify-center">
-                    <Image
-                      src={session.user.image || "/Default_pfp.svg"}
-                      alt="avatar"
-                      width={32}
-                      height={32}
-                      className="object-cover"
-                    />
-                  </div>
+                  <Image
+                    src={session.user.image || "/Default_pfp.svg"}
+                    alt="avatar"
+                    width={32}
+                    height={32}
+                    className="w-8 h-8 rounded-full object-cover"
+                  />
                 </button>
-                {menuOpen && (
+                {desktopMenuOpen && (
                   <div className="absolute right-0 mt-2 w-40 bg-background border border-accent/20 rounded shadow-md">
                     <Link
                       href="/userProfile"
@@ -123,12 +121,13 @@ export default function Navbar() {
           {status !== "loading" && session?.user && (
             <div className="relative mr-2">
               <button
-                onClick={() => setMenuOpen((o) => !o)}
+                onClick={() => setMobileMenuOpen((o) => !o)}
                 aria-label="Toggle user menu"
-                aria-expanded={menuOpen}
+                aria-expanded={mobileMenuOpen}
                 className="focus:outline-none"
               >
-                <div className="w-8 h-8 rounded-full bg-gray-300 overflow-hidden flex items-center justify-center">
+                <div className="w-8 h-8 rounded-full overflow-hidden">
+                  {" "}
                   <Image
                     src={session.user.image || "/Default_pfp.svg"}
                     alt="avatar"
@@ -138,7 +137,7 @@ export default function Navbar() {
                   />
                 </div>
               </button>
-              {menuOpen && (
+              {mobileMenuOpen && (
                 <div className="absolute right-0 mt-2 w-40 bg-background border border-accent/20 rounded shadow-md">
                   <Link
                     href="/userProfile"
@@ -155,7 +154,7 @@ export default function Navbar() {
                   <button
                     onClick={() => {
                       signOut();
-                      setMobileOpen(false);
+                      setMobileMenuOpen(false);
                     }}
                     className="block w-full text-left px-4 py-2 hover:bg-accent/20"
                   >
