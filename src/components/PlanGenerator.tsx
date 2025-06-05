@@ -30,13 +30,14 @@ const PlanGenerator: React.FC = () => {
   const [targetTotalTime, setTargetTotalTime] = useState<string>("3:45:00");
   const [planData, setPlanData] = useState<RunningPlanData | null>(null);
   const [showJson, setShowJson] = useState<boolean>(false);
+  const [editPlan, setEditPlan] = useState<boolean>(false);
 
   const [trainingLevel, setTrainingLevel] = useState<TrainingLevel>(
     TrainingLevel.Beginner
   );
-  const [defaultShoeId, setDefaultShoeId] = useState<string | undefined>(
-    undefined
-  );
+  // const [defaultShoeId, setDefaultShoeId] = useState<string | undefined>(
+  //   undefined
+  // );
 
   // On load/fetch, update state defaults from user profile
   useEffect(() => {
@@ -44,7 +45,7 @@ const PlanGenerator: React.FC = () => {
       if (user.trainingLevel) setTrainingLevel(user.trainingLevel);
       if (user.weeklyMileage) setstartingWeeklyMileage(user.weeklyMileage);
       if (user.VO2Max) setVo2max(user.VO2Max);
-      if (user.defaultShoeId) setDefaultShoeId(user.defaultShoeId);
+      // if (user.defaultShoeId) setDefaultShoeId(user.defaultShoeId);
       // Optionally, set other user-specific defaults
     }
   }, [user]);
@@ -209,31 +210,44 @@ const PlanGenerator: React.FC = () => {
       )}
       {planData && (
         <div className="mt-6">
+          <h2 className="text-2xl font-bold text-center mb-4">Running Plan:</h2>
+          <div className="mt-4 flex justify-center gap-4">
+            <button
+              type="button"
+              onClick={async () => {
+                if (!user) return;
+                try {
+                  await createRunningPlan({
+                    userId: user.id!,
+                    planData,
+                  });
+                  alert("Plan saved");
+                } catch (err) {
+                  console.error(err);
+                  alert("Failed to save plan");
+                }
+              }}
+              className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+            >
+              Save Plan
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setEditPlan((prev) => !prev);
+              }}
+              className="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600"
+            >
+              Edit
+            </button>
+          </div>
+
           <RunningPlanDisplay
             planData={planData}
-            editable
+            editable={editPlan}
             onPlanChange={setPlanData}
+            title=""
           />
-          <button
-            type="button"
-            onClick={async () => {
-              if (!user) return;
-              try {
-                await createRunningPlan({
-                  userId: user.id!,
-                  weeks: planData.weeks,
-                  planData,
-                });
-                alert("Plan saved");
-              } catch (err) {
-                console.error(err);
-                alert("Failed to save plan");
-              }
-            }}
-            className="mt-4 w-full bg-green-600 text-white p-2 rounded hover:bg-green-700"
-          >
-            Save Plan
-          </button>
           <div className="mt-4">
             <label className="flex items-center space-x-2">
               <input
