@@ -30,6 +30,7 @@ export async function POST(request: NextRequest) {
       elevationGainUnit,
       notes,
       userId,
+      shoeId,
     } = body;
 
     const newRun = await prisma.run.create({
@@ -48,8 +49,33 @@ export async function POST(request: NextRequest) {
             : null,
         notes: notes || null,
         user: { connect: { id: userId } },
+        ...(shoeId ? { shoe: { connect: { id: shoeId } } } : {}),
       },
     });
+
+    if (shoeId) {
+      const shoe = await prisma.shoe.findUnique({
+        where: { id: shoeId },
+        select: { distanceUnit: true },
+      });
+      if (shoe) {
+        let increment = Number(distance);
+        if (shoe.distanceUnit !== distanceUnit) {
+          increment =
+            shoe.distanceUnit === "miles"
+              ? Number(distance) * 0.621371
+              : Number(distance) * 1.60934;
+        }
+        await prisma.shoe.update({
+          where: { id: shoeId },
+          data: {
+            currentDistance: {
+              increment,
+            },
+          },
+        });
+      }
+    }
 
     return NextResponse.json(newRun, { status: 201 });
   } catch (error) {
