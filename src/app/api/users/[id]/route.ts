@@ -28,7 +28,7 @@ export async function PUT(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
-  const { id } = params;
+  const { id } = await params;
   try {
     const body = await request.json();
     const updatedUser = await prisma.user.update({
@@ -49,7 +49,7 @@ export async function DELETE(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
-  const { id } = params;
+  const { id } = await params;
   try {
     await prisma.user.delete({
       where: { id },

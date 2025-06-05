@@ -1,17 +1,19 @@
 "use client";
+
 import { useState, FormEvent } from "react";
+import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { createUserProfile } from "@lib/api/user/user"; // Adjust path if necessary
-import { useUserStore } from "@store/userStore";
+// import { useUserStore } from "@store/userStore";
+
 
 export default function SignupPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const { setUser } = useUserStore();
+  // const { setUser } = useUserStore();
   const router = useRouter();
-
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -21,11 +23,24 @@ export default function SignupPage() {
     }
 
     try {
-      // add password here >
-      const newUser = await createUserProfile({ name, email });
-      setUser(newUser);
-      // On success, navigate to profile set up
-      router.push("/signup/profile");
+      const createUserRes = await createUserProfile({ name, email });
+
+      if (createUserRes?.status === 201 || createUserRes?.status === 200) {
+        // Now sign in the new user
+        const signInRes = await signIn("credentials", {
+          redirect: false,
+          email,
+          password,
+        });
+
+        if (signInRes?.ok) {
+          router.push("/signup/profile");
+        } else {
+          setError("Invalid email or password");
+        }
+      } else {
+        setError("Failed to create user.");
+      }
     } catch (err) {
       console.error(err);
       setError("Signup failed. Please try again.");

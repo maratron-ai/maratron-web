@@ -98,6 +98,16 @@ const LoginPage: React.FC = () => {
         >
           Login
         </button>
+        <div className="text-center my-4">
+          <span className="text-gray-500">or</span>
+        </div>
+        <button
+          type="button"
+          onClick={() => router.push("/signup")}
+          className="w-full border border-blue-600 text-blue-600 py-2 rounded hover:bg-blue-50 transition-colors"
+        >
+          Not registered? Sign up
+        </button>
       </form>
     </div>
   );

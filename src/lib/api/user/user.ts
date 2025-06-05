@@ -19,7 +19,7 @@ export const updateUserProfile = async (
 export const createUserProfile = async (data: Partial<UserProfile>) => {
   // post req
   const response = await axios.post(`/api/users`, data);
-  return response.data;
+  return response;
 };
 
 // fetch by id
