@@ -6,6 +6,7 @@ import ToggleSwitch from "./ToggleSwitch";
 import RunningPlanDisplay from "./RunningPlanDisplay";
 import { generateRunningPlan } from "@utils/running/plans/baseRunningPlan";
 import { RunningPlanData } from "@maratypes/runningPlan";
+import { createRunningPlan } from "@lib/api/plan";
 
 const DEFAULT_WEEKS = 16;
 const DEFAULT_DISTANCE = 26.2;
@@ -208,7 +209,31 @@ const PlanGenerator: React.FC = () => {
       )}
       {planData && (
         <div className="mt-6">
-          <RunningPlanDisplay planData={planData} />
+          <RunningPlanDisplay
+            planData={planData}
+            editable
+            onPlanChange={setPlanData}
+          />
+          <button
+            type="button"
+            onClick={async () => {
+              if (!user) return;
+              try {
+                await createRunningPlan({
+                  userId: user.id!,
+                  weeks: planData.weeks,
+                  planData,
+                });
+                alert("Plan saved");
+              } catch (err) {
+                console.error(err);
+                alert("Failed to save plan");
+              }
+            }}
+            className="mt-4 w-full bg-green-600 text-white p-2 rounded hover:bg-green-700"
+          >
+            Save Plan
+          </button>
           <div className="mt-4">
             <label className="flex items-center space-x-2">
               <input
