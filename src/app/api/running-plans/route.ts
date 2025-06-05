@@ -23,10 +23,17 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "User ID is required" }, { status: 400 });
     }
 
+    const derivedWeeks =
+      weeks ?? planData?.weeks ?? planData?.schedule?.length ?? null;
+
+    if (derivedWeeks === null || Number.isNaN(Number(derivedWeeks))) {
+      return NextResponse.json({ error: "Weeks is required" }, { status: 400 });
+    }
+
     const newPlan = await prisma.runningPlan.create({
       data: {
         user: { connect: { id: userId } },
-        weeks: Number(weeks),
+        weeks: Number(derivedWeeks),
         planData,
       },
     });
