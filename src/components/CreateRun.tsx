@@ -5,12 +5,7 @@ import RunForm from "@components/RunForm";
 import { createRun } from "@lib/api/run";
 import { Run } from "@maratypes/run";
 
-// import { useUserStore } from "@store/userStore"; // Adjust the import path as necessary
-
 const CreateRun: React.FC = () => {
-  // const user = useUserStore((state) => state.user);
-
-  // // console.log("User from store:", user);
 
   const handleRunSubmit = async (run: Run) => {
     console.log("TEST");
