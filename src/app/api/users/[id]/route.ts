@@ -6,21 +6,21 @@ export async function GET(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
-  const { id } = params;
+  const { id } = await params
   try {
     const user = await prisma.user.findUnique({
       where: { id },
-    });
+    })
     if (!user) {
-      return NextResponse.json({ error: "User not found" }, { status: 404 });
+      return NextResponse.json({ error: "User not found" }, { status: 404 })
     }
-    return NextResponse.json(user, { status: 200 });
+    return NextResponse.json(user, { status: 200 })
   } catch (error) {
-    console.error("Error fetching user:", error);
+    console.error("Error fetching user:", error)
     return NextResponse.json(
       { error: error instanceof Error ? error.message : "Error fetching user" },
       { status: 500 }
-    );
+    )
   }
 }
 

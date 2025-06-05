@@ -22,86 +22,91 @@ export default function Navbar() {
         {/* Left: Logo and links */}
         <div className="flex items-center">
           <Link href="/" className="text-xl font-bold mr-4">
-            Maratron
+            <Image
+              src="/maratron-name.svg"
+              alt="Maratron Logo"
+              width={200}
+              height={100}
+              className="h-8 w-auto"
+            />
           </Link>
           <div className="hidden md:flex space-x-4">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="hover:text-primary transition-colors"
-              >
-                {link.label}
-              </Link>
-            ))}
+            {status !== "loading" && session?.user ? (
+              navLinks.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="hover:text-primary transition-colors"
+                >
+                  {link.label}
+                </Link>
+              ))
+            ) : (
+              <>
+                <Link
+                  href="/about"
+                  className="hover:text-primary transition-colors"
+                >
+                  About
+                </Link>
+                <Link
+                  href="/contact"
+                  className="hover:text-primary transition-colors"
+                >
+                  Contact
+                </Link>
+              </>
+            )}
           </div>
         </div>
 
-        {/* Right: utilities and session */}
+        {/* Right: utilities and session (desktop) */}
         <div className="hidden md:flex items-center space-x-4">
-          {/* Utility icons */}
-          <Link href="#" className="text-foreground hover:text-primary">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-              className="h-6 w-6"
-            >
-              <path
-                fillRule="evenodd"
-                d="M2.25 13.5A8.25 8.25 0 0112 5.25a8.25 8.25 0 019.75 8.25 8.25 8.25 0 01-9.75 8.25A8.25 8.25 0 012.25 13.5zm8.25 0a.75.75 0 101.5 0 .75.75 0 00-1.5 0z"
-                clipRule="evenodd"
-              />
-            </svg>
-          </Link>
-          <Link href="#" className="text-foreground hover:text-primary">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-              className="h-6 w-6"
-            >
-              <path d="M12 1.5a9 9 0 100 18 9 9 0 000-18zM8.25 12a.75.75 0 111.5 0 .75.75 0 01-1.5 0zm5.25 0a.75.75 0 111.5 0 .75.75 0 01-1.5 0z" />
-            </svg>
-          </Link>
-
           {status === "loading" ? null : session?.user ? (
-            <div className="relative">
-              <button
-                onClick={() => setMenuOpen((o) => !o)}
-                className="focus:outline-none"
-              >
-                <Image
-                  src={session.user.image || "/next.svg"}
-                  alt="avatar"
-                  width={32}
-                  height={32}
-                  className="rounded-full"
-                />
-              </button>
-              {menuOpen && (
-                <div className="absolute right-0 mt-2 w-40 bg-background border border-accent/20 rounded shadow-md">
-                  <Link
-                    href="/userProfile"
-                    className="block px-4 py-2 hover:bg-accent/20"
-                  >
-                    Profile
-                  </Link>
-                  <Link
-                    href="/settings"
-                    className="block px-4 py-2 hover:bg-accent/20"
-                  >
-                    Settings
-                  </Link>
-                  <button
-                    onClick={() => signOut()}
-                    className="block w-full text-left px-4 py-2 hover:bg-accent/20"
-                  >
-                    Logout
-                  </button>
-                </div>
-              )}
-            </div>
+            <>
+              {/* User Avatar + Dropdown */}
+              <div className="relative">
+                <button
+                  onClick={() => setMenuOpen((o) => !o)}
+                  aria-label="Toggle user menu"
+                  aria-expanded={menuOpen}
+                  className="focus:outline-none bg-transparent p-0 hover:bg-transparent focus:outline-none focus:ring-0"
+                >
+                  {/* Circular wrapper: 32×32 px, clips child into a circle */}
+                  <div className="w-8 h-8 rounded-full overflow-hidden flex items-center justify-center">
+                    <Image
+                      src={session.user.image || "/Default_pfp.svg"}
+                      alt="avatar"
+                      width={32}
+                      height={32}
+                      className="object-cover"
+                    />
+                  </div>
+                </button>
+                {menuOpen && (
+                  <div className="absolute right-0 mt-2 w-40 bg-background border border-accent/20 rounded shadow-md">
+                    <Link
+                      href="/userProfile"
+                      className="block px-4 py-2 hover:bg-accent/20"
+                    >
+                      Profile
+                    </Link>
+                    <Link
+                      href="/settings"
+                      className="block px-4 py-2 hover:bg-accent/20"
+                    >
+                      Settings
+                    </Link>
+                    <button
+                      onClick={() => signOut()}
+                      className="block w-full text-left px-4 py-2 hover:bg-accent/20"
+                    >
+                      Logout
+                    </button>
+                  </div>
+                )}
+              </div>
+            </>
           ) : (
             <button
               onClick={() => signIn()}
@@ -112,21 +117,26 @@ export default function Navbar() {
           )}
         </div>
 
-        {/* Mobile Hamburger */}
+        {/* Mobile Hamburger and Avatar */}
         <div className="md:hidden flex items-center">
+          {/* Avatar (mobile) */}
           {status !== "loading" && session?.user && (
             <div className="relative mr-2">
               <button
                 onClick={() => setMenuOpen((o) => !o)}
+                aria-label="Toggle user menu"
+                aria-expanded={menuOpen}
                 className="focus:outline-none"
               >
-                <Image
-                  src={session.user.image || "/next.svg"}
-                  alt="avatar"
-                  width={32}
-                  height={32}
-                  className="rounded-full"
-                />
+                <div className="w-8 h-8 rounded-full bg-gray-300 overflow-hidden flex items-center justify-center">
+                  <Image
+                    src={session.user.image || "/Default_pfp.svg"}
+                    alt="avatar"
+                    width={24}
+                    height={24}
+                    className="object-cover"
+                  />
+                </div>
               </button>
               {menuOpen && (
                 <div className="absolute right-0 mt-2 w-40 bg-background border border-accent/20 rounded shadow-md">
@@ -143,7 +153,10 @@ export default function Navbar() {
                     Settings
                   </Link>
                   <button
-                    onClick={() => signOut()}
+                    onClick={() => {
+                      signOut();
+                      setMobileOpen(false);
+                    }}
                     className="block w-full text-left px-4 py-2 hover:bg-accent/20"
                   >
                     Logout
@@ -153,8 +166,11 @@ export default function Navbar() {
             </div>
           )}
 
+          {/* Hamburger icon (mobile) */}
           <button
             onClick={() => setMobileOpen((o) => !o)}
+            aria-label="Toggle mobile menu"
+            aria-expanded={mobileOpen}
             className="p-2 focus:outline-none"
           >
             <svg
@@ -177,20 +193,34 @@ export default function Navbar() {
 
       {/* Mobile menu */}
       <div
-        className={`md:hidden overflow-hidden transition-[max-height] duration-300 ${mobileOpen ? "max-h-96" : "max-h-0"}`}
+        className={`md:hidden overflow-hidden transition-[max-height] duration-300 ${
+          mobileOpen ? "max-h-screen" : "max-h-0"
+        }`}
       >
         <div className="px-4 pb-4 pt-2 space-y-1">
-          {navLinks.map((link) => (
+          {status !== "loading" && session?.user ? (
+            navLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="block py-2 hover:text-primary"
+                onClick={() => setMobileOpen(false)}
+              >
+                {link.label}
+              </Link>
+            ))
+          ) : (
             <Link
-              key={link.href}
-              href={link.href}
+              href="/about"
               className="block py-2 hover:text-primary"
               onClick={() => setMobileOpen(false)}
             >
-              {link.label}
+              About
             </Link>
-          ))}
+          )}
+
           <hr className="my-2" />
+
           {status !== "loading" && session?.user ? (
             <>
               <Link
