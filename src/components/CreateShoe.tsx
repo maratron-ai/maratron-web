@@ -5,11 +5,12 @@ import ShoeForm from "@components/ShoeForm";
 import { createShoe } from "@lib/api/shoe";
 import { Shoe } from "@maratypes/shoe";
 import { useSession } from "next-auth/react";
+import { updateUserProfile } from "@lib/api/user/user";
 
 const CreateShoe: React.FC = () => {
   const { data: session, status } = useSession();
 
-  const handleShoeSubmit = async (shoe: Shoe) => {
+  const handleShoeSubmit = async (shoe: Shoe, makeDefault: boolean) => {
     if (!session?.user?.id) {
       alert("You must be logged in to add a shoe.");
       return;
@@ -22,6 +23,11 @@ const CreateShoe: React.FC = () => {
       };
       const createdShoe = await createShoe(shoeWithUser);
       console.log("Shoe created successfully:", createdShoe);
+      if (makeDefault) {
+        await updateUserProfile(session.user.id, {
+          defaultShoeId: createdShoe.id,
+        });
+      }
       // Optionally: Show a success message, redirect, or update UI
     } catch (error) {
       console.error("Error creating shoe:", error);

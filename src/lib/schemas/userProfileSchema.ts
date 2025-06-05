@@ -116,6 +116,16 @@ const userProfileSchema = Yup.object().shape({
     ] as Device[])
     .nullable()
     .default(undefined),
+
+  defaultDistanceUnit: Yup.string()
+    .oneOf(["miles", "kilometers"])
+    .nullable()
+    .default("miles"),
+
+  defaultElevationUnit: Yup.string()
+    .oneOf(["miles", "kilometers", "meters", "feet"])
+    .nullable()
+    .default("feet"),
 });
 
 export default userProfileSchema;

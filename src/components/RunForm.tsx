@@ -1,11 +1,14 @@
 "use client";
 
-import React, { useState, FormEvent } from "react";
+import React, { useState, FormEvent, useEffect } from "react";
 import type { Run, Pace } from "@maratypes/run";
+import type { Shoe } from "@maratypes/shoe";
 import runSchema from "@lib/schemas/runSchema";
 import calculatePace from "@lib/utils/running/calculatePace";
 import isYupValidationError from "@lib/utils/validation/isYupValidationError";
 import { useSession } from "next-auth/react";
+import { useUserProfile } from "@hooks/useUserProfile";
+import { listShoes } from "@lib/api/shoe";
 
 import { Card, Button } from "@components/ui";
 import {
@@ -31,6 +34,7 @@ interface FormData {
   elevationGain?: number;
   elevationGainUnit?: (typeof gainUnits)[number];
   notes?: string;
+  shoeId?: string;
 }
 
 interface RunFormProps {
@@ -39,23 +43,51 @@ interface RunFormProps {
 
 const RunForm: React.FC<RunFormProps> = ({ onSubmit }) => {
   const { data: session, status } = useSession();
-  const now = getLocalDateTime();
+  const { profile, loading: profileLoading } = useUserProfile();
 
-  const initialData: FormData = {
-    date: now,
+  const buildInitialForm = (): FormData => ({
+    date: getLocalDateTime(),
     hours: 0,
     minutes: 0,
     distance: 0,
-    distanceUnit: distanceUnits[0],
-    trainingEnvironment: undefined,
+    distanceUnit: profile?.defaultDistanceUnit || "miles",
+    trainingEnvironment: profile?.preferredTrainingEnvironment || undefined,
     elevationGain: undefined,
-    elevationGainUnit: undefined,
+    elevationGainUnit: profile?.defaultElevationUnit || "feet",
     notes: "",
-  };
+    shoeId: profile?.defaultShoeId || undefined,
+  });
 
-  const [form, setForm] = useState<FormData>(initialData);
+  const [form, setForm] = useState<FormData>(buildInitialForm());
+  const [shoes, setShoes] = useState<Shoe[]>([]);
   const [errors, setErrors] = useState<string[]>([]);
   const [success, setSuccess] = useState<string>("");
+
+  // Reset form when user profile loads/changes
+  useEffect(() => {
+    setForm(buildInitialForm());
+  }, [profile]);
+
+  // Fetch shoes for the logged-in user
+  useEffect(() => {
+    if (!session?.user?.id) return;
+    listShoes()
+      .then((all) => {
+        const userShoes = (all as Shoe[]).filter((s) => s.userId === session.user.id);
+        setShoes(userShoes);
+      })
+      .catch((err) => console.error(err));
+  }, [session?.user?.id]);
+
+  // Set default shoe once profile or shoes are loaded
+  useEffect(() => {
+    if (form.shoeId) return; // don't override user selection
+    if (profile?.defaultShoeId) {
+      setForm((prev) => ({ ...prev, shoeId: profile.defaultShoeId }));
+    } else if (shoes.length > 0) {
+      setForm((prev) => ({ ...prev, shoeId: shoes[0].id }));
+    }
+  }, [profile?.defaultShoeId, shoes, form.shoeId]);
 
   // Generic field updater handles strings and numbers
   const handleFieldChange = (name: string, value: string) => {
@@ -87,6 +119,7 @@ const RunForm: React.FC<RunFormProps> = ({ onSubmit }) => {
         elevationGain: form.elevationGain,
         elevationGainUnit: form.elevationGainUnit,
         notes: form.notes,
+        shoeId: form.shoeId,
       };
 
       const valid = await runSchema.validate(payload, {
@@ -110,11 +143,12 @@ const RunForm: React.FC<RunFormProps> = ({ onSubmit }) => {
         notes: valid.notes || undefined,
         pace: { unit: valid.distanceUnit, pace: paceValue } as Pace,
         userId: session.user.id, // <- From NextAuth
+        shoeId: valid.shoeId || undefined,
       };
 
       onSubmit(run);
       setSuccess("Run added successfully!");
-      setForm(initialData);
+      setForm(buildInitialForm());
     } catch (err: unknown) {
       if (isYupValidationError(err)) {
         setErrors(err.inner.map((e: Error) => e.message));
@@ -126,7 +160,7 @@ const RunForm: React.FC<RunFormProps> = ({ onSubmit }) => {
     }
   };
 
-  if (status === "loading") return <div>Loading...</div>;
+  if (status === "loading" || profileLoading) return <div>Loading...</div>;
 
   return (
     <Card className="p-6 max-w-lg mx-auto">
@@ -201,6 +235,18 @@ const RunForm: React.FC<RunFormProps> = ({ onSubmit }) => {
           value={form.trainingEnvironment || ""}
           onChange={handleFieldChange}
         />
+
+        {shoes.length > 0 ? (
+          <SelectField
+            label="Shoe"
+            name="shoeId"
+            options={shoes.map((s) => ({ value: s.id as string, label: s.name }))}
+            value={form.shoeId || ""}
+            onChange={handleFieldChange}
+          />
+        ) : (
+          <p className="text-sm text-gray-600">Add a shoe to track mileage.</p>
+        )}
 
         <div className="grid grid-cols-2 gap-4">
           <TextField

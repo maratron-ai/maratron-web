@@ -45,6 +45,7 @@ const PlanGenerator: React.FC = () => {
       if (user.trainingLevel) setTrainingLevel(user.trainingLevel);
       if (user.weeklyMileage) setstartingWeeklyMileage(user.weeklyMileage);
       if (user.VO2Max) setVo2max(user.VO2Max);
+      if (user.defaultDistanceUnit) setDistanceUnit(user.defaultDistanceUnit);
       // if (user.defaultShoeId) setDefaultShoeId(user.defaultShoeId);
       // Optionally, set other user-specific defaults
     }
