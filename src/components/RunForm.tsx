@@ -63,11 +63,9 @@ const RunForm: React.FC<RunFormProps> = ({ onSubmit }) => {
   const [errors, setErrors] = useState<string[]>([]);
   const [success, setSuccess] = useState<string>("");
 
-  // Reset form when user profile loads/changes
   useEffect(() => {
     setForm(buildInitialForm());
-  }, [profile]);
-
+  }, [profile]);      
   // Fetch shoes for the logged-in user
   useEffect(() => {
     if (!session?.user?.id) return;
