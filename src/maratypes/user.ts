@@ -1,4 +1,4 @@
-import { DayOfWeek } from "./basics";
+import { DayOfWeek, DistanceUnit, ElevationUnit } from "./basics";
 import { Shoe } from "./shoe"; // Import your shoe type
 
 export enum TrainingLevel {
@@ -39,6 +39,10 @@ export interface UserProfile {
   preferredTrainingDays?: DayOfWeek[];
   preferredTrainingEnvironment?: TrainingEnvironment;
   device?: Device;
+
+  // Preferred/default units
+  defaultDistanceUnit?: DistanceUnit;
+  defaultElevationUnit?: ElevationUnit;
 
   shoes?: Shoe[];
   defaultShoeId?: string;

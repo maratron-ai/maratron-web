@@ -1,10 +1,11 @@
 "use client";
 
-import React, { useState, FormEvent } from "react";
+import React, { useState, FormEvent, useEffect } from "react";
 import { Shoe } from "@maratypes/shoe";
 import { shoeSchema } from "@lib/schemas/shoeSchema";
 import isYupValidationError from "@lib/utils/validation/isYupValidationError";
 import { useSession } from "next-auth/react";
+import { useUserProfile } from "@hooks/useUserProfile";
 
 import { Card, Button } from "@components/ui";
 import {
@@ -24,10 +25,11 @@ interface FormData {
   maxDistance: number;
   currentDistance: number;
   retired: boolean;
+  makeDefault: boolean;
 }
 
 interface ShoeFormProps {
-  onSubmit: (shoe: Shoe) => void;
+  onSubmit: (shoe: Shoe, makeDefault: boolean) => void;
   initialData?: Partial<FormData>;
 }
 
@@ -38,16 +40,26 @@ const initialForm: FormData = {
   maxDistance: 500,
   currentDistance: 0,
   retired: false,
+  makeDefault: false,
 };
 
 const ShoeForm: React.FC<ShoeFormProps> = ({ onSubmit, initialData }) => {
   const { data: session, status } = useSession();
+  const { profile } = useUserProfile();
   const [form, setForm] = useState<FormData>({
     ...initialForm,
     ...initialData,
   });
   const [errors, setErrors] = useState<string[]>([]);
   const [success, setSuccess] = useState<string>("");
+
+  // Apply user defaults when profile loads
+  useEffect(() => {
+    setForm((prev) => ({
+      ...prev,
+      distanceUnit: profile?.defaultDistanceUnit || "miles",
+    }));
+  }, [profile?.defaultDistanceUnit]);
 
   const handleFieldChange = (
     name: string,
@@ -85,9 +97,13 @@ const ShoeForm: React.FC<ShoeFormProps> = ({ onSubmit, initialData }) => {
         userId: session.user.id, // Attach userId from NextAuth session!
       };
 
-      onSubmit(shoe);
+      onSubmit(shoe, form.makeDefault);
       setSuccess("Shoe added successfully!");
-      setForm(initialForm);
+      setForm({
+        ...initialForm,
+        distanceUnit: profile?.defaultDistanceUnit || "miles",
+        makeDefault: false,
+      });
     } catch (err: unknown) {
       if (isYupValidationError(err)) {
         setErrors(err.inner.map((e: Error) => e.message));
@@ -161,6 +177,18 @@ const ShoeForm: React.FC<ShoeFormProps> = ({ onSubmit, initialData }) => {
             onChange={handleFieldChange}
           />
         </div>
+
+        <label className="flex items-center space-x-2">
+          <input
+            type="checkbox"
+            name="makeDefault"
+            checked={form.makeDefault}
+            onChange={(e) =>
+              handleFieldChange("makeDefault", e.target.checked)
+            }
+          />
+          <span>Set as default shoe</span>
+        </label>
 
         <div className="flex justify-end">
           <Button type="submit">Add Shoe</Button>

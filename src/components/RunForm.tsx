@@ -44,26 +44,28 @@ interface RunFormProps {
 const RunForm: React.FC<RunFormProps> = ({ onSubmit }) => {
   const { data: session, status } = useSession();
   const { profile, loading: profileLoading } = useUserProfile();
-  const now = getLocalDateTime();
 
-  const initialData: FormData = {
-    date: now,
+  const buildInitialForm = (): FormData => ({
+    date: getLocalDateTime(),
     hours: 0,
     minutes: 0,
     distance: 0,
-    distanceUnit: distanceUnits[0],
-    trainingEnvironment: undefined,
+    distanceUnit: profile?.defaultDistanceUnit || "miles",
+    trainingEnvironment: profile?.preferredTrainingEnvironment || undefined,
     elevationGain: undefined,
-    elevationGainUnit: undefined,
+    elevationGainUnit: profile?.defaultElevationUnit || "feet",
     notes: "",
-    shoeId: undefined,
-  };
+    shoeId: profile?.defaultShoeId || undefined,
+  });
 
-  const [form, setForm] = useState<FormData>(initialData);
+  const [form, setForm] = useState<FormData>(buildInitialForm());
   const [shoes, setShoes] = useState<Shoe[]>([]);
   const [errors, setErrors] = useState<string[]>([]);
   const [success, setSuccess] = useState<string>("");
 
+  useEffect(() => {
+    setForm(buildInitialForm());
+  }, [profile]);      
   // Fetch shoes for the logged-in user
   useEffect(() => {
     if (!session?.user?.id) return;
@@ -144,7 +146,7 @@ const RunForm: React.FC<RunFormProps> = ({ onSubmit }) => {
 
       onSubmit(run);
       setSuccess("Run added successfully!");
-      setForm(initialData);
+      setForm(buildInitialForm());
     } catch (err: unknown) {
       if (isYupValidationError(err)) {
         setErrors(err.inner.map((e: Error) => e.message));
