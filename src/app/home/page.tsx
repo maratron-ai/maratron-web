@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import RecentRuns from "@components/RecentRuns";
-import TrainingPlansList from "@components/TrainingPlansList";
+
 
 export default function HomePage() {
   const { data: session, status } = useSession();
@@ -50,6 +50,7 @@ export default function HomePage() {
       <section>
         <h2 className="text-2xl font-semibold mb-4">Recent Runs</h2>
         <RecentRuns />
+
       </section>
 
       <section>
