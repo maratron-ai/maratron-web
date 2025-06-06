@@ -1,106 +1,150 @@
 "use client";
 
+import { useEffect, useRef } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import LandingNavbar from "@components/LandingNavbar";
+import Footer from "@components/Footer";
 
 export default function LandingPage() {
-  const scrollToFeatures = () => {
-    const el = document.getElementById("features");
-    el?.scrollIntoView({ behavior: "smooth" });
-  };
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const scrubContainerRef = useRef<HTMLDivElement>(null);
+  const videoDurationRef = useRef<number>(0);
+
+  useEffect(() => {
+    const videoEl = videoRef.current;
+    const container = scrubContainerRef.current;
+    if (!videoEl || !container) return;
+
+    // Start scrubbing once raw fraction ≥ 0.1 (10%)
+    const START_THRESHOLD = 0.1;
+
+    const handleScroll = () => {
+      const rect = container.getBoundingClientRect();
+      const vh = window.innerHeight;
+
+      // If container is fully off-screen, bail out
+      if (rect.bottom < 0 || rect.top > vh) {
+        return;
+      }
+
+      const totalScrollRange = rect.height + vh;
+      // How far inside the container have we scrolled?
+      const scrollInside = Math.min(
+        Math.max(vh - rect.top, 0),
+        totalScrollRange
+      );
+
+      const rawFraction = scrollInside / totalScrollRange;
+
+      if (rawFraction < START_THRESHOLD) {
+        videoEl.currentTime = 0;
+      } else {
+        // Map [0.1 … 1] → [0 … 1]
+        const adjFraction =
+          (rawFraction - START_THRESHOLD) / (1 - START_THRESHOLD);
+        videoEl.currentTime = adjFraction * videoDurationRef.current;
+      }
+    };
+
+    const onLoadedMetadata = () => {
+      videoDurationRef.current = videoEl.duration || 0;
+      // Immediately scrub in case user already scrolled past 10%
+      handleScroll();
+    };
+
+    videoEl.addEventListener("loadedmetadata", onLoadedMetadata);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    // Also run once on mount in case user is already scrolled
+    handleScroll();
+
+    return () => {
+      videoEl.removeEventListener("loadedmetadata", onLoadedMetadata);
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []); // run only once on mount
 
   return (
-    <main className="min-h-screen bg-background text-foreground scroll-smooth">
-      {/* Hero */}
-      <motion.section
-        initial={{ opacity: 0, y: 40 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        className="relative overflow-hidden min-h-screen flex flex-col items-center justify-center px-4 text-center bg-gradient-to-b from-background to-accent/20"
-      >
-        <h1 className="text-6xl font-extrabold mb-6 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-          Run Smarter with Maratron
-        </h1>
-        <p className="max-w-2xl mx-auto text-lg text-foreground/80 mb-8">
-          AI-driven training plans and real-time insights built for runners of every level.
-        </p>
-        <Link
-          href="/signup"
-          className="inline-block bg-primary text-white px-8 py-3 rounded-lg hover:bg-primary/90 transition-colors"
-        >
-          Get Started
-        </Link>
-        <button
-          onClick={scrollToFeatures}
-          aria-label="Scroll down"
-          className="mt-12 animate-bounce text-primary"
-        >
-          ▼
-        </button>
-      </motion.section>
+    <main className="relative overflow-x-hidden text-foreground bg-transparent">
+      <LandingNavbar />
 
-      {/* Features */}
-      <motion.section
-        id="features"
-        initial={{ opacity: 0, y: 40 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        className="py-20 bg-accent/10 px-4"
+      {/* Full‐screen, behind‐everything video */}
+      <video
+        ref={videoRef}
+        src="/landing-video.mp4"
+        muted
+        playsInline
+        preload="auto"
+        className="pointer-events-none fixed inset-0 w-full h-full object-cover z-0"
+      />
+
+      {/* Semi‐transparent overlay */}
+      <div className="fixed inset-0 bg-black/50 z-10 pointer-events-none" />
+
+      <div
+        ref={scrubContainerRef}
+        id="video-scrub"
+        className="relative w-full"
+        style={{
+          height: "500vh",
+        }} /* adjust this “scrollable height” as needed */
       >
-        <div className="container grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-          <div className="space-y-2">
-            <div className="text-primary text-4xl">🔥</div>
-            <h3 className="text-xl font-semibold">Personalized Plans</h3>
-            <p className="text-sm text-foreground/80">
-              Tailored workouts that adapt to your progress.
+        <div className="relative z-10 min-h-screen flex flex-col justify-center items-center text-center pt-16 px-4 sm:px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+          >
+            <Image
+              src="/logo-full.svg"
+              alt="Maratron Logo"
+              width={200}
+              height={200}
+              className="mx-auto mb-6"
+              priority
+            />
+            <h1 className="text-5xl sm:text-7xl font-extrabold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+              The AI Coach for Serious Runners
+            </h1>
+            <p className="mt-6 text-lg text-foreground/70 max-w-xl mx-auto">
+              Maratron helps you train smarter, race faster, and stay
+              injury-free with cutting-edge tech.
             </p>
-          </div>
-          <div className="space-y-2">
-            <div className="text-primary text-4xl">📊</div>
-            <h3 className="text-xl font-semibold">Insightful Analytics</h3>
-            <p className="text-sm text-foreground/80">
-              Track pace, distance, and more with powerful metrics.
-            </p>
-          </div>
-          <div className="space-y-2">
-            <div className="text-primary text-4xl">🤝</div>
-            <h3 className="text-xl font-semibold">Community Support</h3>
-            <p className="text-sm text-foreground/80">
-              Stay motivated with challenges and leaderboards.
-            </p>
+            <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
+              <Link
+                href="/signup"
+                className="px-6 py-3 text-white font-semibold bg-primary rounded-md hover:bg-primary/90 transition"
+              >
+                Get Started
+              </Link>
+              <a
+                href="#features"
+                className="px-6 py-3 text-primary border border-primary rounded-md hover:bg-primary/10 transition"
+              >
+                Learn More
+              </a>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+
+      <section
+        id="features"
+        className="py-24 px-4 sm:px-6 bg-accent/5 relative z-10"
+      >
+        <div className="max-w-6xl mx-auto text-center">
+          <h2 className="text-3xl sm:text-4xl font-bold mb-12">
+            Built for Performance and Progress
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {/* Feature cards… */}
           </div>
         </div>
-      </motion.section>
+      </section>
 
-      {/* Call to Action */}
-      <motion.section
-        initial={{ opacity: 0, y: 40 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        className="py-24 text-center px-4"
-      >
-        <h2 className="text-3xl font-bold mb-6">Join Thousands of Runners</h2>
-        <p className="text-lg max-w-xl mx-auto text-foreground/80 mb-8">
-          See why athletes trust Maratron to smash their next PR.
-        </p>
-        <Link
-          href="/signup"
-          className="inline-block bg-secondary text-white px-8 py-3 rounded-lg hover:bg-secondary/90 transition-colors"
-        >
-          Start Training
-        </Link>
-      </motion.section>
-
-      {/* Footer */}
-      <motion.footer
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true }}
-        className="bg-background/80 border-t border-accent/20 py-8 text-center text-foreground/80"
-      >
-        <p>&copy; {new Date().getFullYear()} marathon.ai. All rights reserved.</p>
-      </motion.footer>
+      <Footer />
     </main>
   );
 }
-
