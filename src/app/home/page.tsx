@@ -1,61 +1,58 @@
-// src/app/page.tsx
+"use client";
+
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 
 export default function HomePage() {
-  return (
-    <main className="min-h-screen bg-background text-foreground">
-      {/* Hero Section */}
-      <section className="flex flex-col items-center justify-center py-16 px-4 text-center">
-        <h1 className="text-5xl font-bold mb-4">Welcome to Maratron</h1>
-        <p className="text-xl mb-8">
-          Your AI running coach for optimized coaching, training planning, and
-          run recording.
-        </p>
-        <Link
-          href="/signup"
-          className="inline-block px-6 py-3 bg-primary text-white rounded hover:bg-primary-dark transition-colors"
-        >
-          Get Started
-        </Link>
-      </section>
+  const { data: session, status } = useSession();
 
-      {/* Features Section */}
-      <section className="py-12 px-4">
-        <h2 className="text-3xl font-bold text-center mb-8">Features</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="p-6 border rounded shadow-sm">
-            <h3 className="text-xl font-semibold mb-2">Optimized Coaching</h3>
-            <p>
-              Receive personalized coaching based on your performance and
-              running data.
-            </p>
-          </div>
-          <div className="p-6 border rounded shadow-sm">
-            <h3 className="text-xl font-semibold mb-2">Training Planning</h3>
-            <p>
-              Build smart, adaptive training plans tailored to your fitness
-              level and goals.
-            </p>
-          </div>
-          <div className="p-6 border rounded shadow-sm">
-            <h3 className="text-xl font-semibold mb-2">Run Recording</h3>
-            <p>
-              Log and analyze your runs with detailed metrics to track your
-              progress.
-            </p>
-          </div>
+  if (status === "loading") {
+    return <main className="p-6">Loading...</main>;
+  }
+
+  if (!session?.user) {
+    return (
+      <main className="min-h-screen flex flex-col items-center justify-center p-4 text-center">
+        <h1 className="text-4xl font-bold mb-4">Welcome to Maratron</h1>
+        <p className="mb-6">Please <Link href="/login" className="underline text-primary">sign in</Link> to access your dashboard.</p>
+      </main>
+    );
+  }
+
+  const userName = session.user.name || session.user.email;
+
+  return (
+    <main className="min-h-screen bg-background text-foreground p-4 space-y-10">
+      <h1 className="text-3xl font-bold">Welcome back, {userName}!</h1>
+
+      <section>
+        <h2 className="text-2xl font-semibold mb-4">Quick Actions</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <Link href="/runs/new" className="border rounded p-4 hover:bg-accent/20">
+            Add a Run
+          </Link>
+          <Link href="/plan-generator" className="border rounded p-4 hover:bg-accent/20">
+            Generate Training Plan
+          </Link>
+          <Link href="/shoes/new" className="border rounded p-4 hover:bg-accent/20">
+            Add New Shoes
+          </Link>
+          <Link href="/userProfile" className="border rounded p-4 hover:bg-accent/20">
+            Edit Profile
+          </Link>
+          <div className="border rounded p-4 text-gray-500">Upload workout file (coming soon)</div>
+          <div className="border rounded p-4 text-gray-500">View progress analytics (coming soon)</div>
         </div>
       </section>
 
-      {/* About Section */}
-      <section className="py-12 px-4 bg-accent">
-        <h2 className="text-3xl font-bold text-center mb-8">Why Maratron?</h2>
-        <p className="max-w-3xl mx-auto text-lg text-center">
-          Maratron leverages advanced AI algorithms to provide coaching and
-          training insights that evolve with you. Whether you&aposre a beginner
-          or a seasoned runner, our app adapts to your needs, ensuring every run
-          counts.
-        </p>
+      <section>
+        <h2 className="text-2xl font-semibold mb-4">Recent Runs</h2>
+        <p className="text-gray-500">Run history will appear here.</p>
+      </section>
+
+      <section>
+        <h2 className="text-2xl font-semibold mb-4">Your Training Plan</h2>
+        <p className="text-gray-500">Saved training plans will show up here.</p>
       </section>
     </main>
   );
