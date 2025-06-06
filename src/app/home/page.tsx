@@ -30,21 +30,37 @@ export default function HomePage() {
 
       <section>
         <h2 className="text-2xl font-semibold mb-4">Quick Actions</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          <Link href="/runs/new" className="border rounded p-4 hover:bg-accent/20">
+        <div className="flex flex-wrap gap-4">
+          <Link
+            href="/runs/new"
+            className="border rounded p-4 hover:bg-accent/20 w-40 text-center"
+          >
             Add a Run
           </Link>
-          <Link href="/plan-generator" className="border rounded p-4 hover:bg-accent/20">
-            Generate Training Plan
+          <Link
+            href="/plan-generator"
+            className="border rounded p-4 hover:bg-accent/20 w-40 text-center"
+          >
+            Generate Plan
           </Link>
-          <Link href="/shoes/new" className="border rounded p-4 hover:bg-accent/20">
-            Add New Shoes
+          <Link
+            href="/shoes/new"
+            className="border rounded p-4 hover:bg-accent/20 w-40 text-center"
+          >
+            Add Shoes
           </Link>
-          <Link href="/userProfile" className="border rounded p-4 hover:bg-accent/20">
+          <Link
+            href="/userProfile"
+            className="border rounded p-4 hover:bg-accent/20 w-40 text-center"
+          >
             Edit Profile
           </Link>
-          <div className="border rounded p-4 text-gray-500">Upload workout file (coming soon)</div>
-          <div className="border rounded p-4 text-gray-500">View progress analytics (coming soon)</div>
+          <div className="border rounded p-4 text-gray-500 w-40 text-center">
+            Upload file (soon)
+          </div>
+          <div className="border rounded p-4 text-gray-500 w-40 text-center">
+            Analytics (soon)
+          </div>
         </div>
       </section>
 
