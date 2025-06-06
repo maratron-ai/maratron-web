@@ -23,10 +23,28 @@ describe('run api helpers', () => {
   });
 
   it('getRun fetches data', async () => {
-    mockedAxios.get.mockResolvedValue({ data: { id: '1' } });
+    const apiRun = {
+      id: '1',
+      date: '2024-01-01T00:00:00.000Z',
+      duration: '00:30:00',
+      distance: 5,
+      distanceUnit: 'miles',
+      pace: '06:00',
+      paceUnit: 'miles',
+      userId: 'user1',
+    };
+    mockedAxios.get.mockResolvedValue({ data: apiRun });
     const result = await getRun('1');
     expect(mockedAxios.get).toHaveBeenCalledWith('/api/runs/1');
-    expect(result).toEqual({ id: '1' });
+    expect(result).toEqual({
+      id: '1',
+      date: new Date(apiRun.date),
+      duration: '00:30:00',
+      distance: 5,
+      distanceUnit: 'miles',
+      pace: { pace: '06:00', unit: 'miles' },
+      userId: 'user1',
+    });
   });
 
   it('deleteRun deletes data', async () => {
@@ -37,9 +55,29 @@ describe('run api helpers', () => {
   });
 
   it('listRuns gets all runs', async () => {
-    mockedAxios.get.mockResolvedValue({ data: [1,2] });
+    const apiRun = {
+      id: '1',
+      date: '2024-01-01T00:00:00.000Z',
+      duration: '00:30:00',
+      distance: 5,
+      distanceUnit: 'miles',
+      pace: '06:00',
+      paceUnit: 'miles',
+      userId: 'user1',
+    };
+    mockedAxios.get.mockResolvedValue({ data: [apiRun] });
     const result = await listRuns();
     expect(mockedAxios.get).toHaveBeenCalledWith('/api/runs');
-    expect(result).toEqual([1,2]);
+    expect(result).toEqual([
+      {
+        id: '1',
+        date: new Date(apiRun.date),
+        duration: '00:30:00',
+        distance: 5,
+        distanceUnit: 'miles',
+        pace: { pace: '06:00', unit: 'miles' },
+        userId: 'user1',
+      },
+    ]);
   });
 });
