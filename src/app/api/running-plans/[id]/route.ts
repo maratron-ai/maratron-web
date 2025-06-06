@@ -1,9 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@lib/prisma";
 
-export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(request: NextRequest, context: { params: { id: string } }) {
   try {
-    const plan = await prisma.runningPlan.findUnique({ where: { id: params.id } });
+    const { params } = await context
+    const { id } = params
+    const plan = await prisma.runningPlan.findUnique({ where: { id } });
     if (!plan) {
       return NextResponse.json({ error: "Plan not found" }, { status: 404 });
     }
@@ -17,11 +19,13 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
   }
 }
 
-export async function PUT(request: NextRequest, { params }: { params: { id: string } }) {
+export async function PUT(request: NextRequest, context: { params: { id: string } }) {
   try {
     const body = await request.json();
+    const { params } = await context
+    const { id } = params
     const updated = await prisma.runningPlan.update({
-      where: { id: params.id },
+      where: { id },
       data: body,
     });
     return NextResponse.json(updated, { status: 200 });
@@ -34,9 +38,11 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
   }
 }
 
-export async function DELETE(request: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(request: NextRequest, context: { params: { id: string } }) {
   try {
-    await prisma.runningPlan.delete({ where: { id: params.id } });
+    const { params } = await context
+    const { id } = params
+    await prisma.runningPlan.delete({ where: { id } });
     return NextResponse.json({ message: "Plan deleted" }, { status: 200 });
   } catch (error) {
     console.error("Error deleting plan:", error);

@@ -4,11 +4,13 @@ import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { listRuns } from "@lib/api/run";
 import type { Run } from "@maratypes/run";
+import RunModal from "@components/RunModal";
 
 export default function RecentRuns() {
   const { data: session } = useSession();
   const [runs, setRuns] = useState<Run[]>([]);
   const [loading, setLoading] = useState(true);
+  const [selectedRun, setSelectedRun] = useState<Run | null>(null);
 
   useEffect(() => {
     const fetchRuns = async () => {
@@ -38,15 +40,24 @@ export default function RecentRuns() {
     return <p className="text-gray-500">No runs recorded yet.</p>;
 
   return (
-    <ul className="space-y-2">
-      {runs.map((run) => (
-        <li key={run.id} className="border p-2 rounded">
-          <span className="font-semibold">
-            {new Date(run.date).toLocaleDateString()}
-          </span>
-          {`: ${run.distance} ${run.distanceUnit}`}
-        </li>
-      ))}
-    </ul>
+    <>
+      <ul className="space-y-2">
+        {runs.map((run) => (
+          <li
+            key={run.id}
+            className="border p-2 rounded cursor-pointer hover:bg-accent/10"
+            onClick={() => setSelectedRun(run)}
+          >
+            <span className="font-semibold">
+              {new Date(run.date).toLocaleDateString()}
+            </span>
+            {`: ${run.distance} ${run.distanceUnit}`}
+          </li>
+        ))}
+      </ul>
+      {selectedRun && (
+        <RunModal run={selectedRun} onClose={() => setSelectedRun(null)} />
+      )}
+    </>
   );
 }
