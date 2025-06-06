@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { listRuns } from "@lib/api/run";
+import { getRunName } from "@utils/running/getRunName";
 import type { Run } from "@maratypes/run";
 import RunModal from "@components/RunModal";
 
@@ -48,9 +49,7 @@ export default function RecentRuns() {
             className="border p-2 rounded cursor-pointer hover:bg-accent/10"
             onClick={() => setSelectedRun(run)}
           >
-            <span className="font-semibold">
-              {new Date(run.date).toLocaleDateString()}
-            </span>
+            <span className="font-semibold">{run.name || getRunName(run)}</span>
             {`: ${run.distance} ${run.distanceUnit}`}
           </li>
         ))}

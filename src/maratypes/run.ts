@@ -7,6 +7,7 @@ export interface Run {
   distance: number;
   distanceUnit: "miles" | "kilometers";
   trainingEnvironment?: "outdoor" | "treadmill" | "indoor" | "mixed";
+  name?: string;
   pace?: Pace;
   elevationGain?: number;
   elevationGainUnit?: "miles" | "kilometers" | "meters" | "feet";

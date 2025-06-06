@@ -6,6 +6,7 @@ import { Pace } from "./run";
 export interface RunningPlan {
   id?: string;
   userId: string;
+  name: string;
   planData: RunningPlanData; // Use the renamed type here.
   createdAt?: Date;
   updatedAt?: Date;

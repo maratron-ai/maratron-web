@@ -9,6 +9,7 @@ const mapRun = (data: any): Run => ({
   distance: data.distance,
   distanceUnit: data.distanceUnit,
   trainingEnvironment: data.trainingEnvironment ?? undefined,
+  name: data.name ?? undefined,
   pace:
     data.pace && data.paceUnit
       ? { pace: data.pace, unit: data.paceUnit }

@@ -44,11 +44,7 @@ export default function TrainingPlansList() {
       {plans.map((plan) => (
         <li key={plan.id} className="border p-2 rounded">
           <Link href={`/plans/${plan.id ?? ""}`} className="block">
-            <span className="font-semibold">
-              {plan.createdAt
-                ? new Date(plan.createdAt).toLocaleDateString()
-                : "Unnamed Plan"}
-            </span>
+            <span className="font-semibold">{plan.name}</span>
             {plan.planData?.weeks && ` - ${plan.planData.weeks} weeks`}
           </Link>
         </li>
