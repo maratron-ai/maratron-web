@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { listRuns } from "@lib/api/run";
 import type { Run } from "@maratypes/run";
@@ -40,11 +41,13 @@ export default function RecentRuns() {
   return (
     <ul className="space-y-2">
       {runs.map((run) => (
-        <li key={run.id} className="border p-2 rounded">
-          <span className="font-semibold">
-            {new Date(run.date).toLocaleDateString()}
-          </span>
-          {`: ${run.distance} ${run.distanceUnit}`}
+        <li key={run.id} className="border p-2 rounded hover:bg-accent/20">
+          <Link href={`/runs/${run.id ?? ""}`} className="block">
+            <span className="font-semibold">
+              {new Date(run.date).toLocaleDateString()}
+            </span>
+            {`: ${run.distance} ${run.distanceUnit}`}
+          </Link>
         </li>
       ))}
     </ul>
