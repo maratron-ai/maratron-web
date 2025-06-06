@@ -17,14 +17,16 @@ export default function LandingPage() {
     const container = scrubContainerRef.current;
     if (!videoEl || !container) return;
 
-    // Start scrubbing once raw fraction ≥ 0.1 (10%)
-    const START_THRESHOLD = 0.1;
+    // ==============
+    //  Scroll‐scrub logic
+    // ==============
+    const START_THRESHOLD = 0.1; // begin scrubbing at 10%
 
     const handleScroll = () => {
       const rect = container.getBoundingClientRect();
       const vh = window.innerHeight;
 
-      // If container is fully off-screen, bail out
+      // If container is fully off‐screen, bail out
       if (rect.bottom < 0 || rect.top > vh) {
         return;
       }
@@ -48,16 +50,30 @@ export default function LandingPage() {
       }
     };
 
+    // ==============
+    //  Metadata handler
+    // ==============
     const onLoadedMetadata = () => {
       videoDurationRef.current = videoEl.duration || 0;
-      // Immediately scrub in case user already scrolled past 10%
+      // If we’re already scrolled, scrub immediately
       handleScroll();
     };
 
+    // Attach listener
     videoEl.addEventListener("loadedmetadata", onLoadedMetadata);
+
+    // If metadata is already available (readyState ≥ HAVE_METADATA), call handler immediately
+    if (videoEl.readyState >= 1) {
+      onLoadedMetadata();
+    } else {
+      // Force the browser to start loading/metadata if it hasn't yet
+      videoEl.load();
+    }
+
+    // Attach scroll listener
     window.addEventListener("scroll", handleScroll, { passive: true });
 
-    // Also run once on mount in case user is already scrolled
+    // Also run once on mount, in case user is already scrolled past 10%
     handleScroll();
 
     return () => {
@@ -70,7 +86,7 @@ export default function LandingPage() {
     <main className="relative overflow-x-hidden text-foreground bg-transparent">
       <LandingNavbar />
 
-      {/* Full‐screen, behind‐everything video */}
+      {/* Full‐screen background video */}
       <video
         ref={videoRef}
         src="/landing-video.mp4"
@@ -79,17 +95,13 @@ export default function LandingPage() {
         preload="auto"
         className="pointer-events-none fixed inset-0 w-full h-full object-cover z-0"
       />
-
-      {/* Semi‐transparent overlay */}
       <div className="fixed inset-0 bg-black/50 z-10 pointer-events-none" />
 
       <div
         ref={scrubContainerRef}
         id="video-scrub"
         className="relative w-full"
-        style={{
-          height: "500vh",
-        }} /* adjust this “scrollable height” as needed */
+        style={{ height: "500vh" }} /* adjust as needed */
       >
         <div className="relative z-10 min-h-screen flex flex-col justify-center items-center text-center pt-16 px-4 sm:px-6">
           <motion.div
@@ -138,9 +150,7 @@ export default function LandingPage() {
           <h2 className="text-3xl sm:text-4xl font-bold mb-12">
             Built for Performance and Progress
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {/* Feature cards… */}
-          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">{/* … */}</div>
         </div>
       </section>
 

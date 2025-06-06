@@ -247,7 +247,7 @@ const PlanGenerator: React.FC = () => {
             planData={planData}
             editable={editPlan}
             onPlanChange={setPlanData}
-            title=""
+            // title=""
           />
           <div className="mt-4">
             <label className="flex items-center space-x-2">

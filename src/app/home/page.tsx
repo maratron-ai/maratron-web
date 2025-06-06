@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import RecentRuns from "@components/RecentRuns";
+import TrainingPlansList from "@components/TrainingPlansList";
 
 
 export default function HomePage() {
