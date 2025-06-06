@@ -4,9 +4,10 @@ import { prisma } from "@lib/prisma";
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: { id: string } }
 ) {
-  const { id } = await params
+  const { params } = await context
+  const { id } = params
   try {
     const user = await prisma.user.findUnique({
       where: { id },
@@ -26,9 +27,10 @@ export async function GET(
 
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: { id: string } }
 ) {
-  const { id } = await params;
+  const { params } = await context;
+  const { id } = params;
   try {
     const body = await request.json();
     const updatedUser = await prisma.user.update({
@@ -47,9 +49,10 @@ export async function PUT(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: { id: string } }
 ) {
-  const { id } = await params;
+  const { params } = await context;
+  const { id } = params;
   try {
     await prisma.user.delete({
       where: { id },

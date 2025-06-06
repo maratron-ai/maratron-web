@@ -6,11 +6,13 @@ import { shoeSchema } from "@lib/schemas/shoeSchema";
 // GET /api/shoes/[id] — Get a specific shoe
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: { id: string } }
 ) {
   try {
+    const { params } = await context
+    const { id } = params
     const shoe = await prisma.shoe.findUnique({
-      where: { id: params.id },
+      where: { id },
     });
     if (!shoe) {
       return NextResponse.json({ error: "Shoe not found" }, { status: 404 });
@@ -28,14 +30,16 @@ export async function GET(
 // PUT /api/shoes/[id] — Update a shoe
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: { id: string } }
 ) {
   try {
     const body = await request.json();
     await shoeSchema.validate(body, { abortEarly: false, stripUnknown: true });
 
+    const { params } = await context
+    const { id } = params
     const updatedShoe = await prisma.shoe.update({
-      where: { id: params.id },
+      where: { id },
       data: body,
     });
     return NextResponse.json(updatedShoe, { status: 200 });
@@ -51,11 +55,13 @@ export async function PUT(
 // DELETE /api/shoes/[id] — Delete a shoe
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: { id: string } }
 ) {
   try {
+    const { params } = await context
+    const { id } = params
     await prisma.shoe.delete({
-      where: { id: params.id },
+      where: { id },
     });
     return NextResponse.json({ message: "Shoe deleted" }, { status: 200 });
   } catch (error) {
