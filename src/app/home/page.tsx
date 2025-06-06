@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 import { useSession } from "next-auth/react";
+import RecentRuns from "@components/RecentRuns";
+
 
 export default function HomePage() {
   const { data: session, status } = useSession();
@@ -47,12 +49,13 @@ export default function HomePage() {
 
       <section>
         <h2 className="text-2xl font-semibold mb-4">Recent Runs</h2>
-        <p className="text-gray-500">Run history will appear here.</p>
+        <RecentRuns />
+
       </section>
 
       <section>
         <h2 className="text-2xl font-semibold mb-4">Your Training Plan</h2>
-        <p className="text-gray-500">Saved training plans will show up here.</p>
+        <TrainingPlansList />
       </section>
     </main>
   );
