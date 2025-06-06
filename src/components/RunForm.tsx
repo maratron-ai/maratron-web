@@ -68,10 +68,11 @@ const RunForm: React.FC<RunFormProps> = ({ onSubmit }) => {
   }, [profile]);      
   // Fetch shoes for the logged-in user
   useEffect(() => {
-    if (!session?.user?.id) return;
+    const userId = session?.user?.id;
+    if (!userId) return;
     listShoes()
       .then((all) => {
-        const userShoes = (all as Shoe[]).filter((s) => s.userId === session.user.id);
+        const userShoes = (all as Shoe[]).filter((s) => s.userId === userId);
         setShoes(userShoes);
       })
       .catch((err) => console.error(err));

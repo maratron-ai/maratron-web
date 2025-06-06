@@ -6,16 +6,14 @@ interface RunningPlanDisplayProps {
   planData: RunningPlanData;
   editable?: boolean;
   onPlanChange?: (plan: RunningPlanData) => void;
-  title?: string;
 }
 
 const RunningPlanDisplay: React.FC<RunningPlanDisplayProps> = ({
   planData,
   editable = false,
   onPlanChange,
-  title = "Your Running Plan",
 }) => {
-  const updateRun = (weekIdx: number, runIdx: number, field: string, value: any) => {
+  const updateRun = (weekIdx: number, runIdx: number, field: string, value: unknown) => {
     if (!onPlanChange) return;
     const newSchedule = planData.schedule.map((w, wi) => {
       if (wi !== weekIdx) return w;
@@ -28,9 +26,7 @@ const RunningPlanDisplay: React.FC<RunningPlanDisplayProps> = ({
   };
   return (
     <div className="container p-4">
-      {title && (
-        <h2 className="text-2xl font-bold text-center mb-4">{title}</h2>
-      )}
+      <h2 className="text-2xl font-bold text-center mb-4">Your Running Plan</h2>
       {planData.schedule.map((weekPlan, wi) => (
         <CollapsibleWeek
           key={weekPlan.weekNumber}
@@ -48,7 +44,7 @@ interface CollapsibleWeekProps {
   weekPlan: WeekPlan;
   editable: boolean;
   weekIndex: number;
-  updateRun: (weekIdx: number, runIdx: number, field: string, value: any) => void;
+  updateRun: (weekIdx: number, runIdx: number, field: string, value: unknown) => void;
 }
 
 const CollapsibleWeek: React.FC<CollapsibleWeekProps> = ({
