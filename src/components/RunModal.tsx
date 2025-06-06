@@ -13,32 +13,45 @@ export default function RunModal({ run, onClose }: RunModalProps) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-      <Card className="relative max-w-sm w-full">
+      {/* Increased width from w-80 to w-96 */}
+      <Card className="relative w-1/2 max-w-lg bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
         <button
           aria-label="Close"
           onClick={onClose}
-          className="absolute top-2 right-2 text-xl font-bold text-gray-600 hover:text-gray-900"
+          className="
+            absolute 
+            top-2 right-2 
+            bg-transparent 
+            text-2xl font-bold 
+            text-gray-500 dark:text-gray-300 
+            hover:text-gray-200 dark:hover:text-white 
+            focus:outline-none
+          "
         >
           ×
         </button>
-        <h2 className="text-xl font-semibold mb-2">
+
+        <h2 className="text-lg font-semibold mb-4 text-gray-900 dark:text-gray-100">
           {new Date(run.date).toLocaleDateString()}
         </h2>
-        <div className="space-y-1">
+        <div className="space-y-2 text-sm text-gray-800 dark:text-gray-200">
           <p>
-            <span className="font-semibold">Distance:</span> {run.distance} {run.distanceUnit}
+            <span className="font-semibold">Distance:</span> {run.distance}{" "}
+            {run.distanceUnit}
           </p>
           <p>
             <span className="font-semibold">Duration:</span> {run.duration}
           </p>
           {run.pace && (
             <p>
-              <span className="font-semibold">Pace:</span> {run.pace.pace} /{run.pace.unit}
+              <span className="font-semibold">Pace:</span> {run.pace.pace} /{" "}
+              {run.pace.unit}
             </p>
           )}
           {run.elevationGain !== undefined && (
             <p>
-              <span className="font-semibold">Elevation Gain:</span> {run.elevationGain} {run.elevationGainUnit}
+              <span className="font-semibold">Elevation Gain:</span>{" "}
+              {run.elevationGain} {run.elevationGainUnit}
             </p>
           )}
           {run.notes && (
