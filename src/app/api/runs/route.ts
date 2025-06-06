@@ -19,7 +19,7 @@ export async function GET() {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const {
+  const {
       date,
       duration,
       distance,
@@ -31,7 +31,8 @@ export async function POST(request: NextRequest) {
       notes,
       userId,
       shoeId,
-    } = body;
+      name,
+  } = body;
 
     const newRun = await prisma.run.create({
       data: {
@@ -40,6 +41,7 @@ export async function POST(request: NextRequest) {
         distance: Number(distance),
         distanceUnit,
         trainingEnvironment: trainingEnvironment || null,
+        name: name || `${new Date(date).toLocaleDateString()} ${new Date(date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}${trainingEnvironment ? ` - ${trainingEnvironment}` : ''}`,
         pace: pace ? pace.pace : null,
         paceUnit: pace ? pace.unit : null,
         elevationGain: elevationGain ? Number(elevationGain) : null,

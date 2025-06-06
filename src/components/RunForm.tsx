@@ -9,6 +9,7 @@ import isYupValidationError from "@lib/utils/validation/isYupValidationError";
 import { useSession } from "next-auth/react";
 import { useUserProfile } from "@hooks/useUserProfile";
 import { listShoes } from "@lib/api/shoe";
+import { getRunName } from "@utils/running/getRunName";
 
 import { Card, Button } from "@components/ui";
 import {
@@ -137,6 +138,7 @@ const RunForm: React.FC<RunFormProps> = ({ onSubmit }) => {
         distance: valid.distance,
         distanceUnit: valid.distanceUnit,
         trainingEnvironment: valid.trainingEnvironment || undefined,
+        name: getRunName({ date: new Date(valid.date), trainingEnvironment: valid.trainingEnvironment }),
         elevationGain: valid.elevationGain || undefined,
         elevationGainUnit: valid.elevationGainUnit || undefined,
         notes: valid.notes || undefined,

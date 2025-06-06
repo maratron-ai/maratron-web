@@ -17,7 +17,7 @@ export async function GET() {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { userId, weeks, planData } = body;
+    const { userId, weeks, planData, name } = body;
 
     if (!userId) {
       return NextResponse.json({ error: "User ID is required" }, { status: 400 });
@@ -30,11 +30,15 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Weeks is required" }, { status: 400 });
     }
 
+    const count = await prisma.runningPlan.count({ where: { userId } });
+    const defaultName = `Training Plan ${count + 1}`;
+
     const newPlan = await prisma.runningPlan.create({
       data: {
         user: { connect: { id: userId } },
         weeks: Number(derivedWeeks),
         planData,
+        name: name || defaultName,
       },
     });
 

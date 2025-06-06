@@ -2,6 +2,7 @@
 
 import { Run } from "@maratypes/run";
 import { Card } from "@components/ui";
+import { getRunName } from "@utils/running/getRunName";
 
 interface RunModalProps {
   run: Run;
@@ -32,7 +33,7 @@ export default function RunModal({ run, onClose }: RunModalProps) {
         </button>
 
         <h2 className="text-lg font-semibold mb-4 text-gray-900 dark:text-gray-100">
-          {new Date(run.date).toLocaleDateString()}
+          {run.name || getRunName(run)}
         </h2>
         <div className="space-y-2 text-sm text-gray-800 dark:text-gray-200">
           <p>
