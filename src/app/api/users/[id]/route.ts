@@ -7,7 +7,7 @@ export async function GET(
   context: { params: { id: string } }
 ) {
   const { params } = await context
-  const { id } = params
+  const { id } = await params
   try {
     const user = await prisma.user.findUnique({
       where: { id },

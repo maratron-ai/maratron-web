@@ -4,7 +4,7 @@ import { prisma } from "@lib/prisma";
 export async function GET(request: NextRequest, context: { params: { id: string } }) {
   try {
     const { params } = await context
-    const { id } = params
+    const { id } = await params
     const plan = await prisma.runningPlan.findUnique({ where: { id } });
     if (!plan) {
       return NextResponse.json({ error: "Plan not found" }, { status: 404 });

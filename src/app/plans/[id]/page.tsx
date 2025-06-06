@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, use } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { getRunningPlan } from "@lib/api/plan";
@@ -8,10 +8,11 @@ import type { RunningPlan } from "@maratypes/runningPlan";
 import RunningPlanDisplay from "@components/RunningPlanDisplay";
 
 interface PageProps {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
 export default function PlanPage({ params }: PageProps) {
+  const { id } = use(params);
   const { data: session, status } = useSession();
   const [plan, setPlan] = useState<RunningPlan | null>(null);
   const [loading, setLoading] = useState(true);
@@ -20,7 +21,7 @@ export default function PlanPage({ params }: PageProps) {
   useEffect(() => {
     const fetchPlan = async () => {
       try {
-        const fetched: RunningPlan = await getRunningPlan(params.id);
+        const fetched: RunningPlan = await getRunningPlan(id);
         if (session?.user && fetched.userId !== session.user.id) {
           router.push("/home");
           return;
@@ -33,7 +34,7 @@ export default function PlanPage({ params }: PageProps) {
       }
     };
     fetchPlan();
-  }, [params.id, session?.user, router]);
+  }, [id, session?.user, router]);
 
   if (status === "loading" || loading) {
     return <div className="p-4">Loading...</div>;
