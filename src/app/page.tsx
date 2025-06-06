@@ -1,167 +1,150 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { motion } from "framer-motion";
+import LandingNavbar from "@components/LandingNavbar";
+import Footer from "@components/Footer";
 
-interface Message {
-  text: string;
-  isBot: boolean;
-}
+export default function LandingPage() {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const scrubContainerRef = useRef<HTMLDivElement>(null);
+  const videoDurationRef = useRef<number>(0);
 
-export default function ChatPage() {
-  const [inputMessage, setInputMessage] = useState("");
-  const [messages, setMessages] = useState<Message[]>([]);
+  useEffect(() => {
+    const videoEl = videoRef.current;
+    const container = scrubContainerRef.current;
+    if (!videoEl || !container) return;
 
-  // Simulated bot response
-  async function getBotResponse(prompt: string) {
-    return `An AI-powered running coach providing tailored training plans for your goal of ${prompt}. We'll focus on:
-- Pace optimization
-- Muscle recovery
-- Race strategy
-- Performance metrics analysis`;
-  }
+    // Start scrubbing once raw fraction ≥ 0.1 (10%)
+    const START_THRESHOLD = 0.1;
 
-  const handleSendMessage = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!inputMessage.trim()) return;
+    const handleScroll = () => {
+      const rect = container.getBoundingClientRect();
+      const vh = window.innerHeight;
 
-    const userMessage: Message = { text: inputMessage, isBot: false };
-    setMessages((prev) => [...prev, userMessage]);
-    setInputMessage("");
+      // If container is fully off-screen, bail out
+      if (rect.bottom < 0 || rect.top > vh) {
+        return;
+      }
 
-    setTimeout(async () => {
-      const botResponseText = await getBotResponse(userMessage.text);
-      const botMessage: Message = { text: botResponseText, isBot: true };
-      setMessages((prev) => [...prev, botMessage]);
-    }, 1000);
-  };
+      const totalScrollRange = rect.height + vh;
+      // How far inside the container have we scrolled?
+      const scrollInside = Math.min(
+        Math.max(vh - rect.top, 0),
+        totalScrollRange
+      );
+
+      const rawFraction = scrollInside / totalScrollRange;
+
+      if (rawFraction < START_THRESHOLD) {
+        videoEl.currentTime = 0;
+      } else {
+        // Map [0.1 … 1] → [0 … 1]
+        const adjFraction =
+          (rawFraction - START_THRESHOLD) / (1 - START_THRESHOLD);
+        videoEl.currentTime = adjFraction * videoDurationRef.current;
+      }
+    };
+
+    const onLoadedMetadata = () => {
+      videoDurationRef.current = videoEl.duration || 0;
+      // Immediately scrub in case user already scrolled past 10%
+      handleScroll();
+    };
+
+    videoEl.addEventListener("loadedmetadata", onLoadedMetadata);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    // Also run once on mount in case user is already scrolled
+    handleScroll();
+
+    return () => {
+      videoEl.removeEventListener("loadedmetadata", onLoadedMetadata);
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []); // run only once on mount
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      {/* Hero Section */}
-      <section className="pt-24 pb-16">
-        <div className="container text-center">
-          <h2 className="text-4xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary mb-4">
-            Transform Your Running Experience
-          </h2>
-          <p className="max-w-2xl mx-auto text-lg text-foreground/80">
-            Experience the future of running with AI-powered coaching that
-            adapts to your goals and performance.
-          </p>
-        </div>
-      </section>
+    <main className="relative overflow-x-hidden text-foreground bg-transparent">
+      <LandingNavbar />
 
-      {/* Chat Widget Section */}
-      <section className="container py-12">
-        <div className="bg-background/80 backdrop-blur-lg rounded-xl border border-accent/20 shadow-2xl p-6">
-          <div className="mb-4 h-96 overflow-y-auto border-b border-accent/20 p-4">
-            {messages.length === 0 ? (
-              <p className="text-foreground/50 text-center">
-                Start a conversation with our AI coach...
-              </p>
-            ) : (
-              messages.map((msg, index) => (
-                <div
-                  key={index}
-                  className={`mb-4 flex ${
-                    msg.isBot ? "justify-start" : "justify-end"
-                  }`}
-                >
-                  <div
-                    className={`max-w-md p-4 rounded-lg ${
-                      msg.isBot
-                        ? "bg-primary/10 text-primary"
-                        : "bg-primary text-white"
-                    }`}
-                  >
-                    {msg.text}
-                  </div>
-                </div>
-              ))
-            )}
-          </div>
-          <form onSubmit={handleSendMessage} className="mt-4 flex">
-            <input
-              type="text"
-              placeholder="Type your message..."
-              value={inputMessage}
-              onChange={(e) => setInputMessage(e.target.value)}
-              className="flex-grow bg-background border border-accent/20 rounded-l-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary text-foreground"
+      {/* Full‐screen, behind‐everything video */}
+      <video
+        ref={videoRef}
+        src="/landing-video.mp4"
+        muted
+        playsInline
+        preload="auto"
+        className="pointer-events-none fixed inset-0 w-full h-full object-cover z-0"
+      />
+
+      {/* Semi‐transparent overlay */}
+      <div className="fixed inset-0 bg-black/50 z-10 pointer-events-none" />
+
+      <div
+        ref={scrubContainerRef}
+        id="video-scrub"
+        className="relative w-full"
+        style={{
+          height: "500vh",
+        }} /* adjust this “scrollable height” as needed */
+      >
+        <div className="relative z-10 min-h-screen flex flex-col justify-center items-center text-center pt-16 px-4 sm:px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+          >
+            <Image
+              src="/logo-full.svg"
+              alt="Maratron Logo"
+              width={200}
+              height={200}
+              className="mx-auto mb-6"
+              priority
             />
-            <button
-              type="submit"
-              className="bg-primary text-white px-6 py-3 rounded-r-lg hover:bg-primary/90 transition-colors focus:outline-none focus:ring-2 focus:ring-primary"
-            >
-              Send
-            </button>
-          </form>
+            <h1 className="text-5xl sm:text-7xl font-extrabold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+              The AI Coach for Serious Runners
+            </h1>
+            <p className="mt-6 text-lg text-foreground/70 max-w-xl mx-auto">
+              Maratron helps you train smarter, race faster, and stay
+              injury-free with cutting-edge tech.
+            </p>
+            <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
+              <Link
+                href="/signup"
+                className="px-6 py-3 text-white font-semibold bg-primary rounded-md hover:bg-primary/90 transition"
+              >
+                Get Started
+              </Link>
+              <a
+                href="#features"
+                className="px-6 py-3 text-primary border border-primary rounded-md hover:bg-primary/10 transition"
+              >
+                Learn More
+              </a>
+            </div>
+          </motion.div>
         </div>
-      </section>
+      </div>
 
-      {/* About Section */}
-      <section className="bg-background/80 backdrop-blur-lg py-20">
-        <div className="container text-center">
-          <h2 className="text-3xl font-bold text-primary mb-6">
-            About marathon.ai
+      <section
+        id="features"
+        className="py-24 px-4 sm:px-6 bg-accent/5 relative z-10"
+      >
+        <div className="max-w-6xl mx-auto text-center">
+          <h2 className="text-3xl sm:text-4xl font-bold mb-12">
+            Built for Performance and Progress
           </h2>
-          <p className="max-w-3xl mx-auto text-foreground/80 mb-8">
-            marathon.ai is an innovative AI-powered running coach designed to
-            help you achieve peak performance. Leveraging advanced machine
-            learning algorithms, we create personalized training plans tailored
-            to your unique needs.
-          </p>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="text-left">
-              <h3 className="text-xl font-semibold text-primary mb-4">
-                Key Features
-              </h3>
-              <ul className="list-disc list-inside text-foreground/80 space-y-2">
-                <li>AI-powered training plans</li>
-                <li>Personalized workout strategies</li>
-                <li>In-depth performance analysis</li>
-                <li>Real-time insights</li>
-                <li>Customizable goals</li>
-                <li>Expert running advice</li>
-              </ul>
-            </div>
-            <div className="text-left">
-              <h3 className="text-xl font-semibold text-primary mb-4">
-                Quick Start Guide
-              </h3>
-              <ol className="list-decimal list-inside text-foreground/80 space-y-2">
-                <li>Create an account or log in</li>
-                <li>Select your running goals</li>
-                <li>Enter your training details</li>
-                <li>Start your personalized plan</li>
-              </ol>
-            </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {/* Feature cards… */}
           </div>
         </div>
       </section>
 
-      {/* How It Works Section */}
-      <section className="container py-20">
-        <h2 className="text-3xl font-bold text-primary text-center mb-8">
-          How It Works
-        </h2>
-        <div className="max-w-3xl mx-auto">
-          <ul className="space-y-4 text-foreground/80 text-lg">
-            <li>Create a personalized training plan</li>
-            <li>Track your progress with detailed metrics</li>
-            <li>Receive tailored running tips and advice</li>
-            <li>Optimize your race strategy for peak performance</li>
-            <li>Analyze and improve your running performance</li>
-          </ul>
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer className="bg-background/80 backdrop-blur-lg border-t border-accent/20 py-8">
-        <div className="container text-center text-foreground/80">
-          <p>
-            &copy; {new Date().getFullYear()} marathon.ai. All rights reserved.
-          </p>
-        </div>
-      </footer>
-    </div>
+      <Footer />
+    </main>
   );
 }
