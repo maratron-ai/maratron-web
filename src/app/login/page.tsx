@@ -26,8 +26,8 @@ const LoginPage: React.FC = () => {
       return;
     }
 
-    // On successful login, redirect to home page
-    router.push("/");
+    // On successful login, redirect to the user home page
+    router.push("/home");
   };
 
   // Show loading state while NextAuth checks session (optional)
@@ -48,7 +48,7 @@ const LoginPage: React.FC = () => {
         </div>
         <div className="flex justify-center">
           <button
-            onClick={() => router.push("/")}
+            onClick={() => router.push("/home")}
             className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors"
           >
             Go Home
