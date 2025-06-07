@@ -14,7 +14,7 @@
 - Keep Prisma models in sync with TypeScript types.
 
 # Adding tests
-- Place new tests under `src/lib/utils/__tests__/`.
+- Place new tests under `src/lib/utils/__tests__/` or `src/lib/api/__tests__/` and so on. 
 - Test helper functions individually (see existing small Jest tests).
 - Run `npm test` locally and ensure all suites pass.
 
