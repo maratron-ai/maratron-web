@@ -4,6 +4,7 @@ import { useEffect, useState, use } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { getRunningPlan } from "@lib/api/plan";
+import { assignDatesToPlan } from "@utils/running/planDates";
 import type { RunningPlan } from "@maratypes/runningPlan";
 import RunningPlanDisplay from "@components/RunningPlanDisplay";
 
@@ -22,6 +23,12 @@ export default function PlanPage({ params }: PageProps) {
     const fetchPlan = async () => {
       try {
         const fetched: RunningPlan = await getRunningPlan(id);
+        if (fetched.planData) {
+          fetched.planData = assignDatesToPlan(fetched.planData, {
+            startDate: fetched.startDate?.toString(),
+            endDate: fetched.endDate?.toString(),
+          });
+        }
         if (session?.user && fetched.userId !== session.user.id) {
           router.push("/home");
           return;

@@ -7,6 +7,7 @@ import RunningPlanDisplay from "./RunningPlanDisplay";
 import { generateRunningPlan } from "@utils/running/plans/baseRunningPlan";
 import { RunningPlanData } from "@maratypes/runningPlan";
 import { createRunningPlan, listRunningPlans } from "@lib/api/plan";
+import { assignDatesToPlan } from "@utils/running/planDates";
 
 const DEFAULT_WEEKS = 16;
 const DEFAULT_DISTANCE = 26.2;
@@ -32,6 +33,8 @@ const PlanGenerator: React.FC = () => {
   const [showJson, setShowJson] = useState<boolean>(false);
   const [editPlan, setEditPlan] = useState<boolean>(false);
   const [planName, setPlanName] = useState<string>("Training Plan 1");
+  const [startDate, setStartDate] = useState<string>("");
+  const [endDate, setEndDate] = useState<string>("");
 
   const [trainingLevel, setTrainingLevel] = useState<TrainingLevel>(
     TrainingLevel.Beginner
@@ -228,24 +231,66 @@ const PlanGenerator: React.FC = () => {
         <div className="mt-6">
           <h2 className="text-2xl font-bold text-center mb-4">Running Plan:</h2>
           <div className="mb-4">
-            <label className="block mb-1 font-semibold">Plan Name</label>
-            <input
-              type="text"
-              value={planName}
-              onChange={(e) => setPlanName(e.target.value)}
-              className="border p-2 rounded w-full"
-            />
-          </div>
+          <label className="block mb-1 font-semibold">Plan Name</label>
+          <input
+            type="text"
+            value={planName}
+            onChange={(e) => setPlanName(e.target.value)}
+            className="border p-2 rounded w-full"
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block mb-1 font-semibold">Start Date</label>
+          <input
+            type="date"
+            value={startDate}
+            onChange={(e) => setStartDate(e.target.value)}
+            className="border p-2 rounded w-full"
+          />
+          {startDate && (
+            <button
+              type="button"
+              onClick={() => setStartDate("")}
+              className="mt-1 text-sm underline text-blue-600"
+            >
+              Clear
+            </button>
+          )}
+        </div>
+        <div className="mb-4">
+          <label className="block mb-1 font-semibold">End Date</label>
+          <input
+            type="date"
+            value={endDate}
+            onChange={(e) => setEndDate(e.target.value)}
+            className="border p-2 rounded w-full"
+          />
+          {endDate && (
+            <button
+              type="button"
+              onClick={() => setEndDate("")}
+              className="mt-1 text-sm underline text-blue-600"
+            >
+              Clear
+            </button>
+          )}
+        </div>
           <div className="mt-4 flex justify-center gap-4">
             <button
               type="button"
               onClick={async () => {
                 if (!user) return;
                 try {
+                  const planWithDates = startDate || endDate
+                    ? assignDatesToPlan(planData, { startDate, endDate })
+                    : planData;
                   await createRunningPlan({
                     userId: user.id!,
-                    planData,
+                    planData: planWithDates,
                     name: planName,
+                    startDate: startDate ? new Date(startDate).toISOString() : undefined,
+                    endDate: endDate ? new Date(endDate).toISOString() : undefined,
+                    active: false,
                   });
                   alert("Plan saved");
                 } catch (err) {
