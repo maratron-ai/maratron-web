@@ -1,52 +1,81 @@
+// src/lib/api/run/index.ts
 import axios from "axios";
-import { Run } from "@maratypes/run";
+import { 
+  Run, 
+} from "@maratypes/run";
+import {
+  DistanceUnit,
+  ElevationUnit,
+  TrainingEnvironment,
+} from "@maratypes/basics";
 
-// helper to map API response to Run type
-const mapRun = (data: any): Run => ({
-  id: data.id,
-  date: new Date(data.date),
-  duration: data.duration,
-  distance: data.distance,
-  distanceUnit: data.distanceUnit,
-  trainingEnvironment: data.trainingEnvironment ?? undefined,
-  name: data.name ?? undefined,
+interface RawRunDto {
+  id?: string;
+  date: string;                  // ISO string
+  duration: string;
+  distance: number;
+  distanceUnit: DistanceUnit;
+  trainingEnvironment?: TrainingEnvironment;
+  name?: string;
+  pace?: string;                 // e.g. "07:30"
+  paceUnit?: DistanceUnit;      
+  elevationGain?: number;
+  elevationGainUnit?: ElevationUnit;
+  notes?: string;
+  userId: string;
+  shoeId?: string;
+}
+
+const mapRun = (dto: RawRunDto): Run => ({
+  id: dto.id,
+  date: new Date(dto.date),
+  duration: dto.duration,
+  distance: dto.distance,
+  distanceUnit: dto.distanceUnit,
+  trainingEnvironment: dto.trainingEnvironment,
+  name: dto.name,
   pace:
-    data.pace && data.paceUnit
-      ? { pace: data.pace, unit: data.paceUnit }
+    dto.pace && dto.paceUnit
+      ? { pace: dto.pace, unit: dto.paceUnit }
       : undefined,
-  elevationGain: data.elevationGain ?? undefined,
-  elevationGainUnit: data.elevationGainUnit ?? undefined,
-  notes: data.notes ?? undefined,
-  userId: data.userId,
-  shoeId: data.shoeId ?? undefined,
+  elevationGain: dto.elevationGain,
+  elevationGainUnit: dto.elevationGainUnit,
+  notes: dto.notes,
+  userId: dto.userId,
+  shoeId: dto.shoeId,
 });
 
-// Create a new run
-export const createRun = async (data: Partial<Run>) => {
-  const response = await axios.post(`/api/runs`, data);
-  return response.data;
+
+export const createRun = async (
+  data: Partial<RawRunDto>
+): Promise<Run> => {
+  const { data: dto } = await axios.post<RawRunDto>("/api/runs", data);
+  return mapRun(dto);
 };
 
-// Update an existing run
-export const updateRun = async (runId: string, data: Partial<Run>) => {
-  const response = await axios.put(`/api/runs/${runId}`, data);
-  return response.data;
+export const updateRun = async (
+  runId: string,
+  data: Partial<RawRunDto>
+): Promise<Run> => {
+  const { data: dto } = await axios.put<RawRunDto>(
+    `/api/runs/${runId}`,
+    data
+  );
+  return mapRun(dto);
 };
 
-// Get a specific run by ID
-export const getRun = async (runId: string) => {
-  const response = await axios.get(`/api/runs/${runId}`);
-  return mapRun(response.data);
+export const getRun = async (runId: string): Promise<Run> => {
+  const { data: dto } = await axios.get<RawRunDto>(
+    `/api/runs/${runId}`
+  );
+  return mapRun(dto);
 };
 
-// Delete a run by ID
-export const deleteRun = async (runId: string) => {
-  const response = await axios.delete(`/api/runs/${runId}`);
-  return response.data;
+export const deleteRun = async (runId: string): Promise<void> => {
+  await axios.delete(`/api/runs/${runId}`);
 };
 
-// List all runs (or you can extend this with filters as needed)
-export const listRuns = async () => {
-  const response = await axios.get(`/api/runs`);
-  return (response.data as any[]).map(mapRun);
+export const listRuns = async (): Promise<Run[]> => {
+  const { data } = await axios.get<RawRunDto[]>(`/api/runs`);
+  return data.map(mapRun);
 };

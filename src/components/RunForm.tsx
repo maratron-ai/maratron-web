@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, FormEvent, useEffect } from "react";
+import React, { useState, FormEvent, useEffect, useCallback } from "react";
 import type { Run, Pace } from "@maratypes/run";
 import type { Shoe } from "@maratypes/shoe";
 import runSchema from "@lib/schemas/runSchema";
@@ -46,7 +46,7 @@ const RunForm: React.FC<RunFormProps> = ({ onSubmit }) => {
   const { data: session, status } = useSession();
   const { profile, loading: profileLoading } = useUserProfile();
 
-  const buildInitialForm = (): FormData => ({
+  const buildInitialForm = useCallback((): FormData => ({
     date: getLocalDateTime(),
     hours: 0,
     minutes: 0,
@@ -57,7 +57,7 @@ const RunForm: React.FC<RunFormProps> = ({ onSubmit }) => {
     elevationGainUnit: profile?.defaultElevationUnit || "feet",
     notes: "",
     shoeId: profile?.defaultShoeId || undefined,
-  });
+  }), [profile]);
 
   const [form, setForm] = useState<FormData>(buildInitialForm());
   const [shoes, setShoes] = useState<Shoe[]>([]);
@@ -66,7 +66,7 @@ const RunForm: React.FC<RunFormProps> = ({ onSubmit }) => {
 
   useEffect(() => {
     setForm(buildInitialForm());
-  }, [profile]);      
+  }, [buildInitialForm]);
   // Fetch shoes for the logged-in user
   useEffect(() => {
     const userId = session?.user?.id;
@@ -138,12 +138,12 @@ const RunForm: React.FC<RunFormProps> = ({ onSubmit }) => {
         distance: valid.distance,
         distanceUnit: valid.distanceUnit,
         trainingEnvironment: valid.trainingEnvironment || undefined,
-        name: getRunName({ date: new Date(valid.date), trainingEnvironment: valid.trainingEnvironment }),
+        name: getRunName({ date: new Date(valid.date), trainingEnvironment: valid.trainingEnvironment ?? undefined }),
         elevationGain: valid.elevationGain || undefined,
         elevationGainUnit: valid.elevationGainUnit || undefined,
         notes: valid.notes || undefined,
         pace: { unit: valid.distanceUnit, pace: paceValue } as Pace,
-        userId: session.user.id, // <- From NextAuth
+        userId: session.user.id, // From NextAuth
         shoeId: valid.shoeId || undefined,
       };
 

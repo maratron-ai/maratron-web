@@ -12,3 +12,9 @@ export type DayOfWeek =
   | "Friday"
   | "Saturday"
   | "Sunday";
+
+export type TrainingEnvironment =
+    | "outdoor"
+    | "treadmill"
+    | "indoor"
+    | "mixed";

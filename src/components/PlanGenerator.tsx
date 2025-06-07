@@ -42,7 +42,7 @@ const PlanGenerator: React.FC = () => {
       if (!user?.id) return;
       try {
         const all = await listRunningPlans();
-        const count = all.filter((p: any) => p.userId === user.id).length;
+        const count = all.filter((p: { userId: string }) => p.userId === user.id).length;
         setPlanName(`Training Plan ${count + 1}`);
       } catch (err) {
         console.error(err);

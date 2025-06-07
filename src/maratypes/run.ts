@@ -1,16 +1,18 @@
 // @maratypes/run.ts
 
+import { DistanceUnit, ElevationUnit, TrainingEnvironment } from "@maratypes/basics";
+
 export interface Run {
   id?: string;
   date: Date; // date and time of run
   duration: string; // Format: HH:MM (or total duration in minutes)
   distance: number;
-  distanceUnit: "miles" | "kilometers";
-  trainingEnvironment?: "outdoor" | "treadmill" | "indoor" | "mixed";
+  distanceUnit: DistanceUnit;
+  trainingEnvironment?: TrainingEnvironment;
   name?: string;
   pace?: Pace;
   elevationGain?: number;
-  elevationGainUnit?: "miles" | "kilometers" | "meters" | "feet";
+  elevationGainUnit?: ElevationUnit;
   notes?: string;
 
   userId: string; // required ?? should change to optional ??
@@ -19,7 +21,7 @@ export interface Run {
 }
 
 export interface Pace {
-  unit: "miles" | "kilometers";
+  unit: DistanceUnit; // e.g., "miles" or "kilometers"
   pace: string; // e.g., in mm:ss format per unit
 }
 

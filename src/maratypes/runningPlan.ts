@@ -1,6 +1,8 @@
 // @maratypes/runningPlan.ts
 
 import { Pace } from "./run";
+import { DistanceUnit } from "@maratypes/basics";
+
 
 // main type
 export interface RunningPlan {
@@ -14,7 +16,7 @@ export interface RunningPlan {
 
 export interface PlannedRun {
   type: "easy" | "tempo" | "interval" | "long" | "marathon";
-  unit: "miles" | "kilometers";
+  unit: DistanceUnit;
   targetPace: Pace;
   mileage: number;
   notes?: string;
@@ -23,7 +25,7 @@ export interface PlannedRun {
 export interface WeekPlan {
   weekNumber: number;
   weeklyMileage: number;
-  unit: "miles" | "kilometers";
+  unit: DistanceUnit;
   runs: PlannedRun[];
   notes?: string;
 }

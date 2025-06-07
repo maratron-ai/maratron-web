@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from 'axios';
 import { createRunningPlan, updateRunningPlan, getRunningPlan, deleteRunningPlan, listRunningPlans } from '../plan';
 

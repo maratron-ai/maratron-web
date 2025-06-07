@@ -1,13 +1,12 @@
 import { DayOfWeek, DistanceUnit, ElevationUnit } from "./basics";
 import { Shoe } from "./shoe"; // Import your shoe type
+import { TrainingEnvironment } from "./basics";
 
 export enum TrainingLevel {
   Beginner = "beginner",
   Intermediate = "intermediate",
   Advanced = "advanced",
 }
-
-export type TrainingEnvironment = "outdoor" | "treadmill" | "indoor" | "mixed";
 
 export type Device =
   | "Garmin"
