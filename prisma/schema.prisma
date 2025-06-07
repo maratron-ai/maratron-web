@@ -149,6 +149,9 @@ model RunningPlan {
   name      String
   weeks     Int
   planData  Json
+  startDate DateTime?
+  endDate   DateTime?
+  active    Boolean   @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 

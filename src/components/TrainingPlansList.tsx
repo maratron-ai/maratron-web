@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
-import { listRunningPlans } from "@lib/api/plan";
+import { listRunningPlans, updateRunningPlan } from "@lib/api/plan";
 import type { RunningPlan } from "@maratypes/runningPlan";
 
 export default function TrainingPlansList() {
@@ -35,6 +35,23 @@ export default function TrainingPlansList() {
     fetchPlans();
   }, [session?.user?.id]);
 
+  const setActive = async (id: string) => {
+    try {
+      await Promise.all(
+        plans.map((p) =>
+          p.id
+            ? updateRunningPlan(p.id, { active: p.id === id })
+            : Promise.resolve()
+        )
+      );
+      setPlans((prev) =>
+        prev.map((p) => ({ ...p, active: p.id === id }))
+      );
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   if (loading) return <p className="text-gray-500">Loading plans...</p>;
   if (plans.length === 0)
     return <p className="text-gray-500">No plans saved.</p>;
@@ -46,7 +63,16 @@ export default function TrainingPlansList() {
           <Link href={`/plans/${plan.id ?? ""}`} className="block">
             <span className="font-semibold">{plan.name}</span>
             {plan.planData?.weeks && ` - ${plan.planData.weeks} weeks`}
+            {plan.active && <span className="ml-2 text-green-600">(active)</span>}
           </Link>
+          {!plan.active && (
+            <button
+              onClick={() => plan.id && setActive(plan.id)}
+              className="mt-1 text-sm underline text-blue-600"
+            >
+              Set Active
+            </button>
+          )}
         </li>
       ))}
     </ul>

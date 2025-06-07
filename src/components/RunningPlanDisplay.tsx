@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { RunningPlanData, WeekPlan } from "@maratypes/runningPlan";
+import { DayOfWeek } from "@maratypes/basics";
 import { parsePace, formatPace } from "@utils/running/paces";
 
 interface RunningPlanDisplayProps {
@@ -55,6 +56,16 @@ const CollapsibleWeek: React.FC<CollapsibleWeekProps> = ({
 }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
+  const days: DayOfWeek[] = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
+
   return (
     <div className="border border-gray-300 rounded shadow-sm mb-4">
       <div
@@ -69,9 +80,13 @@ const CollapsibleWeek: React.FC<CollapsibleWeekProps> = ({
       </div>
       {isOpen && (
         <div className="p-4 bg-gray-400 text-gray-800">
+          <p className="mb-2">Start: {weekPlan.startDate?.slice(0, 10)}</p>
           <ul className="space-y-3">
-            {weekPlan.runs.map((run, index) => (
-              <li key={index} className="border-t border-gray-300 pt-2 space-y-1">
+            {weekPlan.runs.map((run, index) => {
+              const past = run.date ? new Date(run.date) < new Date() : false;
+              const classes = past || run.done ? "text-gray-500 line-through" : "";
+              return (
+              <li key={index} className={`border-t border-gray-300 pt-2 space-y-1 ${classes}`}> 
                 <p>
                   <strong>Type:</strong>{" "}
                   {run.type.charAt(0).toUpperCase() + run.type.slice(1)}
@@ -111,6 +126,20 @@ const CollapsibleWeek: React.FC<CollapsibleWeekProps> = ({
                       />
                     </label>
                     <label className="block">
+                      <span className="mr-2">Day:</span>
+                      <select
+                        value={run.day || "Sunday"}
+                        onChange={(e) =>
+                          updateRun(weekIndex, index, "day", e.target.value as DayOfWeek)
+                        }
+                        className="border p-1 rounded text-black"
+                      >
+                        {days.map((d) => (
+                          <option key={d} value={d}>{d}</option>
+                        ))}
+                      </select>
+                    </label>
+                    <label className="block">
                       <span className="mr-2">Notes:</span>
                       <input
                         type="text"
@@ -121,6 +150,17 @@ const CollapsibleWeek: React.FC<CollapsibleWeekProps> = ({
                         className="border p-1 rounded text-black w-full"
                       />
                     </label>
+                    <label className="block">
+                      <input
+                        type="checkbox"
+                        checked={run.done || false}
+                        onChange={(e) =>
+                          updateRun(weekIndex, index, "done", e.target.checked)
+                        }
+                        className="mr-2"
+                      />
+                      Mark done
+                    </label>
                   </div>
                 ) : (
                   <>
@@ -130,15 +170,40 @@ const CollapsibleWeek: React.FC<CollapsibleWeekProps> = ({
                     <p>
                       <strong>Target Pace:</strong> {run.targetPace.pace} per {run.targetPace.unit}
                     </p>
+                    {run.day && (
+                      <p>
+                        <strong>Day:</strong> {run.day}
+                      </p>
+                    )}
+                    {run.date && (
+                      <p>
+                        <strong>Date:</strong> {run.date.slice(0, 10)}
+                      </p>
+                    )}
                     {run.notes && (
                       <p>
                         <strong>Notes:</strong> {run.notes}
                       </p>
                     )}
+                    {typeof run.done !== "undefined" && (
+                      <p>
+                        <input
+                          type="checkbox"
+                          checked={run.done}
+                          onChange={(e) =>
+                            updateRun(weekIndex, index, "done", e.target.checked)
+                          }
+                          className="mr-2"
+                          disabled={!editable}
+                        />
+                        <span>Done</span>
+                      </p>
+                    )}
                   </>
                 )}
               </li>
-            ))}
+              );
+            })}
           </ul>
         </div>
       )}
