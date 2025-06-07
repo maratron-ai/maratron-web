@@ -54,7 +54,7 @@ export default function PlanPage({ params }: PageProps) {
   return (
     <div className="p-4">
       <h1 className="text-2xl font-bold mb-4">{plan.name}</h1>
-      <RunningPlanDisplay planData={plan.planData} />
+      <RunningPlanDisplay planData={plan.planData} planName={plan.name} />
     </div>
   );
 }

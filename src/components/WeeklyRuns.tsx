@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { listRunningPlans, updateRunningPlan } from "@lib/api/plan";
 import { createRun } from "@lib/api/run";
+import { Card } from "@components/ui";
 import type { RunningPlan } from "@maratypes/runningPlan";
 import { assignDatesToPlan } from "@utils/running/planDates";
 import { calculateDurationFromPace } from "@utils/running/calculateDuration";
@@ -73,7 +74,7 @@ export default function WeeklyRuns() {
           distance: run.mileage,
           distanceUnit: run.unit,
           userId: plan.userId,
-          name: `${run.type} run`,
+          name: `${plan.name} - Week ${weekIndex + 1} - ${run.type} ${run.mileage} ${run.unit}`,
         });
       }
       setPlan(updated);
@@ -83,27 +84,36 @@ export default function WeeklyRuns() {
   };
 
   return (
-    <div className="space-y-2">
-      <h3 className="text-xl font-semibold">Runs this week</h3>
-      <ul className="space-y-1">
-        {week.runs.map((r, i) => (
-          <li
-            key={i}
-            className={r.done ? "text-gray-500 line-through" : undefined}
-          >
-            <label className="space-x-2">
-              <input
-                type="checkbox"
-                checked={r.done || false}
-                onChange={() => toggleDone(i)}
-              />
-              <span>
-                {r.date?.slice(0, 10)} - {r.type} {r.mileage} {r.unit}
-              </span>
-            </label>
-          </li>
-        ))}
-      </ul>
+    <div className="space-y-4">
+      <h3 className="text-xl font-semibold">
+        {plan.name} - Week {week.weekNumber}
+      </h3>
+      <div className="space-y-2">
+        {week.runs.map((r, i) => {
+          const classes = r.done ? "text-gray-500 line-through" : undefined;
+          return (
+            <Card key={i} className={`flex items-center justify-between ${classes}`}>
+              <div>
+                <p className="font-semibold">
+                  {r.date?.slice(0, 10)} - {r.type}
+                </p>
+                <p>
+                  {r.mileage} {r.unit} @ {r.targetPace.pace}
+                </p>
+                {r.notes && <p className="text-sm">{r.notes}</p>}
+              </div>
+              <label className="flex items-center space-x-2">
+                <input
+                  type="checkbox"
+                  checked={r.done || false}
+                  onChange={() => toggleDone(i)}
+                />
+                <span>{r.done ? "Completed" : "Mark done"}</span>
+              </label>
+            </Card>
+          );
+        })}
+      </div>
     </div>
   );
 }

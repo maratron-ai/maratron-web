@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { listRunningPlans, updateRunningPlan } from "@lib/api/plan";
 import type { RunningPlan } from "@maratypes/runningPlan";
+import { Card, Button } from "@components/ui";
 
 export default function TrainingPlansList() {
   const { data: session } = useSession();
@@ -57,24 +58,34 @@ export default function TrainingPlansList() {
     return <p className="text-gray-500">No plans saved.</p>;
 
   return (
-    <ul className="space-y-2">
+    <div className="space-y-2">
       {plans.map((plan) => (
-        <li key={plan.id} className="border p-2 rounded">
-          <Link href={`/plans/${plan.id ?? ""}`} className="block">
-            <span className="font-semibold">{plan.name}</span>
-            {plan.planData?.weeks && ` - ${plan.planData.weeks} weeks`}
-            {plan.active && <span className="ml-2 text-green-600">(active)</span>}
-          </Link>
-          {!plan.active && (
-            <button
-              onClick={() => plan.id && setActive(plan.id)}
-              className="mt-1 text-sm underline text-blue-600"
-            >
+        <Card key={plan.id} className="flex justify-between items-start">
+          <div>
+            <Link href={`/plans/${plan.id ?? ""}`} className="font-semibold underline">
+              {plan.name}
+            </Link>
+            <div className="text-sm">
+              {plan.planData?.weeks && <span>{plan.planData.weeks} weeks</span>}
+              {plan.startDate && (
+                <span className="ml-2">
+                  {new Date(plan.startDate).toLocaleDateString()} -
+                  {" "}
+                  {plan.endDate ? new Date(plan.endDate).toLocaleDateString() : ""}
+                </span>
+              )}
+              {plan.active && (
+                <span className="ml-2 text-green-600 font-medium">active</span>
+              )}
+            </div>
+          </div>
+          {!plan.active && plan.id && (
+            <Button onClick={() => setActive(plan.id)} className="text-sm px-2 py-1">
               Set Active
-            </button>
+            </Button>
           )}
-        </li>
+        </Card>
       ))}
-    </ul>
+    </div>
   );
 }
