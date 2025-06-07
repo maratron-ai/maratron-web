@@ -315,9 +315,9 @@ const PlanGenerator: React.FC = () => {
 
           <RunningPlanDisplay
             planData={planData}
+            planName={planName}
             editable={editPlan}
             onPlanChange={setPlanData}
-            // title=""
           />
           <div className="mt-4">
             <label className="flex items-center space-x-2">

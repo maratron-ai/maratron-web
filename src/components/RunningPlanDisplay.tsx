@@ -5,12 +5,14 @@ import { parsePace, formatPace } from "@utils/running/paces";
 
 interface RunningPlanDisplayProps {
   planData: RunningPlanData;
+  planName?: string;
   editable?: boolean;
   onPlanChange?: (plan: RunningPlanData) => void;
 }
 
 const RunningPlanDisplay: React.FC<RunningPlanDisplayProps> = ({
   planData,
+  planName,
   editable = false,
   onPlanChange,
 }) => {
@@ -27,7 +29,9 @@ const RunningPlanDisplay: React.FC<RunningPlanDisplayProps> = ({
   };
   return (
     <div className="container p-4">
-      <h2 className="text-2xl font-bold text-center mb-4">Your Running Plan</h2>
+      <h2 className="text-2xl font-bold text-center mb-4">
+        {planName || "Your Running Plan"}
+      </h2>
       {planData.schedule.map((weekPlan, wi) => (
         <CollapsibleWeek
           key={weekPlan.weekNumber}
