@@ -17,7 +17,7 @@ export async function GET() {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { userId, weeks, planData, name } = body;
+    const { userId, weeks, planData, name, startDate, endDate, active } = body;
 
     if (!userId) {
       return NextResponse.json({ error: "User ID is required" }, { status: 400 });
@@ -39,6 +39,9 @@ export async function POST(request: NextRequest) {
         weeks: Number(derivedWeeks),
         planData,
         name: name || defaultName,
+        startDate: startDate ? new Date(startDate) : undefined,
+        endDate: endDate ? new Date(endDate) : undefined,
+        active: active ?? false,
       },
     });
 

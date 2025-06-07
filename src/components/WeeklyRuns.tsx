@@ -59,13 +59,14 @@ export default function WeeklyRuns() {
     if (!plan || !plan.id) return;
     const updated = { ...plan };
     const run = updated.planData.schedule[weekIndex].runs[idx];
+    const wasDone = run.done ?? false;
     run.done = !run.done;
     updated.planData.schedule[weekIndex].done = updated.planData.schedule[
       weekIndex
     ].runs.every((r) => r.done);
     try {
       await updateRunningPlan(plan.id, { planData: updated.planData });
-      if (run.done) {
+      if (!wasDone && run.done) {
         await createRun({
           date: run.date ?? new Date().toISOString(),
           duration: calculateDurationFromPace(run.mileage, run.targetPace.pace),
