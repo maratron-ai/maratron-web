@@ -11,6 +11,23 @@ const LoginPage: React.FC = () => {
   const [error, setError] = useState("");
   const router = useRouter();
 
+
+  ///////////////// REMOVE THIS for prod
+  const jacksonLogin = async () => {
+    const res = await signIn("credentials", {
+      redirect: false, 
+      email: "jackson@maratron.ai",
+      password: "password",
+    });
+
+    if (res?.error) {
+      setError("Invalid email or password.");
+      return;
+    }
+
+    router.push("/home");
+  }
+
   // Handles form submit using NextAuth signIn
   const handleLogin = async (e: FormEvent) => {
     e.preventDefault();
@@ -65,6 +82,15 @@ const LoginPage: React.FC = () => {
         <h1 className="text-3xl font-bold">Login</h1>
       </div>
       {error && <p className="text-red-500 text-center mb-4">{error}</p>}
+      <div className="flex justify-center mb-4">
+        <button
+          type="button"
+          onClick={jacksonLogin}
+          className="w-half border justify-center hover:bg-blue-50"
+        >
+          Jackson login
+        </button>
+      </div>
       <form onSubmit={handleLogin} className="max-w-md mx-auto">
         <div className="mb-4">
           <label htmlFor="email" className="block text-gray-700 mb-2">

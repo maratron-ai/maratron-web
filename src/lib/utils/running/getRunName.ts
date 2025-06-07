@@ -5,5 +5,5 @@ export const getRunName = (run: Pick<Run, 'date' | 'trainingEnvironment'>): stri
   const datePart = dt.toLocaleDateString();
   const timePart = dt.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   const env = run.trainingEnvironment ?? 'unspecified';
-  return `${datePart} ${timePart} - ${env}`;
+  return `${datePart} ${timePart} - ${env? env : 'run'}`.trim();
 };
