@@ -1,2 +1,0 @@
-ALTER TABLE "RunningPlans" ADD COLUMN "name" TEXT NOT NULL DEFAULT 'Training Plan';
-ALTER TABLE "Runs" ADD COLUMN "name" TEXT;

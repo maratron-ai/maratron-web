@@ -38,10 +38,29 @@ CREATE TABLE "Users" (
     "preferredTrainingDays" "DayOfWeek"[],
     "preferredTrainingEnvironment" "TrainingEnvironment",
     "device" "Device",
+    "defaultDistanceUnit" "DistanceUnit" DEFAULT 'miles',
+    "defaultElevationUnit" "elevationGainUnit" DEFAULT 'feet',
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
+    "defaultShoeId" TEXT,
 
     CONSTRAINT "Users_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Shoes" (
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "notes" TEXT,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "currentDistance" DOUBLE PRECISION NOT NULL DEFAULT 0,
+    "distanceUnit" "DistanceUnit" NOT NULL,
+    "maxDistance" DOUBLE PRECISION NOT NULL,
+    "retired" BOOLEAN NOT NULL DEFAULT false,
+    "userId" TEXT NOT NULL,
+
+    CONSTRAINT "Shoes_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -52,6 +71,7 @@ CREATE TABLE "Runs" (
     "distance" DOUBLE PRECISION NOT NULL,
     "distanceUnit" "DistanceUnit" NOT NULL,
     "trainingEnvironment" "TrainingEnvironment",
+    "name" TEXT,
     "pace" TEXT,
     "paceUnit" "DistanceUnit",
     "elevationGain" DOUBLE PRECISION,
@@ -60,6 +80,7 @@ CREATE TABLE "Runs" (
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "userId" TEXT NOT NULL,
+    "shoeId" TEXT,
 
     CONSTRAINT "Runs_pkey" PRIMARY KEY ("id")
 );
@@ -68,8 +89,12 @@ CREATE TABLE "Runs" (
 CREATE TABLE "RunningPlans" (
     "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
     "weeks" INTEGER NOT NULL,
     "planData" JSONB NOT NULL,
+    "startDate" TIMESTAMP(3),
+    "endDate" TIMESTAMP(3),
+    "active" BOOLEAN NOT NULL DEFAULT false,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -79,8 +104,20 @@ CREATE TABLE "RunningPlans" (
 -- CreateIndex
 CREATE UNIQUE INDEX "Users_email_key" ON "Users"("email");
 
+-- CreateIndex
+CREATE UNIQUE INDEX "Users_defaultShoeId_key" ON "Users"("defaultShoeId");
+
+-- AddForeignKey
+ALTER TABLE "Users" ADD CONSTRAINT "Users_defaultShoeId_fkey" FOREIGN KEY ("defaultShoeId") REFERENCES "Shoes"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Shoes" ADD CONSTRAINT "Shoes_userId_fkey" FOREIGN KEY ("userId") REFERENCES "Users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
 -- AddForeignKey
 ALTER TABLE "Runs" ADD CONSTRAINT "Runs_userId_fkey" FOREIGN KEY ("userId") REFERENCES "Users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Runs" ADD CONSTRAINT "Runs_shoeId_fkey" FOREIGN KEY ("shoeId") REFERENCES "Shoes"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "RunningPlans" ADD CONSTRAINT "RunningPlans_userId_fkey" FOREIGN KEY ("userId") REFERENCES "Users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
