@@ -2,17 +2,23 @@ export type { DayOfWeek } from "@maratypes/basics";
 import { DayOfWeek } from "@maratypes/basics";
 import type { RunningPlanData } from "@maratypes/runningPlan";
 
+function parseDateUTC(date: string | Date): Date {
+  if (date instanceof Date) return new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()));
+  // treat plain dates as UTC to avoid timezone offsets
+  return new Date(date.includes("T") ? date : `${date}T00:00:00Z`);
+}
+
 function startOfWeekSunday(date: Date): Date {
-  const d = new Date(date);
-  const diff = d.getDay();
-  d.setDate(d.getDate() - diff);
-  d.setHours(0, 0, 0, 0);
+  const d = parseDateUTC(date);
+  const diff = d.getUTCDay();
+  d.setUTCDate(d.getUTCDate() - diff);
+  d.setUTCHours(0, 0, 0, 0);
   return d;
 }
 
 function addDays(date: Date, days: number): Date {
-  const d = new Date(date);
-  d.setDate(d.getDate() + days);
+  const d = parseDateUTC(date);
+  d.setUTCDate(d.getUTCDate() + days);
   return d;
 }
 
@@ -41,8 +47,8 @@ export function assignDatesToPlan(
   const { startDate, endDate } = opts;
   if (!startDate && !endDate) return plan;
   const baseStart = startDate
-    ? startOfWeekSunday(new Date(startDate))
-    : addWeeks(startOfWeekSunday(new Date(endDate!)), -(plan.weeks - 1));
+    ? startOfWeekSunday(parseDateUTC(startDate))
+    : addWeeks(startOfWeekSunday(parseDateUTC(endDate!)), -(plan.weeks - 1));
   const schedule = plan.schedule.map((week, wi) => {
     const weekStart = addWeeks(baseStart, wi);
     const runs = week.runs.map((r) => {
