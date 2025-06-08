@@ -5,6 +5,7 @@ import { useSession } from "next-auth/react";
 import RecentRuns from "@components/RecentRuns";
 import TrainingPlansList from "@components/TrainingPlansList";
 import WeeklyRuns from "@components/WeeklyRuns";
+import ShoesList from "@components/ShoesList";
 
 export default function HomePage() {
   const { data: session, status } = useSession();
@@ -90,6 +91,13 @@ export default function HomePage() {
       <div className="max-w-4xl mx-auto">
         <section>
           <TrainingPlansList />
+        </section>
+      </div>
+
+      <h2 className="text-2xl font-semibold mb-4">Your Shoes</h2>
+      <div className="max-w-4xl mx-auto">
+        <section>
+          <ShoesList />
         </section>
       </div>
     </main>
