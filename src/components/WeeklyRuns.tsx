@@ -109,7 +109,7 @@ export default function WeeklyRuns() {
       await updateRunningPlan(plan.id, { planData: updated.planData });
       if (!wasDone && run.done) {
         await createRun({
-          date: run.date ?? new Date().toISOString(),
+          date: new Date().toISOString(),
           duration: calculateDurationFromPace(run.mileage, run.targetPace.pace),
           distance: run.mileage,
           distanceUnit: run.unit,
