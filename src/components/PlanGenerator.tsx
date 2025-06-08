@@ -23,7 +23,6 @@ const DISTANCE_INFO: Record<RaceType, { miles: number; km: number; weeks: number
   full: { miles: 26.2, km: 42.2, weeks: 16 },
 };
 
-const DEFAULT_UNIT = "miles";
 const DEFAULT_RACE: RaceType = "full";
 
 const PlanGenerator: React.FC = () => {
@@ -31,18 +30,16 @@ const PlanGenerator: React.FC = () => {
 
   // Set initial state to user's info (if available), fallback to defaults
 const [raceType, setRaceType] = useState<RaceType>(DEFAULT_RACE);
+const [distanceUnit, setDistanceUnit] = useState<"miles" | "kilometers">(
+  "miles"
+);
 const [weeks, setWeeks] = useState<number>(DISTANCE_INFO[DEFAULT_RACE].weeks);
 const [targetDistance, setTargetDistance] = useState<number>(
-  DEFAULT_UNIT === "kilometers"
-    ? DISTANCE_INFO[DEFAULT_RACE].km
-    : DISTANCE_INFO[DEFAULT_RACE].miles
-);
-const [distanceUnit, setDistanceUnit] = useState<"miles" | "kilometers">(
-  DEFAULT_UNIT
+  DISTANCE_INFO[DEFAULT_RACE].miles
 );
   const [startingWeeklyMileage, setstartingWeeklyMileage] =
     useState<number>(20);
-  const [vo2max, setVo2max] = useState<number>(45);
+  const [vo2max, setVo2max] = useState<number>(30);
   const [useTotalTime, setUseTotalTime] = useState<boolean>(false);
   const [targetPace, setTargetPace] = useState<string>("10:00");
   const [targetTotalTime, setTargetTotalTime] = useState<string>("3:45:00");
@@ -79,10 +76,12 @@ const [distanceUnit, setDistanceUnit] = useState<"miles" | "kilometers">(
     if (user) {
       if (user.trainingLevel) setTrainingLevel(user.trainingLevel);
       if (user.weeklyMileage) setstartingWeeklyMileage(user.weeklyMileage);
-      if (user.VO2Max) setVo2max(user.VO2Max);
+      setVo2max(user.VO2Max ?? 30);
       if (user.defaultDistanceUnit) setDistanceUnit(user.defaultDistanceUnit);
       // if (user.defaultShoeId) setDefaultShoeId(user.defaultShoeId);
       // Optionally, set other user-specific defaults
+    } else {
+      setVo2max(30);
     }
   }, [user]);
 
@@ -166,18 +165,6 @@ const [distanceUnit, setDistanceUnit] = useState<"miles" | "kilometers">(
               Target Distance: {targetDistance} {distanceUnit}
             </span>
           </div>
-          {/* Unit Toggle */}
-          <div className="flex flex-col">
-            <label htmlFor="distanceUnit" className="mb-1">
-              Unit:
-            </label>
-            <ToggleSwitch
-              checked={distanceUnit === "kilometers"}
-              onChange={(c) => setDistanceUnit(c ? "kilometers" : "miles")}
-              leftLabel="Miles"
-              rightLabel="Kilometers"
-            />
-          </div>
           {/* Current Weekly Mileage */}
           <div className="flex flex-col">
             <label htmlFor="currentMileage" className="mb-1">
@@ -189,20 +176,6 @@ const [distanceUnit, setDistanceUnit] = useState<"miles" | "kilometers">(
               step="1"
               value={startingWeeklyMileage}
               onChange={(e) => setstartingWeeklyMileage(Number(e.target.value))}
-              className="border p-2 rounded"
-            />
-          </div>
-          {/* VO₂ Max */}
-          <div className="flex flex-col">
-            <label htmlFor="vo2max" className="mb-1">
-              VO₂ Max:
-            </label>
-            <input
-              id="vo2max"
-              type="number"
-              step="1"
-              value={vo2max}
-              onChange={(e) => setVo2max(Number(e.target.value))}
               className="border p-2 rounded"
             />
           </div>

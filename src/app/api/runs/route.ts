@@ -1,6 +1,8 @@
 // src/app/api/runs/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@lib/prisma";
+import { calculateVO2MaxJackDaniels } from "@utils/running/jackDaniels";
+import { parseDuration } from "@utils/time";
 
 export async function GET() {
   // used to have request: NextRequest as a param
@@ -77,6 +79,17 @@ export async function POST(request: NextRequest) {
           },
         });
       }
+    }
+
+    // Estimate VO2 max from this run and update user
+    try {
+      const meters =
+        distanceUnit === "miles" ? Number(distance) * 1609.34 : Number(distance) * 1000;
+      const seconds = parseDuration(duration);
+      const vo2 = Math.round(calculateVO2MaxJackDaniels(meters, seconds));
+      await prisma.user.update({ where: { id: userId }, data: { VO2Max: vo2 } });
+    } catch (err) {
+      console.error("Failed to update VO2Max", err);
     }
 
     return NextResponse.json(newRun, { status: 201 });
