@@ -12,6 +12,13 @@ export default function WeeklyRuns() {
   const { data: session } = useSession();
   const [plan, setPlan] = useState<RunningPlan | null>(null);
   const [loading, setLoading] = useState(true);
+  const [refresh, setRefresh] = useState(0);
+
+  useEffect(() => {
+    const handle = () => setRefresh((r) => r + 1);
+    window.addEventListener("activePlanChanged", handle);
+    return () => window.removeEventListener("activePlanChanged", handle);
+  }, []);
 
   useEffect(() => {
     const fetchPlan = async () => {
@@ -34,7 +41,7 @@ export default function WeeklyRuns() {
       }
     };
     fetchPlan();
-  }, [session?.user?.id]);
+  }, [session?.user?.id, refresh]);
 
   if (loading) return <p className="text-gray-500">Loading...</p>;
   if (!plan) return <p className="text-gray-500">No active plan.</p>;

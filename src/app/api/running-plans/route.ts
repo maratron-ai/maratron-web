@@ -1,6 +1,31 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@lib/prisma";
 
+function parseDateUTC(date: string | Date): Date {
+  if (date instanceof Date) {
+    return new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()));
+  }
+  return new Date(date.includes("T") ? date : `${date}T00:00:00Z`);
+}
+
+function addDays(date: Date, days: number): Date {
+  const d = parseDateUTC(date);
+  d.setUTCDate(d.getUTCDate() + days);
+  return d;
+}
+
+function addWeeks(date: Date, weeks: number): Date {
+  return addDays(date, weeks * 7);
+}
+
+function nextSunday(): Date {
+  const now = new Date();
+  const today = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()));
+  const diff = (7 - today.getUTCDay()) % 7;
+  today.setUTCDate(today.getUTCDate() + diff);
+  return today;
+}
+
 export async function GET() {
   try {
     const plans = await prisma.runningPlan.findMany();
@@ -33,14 +58,26 @@ export async function POST(request: NextRequest) {
     const count = await prisma.runningPlan.count({ where: { userId } });
     const defaultName = `Training Plan ${count + 1}`;
 
+    let start = startDate ? parseDateUTC(startDate) : undefined;
+    let end = endDate ? parseDateUTC(endDate) : undefined;
+
+    if (start && !end) {
+      end = addWeeks(start, Number(derivedWeeks) - 1);
+    } else if (end && !start) {
+      start = addWeeks(end, -(Number(derivedWeeks) - 1));
+    } else if (!start && !end) {
+      start = nextSunday();
+      end = addWeeks(start, Number(derivedWeeks) - 1);
+    }
+
     const newPlan = await prisma.runningPlan.create({
       data: {
         user: { connect: { id: userId } },
         weeks: Number(derivedWeeks),
         planData,
         name: name || defaultName,
-        startDate: startDate ? new Date(startDate) : undefined,
-        endDate: endDate ? new Date(endDate) : undefined,
+        startDate: start,
+        endDate: end,
         active: active ?? false,
       },
     });
