@@ -2,20 +2,16 @@ import { calculatePaceForVO2Max } from "../jackDaniels";
 import { WeekPlan, RunningPlanData, PlannedRun } from "@maratypes/runningPlan";
 import { formatPace } from "@utils/running/paces";
 
-// Generic running plan generator. Works for any distance but the
-// progression is best suited to marathon training.
-
-
-
 // const formatPace = (sec: number): string => {
 //   const m = Math.floor(sec / 60);
 //   const s = Math.round(sec % 60);
 //   return `${m}:${s.toString().padStart(2, "0")}`;
 // };
 
-
 const MIN_WEEKS = 8;
+const FOUR_WEEK_CYCLE = 4;
 const TAPER_FACTOR = 0.75;
+const FOUR_WEEK_FACTOR = 0.8;
 const EASY_PERCENT = 0.15;
 const TEMPO_PERCENT = 0.2;
 const WUCD_PERCENT = 0.1; // warm-up/cool-down as fraction of run
@@ -91,22 +87,23 @@ function computeMileageProgression(
   taperStart: number,
   volumeRule: { increasePct: number; maxAdd: number }
 ): ProgressionState[] {
-  const peakWeek = taperStart - 1;
-  const weeklyIncrease = Math.min(
-    startingMileage * volumeRule.increasePct,
-    volumeRule.maxAdd
-  );
-  let mileage = startingMileage;
-  const states: ProgressionState[] = [];
-  for (let week = 1; week <= weeks; week++) {
-    if (week > 1 && week <= peakWeek) {
-      mileage += weeklyIncrease;
-    } else if (week > peakWeek) {
-      mileage *= TAPER_FACTOR;
+  return Array.from({ length: weeks }, (_, i) => i + 1).reduce<
+    ProgressionState[]
+  >((acc, week) => {
+    const prev = acc[acc.length - 1]?.mileage ?? startingMileage;
+    let mileage: number;
+    if (week >= taperStart) {
+      mileage = prev * TAPER_FACTOR;
+    } else if (week % FOUR_WEEK_CYCLE === 0) {
+      mileage = prev * FOUR_WEEK_FACTOR;
+    } else {
+      mileage = Math.min(
+        prev * (1 + volumeRule.increasePct),
+        prev + volumeRule.maxAdd
+      );
     }
-    states.push({ week, mileage });
-  }
-  return states;
+    return [...acc, { week, mileage }];
+  }, []);
 }
 
 export function generateRunningPlan(
@@ -235,26 +232,18 @@ export function generateRunningPlan(
     }
 
     // Easy & tempo runs
-    let easyMileage = Number((mileage * EASY_PERCENT).toFixed(1));
-    if (easyMileage > targetDistance) {
-      easyMileage = Number(targetDistance.toFixed(1));
-    }
+    const easyMileage = Number((mileage * EASY_PERCENT).toFixed(1));
     const tempoMileage = Number((mileage * TEMPO_PERCENT).toFixed(1));
     const tempoNotes = `Tempo at T-pace (${
       zones.tempo
     }) for ${tempoMileage} ${distanceUnit}, plus ${WUCD_PERCENT * 100}% WU/CD`;
-
-    let easyPaceSec = parseHMS(zones.easy);
-    if (easyPaceSec < marathonSec) {
-      easyPaceSec = marathonSec * 1.05;
-    }
 
     const runs: PlannedRun[] = [
       {
         type: "easy",
         unit: distanceUnit,
         mileage: easyMileage,
-        targetPace: { unit: distanceUnit, pace: formatPace(easyPaceSec) },
+        targetPace: { unit: distanceUnit, pace: zones.easy },
       },
       {
         type: "interval",
