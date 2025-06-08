@@ -9,12 +9,12 @@ import { formatPace } from "@utils/running/paces";
 // };
 
 const MIN_WEEKS = 8;
-const FOUR_WEEK_CYCLE = 4;
-const TAPER_FACTOR = 0.75;
-const FOUR_WEEK_FACTOR = 0.8;
+const TAPER_WEEKS = 2;
 const EASY_PERCENT = 0.15;
 const TEMPO_PERCENT = 0.2;
 const WUCD_PERCENT = 0.1; // warm-up/cool-down as fraction of run
+const CUTBACK_FREQUENCY = 4;
+const CUTBACK_FACTOR = 0.85;
 
 export const Units = ["miles", "kilometers"] as const;
 export type Unit = (typeof Units)[number];
@@ -77,48 +77,81 @@ interface PaceZones {
 }
 
 // -- Immutable progression state
+export enum TrainingPhase {
+  Base = "Base",
+  Build = "Build",
+  Peak = "Peak",
+  Taper = "Taper",
+}
+
 interface ProgressionState {
   week: number;
   mileage: number;
-}
-function computeMileageProgression(
-  weeks: number,
-  startingMileage: number,
-  taperStart: number,
-  volumeRule: { increasePct: number; maxAdd: number }
-): ProgressionState[] {
-  return Array.from({ length: weeks }, (_, i) => i + 1).reduce<
-    ProgressionState[]
-  >((acc, week) => {
-    const prev = acc[acc.length - 1]?.mileage ?? startingMileage;
-    let mileage: number;
-    if (week >= taperStart) {
-      mileage = prev * TAPER_FACTOR;
-    } else if (week % FOUR_WEEK_CYCLE === 0) {
-      mileage = prev * FOUR_WEEK_FACTOR;
-    } else {
-      mileage = Math.min(
-        prev * (1 + volumeRule.increasePct),
-        prev + volumeRule.maxAdd
-      );
-    }
-    return [...acc, { week, mileage }];
-  }, []);
+  phase: TrainingPhase;
+  cutback?: boolean;
 }
 
-export function generateRunningPlan(
+function computeLinearProgression(
+  weeks: number,
+  startMileage: number,
+  maxMileage: number,
+  taperWeeks: number
+): ProgressionState[] {
+  const progressWeeks = weeks - taperWeeks;
+
+  const baseWeeks = Math.max(1, Math.round(progressWeeks * 0.4));
+  const buildWeeks = Math.max(1, Math.round(progressWeeks * 0.4));
+  let peakWeeks = progressWeeks - baseWeeks - buildWeeks;
+  if (peakWeeks < 1) {
+    peakWeeks = 1;
+  }
+
+  const states: ProgressionState[] = [];
+  for (let i = 0; i < progressWeeks; i++) {
+    const ratio = progressWeeks === 1 ? 1 : i / (progressWeeks - 1);
+    const baseMileage = startMileage + (maxMileage - startMileage) * ratio;
+    let mileage = baseMileage;
+    let cutback = false;
+    if ((i + 1) % CUTBACK_FREQUENCY === 0) {
+      mileage = baseMileage * CUTBACK_FACTOR;
+      cutback = true;
+    }
+    let phase: TrainingPhase;
+    if (i < baseWeeks) phase = TrainingPhase.Base;
+    else if (i < baseWeeks + buildWeeks) phase = TrainingPhase.Build;
+    else phase = TrainingPhase.Peak;
+    states.push({ week: i + 1, mileage, phase, cutback });
+  }
+
+  for (let j = 0; j < taperWeeks; j++) {
+    const ratio = taperWeeks === 1 ? 1 : j / (taperWeeks - 1);
+    const mileage = maxMileage - (maxMileage - startMileage) * ratio;
+    states.push({
+      week: progressWeeks + j + 1,
+      mileage,
+      phase: TrainingPhase.Taper,
+    });
+  }
+  return states;
+}
+
+export function generateLongDistancePlan(
   weeks: number,
   targetDistance: number,
   distanceUnit: Unit,
   trainingLevel: TrainingLevel,
   vo2max: number,
-  startingWeeklyMileage: number,
+  _startingWeeklyMileage: number,
   targetPace?: string,
   targetTotalTime?: string
 ): RunningPlanData {
   if (weeks < MIN_WEEKS) throw new Error(`Plan must be ≥ ${MIN_WEEKS} weeks.`);
   if (targetDistance <= 0) throw new Error("Distance must be > 0");
-  if (startingWeeklyMileage <= 0) startingWeeklyMileage = targetDistance;
+  if (targetDistance < 13) {
+    throw new Error(
+      "generateLongDistancePlan is intended for half and full marathons"
+    );
+  }
 
   // -- helpers
   const parseHMS = (s: string): number => {
@@ -166,55 +199,65 @@ export function generateRunningPlan(
     // );
   }
 
-  // -- bounds for long-run progression
+  // -- weekly mileage bounds
   const levelBounds = {
+    [TrainingLevel.Beginner]: { startMult: 1.0, endMult: 1.4 },
+    [TrainingLevel.Intermediate]: { startMult: 1.1, endMult: 1.5 },
+    [TrainingLevel.Advanced]: { startMult: 1.2, endMult: 1.6 },
+  } as const;
+
+  const { startMult, endMult } = levelBounds[trainingLevel];
+
+  const startMileage = targetDistance * startMult;
+  const maxMileage = targetDistance * endMult;
+
+  const longBounds = {
     [TrainingLevel.Beginner]: { startPct: 0.4, peakPct: 0.65 },
     [TrainingLevel.Intermediate]: { startPct: 0.5, peakPct: 0.75 },
     [TrainingLevel.Advanced]: { startPct: 0.6, peakPct: 0.85 },
   } as const;
-  const { startPct, peakPct } = levelBounds[trainingLevel];
+
+  const { startPct, peakPct } = longBounds[trainingLevel];
   const initialLong = targetDistance * startPct;
   const peakLong = targetDistance * peakPct;
 
-  const volumeRules = {
-    [TrainingLevel.Beginner]: { increasePct: 0.05, maxAdd: 5 },
-    [TrainingLevel.Intermediate]: { increasePct: 0.1, maxAdd: 10 },
-    [TrainingLevel.Advanced]: { increasePct: 0.15, maxAdd: 15 },
-  } as const;
-
-  const taperStart = weeks - 2;
-  const progression = computeMileageProgression(
+  const progression = computeLinearProgression(
     weeks,
-    startingWeeklyMileage,
-    taperStart,
-    volumeRules[trainingLevel]
+    startMileage,
+    maxMileage,
+    TAPER_WEEKS
   );
 
-  const schedule: WeekPlan[] = progression.map(({ week, mileage }) => {
+  const progressWeeks = weeks - TAPER_WEEKS;
+
+  const schedule: WeekPlan[] = progression.map(({ week, mileage, phase, cutback }) => {
     if (week === weeks) {
+      const raceRun: PlannedRun = {
+        type: "long",
+        unit: distanceUnit,
+        mileage: Number(targetDistance.toFixed(1)),
+        targetPace: { unit: distanceUnit, pace: zones.marathon },
+      };
       return {
         weekNumber: week,
-        weeklyMileage: Number(targetDistance.toFixed(1)),
+        weeklyMileage: raceRun.mileage,
         unit: distanceUnit,
-        runs: [
-          {
-            type: "long",
-            unit: distanceUnit,
-            mileage: Number(targetDistance.toFixed(1)),
-            targetPace: { unit: distanceUnit, pace: zones.marathon },
-          },
-        ],
+        runs: [raceRun],
         notes: "Race week",
       };
     }
 
     // Long-run progression logic
-    const longDist =
-      week < taperStart
-        ? initialLong +
-          (peakLong - initialLong) *
-            Math.min(Math.max((week - 1) / (taperStart - 1), 0), 1)
-        : peakLong * Math.pow(TAPER_FACTOR, week - (taperStart - 1));
+    let longDist: number;
+    if (week > progressWeeks) {
+      const taperIndex = week - progressWeeks - 1;
+      const ratio = TAPER_WEEKS === 1 ? 1 : taperIndex / (TAPER_WEEKS - 1);
+      longDist = peakLong - (peakLong - targetDistance) * ratio;
+    } else {
+      const ratio =
+        progressWeeks === 1 ? 1 : (week - 1) / (progressWeeks - 1);
+      longDist = initialLong + (peakLong - initialLong) * ratio;
+    }
 
     // Interval workout with rep-specific pace
     const workout = INTERVAL_WORKOUTS[(week - 1) % INTERVAL_WORKOUTS.length];
@@ -267,12 +310,16 @@ export function generateRunningPlan(
       },
     ];
 
+    const weeklyMileage = Number(
+      runs.reduce((tot, r) => tot + r.mileage, 0).toFixed(1)
+    );
+
     return {
       weekNumber: week,
-      weeklyMileage: Number(mileage.toFixed(1)),
+      weeklyMileage,
       unit: distanceUnit,
       runs,
-      notes: week >= taperStart ? "Taper week" : undefined,
+      notes: `${phase} phase${cutback ? " - Cutback" : ""}`,
     };
   });
 
