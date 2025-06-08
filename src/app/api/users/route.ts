@@ -40,7 +40,7 @@ export async function POST(request: NextRequest) {
 
     // Create the new user
     const newUser = await prisma.user.create({
-      data: body,
+      data: { ...body, VO2Max: body.VO2Max ?? 30 },
     });
     return NextResponse.json(newUser, { status: 201 });
   } catch (error: unknown) {

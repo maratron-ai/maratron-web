@@ -75,15 +75,14 @@ export default function BasicInfoSection({
             editing={isEditing}
             onChange={handleFieldChange}
           />
-          {/* Currently don't allow for editing of VO₂ Max */}
-          {/* <TextField
+          <TextField
             label="VO₂ Max"
             name="VO2Max"
             type="number"
             value={formData.VO2Max ?? ""}
             editing={isEditing}
-            onChange={onChange}
-          /> */}
+            onChange={handleFieldChange}
+          />
         </div>
       ) : (
         <dl className={styles.list}>
@@ -109,10 +108,10 @@ export default function BasicInfoSection({
               {formData.trainingLevel || "N/A"}
             </dd>
           </div>
-          {/* <div>
+          <div>
             <dt className={styles.label}>VO₂ Max</dt>
             <dd className={styles.value}>{formData.VO2Max ?? "N/A"}</dd>
-          </div> */}
+          </div>
         </dl>
       )}
     </section>
