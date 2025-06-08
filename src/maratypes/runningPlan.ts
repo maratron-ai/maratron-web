@@ -3,6 +3,8 @@
 import { Pace } from "./run";
 import { DistanceUnit, DayOfWeek } from "@maratypes/basics";
 
+export type TrainingPhase = "Base" | "Build" | "Peak" | "Taper";
+
 
 // main type
 export interface RunningPlan {
@@ -33,6 +35,7 @@ export interface WeekPlan {
   weeklyMileage: number;
   unit: DistanceUnit;
   runs: PlannedRun[];
+  phase?: TrainingPhase;
   notes?: string;
   startDate?: string;
   done?: boolean;
