@@ -49,4 +49,37 @@ describe("distance-specific plan generators", () => {
     });
     expect(plan.schedule.length).toBe(16);
   });
+
+  it("easy run pace is slower than race pace and distance not over race", () => {
+    const plan = generateClassicMarathonPlan({
+      distanceUnit: "miles",
+      trainingLevel: TrainingLevel.Beginner,
+      vo2max: 40,
+      startingWeeklyMileage: 200,
+    });
+    const firstWeek = plan.schedule[0];
+    const easyRun = firstWeek.runs.find((r) => r.type === "easy")!;
+    const racePace = firstWeek.runs.find((r) => r.type === "long")!.targetPace
+      .pace;
+    const parse = (s: string) => {
+      const [m, s2] = s.split(":");
+      return parseInt(m) * 60 + parseInt(s2);
+    };
+    expect(easyRun.mileage).toBeLessThanOrEqual(26.2);
+    expect(parse(easyRun.targetPace.pace)).toBeGreaterThan(parse(racePace));
+  });
+
+  it("weekly mileage peaks before taper", () => {
+    const plan = generateClassicMarathonPlan({
+      distanceUnit: "miles",
+      trainingLevel: TrainingLevel.Beginner,
+      vo2max: 40,
+      startingWeeklyMileage: 20,
+    });
+    const mileages = plan.schedule.map((w) => w.weeklyMileage);
+    const peak = Math.max(...mileages.slice(0, -1));
+    const peakIndex = mileages.indexOf(peak);
+    expect(peakIndex).toBe(12); // week 13 (0-based index 12)
+    expect(mileages[13]).toBeLessThan(peak);
+  });
 });
