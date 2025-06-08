@@ -191,21 +191,6 @@ export function generateShortDistancePlan(
   );
 
   const schedule: WeekPlan[] = progression.map(({ week, mileage }) => {
-    if (week === weeks) {
-      const raceRun: PlannedRun = {
-        type: "long",
-        unit: distanceUnit,
-        mileage: Number(targetDistance.toFixed(1)),
-        targetPace: { unit: distanceUnit, pace: zones.marathon },
-      };
-      return {
-        weekNumber: week,
-        weeklyMileage: raceRun.mileage,
-        unit: distanceUnit,
-        runs: [raceRun],
-        notes: "Race week",
-      };
-    }
 
     // Long-run progression logic
     const longDist =
@@ -265,17 +250,26 @@ export function generateShortDistancePlan(
         targetPace: { unit: distanceUnit, pace: zones.marathon },
       },
     ];
+    if (week === weeks) {
+      runs[runs.length - 1] = {
+        ...runs[runs.length - 1],
+        type: "marathon",
+        mileage: Number(targetDistance.toFixed(1)),
+      };
+    }
 
     const weeklyMileage = Number(
       runs.reduce((tot, r) => tot + r.mileage, 0).toFixed(1)
     );
+
+    const notes = week === weeks ? "Race week" : week >= taperStart ? "Taper week" : undefined;
 
     return {
       weekNumber: week,
       weeklyMileage,
       unit: distanceUnit,
       runs,
-      notes: week >= taperStart ? "Taper week" : undefined,
+      notes,
     };
   });
 

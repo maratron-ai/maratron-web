@@ -51,10 +51,43 @@ export default function WeeklyRuns() {
   } else {
     weekIndex = plan.planData.schedule.findIndex((w) => !w.done);
   }
-  if (weekIndex < 0 || !plan.planData.schedule[weekIndex]) {
+  if (weekIndex < 0) {
+    return (
+      <p className="text-gray-500">
+        Training begins {plan.planData.startDate?.slice(0, 10)}
+      </p>
+    );
+  }
+  if (!plan.planData.schedule[weekIndex]) {
     return <p className="text-gray-500">Plan completed!</p>;
   }
   const week = plan.planData.schedule[weekIndex];
+
+  const days = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ] as const;
+
+  const changeDay = async (idx: number, day: typeof days[number]) => {
+    if (!plan || !plan.id) return;
+    const updated = { ...plan };
+    updated.planData.schedule[weekIndex].runs[idx].day = day;
+    updated.planData = assignDatesToPlan(updated.planData, {
+      startDate: plan.startDate?.toString(),
+      endDate: plan.endDate?.toString(),
+    });
+    try {
+      await updateRunningPlan(plan.id, { planData: updated.planData });
+      setPlan(updated);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   const toggleDone = async (idx: number) => {
     if (!plan || !plan.id) return;
@@ -74,7 +107,7 @@ export default function WeeklyRuns() {
           distance: run.mileage,
           distanceUnit: run.unit,
           userId: plan.userId,
-          name: `${plan.name} - Week ${weekIndex + 1} - ${run.type} ${run.mileage} ${run.unit}`,
+          name: `Week ${weekIndex + 1} - ${run.type}`,
         });
       }
       setPlan(updated);
@@ -101,6 +134,20 @@ export default function WeeklyRuns() {
                   {r.mileage} {r.unit} @ {r.targetPace.pace}
                 </p>
                 {r.notes && <p className="text-sm">{r.notes}</p>}
+                <label className="block text-sm mt-1">
+                  <span className="mr-2">Day:</span>
+                  <select
+                    value={r.day || "Sunday"}
+                    onChange={(e) => changeDay(i, e.target.value as typeof days[number])}
+                    className="border p-1 rounded text-black"
+                  >
+                    {days.map((d) => (
+                      <option key={d} value={d}>
+                        {d}
+                      </option>
+                    ))}
+                  </select>
+                </label>
               </div>
               <label className="flex items-center space-x-2">
                 <input
