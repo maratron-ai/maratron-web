@@ -2,6 +2,9 @@ import { calculatePaceForVO2Max } from "../jackDaniels";
 import { WeekPlan, RunningPlanData, PlannedRun } from "@maratypes/runningPlan";
 import { formatPace } from "@utils/running/paces";
 
+// Generic running plan generator. Works for any distance but the
+// progression is best suited to marathon training.
+
 
 
 // const formatPace = (sec: number): string => {

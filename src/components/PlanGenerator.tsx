@@ -4,25 +4,42 @@ import { useUserProfile } from "@hooks/useUserProfile";
 import { TrainingLevel } from "@maratypes/user";
 import ToggleSwitch from "./ToggleSwitch";
 import RunningPlanDisplay from "./RunningPlanDisplay";
-import { generateRunningPlan } from "@utils/running/plans/baseRunningPlan";
+import {
+  generate5kPlan,
+  generate10kPlan,
+  generateHalfMarathonPlan,
+  generateClassicMarathonPlan,
+} from "@utils/running/plans/distancePlans";
 import { RunningPlanData } from "@maratypes/runningPlan";
 import { createRunningPlan, listRunningPlans } from "@lib/api/plan";
 import { assignDatesToPlan } from "@utils/running/planDates";
 
-const DEFAULT_WEEKS = 16;
-const DEFAULT_DISTANCE = 26.2;
+type RaceType = "5k" | "10k" | "half" | "full";
+
+const DISTANCE_INFO: Record<RaceType, { miles: number; km: number; weeks: number }> = {
+  "5k": { miles: 3.1, km: 5, weeks: 8 },
+  "10k": { miles: 6.2, km: 10, weeks: 10 },
+  half: { miles: 13.1, km: 21.1, weeks: 12 },
+  full: { miles: 26.2, km: 42.2, weeks: 16 },
+};
+
 const DEFAULT_UNIT = "miles";
+const DEFAULT_RACE: RaceType = "full";
 
 const PlanGenerator: React.FC = () => {
   const { profile: user, loading } = useUserProfile();
 
   // Set initial state to user's info (if available), fallback to defaults
-  const [weeks, setWeeks] = useState<number>(DEFAULT_WEEKS);
-  const [targetDistance, setTargetDistance] =
-    useState<number>(DEFAULT_DISTANCE);
-  const [distanceUnit, setDistanceUnit] = useState<"miles" | "kilometers">(
-    DEFAULT_UNIT
-  );
+const [raceType, setRaceType] = useState<RaceType>(DEFAULT_RACE);
+const [weeks, setWeeks] = useState<number>(DISTANCE_INFO[DEFAULT_RACE].weeks);
+const [targetDistance, setTargetDistance] = useState<number>(
+  DEFAULT_UNIT === "kilometers"
+    ? DISTANCE_INFO[DEFAULT_RACE].km
+    : DISTANCE_INFO[DEFAULT_RACE].miles
+);
+const [distanceUnit, setDistanceUnit] = useState<"miles" | "kilometers">(
+  DEFAULT_UNIT
+);
   const [startingWeeklyMileage, setstartingWeeklyMileage] =
     useState<number>(20);
   const [vo2max, setVo2max] = useState<number>(45);
@@ -69,18 +86,40 @@ const PlanGenerator: React.FC = () => {
     }
   }, [user]);
 
+  useEffect(() => {
+    const info = DISTANCE_INFO[raceType];
+    setWeeks(info.weeks);
+    setTargetDistance(
+      distanceUnit === "kilometers" ? info.km : info.miles
+    );
+  }, [raceType, distanceUnit]);
+
   const handleGenerate = (e: React.FormEvent) => {
     e.preventDefault();
-    const plan = generateRunningPlan(
+    const opts = {
       weeks,
-      targetDistance,
       distanceUnit,
       trainingLevel,
       vo2max,
       startingWeeklyMileage,
-      useTotalTime ? undefined : targetPace,
-      useTotalTime ? targetTotalTime : undefined,
-    );
+      targetPace: useTotalTime ? undefined : targetPace,
+      targetTotalTime: useTotalTime ? targetTotalTime : undefined,
+    };
+    let plan: RunningPlanData;
+    switch (raceType) {
+      case "5k":
+        plan = generate5kPlan(opts);
+        break;
+      case "10k":
+        plan = generate10kPlan(opts);
+        break;
+      case "half":
+        plan = generateHalfMarathonPlan(opts);
+        break;
+      default:
+        plan = generateClassicMarathonPlan(opts);
+        break;
+    }
     setPlanData(plan);
   };
 
@@ -107,19 +146,25 @@ const PlanGenerator: React.FC = () => {
               className="border p-2 rounded"
             />
           </div>
-          {/* Target Distance */}
+          {/* Race Selection */}
           <div className="flex flex-col">
-            <label htmlFor="targetDistance" className="mb-1">
-              Target Distance ({distanceUnit}):
+            <label htmlFor="raceType" className="mb-1">
+              Race Distance:
             </label>
-            <input
-              id="targetDistance"
-              type="number"
-              step="0.1"
-              value={targetDistance}
-              onChange={(e) => setTargetDistance(Number(e.target.value))}
+            <select
+              id="raceType"
+              value={raceType}
+              onChange={(e) => setRaceType(e.target.value as RaceType)}
               className="border p-2 rounded"
-            />
+            >
+              <option value="5k">5K</option>
+              <option value="10k">10K</option>
+              <option value="half">Half Marathon</option>
+              <option value="full">Marathon</option>
+            </select>
+            <span className="text-sm mt-1">
+              Target Distance: {targetDistance} {distanceUnit}
+            </span>
           </div>
           {/* Unit Toggle */}
           <div className="flex flex-col">
