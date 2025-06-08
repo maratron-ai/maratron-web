@@ -61,7 +61,7 @@ export default function WeeklyRuns() {
   if (weekIndex < 0) {
     return (
       <p className="text-gray-500">
-        Training begins {plan.planData.startDate?.slice(0, 10)}
+        {plan.name} training begins {plan.planData.startDate?.slice(0, 10)}
       </p>
     );
   }
