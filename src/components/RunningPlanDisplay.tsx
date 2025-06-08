@@ -71,6 +71,7 @@ const CollapsibleWeek: React.FC<CollapsibleWeekProps> = ({
     "Friday",
     "Saturday",
   ];
+  const runTypes = ["easy", "tempo", "interval", "long", "marathon"] as const;
 
   return (
     <div
@@ -111,12 +112,29 @@ const CollapsibleWeek: React.FC<CollapsibleWeekProps> = ({
                   key={index}
                   className={`border-t border-gray-300 pt-2 space-y-1 ${classes}`}
                 >
-                  <p>
-                    <strong>Type:</strong>{" "}
-                    {run.type.charAt(0).toUpperCase() + run.type.slice(1)}
-                  </p>
                   {editable ? (
                     <div className="space-y-1">
+                      <label className="block">
+                        <span className="mr-2">Type:</span>
+                        <select
+                          value={run.type}
+                          onChange={(e) =>
+                            updateRun(
+                              weekIndex,
+                              index,
+                              "type",
+                              e.target.value
+                            )
+                          }
+                          className="border p-1 rounded text-black"
+                        >
+                          {runTypes.map((t) => (
+                            <option key={t} value={t}>
+                              {t}
+                            </option>
+                          ))}
+                        </select>
+                      </label>
                       <label className="block">
                         <span className="mr-2">Mileage:</span>
                         <input
@@ -200,6 +218,10 @@ const CollapsibleWeek: React.FC<CollapsibleWeekProps> = ({
                     </div>
                   ) : (
                     <>
+                      <p>
+                        <strong>Type:</strong>{" "}
+                        {run.type.charAt(0).toUpperCase() + run.type.slice(1)}
+                      </p>
                       <p>
                         <strong>Mileage:</strong> {run.mileage} {run.unit}
                       </p>

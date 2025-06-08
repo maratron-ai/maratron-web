@@ -259,7 +259,7 @@ const [targetDistance, setTargetDistance] = useState<number>(
           )}
         </div>
         <div className="mb-4">
-          <label className="block mb-1 font-semibold">End Date</label>
+          <label className="block mb-1 font-semibold">Race Date</label>
           <input
             type="date"
             value={endDate}

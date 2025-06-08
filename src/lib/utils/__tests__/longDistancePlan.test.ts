@@ -15,4 +15,20 @@ describe("generateLongDistancePlan cutback weeks", () => {
     expect(week4.notes).toContain("Cutback");
     expect(week4.weeklyMileage).toBeLessThan(week5.weeklyMileage);
   });
+
+  it("sets final run as marathon race", () => {
+    const weeks = 12;
+    const plan = generateLongDistancePlan(
+      weeks,
+      26.2,
+      "miles",
+      TrainingLevel.Beginner,
+      45,
+      26.2
+    );
+    const lastWeek = plan.schedule[weeks - 1];
+    const lastRun = lastWeek.runs[lastWeek.runs.length - 1];
+    expect(lastRun.type).toBe("marathon");
+    expect(lastWeek.notes).toBe("Race week");
+  });
 });
