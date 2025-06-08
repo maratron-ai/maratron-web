@@ -14,6 +14,8 @@ export interface Run {
   elevationGain?: number;
   elevationGainUnit?: ElevationUnit;
   notes?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
 
   userId: string; // required ?? should change to optional ??
 

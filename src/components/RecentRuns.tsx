@@ -22,9 +22,11 @@ export default function RecentRuns() {
         if (userId) {
           filtered = allRuns.filter((r) => r.userId === userId);
         }
-        filtered.sort(
-          (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
-        );
+        filtered.sort((a, b) => {
+          const aTime = a.createdAt ? new Date(a.createdAt).getTime() : new Date(a.date).getTime();
+          const bTime = b.createdAt ? new Date(b.createdAt).getTime() : new Date(b.date).getTime();
+          return bTime - aTime;
+        });
         setRuns(filtered.slice(0, 5));
       } catch (err) {
         console.error(err);
