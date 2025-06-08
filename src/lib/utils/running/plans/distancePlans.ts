@@ -1,4 +1,5 @@
-import { generateRunningPlan, Unit, TrainingLevel } from "./baseRunningPlan";
+import { generateLongDistancePlan, Unit, TrainingLevel } from "./longDistancePlan";
+import { generateShortDistancePlan } from "./shortDistancePlan";
 import type { RunningPlanData } from "@maratypes/runningPlan";
 
 export interface DistancePlanOptions {
@@ -26,7 +27,7 @@ export function generate5kPlan(options: DistancePlanOptions): RunningPlanData {
     targetTotalTime,
   } = options;
   const dist = toDistance(distanceUnit, 3.1, 5);
-  return generateRunningPlan(
+  return generateShortDistancePlan(
     weeks,
     dist,
     distanceUnit,
@@ -49,7 +50,7 @@ export function generate10kPlan(options: DistancePlanOptions): RunningPlanData {
     targetTotalTime,
   } = options;
   const dist = toDistance(distanceUnit, 6.2, 10);
-  return generateRunningPlan(
+  return generateShortDistancePlan(
     weeks,
     dist,
     distanceUnit,
@@ -72,7 +73,7 @@ export function generateHalfMarathonPlan(options: DistancePlanOptions): RunningP
     targetTotalTime,
   } = options;
   const dist = toDistance(distanceUnit, 13.1, 21.1);
-  return generateRunningPlan(
+  return generateLongDistancePlan(
     weeks,
     dist,
     distanceUnit,
@@ -95,7 +96,7 @@ export function generateClassicMarathonPlan(options: DistancePlanOptions): Runni
     targetTotalTime,
   } = options;
   const dist = toDistance(distanceUnit, 26.2, 42.2);
-  return generateRunningPlan(
+  return generateLongDistancePlan(
     weeks,
     dist,
     distanceUnit,
@@ -107,4 +108,4 @@ export function generateClassicMarathonPlan(options: DistancePlanOptions): Runni
   );
 }
 
-export { generateRunningPlan as generateMarathonBasePlan } from "./baseRunningPlan";
+export { generateLongDistancePlan as generateMarathonBasePlan } from "./longDistancePlan";

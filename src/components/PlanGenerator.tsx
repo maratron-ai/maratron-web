@@ -37,8 +37,6 @@ const [weeks, setWeeks] = useState<number>(DISTANCE_INFO[DEFAULT_RACE].weeks);
 const [targetDistance, setTargetDistance] = useState<number>(
   DISTANCE_INFO[DEFAULT_RACE].miles
 );
-  const [startingWeeklyMileage, setstartingWeeklyMileage] =
-    useState<number>(20);
   const [vo2max, setVo2max] = useState<number>(30);
   const [useTotalTime, setUseTotalTime] = useState<boolean>(false);
   const [targetPace, setTargetPace] = useState<string>("10:00");
@@ -75,7 +73,6 @@ const [targetDistance, setTargetDistance] = useState<number>(
   useEffect(() => {
     if (user) {
       if (user.trainingLevel) setTrainingLevel(user.trainingLevel);
-      if (user.weeklyMileage) setstartingWeeklyMileage(user.weeklyMileage);
       setVo2max(user.VO2Max ?? 30);
       if (user.defaultDistanceUnit) setDistanceUnit(user.defaultDistanceUnit);
       // if (user.defaultShoeId) setDefaultShoeId(user.defaultShoeId);
@@ -100,7 +97,7 @@ const [targetDistance, setTargetDistance] = useState<number>(
       distanceUnit,
       trainingLevel,
       vo2max,
-      startingWeeklyMileage,
+      startingWeeklyMileage: targetDistance,
       targetPace: useTotalTime ? undefined : targetPace,
       targetTotalTime: useTotalTime ? targetTotalTime : undefined,
     };
@@ -164,20 +161,6 @@ const [targetDistance, setTargetDistance] = useState<number>(
             <span className="text-sm mt-1">
               Target Distance: {targetDistance} {distanceUnit}
             </span>
-          </div>
-          {/* Current Weekly Mileage */}
-          <div className="flex flex-col">
-            <label htmlFor="currentMileage" className="mb-1">
-              Starting Weekly Mileage ({distanceUnit}):
-            </label>
-            <input
-              id="currentMileage"
-              type="number"
-              step="1"
-              value={startingWeeklyMileage}
-              onChange={(e) => setstartingWeeklyMileage(Number(e.target.value))}
-              className="border p-2 rounded"
-            />
           </div>
           {/* Training Level */}
           <div className="flex flex-col">
