@@ -48,6 +48,9 @@ export default function TrainingPlansList() {
       setPlans((prev) =>
         prev.map((p) => ({ ...p, active: p.id === id }))
       );
+      if (typeof window !== "undefined") {
+        window.dispatchEvent(new Event("activePlanChanged"));
+      }
     } catch (err) {
       console.error(err);
     }
