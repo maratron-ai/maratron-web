@@ -85,8 +85,11 @@ const CollapsibleWeek: React.FC<CollapsibleWeekProps> = ({
         onClick={() => setIsOpen((prev) => !prev)}
       >
         <h3 className="text-xl font-semibold text-gray-800">
-          Week {weekPlan.weekNumber} - Total Mileage: {weekPlan.weeklyMileage}{" "}
-          {weekPlan.unit} {isWeekComplete? "(Complete)" : ""}
+          Week {weekPlan.weekNumber}
+          {weekPlan.phase && ` – ${weekPlan.phase} phase`} - Total Mileage:
+          {" "}
+          {weekPlan.weeklyMileage} {weekPlan.unit}
+          {isWeekComplete ? " (Complete)" : ""}
         </h3>
         <span className="text-2xl">{isOpen ? "−" : "+"}</span>
       </div>
@@ -97,6 +100,7 @@ const CollapsibleWeek: React.FC<CollapsibleWeekProps> = ({
           }`}
         >
           <p className="mb-2">Start: {weekPlan.startDate?.slice(0, 10)}</p>
+          {weekPlan.notes && <p className="mb-2">{weekPlan.notes}</p>}
           <ul className="space-y-3">
             {weekPlan.runs.map((run, index) => {
               const past = run.date ? new Date(run.date) < new Date() : false;

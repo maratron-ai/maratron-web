@@ -161,6 +161,8 @@ export function generateLongDistancePlan(
       : parts[0] * 60 + parts[1];
   };
 
+  const roundToHalf = (n: number): number => Math.round(n * 2) / 2;
+
   // -- compute goal pace override
   let goalPaceSec: number | undefined;
   if (targetTotalTime) {
@@ -200,11 +202,21 @@ export function generateLongDistancePlan(
   }
 
   // -- weekly mileage bounds
-  const levelBounds = {
-    [TrainingLevel.Beginner]: { startMult: 1.0, endMult: 1.4 },
-    [TrainingLevel.Intermediate]: { startMult: 1.1, endMult: 1.5 },
-    [TrainingLevel.Advanced]: { startMult: 1.2, endMult: 1.6 },
-  } as const;
+  const isHalfMarathon =
+    (distanceUnit === "miles" && targetDistance <= 13.2) ||
+    (distanceUnit === "kilometers" && targetDistance <= 21.2);
+
+  const levelBounds = isHalfMarathon
+    ? {
+        [TrainingLevel.Beginner]: { startMult: 1.0, endMult: 1.7 },
+        [TrainingLevel.Intermediate]: { startMult: 1.1, endMult: 1.9 },
+        [TrainingLevel.Advanced]: { startMult: 1.2, endMult: 2.1 },
+      }
+    : {
+        [TrainingLevel.Beginner]: { startMult: 1.0, endMult: 1.4 },
+        [TrainingLevel.Intermediate]: { startMult: 1.1, endMult: 1.5 },
+        [TrainingLevel.Advanced]: { startMult: 1.2, endMult: 1.6 },
+      } as const;
 
   const { startMult, endMult } = levelBounds[trainingLevel];
 
@@ -235,7 +247,7 @@ export function generateLongDistancePlan(
       const raceRun: PlannedRun = {
         type: "long",
         unit: distanceUnit,
-        mileage: Number(targetDistance.toFixed(1)),
+        mileage: roundToHalf(targetDistance),
         targetPace: { unit: distanceUnit, pace: zones.marathon },
       };
       return {
@@ -243,6 +255,7 @@ export function generateLongDistancePlan(
         weeklyMileage: raceRun.mileage,
         unit: distanceUnit,
         runs: [raceRun],
+        phase,
         notes: "Race week",
       };
     }
@@ -261,8 +274,8 @@ export function generateLongDistancePlan(
 
     // Interval workout with rep-specific pace
     const workout = INTERVAL_WORKOUTS[(week - 1) % INTERVAL_WORKOUTS.length];
-    const intervalMileage = Number(
-      ((workout.reps * workout.distanceMeters) / toMeters).toFixed(1)
+    const intervalMileage = roundToHalf(
+      (workout.reps * workout.distanceMeters) / toMeters
     );
     const baseIntervalPaceSec = parseHMS(zones.interval);
     const repDistanceUnits = workout.distanceMeters / toMeters;
@@ -275,8 +288,8 @@ export function generateLongDistancePlan(
     }
 
     // Easy & tempo runs
-    const easyMileage = Number((mileage * EASY_PERCENT).toFixed(1));
-    const tempoMileage = Number((mileage * TEMPO_PERCENT).toFixed(1));
+    const easyMileage = roundToHalf(mileage * EASY_PERCENT);
+    const tempoMileage = roundToHalf(mileage * TEMPO_PERCENT);
     const tempoNotes = `Tempo at T-pace (${
       zones.tempo
     }) for ${tempoMileage} ${distanceUnit}, plus ${WUCD_PERCENT * 100}% WU/CD`;
@@ -305,20 +318,19 @@ export function generateLongDistancePlan(
       {
         type: "long",
         unit: distanceUnit,
-        mileage: Number(longDist.toFixed(1)),
+        mileage: roundToHalf(longDist),
         targetPace: { unit: distanceUnit, pace: zones.marathon },
       },
     ];
 
-    const weeklyMileage = Number(
-      runs.reduce((tot, r) => tot + r.mileage, 0).toFixed(1)
-    );
+    const weeklyMileage = roundToHalf(runs.reduce((tot, r) => tot + r.mileage, 0));
 
     return {
       weekNumber: week,
       weeklyMileage,
       unit: distanceUnit,
       runs,
+      phase,
       notes: `${phase} phase${cutback ? " - Cutback" : ""}`,
     };
   });
