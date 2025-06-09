@@ -10,6 +10,7 @@ export default function SignupPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [avatarUrl, setAvatarUrl] = useState("");
   const [error, setError] = useState("");
   const router = useRouter();
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -21,7 +22,7 @@ export default function SignupPage() {
     }
 
     try {
-      const createUserRes = await createUserProfile({ name, email });
+      const createUserRes = await createUserProfile({ name, email, avatarUrl });
 
       if (createUserRes?.status === 201 || createUserRes?.status === 200) {
         // Now sign in the new user
@@ -64,6 +65,28 @@ export default function SignupPage() {
               className="w-full px-3 py-2 border border-gray-300 rounded bg-gray-200 focus:ring-2 focus:ring-primary"
             />
           </div>
+          <div>
+            <label htmlFor="avatar" className="block mb-1">
+              Profile Picture URL
+            </label>
+            <input
+              type="url"
+              id="avatar"
+              value={avatarUrl}
+              onChange={(e) => setAvatarUrl(e.target.value)}
+              placeholder="https://example.com/avatar.png"
+              className="w-full px-3 py-2 border border-gray-300 rounded bg-gray-200 focus:ring-2 focus:ring-primary"
+            />
+          </div>
+          {avatarUrl && (
+            <div className="flex justify-center">
+              <img
+                src={avatarUrl}
+                alt="Avatar preview"
+                className="w-20 h-20 rounded-full object-cover"
+              />
+            </div>
+          )}
           <div>
             <label htmlFor="email" className="block mb-1">
               Email

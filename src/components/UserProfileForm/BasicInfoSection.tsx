@@ -30,6 +30,20 @@ export default function BasicInfoSection({
       <h3 className={styles.title}>Basic Information</h3>
       {isEditing ? (
         <div>
+          <div className="flex items-center space-x-4 mb-4">
+            <img
+              src={formData.avatarUrl || "/Default_pfp.svg"}
+              alt="Avatar preview"
+              className="w-20 h-20 rounded-full object-cover"
+            />
+            <TextField
+              label="Avatar URL"
+              name="avatarUrl"
+              value={formData.avatarUrl || ""}
+              editing={isEditing}
+              onChange={handleFieldChange}
+            />
+          </div>
           <TextField
             label="Name"
             name="name"
@@ -86,6 +100,13 @@ export default function BasicInfoSection({
         </div>
       ) : (
         <dl className={styles.list}>
+          <div className="md:col-span-2 flex items-center mb-4">
+            <img
+              src={formData.avatarUrl || "/Default_pfp.svg"}
+              alt="Avatar"
+              className="w-20 h-20 rounded-full object-cover"
+            />
+          </div>
           <div>
             <dt className={styles.label}>Name</dt>
             <dd className={styles.value}>{formData.name || "N/A"}</dd>
