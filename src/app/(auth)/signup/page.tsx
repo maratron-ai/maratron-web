@@ -3,7 +3,7 @@
 import { useState, FormEvent } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { createUserProfile } from "@lib/api/user/user"; // Adjust path if necessary
+import { createUserProfile, uploadAvatar } from "@lib/api/user/user"; // Adjust path if necessary
 
 
 export default function SignupPage() {
@@ -13,6 +13,15 @@ export default function SignupPage() {
   const [avatarUrl, setAvatarUrl] = useState("");
   const [error, setError] = useState("");
   const router = useRouter();
+
+  const handleFileChange = async (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const url = await uploadAvatar(file);
+    setAvatarUrl(url);
+  };
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -66,9 +75,7 @@ export default function SignupPage() {
             />
           </div>
           <div>
-            <label htmlFor="avatar" className="block mb-1">
-              Profile Picture URL
-            </label>
+            <label htmlFor="avatar" className="block mb-1">Profile Picture</label>
             <input
               type="url"
               id="avatar"
@@ -76,6 +83,12 @@ export default function SignupPage() {
               onChange={(e) => setAvatarUrl(e.target.value)}
               placeholder="https://example.com/avatar.png"
               className="w-full px-3 py-2 border border-gray-300 rounded bg-gray-200 focus:ring-2 focus:ring-primary"
+            />
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleFileChange}
+              className="mt-2"
             />
           </div>
           {avatarUrl && (

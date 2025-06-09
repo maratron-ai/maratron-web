@@ -42,7 +42,6 @@ const userProfileSchema = Yup.object().shape({
     .default(undefined),
   goals: Yup.array().of(Yup.string()),
   avatarUrl: Yup.string()
-    .url("Invalid URL")
     .transform((value, originalValue) =>
       originalValue === "" || originalValue === null ? undefined : value
     )
