@@ -34,7 +34,7 @@
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",
     "postcss": "^8",
-    "prisma": "^6.4.1",
+    "prisma": "^6.9.0",
     "tailwindcss": "^4.1.8",
     "ts-jest": "^29.3.4",
     "typescript": "^5"
