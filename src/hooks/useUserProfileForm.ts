@@ -1,4 +1,5 @@
 import { useState, useCallback } from "react";
+import { useSession } from "next-auth/react";
 import userProfileSchema from "@lib/schemas/userProfileSchema";
 import isYupValidationError from "@lib/utils/validation/isYupValidationError";
 import { UserProfile } from "@maratypes/user";
@@ -8,6 +9,7 @@ export function useUserProfileForm(
   initial: UserProfile,
   onSuccess: (u: UserProfile) => void
 ) {
+  const { update } = useSession();
   const [formData, setFormData] = useState<Partial<UserProfile>>(initial);
   const [isEditing, setIsEditing] = useState(false);
   const [validationErrors, setValidationErrors] = useState<string[]>([]);
@@ -33,6 +35,13 @@ export function useUserProfileForm(
       const { id, ...payload } = valid as { id: string } & Partial<UserProfile>;
       const updated = await updateUserProfile(id, payload);
       onSuccess(updated);
+      if (update) {
+        try {
+          await update({ user: { image: updated.avatarUrl ?? null } });
+        } catch (e) {
+          console.error("Failed to refresh session", e);
+        }
+      }
       setIsEditing(false);
     } catch (err) {
       if (isYupValidationError(err)) {
@@ -41,7 +50,7 @@ export function useUserProfileForm(
         console.error(err);
       }
     }
-  }, [formData, initial, onSuccess]);
+  }, [formData, initial, onSuccess, update]);
 
   return {
     formData,
