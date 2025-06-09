@@ -8,7 +8,7 @@ import { UserProfile } from "@maratypes/user";
 import { useEffect } from "react";
 
 export default function OnboardingProfile() {
-  const { data: session, status } = useSession();
+  const { data: session, status, update } = useSession();
   const router = useRouter();
 
   // If not authenticated, redirect to signup
@@ -36,7 +36,8 @@ export default function OnboardingProfile() {
 
   const onSave = async (updated: UserProfile) => {
     await updateUserProfile(initialUser.id, updated);
-    // Optionally update client state here
+    // Refresh session so avatar updates in navbar
+    await update({ user: { image: updated.avatarUrl ?? null } });
     router.push("/home");
   };
 
