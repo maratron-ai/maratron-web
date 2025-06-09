@@ -2,6 +2,7 @@ import { TextField, SelectField } from "@components/ui";
 import { UserProfile } from "@maratypes/user";
 import styles from "./Section.module.css";
 import type { Gender } from "@maratypes/user";
+import { uploadAvatar } from "@lib/api/user/user";
 
 // runtime list of gender options
 const genderValues: Gender[] = ["Male", "Female", "Other"];
@@ -23,7 +24,17 @@ export default function BasicInfoSection({
   isEditing,
   onChange,
 }: Props) {
-  const handleFieldChange = (name: string, value: string) => onChange(name as keyof UserProfile, value);
+  const handleFieldChange = (name: string, value: string) =>
+    onChange(name as keyof UserProfile, value);
+
+  const handleFileChange = async (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const url = await uploadAvatar(file);
+    onChange("avatarUrl", url);
+  };
 
   return (
     <section className={styles.card}>
@@ -31,19 +42,25 @@ export default function BasicInfoSection({
       {isEditing ? (
         <div>
           <div className="flex items-center space-x-4 mb-4">
-            <img
-              src={formData.avatarUrl || "/Default_pfp.svg"}
-              alt="Avatar preview"
-              className="w-20 h-20 rounded-full object-cover"
-            />
-            <TextField
-              label="Avatar URL"
-              name="avatarUrl"
-              value={formData.avatarUrl || ""}
-              editing={isEditing}
-              onChange={handleFieldChange}
-            />
-          </div>
+          <img
+            src={formData.avatarUrl || "/Default_pfp.svg"}
+            alt="Avatar preview"
+            className="w-20 h-20 rounded-full object-cover"
+          />
+          <TextField
+            label="Avatar URL"
+            name="avatarUrl"
+            value={formData.avatarUrl || ""}
+            editing={isEditing}
+            onChange={handleFieldChange}
+          />
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleFileChange}
+            className="mt-4"
+          />
+        </div>
           <TextField
             label="Name"
             name="name"
