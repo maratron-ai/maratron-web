@@ -27,10 +27,20 @@ export const authOptions: NextAuthOptions = {
       if (session.user && token.sub) {
         session.user.id = token.sub;
       }
+      if (session.user && (token as JWT & { avatarUrl?: string }).avatarUrl) {
+        session.user.image = (
+          token as JWT & { avatarUrl?: string }
+        ).avatarUrl as string;
+      }
       return session;
     },
     async jwt({ token, user }: { token: JWT; user?: User }) {
-      if (user) token.id = user.id;
+      if (user) {
+        token.id = user.id;
+        (token as JWT & { avatarUrl?: string }).avatarUrl = (
+          user as User & { avatarUrl?: string }
+        ).avatarUrl;
+      }
       return token;
     },
   },
