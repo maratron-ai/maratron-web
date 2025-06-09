@@ -16,7 +16,7 @@
     "next": "15.2.3",
     "next-auth": "^4.24.11",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0",
+    "react-dom": "^19.1.0",
     "yup": "^1.6.1"
   },
   "devDependencies": {
