@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
-import { listRunningPlans, updateRunningPlan } from "@lib/api/plan";
+import { listRunningPlans, updateRunningPlan, deleteRunningPlan } from "@lib/api/plan";
 import type { RunningPlan } from "@maratypes/runningPlan";
 import { Card, Button } from "@components/ui";
 
@@ -56,6 +56,16 @@ export default function TrainingPlansList() {
     }
   };
 
+  const deletePlan = async (id: string) => {
+    if (!confirm("Delete this plan?")) return;
+    try {
+      await deleteRunningPlan(id);
+      setPlans((prev) => prev.filter((p) => p.id !== id));
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   if (loading) return <p className="text-gray-500">Loading plans...</p>;
   if (plans.length === 0)
     return <p className="text-gray-500">No plans saved.</p>;
@@ -82,11 +92,21 @@ export default function TrainingPlansList() {
               )}
             </div>
           </div>
-          {!plan.active && plan.id && (
-            <Button onClick={() => setActive(plan.id)} className="text-sm px-2 py-1">
-              Set Active
-            </Button>
-          )}
+          <div className="flex gap-2">
+            {!plan.active && plan.id && (
+              <Button onClick={() => setActive(plan.id)} className="text-sm px-2 py-1">
+                Set Active
+              </Button>
+            )}
+            {plan.id && (
+              <Button
+                onClick={() => deletePlan(plan.id!)}
+                className="text-sm px-2 py-1 bg-red-600 hover:bg-red-700"
+              >
+                Delete
+              </Button>
+            )}
+          </div>
         </Card>
       ))}
     </div>
