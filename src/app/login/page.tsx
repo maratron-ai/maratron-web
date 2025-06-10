@@ -50,7 +50,7 @@ const LoginPage: React.FC = () => {
   // Show loading state while NextAuth checks session (optional)
   if (status === "loading") {
     return (
-      <div className="w-full px-0 p-6">
+      <div className="w-full px-4 sm:px-6 lg:px-8 p-6">
         <h1 className="text-2xl">Loading...</h1>
       </div>
     );
@@ -59,7 +59,7 @@ const LoginPage: React.FC = () => {
   // If already logged in
   if (session?.user) {
     return (
-      <div className="w-full px-0 p-6">
+      <div className="w-full px-4 sm:px-6 lg:px-8 p-6">
         <div className="flex justify-center mb-6">
           <h1 className="text-3xl font-bold">You are logged in!</h1>
         </div>
@@ -77,7 +77,7 @@ const LoginPage: React.FC = () => {
 
   // If not logged in, show the login form
   return (
-    <div className="w-full px-0 p-6">
+    <div className="w-full px-4 sm:px-6 lg:px-8 p-6">
       <div className="flex justify-center mb-6">
         <h1 className="text-3xl font-bold">Login</h1>
       </div>
@@ -91,7 +91,7 @@ const LoginPage: React.FC = () => {
           Jackson login
         </button>
       </div>
-      <form onSubmit={handleLogin} className="w-full px-0">
+      <form onSubmit={handleLogin} className="w-full px-4 sm:px-6 lg:px-8">
         <div className="mb-4">
           <label htmlFor="email" className="block text-gray-700 mb-2">
             Email:

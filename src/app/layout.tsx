@@ -1,12 +1,12 @@
 // src/app/layout.tsx
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Manrope } from "next/font/google";
 import "./globals.css";
 import Providers from "@components/Providers";
 import Navbar from "@components/Navbar";
 
-const inter = Inter({
-  variable: "--font-inter",
+const manrope = Manrope({
+  variable: "--font-manrope",
   subsets: ["latin"],
 });
 export const metadata: Metadata = {
@@ -19,10 +19,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={inter.variable}>
+    <html lang="en" className={manrope.variable}>
       <body className="antialiased">
         <Providers>
-          <div className="w-full px-0">
+          <div className="w-full px-4 sm:px-6 lg:px-8">
             <Navbar />
             {children}
           </div>

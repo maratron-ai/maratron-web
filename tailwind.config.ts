@@ -20,6 +20,9 @@ export default {
         accent: "#f97316",
         secondary: "var(--secondary)",
       },
+      fontFamily: {
+        sans: ["var(--font-manrope)", "sans-serif"],
+      },
     },
   },
   plugins: [typography],
