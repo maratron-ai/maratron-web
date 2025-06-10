@@ -9,7 +9,7 @@ import { formatPace } from "@utils/running/paces";
 // };
 
 const MIN_WEEKS = 8;
-const TAPER_WEEKS = 2;
+const TAPER_WEEKS: number = 2;
 const EASY_PERCENT = 0.15;
 const TEMPO_PERCENT = 0.2;
 const WUCD_PERCENT = 0.1; // warm-up/cool-down as fraction of run
