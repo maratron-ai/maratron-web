@@ -120,7 +120,7 @@ const [targetDistance, setTargetDistance] = useState<number>(
   };
 
   return (
-    <div className="w-full px-0 p-4">
+    <div className="w-full px-4 sm:px-6 lg:px-8 p-4">
       <h1 className="text-2xl font-bold text-center mb-4">
         Generate Your Running Plan
       </h1>

@@ -18,7 +18,7 @@ export default function Landing() {
     <div className="min-h-screen bg-background">
       {/* Navigation */}
       <nav className="border-b border-border/40 bg-background/80 backdrop-blur-sm sticky top-0 z-50">
-        <div className="w-full px-0 py-4 flex items-center justify-between">
+        <div className="w-full px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
           <div className="flex items-center space-x-2">
             <div className="w-8 h-8 bg-gradient-to-br from-orange-500 to-blue-600 rounded-lg flex items-center justify-center">
               <span className="text-white font-bold text-sm">M</span>
@@ -38,7 +38,7 @@ export default function Landing() {
       {/* Hero Section */}
       <section className="relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-orange-50 via-blue-50 to-orange-50 dark:from-orange-950/20 dark:via-blue-950/20 dark:to-orange-950/20"></div>
-        <div className="w-full px-0 py-20 relative">
+        <div className="w-full px-4 sm:px-6 lg:px-8 py-20 relative">
           <div className="w-full text-center">
             <Badge className="mb-6 bg-gradient-to-r from-orange-500 to-blue-600 text-white border-0">
               Powered by Advanced AI Training Science
@@ -46,7 +46,7 @@ export default function Landing() {
             <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-br from-foreground via-foreground to-muted-foreground bg-clip-text text-transparent leading-tight">
               Your Personal Marathon Coach, Reimagined
             </h1>
-            <p className="text-xl md:text-2xl text-muted-foreground mb-8 leading-relaxed w-full px-0">
+            <p className="text-xl md:text-2xl text-muted-foreground mb-8 leading-relaxed w-full px-4 sm:px-6 lg:px-8">
               Break through plateaus and achieve your marathon dreams with AI-powered training that adapts to you. No more rigid plans—just intelligent coaching that evolves with every step.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
@@ -79,12 +79,12 @@ export default function Landing() {
 
       {/* Features Section */}
       <section id="features" className="py-20">
-        <div className="w-full px-0">
+        <div className="w-full px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
               Training That Actually <span className="text-gradient bg-gradient-to-r from-orange-500 to-blue-600 bg-clip-text text-transparent">Gets You There</span>
             </h2>
-            <p className="text-xl text-muted-foreground w-full px-0">
+            <p className="text-xl text-muted-foreground w-full px-4 sm:px-6 lg:px-8">
               Stop guessing. Start succeeding. Maratron combines cutting-edge AI with proven training science to create your perfect marathon journey.
             </p>
           </div>
@@ -155,7 +155,7 @@ export default function Landing() {
 
       {/* Science Section */}
       <section id="science" className="py-20 bg-muted/30">
-        <div className="w-full px-0">
+        <div className="w-full px-4 sm:px-6 lg:px-8">
           <div className="w-full text-center">
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
               Backed by Science, Powered by <span className="text-gradient bg-gradient-to-r from-orange-500 to-blue-600 bg-clip-text text-transparent">Intelligence</span>
@@ -187,7 +187,7 @@ export default function Landing() {
 
       {/* Testimonials Section */}
       <section id="testimonials" className="py-20">
-        <div className="w-full px-0">
+        <div className="w-full px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
               Real Runners, Real <span className="text-gradient bg-gradient-to-r from-orange-500 to-blue-600 bg-clip-text text-transparent">Results</span>
@@ -258,7 +258,7 @@ export default function Landing() {
       {/* Final CTA Section */}
       <section className="py-20 bg-gradient-to-br from-orange-500 via-blue-600 to-purple-600 text-white relative overflow-hidden">
         <div className="absolute inset-0 bg-black/20"></div>
-        <div className="w-full px-0 relative">
+        <div className="w-full px-4 sm:px-6 lg:px-8 relative">
           <div className="w-full text-center">
             <h2 className="text-4xl md:text-6xl font-bold mb-6">
               Ready to Rewrite Your Running Story?
@@ -285,7 +285,7 @@ export default function Landing() {
 
       {/* Footer */}
       <footer className="border-t border-border bg-muted/30">
-        <div className="w-full px-0 py-16">
+        <div className="w-full px-4 sm:px-6 lg:px-8 py-16">
           <div className="grid md:grid-cols-4 gap-8">
             <div className="md:col-span-2">
               <div className="flex items-center space-x-2 mb-4">
@@ -294,7 +294,7 @@ export default function Landing() {
                 </div>
                 <span className="text-xl font-bold">Maratron</span>
               </div>
-              <p className="text-muted-foreground mb-6 w-full px-0">
+              <p className="text-muted-foreground mb-6 w-full px-4 sm:px-6 lg:px-8">
                 Your AI-powered marathon coach that adapts, evolves, and inspires. Because every runner deserves a plan that works for them.
               </p>
               <div className="flex items-center space-x-4 text-sm text-muted-foreground">

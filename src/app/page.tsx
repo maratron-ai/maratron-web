@@ -120,7 +120,7 @@ export default function LandingPage() {
             <h1 className="text-5xl sm:text-7xl font-extrabold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
               The AI Coach for Serious Runners
             </h1>
-            <p className="mt-6 text-lg text-foreground/70 w-full px-0">
+            <p className="mt-6 text-lg text-foreground/70 w-full px-4 sm:px-6 lg:px-8">
               Maratron helps you train smarter, race faster, and stay
               injury-free with cutting-edge tech.
             </p>
