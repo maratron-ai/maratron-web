@@ -3,6 +3,7 @@
 import React, { useState, FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { signIn, useSession } from "next-auth/react";
+import { Input, Label, Button } from "@components/ui";
 
 const LoginPage: React.FC = () => {
   const { data: session, status } = useSession();
@@ -64,12 +65,7 @@ const LoginPage: React.FC = () => {
           <h1 className="text-3xl font-bold">You are logged in!</h1>
         </div>
         <div className="flex justify-center">
-          <button
-            onClick={() => router.push("/home")}
-            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors"
-          >
-            Go Home
-          </button>
+          <Button onClick={() => router.push("/home")}>Go Home</Button>
         </div>
       </div>
     );
@@ -83,57 +79,44 @@ const LoginPage: React.FC = () => {
       </div>
       {error && <p className="text-red-500 text-center mb-4">{error}</p>}
       <div className="flex justify-center mb-4">
-        <button
-          type="button"
-          onClick={jacksonLogin}
-          className="w-half border justify-center hover:bg-blue-50"
-        >
+        <Button type="button" variant="outline" onClick={jacksonLogin}
+          className="w-half">
           Jackson login
-        </button>
+        </Button>
       </div>
       <form onSubmit={handleLogin} className="max-w-md mx-auto">
-        <div className="mb-4">
-          <label htmlFor="email" className="block text-gray-700 mb-2">
-            Email:
-          </label>
-          <input
+        <div className="mb-4 space-y-2">
+          <Label htmlFor="email">Email:</Label>
+          <Input
             id="email"
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            className="w-full px-3 py-2 border rounded focus:outline-none focus:ring"
           />
         </div>
-        <div className="mb-6">
-          <label htmlFor="password" className="block text-gray-700 mb-2">
-            Password:
-          </label>
-          <input
+        <div className="mb-6 space-y-2">
+          <Label htmlFor="password">Password:</Label>
+          <Input
             id="password"
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
-            className="w-full px-3 py-2 border rounded focus:outline-none focus:ring"
           />
         </div>
-        <button
-          type="submit"
-          className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition-colors"
-        >
-          Login
-        </button>
+        <Button type="submit" className="w-full">Login</Button>
         <div className="text-center my-4">
           <span className="text-gray-500">or</span>
         </div>
-        <button
+        <Button
           type="button"
+          variant="outline"
+          className="w-full"
           onClick={() => router.push("/signup")}
-          className="w-full border border-blue-600 text-blue-600 py-2 rounded hover:bg-blue-50 transition-colors"
         >
           Not registered? Sign up
-        </button>
+        </Button>
       </form>
     </div>
   );
