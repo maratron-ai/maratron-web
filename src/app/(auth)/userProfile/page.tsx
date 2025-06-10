@@ -6,6 +6,7 @@ import { useSession, signOut } from "next-auth/react";
 import UserProfileForm from "@components/UserProfileForm";
 import { UserProfile } from "@maratypes/user";
 import { getUserProfile, updateUserProfile } from "@lib/api/user/user";
+import { Button } from "@components/ui";
 
 export default function UserProfilePage() {
   const { data: session, status, update } = useSession();
@@ -88,12 +89,7 @@ export default function UserProfilePage() {
   return (
     <div className="max-w-4xl mx-auto p-6">
       <div className="flex justify-end mb-6">
-        <button
-          onClick={() => signOut()}
-          className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
-        >
-          Logout
-        </button>
+        <Button variant="destructive" onClick={() => signOut()}>Logout</Button>
       </div>
       {saveSuccess && (
         <div className="mb-4 text-green-600">Profile updated!</div>

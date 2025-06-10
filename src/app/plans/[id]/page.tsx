@@ -7,7 +7,7 @@ import { getRunningPlan, updateRunningPlan } from "@lib/api/plan";
 import { assignDatesToPlan } from "@utils/running/planDates";
 import type { RunningPlan } from "@maratypes/runningPlan";
 import RunningPlanDisplay from "@components/RunningPlanDisplay";
-import { Button } from "@components/ui";
+import { Button, Card } from "@components/ui";
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -56,15 +56,16 @@ export default function PlanPage({ params }: PageProps) {
   }
 
   return (
-    <div className="p-4">
-      <h1 className="text-2xl font-bold mb-4">{plan.name}</h1>
-      <div className="mb-4 space-x-2">
-        <Button onClick={() => setEditing((e) => !e)}>
-          {editing ? "Cancel" : "Edit"}
-        </Button>
-        {editing && (
-          <Button
-            onClick={async () => {
+    <main className="p-4 flex justify-center">
+      <Card className="w-full max-w-3xl p-6">
+        <h1 className="text-2xl font-bold mb-4 text-center">{plan.name}</h1>
+        <div className="mb-4 space-x-2 text-center">
+          <Button onClick={() => setEditing((e) => !e)}>
+            {editing ? "Cancel" : "Edit"}
+          </Button>
+          {editing && (
+            <Button
+              onClick={async () => {
               if (!plan.id || !planData) return;
               try {
                 await updateRunningPlan(plan.id, { planData });
@@ -79,15 +80,16 @@ export default function PlanPage({ params }: PageProps) {
             Save
           </Button>
         )}
-      </div>
-      {planData && (
-        <RunningPlanDisplay
-          planData={planData}
-          planName={plan.name}
-          editable={editing}
-          onPlanChange={setPlanData}
-        />
-      )}
-    </div>
+        </div>
+        {planData && (
+          <RunningPlanDisplay
+            planData={planData}
+            planName={plan.name}
+            editable={editing}
+            onPlanChange={setPlanData}
+          />
+        )}
+      </Card>
+    </main>
   );
 }

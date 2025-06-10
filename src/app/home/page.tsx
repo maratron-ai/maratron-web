@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useSession } from "next-auth/react";
+import { Card, Button } from "@components/ui";
 import RecentRuns from "@components/RecentRuns";
 import TrainingPlansList from "@components/TrainingPlansList";
 import WeeklyRuns from "@components/WeeklyRuns";
@@ -40,36 +41,36 @@ export default function HomePage() {
         {/* Wrap grid in a max-width container */}
         <div className="max-w-4xl mx-auto">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            <Link
-              href="/runs/new"
-              className="border rounded p-4 hover:bg-accent/20"
-            >
-              Add a Run
-            </Link>
-            <Link
-              href="/plan-generator"
-              className="border rounded p-4 hover:bg-accent/20"
-            >
-              Generate Training Plan
-            </Link>
-            <Link
-              href="/shoes/new"
-              className="border rounded p-4 hover:bg-accent/20"
-            >
-              Add New Shoes
-            </Link>
-            <Link
-              href="/userProfile"
-              className="border rounded p-4 hover:bg-accent/20"
-            >
-              Edit Profile
-            </Link>
-            <div className="border rounded p-4 text-gray-500">
-              Upload workout file (coming soon)
-            </div>
-            <div className="border rounded p-4 text-gray-500">
-              View progress analytics (coming soon)
-            </div>
+            <Card className="p-4 flex items-center justify-center">
+              <Button asChild className="w-full">
+                <Link href="/runs/new">Add a Run</Link>
+              </Button>
+            </Card>
+            <Card className="p-4 flex items-center justify-center">
+              <Button asChild className="w-full">
+                <Link href="/plan-generator">Generate Training Plan</Link>
+              </Button>
+            </Card>
+            <Card className="p-4 flex items-center justify-center">
+              <Button asChild className="w-full">
+                <Link href="/shoes/new">Add New Shoes</Link>
+              </Button>
+            </Card>
+            <Card className="p-4 flex items-center justify-center">
+              <Button asChild className="w-full">
+                <Link href="/userProfile">Edit Profile</Link>
+              </Button>
+            </Card>
+            <Card className="p-4 flex items-center justify-center">
+              <Button disabled className="w-full" variant="secondary">
+                Upload workout file (coming soon)
+              </Button>
+            </Card>
+            <Card className="p-4 flex items-center justify-center">
+              <Button disabled className="w-full" variant="secondary">
+                View progress analytics (coming soon)
+              </Button>
+            </Card>
           </div>
         </div>
       </section>
