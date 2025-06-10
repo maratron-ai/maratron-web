@@ -5,10 +5,11 @@ import Image from "next/image";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { useState } from "react";
 import { Menu } from "lucide-react";
+import { Sheet, SheetContent, SheetTrigger } from "@components/ui";
+import ModeToggle from "@components/ModeToggle";
 
 export default function Navbar() {
   const { data: session, status } = useSession();
-  const [mobileOpen, setMobileOpen] = useState(false);
   const [desktopMenuOpen, setDesktopMenuOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -22,7 +23,7 @@ export default function Navbar() {
 
   return (
     <nav className="bg-background border-b border-accent/20">
-      <div className="w-full px-4 md:px-8 flex items-center justify-between py-4">
+      <div className="container mx-auto px-4 max-w-screen-lg flex items-center justify-between py-4">
         {/* Left: Logo and links */}
         <div className="flex items-center">
           <Link href="/" className="text-xl font-bold mr-2">
@@ -116,6 +117,7 @@ export default function Navbar() {
               Sign In
             </button>
           )}
+          <ModeToggle />
         </div>
 
         {/* Mobile Hamburger and Avatar */}
@@ -169,84 +171,45 @@ export default function Navbar() {
           )}
 
           {/* Hamburger icon (mobile) */}
-          <button
-            onClick={() => setMobileOpen((o) => !o)}
-            aria-label="Toggle mobile menu"
-            aria-expanded={mobileOpen}
-            className="p-2 focus:outline-none"
-          >
-            <Menu className="w-6 h-6" />
-          </button>
-        </div>
-      </div>
-
-      {/* Mobile menu */}
-      <div
-        className={`md:hidden overflow-hidden transition-[max-height] duration-300 ${
-          mobileOpen ? "max-h-screen" : "max-h-0"
-        }`}
-      >
-        <div className="px-4 pb-4 pt-2 space-y-1">
-          {status !== "loading" && session?.user ? (
-            navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="block py-2 hover:text-primary"
-                onClick={() => setMobileOpen(false)}
-              >
-                {link.label}
-              </Link>
-            ))
-          ) : (
-            <Link
-              href="/about"
-              className="block py-2 hover:text-primary"
-              onClick={() => setMobileOpen(false)}
-            >
-              About
-            </Link>
-          )}
-
-          <hr className="my-2" />
-
-          {status !== "loading" && session?.user ? (
-            <>
-              <Link
-                href="/userProfile"
-                className="block py-2 hover:text-primary"
-                onClick={() => setMobileOpen(false)}
-              >
-                Profile
-              </Link>
-              <Link
-                href="/settings"
-                className="block py-2 hover:text-primary"
-                onClick={() => setMobileOpen(false)}
-              >
-                Settings
-              </Link>
-              <button
-                onClick={() => {
-                  signOut();
-                  setMobileOpen(false);
-                }}
-                className="w-full text-left py-2 hover:text-primary"
-              >
-                Logout
+          <Sheet>
+            <SheetTrigger asChild>
+              <button aria-label="Toggle mobile menu" className="p-2 focus:outline-none">
+                <Menu className="w-6 h-6" />
               </button>
-            </>
-          ) : (
-            <button
-              onClick={() => {
-                signIn();
-                setMobileOpen(false);
-              }}
-              className="w-full text-left py-2 hover:text-primary"
-            >
-              Sign In
-            </button>
-          )}
+            </SheetTrigger>
+            <SheetContent side="left" className="p-6 space-y-4">
+              {status !== "loading" && session?.user ? (
+                navLinks.map((link) => (
+                  <Link key={link.href} href={link.href} className="block" >
+                    {link.label}
+                  </Link>
+                ))
+              ) : (
+                <Link href="/about" className="block">
+                  About
+                </Link>
+              )}
+              <hr />
+              {status !== "loading" && session?.user ? (
+                <>
+                  <Link href="/userProfile" className="block">
+                    Profile
+                  </Link>
+                  <Link href="/settings" className="block">
+                    Settings
+                  </Link>
+                  <button onClick={() => signOut()} className="w-full text-left">
+                    Logout
+                  </button>
+                </>
+              ) : (
+                <button onClick={() => signIn()} className="w-full text-left">
+                  Sign In
+                </button>
+              )}
+              <ModeToggle />
+            </SheetContent>
+          </Sheet>
         </div>
       </div>
     </nav>

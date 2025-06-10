@@ -50,48 +50,44 @@ const LoginPage: React.FC = () => {
   // Show loading state while NextAuth checks session (optional)
   if (status === "loading") {
     return (
-      <div className="w-full px-4 sm:px-6 lg:px-8 p-6">
+      <main className="container mx-auto px-4 max-w-screen-lg py-6">
         <h1 className="text-2xl">Loading...</h1>
-      </div>
+      </main>
     );
   }
 
   // If already logged in
   if (session?.user) {
     return (
-      <div className="w-full px-4 sm:px-6 lg:px-8 p-6">
-        <div className="flex justify-center mb-6">
-          <h1 className="text-3xl font-bold">You are logged in!</h1>
-        </div>
+      <main className="container mx-auto px-4 max-w-screen-lg py-6 space-y-6">
+        <h1 className="text-3xl font-bold text-center">You are logged in!</h1>
         <div className="flex justify-center">
           <button
             onClick={() => router.push("/home")}
-            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors"
+            className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors"
           >
             Go Home
           </button>
         </div>
-      </div>
+      </main>
     );
   }
 
   // If not logged in, show the login form
   return (
-    <div className="w-full px-4 sm:px-6 lg:px-8 p-6">
-      <div className="flex justify-center mb-6">
-        <h1 className="text-3xl font-bold">Login</h1>
-      </div>
-      {error && <p className="text-red-500 text-center mb-4">{error}</p>}
-      <div className="flex justify-center mb-4">
+    <main className="container mx-auto px-4 max-w-screen-lg py-6 space-y-6">
+      <h1 className="text-3xl font-bold text-center">Login</h1>
+      {error && <p className="text-red-500 text-center">{error}</p>}
+      <div className="flex justify-center">
         <button
           type="button"
           onClick={jacksonLogin}
-          className="w-half border justify-center hover:bg-blue-50"
+          className="border px-4 py-2 rounded-md hover:bg-blue-50 transition"
         >
           Jackson login
         </button>
       </div>
-      <form onSubmit={handleLogin} className="w-full px-4 sm:px-6 lg:px-8">
+      <form onSubmit={handleLogin} className="space-y-4">
         <div className="mb-4">
           <label htmlFor="email" className="block text-gray-700 mb-2">
             Email:
@@ -120,7 +116,7 @@ const LoginPage: React.FC = () => {
         </div>
         <button
           type="submit"
-          className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition-colors"
+          className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition-colors"
         >
           Login
         </button>
@@ -130,12 +126,12 @@ const LoginPage: React.FC = () => {
         <button
           type="button"
           onClick={() => router.push("/signup")}
-          className="w-full border border-blue-600 text-blue-600 py-2 rounded hover:bg-blue-50 transition-colors"
+          className="w-full border border-blue-600 text-blue-600 py-2 rounded-md hover:bg-blue-50 transition-colors"
         >
           Not registered? Sign up
         </button>
       </form>
-    </div>
+    </main>
   );
 };
 

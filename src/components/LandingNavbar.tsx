@@ -9,7 +9,7 @@ export default function Navbar() {
 
   return (
     <nav className="fixed top-0 left-0 w-full z-20 py-4">
-      <div className="w-full px-4 sm:px-6 lg:px-8 flex justify-center items-center">
+      <div className="container mx-auto px-4 max-w-screen-lg flex justify-center items-center">
         <div className="relative">
           <button
             onClick={() => setMenuOpen((open) => !open)}

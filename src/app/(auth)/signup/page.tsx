@@ -56,9 +56,9 @@ export default function SignupPage() {
   };
 
   return (
-    <main className="min-h-screen flex items-center justify-center bg-background text-foreground p-4">
-      <div className="w-full px-4 sm:px-6 lg:px-8">
-        <h1 className="text-3xl font-bold mb-6 text-center">Sign Up</h1>
+    <main className="container mx-auto px-4 max-w-screen-lg min-h-screen flex items-center justify-center">
+      <div className="w-full space-y-4">
+        <h1 className="text-3xl font-bold text-center">Sign Up</h1>
         {error && <p className="mb-4 text-red-500">{error}</p>}
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
@@ -128,7 +128,7 @@ export default function SignupPage() {
           </div>
           <button
             type="submit"
-            className="w-full bg-primary text-white px-4 py-2 rounded hover:bg-primary-dark transition-colors"
+            className="w-full bg-primary text-white px-4 py-2 rounded-md hover:bg-primary-dark transition-colors"
           >
             Sign Up
           </button>

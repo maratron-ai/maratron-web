@@ -1,5 +1,6 @@
 import type { Config } from "tailwindcss";
 import typography from "@tailwindcss/typography";
+import forms from "@tailwindcss/forms";
 
 export default {
   content: [
@@ -7,6 +8,7 @@ export default {
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
+  darkMode: "class",
   theme: {
     extend: {
       colors: {
@@ -21,9 +23,9 @@ export default {
         secondary: "var(--secondary)",
       },
       fontFamily: {
-        sans: ["var(--font-manrope)", "sans-serif"],
+        sans: ["var(--font-inter)", "sans-serif"],
       },
     },
   },
-  plugins: [typography],
+  plugins: [typography, forms],
 } satisfies Config;
