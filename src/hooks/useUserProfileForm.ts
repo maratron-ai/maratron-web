@@ -37,7 +37,7 @@ export function useUserProfileForm(
       onSuccess(updated);
       if (update) {
         try {
-          await update({ user: { image: updated.avatarUrl ?? null } });
+          await update({ user: { avatarUrl: updated.avatarUrl ?? null } });
         } catch (e) {
           console.error("Failed to refresh session", e);
         }

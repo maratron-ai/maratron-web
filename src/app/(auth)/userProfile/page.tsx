@@ -41,7 +41,7 @@ export default function UserProfilePage() {
       setLoading(true);
       await updateUserProfile(updated.id, updated);
       setProfile(updated);
-      await update({ user: { image: updated.avatarUrl ?? null } });
+      await update({ user: { avatarUrl: updated.avatarUrl ?? null } });
       setSaveSuccess(true);
       setTimeout(() => setSaveSuccess(false), 2000);
     } catch {
