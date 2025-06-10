@@ -56,7 +56,7 @@ export default function SignupPage() {
   };
 
   return (
-    <main className="container mx-auto px-4 max-w-screen-lg min-h-screen flex items-center justify-center">
+    <main className="w-full px-4 sm:px-6 lg:px-8 min-h-screen flex items-center justify-center">
       <div className="w-full space-y-4">
         <h1 className="text-3xl font-bold text-center">Sign Up</h1>
         {error && <p className="mb-4 text-red-500">{error}</p>}
