@@ -2,6 +2,7 @@ import { TextField, SelectField } from "@components/ui";
 import { UserProfile } from "@maratypes/user";
 import styles from "./Section.module.css";
 import type { Gender } from "@maratypes/user";
+import Image from "next/image";
 import { uploadAvatar } from "@lib/api/user/user";
 
 // runtime list of gender options
@@ -42,9 +43,11 @@ export default function BasicInfoSection({
       {isEditing ? (
         <div>
           <div className="flex items-center space-x-4 mb-4">
-          <img
+          <Image
             src={formData.avatarUrl || "/Default_pfp.svg"}
             alt="Avatar preview"
+            width={80}
+            height={80}
             className="w-20 h-20 rounded-full object-cover"
           />
           <TextField
@@ -118,9 +121,11 @@ export default function BasicInfoSection({
       ) : (
         <dl className={styles.list}>
           <div className="md:col-span-2 flex items-center mb-4">
-            <img
+            <Image
               src={formData.avatarUrl || "/Default_pfp.svg"}
               alt="Avatar"
+              width={80}
+              height={80}
               className="w-20 h-20 rounded-full object-cover"
             />
           </div>

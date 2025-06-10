@@ -37,7 +37,7 @@ export default function OnboardingProfile() {
   const onSave = async (updated: UserProfile) => {
     await updateUserProfile(initialUser.id, updated);
     // Refresh session so avatar updates in navbar
-    await update({ user: { image: updated.avatarUrl ?? null } });
+    await update({ user: { avatarUrl: updated.avatarUrl ?? null } });
     router.push("/home");
   };
 
