@@ -26,3 +26,21 @@
 # Environment
 - Prisma uses `DATABASE_URL` from `.env`; create this file locally with
   your PostgreSQL connection string.
+
+
+# UI & Styling Guidelines
+
+- We use [shadcn/ui](https://ui.shadcn.com) for all core UI components (buttons, dialogs, cards, etc.). Prefer these over custom-styled HTML elements.
+- Icons come from `lucide-react`. All components should use `Lucide` icons instead of SVGs or other icon libraries.
+- Use Tailwind utility classes for layout and spacing. Layout wrappers should use `container mx-auto px-4 max-w-screen-lg` for consistent structure.
+- Typography follows Tailwind scale (`text-base`, `text-xl`, etc.) and uses a Google Font imported via `next/font/google`.
+- Design tokens:
+  - Rounded corners: use `rounded-md` or `rounded-2xl`.
+  - Shadows: use `shadow-sm`, `shadow-md`, or `shadow-lg` for visual depth.
+  - Colors: use the extended color palette in `tailwind.config.js` (3 primary shades and 1 accent).
+- Install and configure:
+  - `@tailwindcss/typography` for rich content
+  - `@tailwindcss/forms` for styled inputs
+- Add new UI components under `src/components/ui/` when building shared widgets.
+- Always ensure components are responsive and keyboard-accessible.
+- For feedback and notifications, use `Toast` or `sonner` (via `shadcn/ui`).

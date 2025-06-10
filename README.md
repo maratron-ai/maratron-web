@@ -5,6 +5,7 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 First, run the development server:
 
 ```bash
+npm install
 npm run dev
 ```
 
@@ -52,10 +53,12 @@ This command creates a new database called `maratrondb` owned by the user `marat
 
 ### 2. Setting Up the .env File
 
-In your project root, create or update the `.env` file with the following content:
+In your project root, create or update the `.env` or `.env.local` file with the following content:
 
 ```env
 DATABASE_URL="postgresql://maratron:yourpassword@localhost:5432/maratrondb"
+NEXTAUTH_URL=http://localhost:3000
+NEXTAUTH_SECRET=yourSuperSecureSecret
 ```
 
 - **maratron:** Your PostgreSQL username.
