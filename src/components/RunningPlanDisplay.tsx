@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { RunningPlanData, WeekPlan } from "@maratypes/runningPlan";
+import { RunningPlanData, WeekPlan, PlannedRun } from "@maratypes/runningPlan";
 import { DayOfWeek } from "@maratypes/basics";
+import { setDayForRunType } from "@utils/running/setRunDay";
 import { parsePace, formatPace } from "@utils/running/paces";
 
 interface RunningPlanDisplayProps {
@@ -32,6 +33,12 @@ const RunningPlanDisplay: React.FC<RunningPlanDisplayProps> = ({
       <h2 className="text-2xl font-bold text-center mb-4">
         {planName || "Your Running Plan"}
       </h2>
+      {editable && (
+        <BulkDaySetter
+          planData={planData}
+          onPlanChange={onPlanChange}
+        />
+      )}
       {planData.schedule.map((weekPlan, wi) => (
         <CollapsibleWeek
           key={weekPlan.weekNumber}
@@ -271,6 +278,68 @@ const CollapsibleWeek: React.FC<CollapsibleWeekProps> = ({
           </ul>
         </div>
       )}
+    </div>
+  );
+};
+
+interface BulkDaySetterProps {
+  planData: RunningPlanData;
+  onPlanChange?: (plan: RunningPlanData) => void;
+}
+
+const BulkDaySetter: React.FC<BulkDaySetterProps> = ({ planData, onPlanChange }) => {
+  const days: DayOfWeek[] = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
+  const runTypes: PlannedRun["type"][] = ["easy", "tempo", "interval", "long", "marathon"];
+  const [type, setType] = useState<PlannedRun["type"]>("easy");
+  const [day, setDay] = useState<DayOfWeek>("Monday");
+
+  const apply = () => {
+    if (!onPlanChange) return;
+    const updated = setDayForRunType(planData, type, day);
+    onPlanChange(updated);
+  };
+
+  return (
+    <div className="mb-4 flex items-center gap-2 justify-center">
+      <span>Set all</span>
+      <select
+        value={type}
+        onChange={(e) => setType(e.target.value as PlannedRun["type"])}
+        className="border p-1 rounded text-black"
+      >
+        {runTypes.map((t) => (
+          <option key={t} value={t}>
+            {t}
+          </option>
+        ))}
+      </select>
+      <span>runs to</span>
+      <select
+        value={day}
+        onChange={(e) => setDay(e.target.value as DayOfWeek)}
+        className="border p-1 rounded text-black"
+      >
+        {days.map((d) => (
+          <option key={d} value={d}>
+            {d}
+          </option>
+        ))}
+      </select>
+      <button
+        type="button"
+        onClick={apply}
+        className="bg-blue-500 text-white px-3 py-1 rounded"
+      >
+        Apply
+      </button>
     </div>
   );
 };
