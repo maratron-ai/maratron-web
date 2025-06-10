@@ -57,14 +57,6 @@ a:hover {
   box-sizing: border-box;
 }
 
-/* Removed container width restrictions */
-.container {
-  width: 100%;
-  max-width: none;
-  margin: 0;
-  padding-left: 0;
-  padding-right: 0;
-}
 
 /* Example global heading styles */
 h1, h2, h3, h4, h5, h6 {

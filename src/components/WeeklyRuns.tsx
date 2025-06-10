@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { listRunningPlans, updateRunningPlan } from "@lib/api/plan";
 import { createRun } from "@lib/api/run";
-import { Card } from "@components/ui";
+import { Card, Select, SelectTrigger, SelectContent, SelectItem, SelectValue, Checkbox, Progress } from "@components/ui";
 import type { RunningPlan } from "@maratypes/runningPlan";
 import { assignDatesToPlan } from "@utils/running/planDates";
 import { calculateDurationFromPace } from "@utils/running/calculateDuration";
@@ -123,11 +123,15 @@ export default function WeeklyRuns() {
     }
   };
 
+  const completed = week.runs.filter((r) => r.done).length;
+  const progressValue = (completed / week.runs.length) * 100;
+
   return (
     <div className="space-y-4">
       <h3 className="text-xl font-semibold">
         {plan.name} - Week {week.weekNumber}
       </h3>
+      <Progress value={progressValue} />
       <div className="space-y-2">
         {week.runs.map((r, i) => {
           const classes = r.done ? "text-gray-500 line-through" : undefined;
@@ -143,25 +147,25 @@ export default function WeeklyRuns() {
                 {r.notes && <p className="text-sm">{r.notes}</p>}
                 <label className="block text-sm mt-1">
                   <span className="mr-2">Day:</span>
-                  <select
+                  <Select
                     value={r.day || "Sunday"}
-                    onChange={(e) => changeDay(i, e.target.value as typeof days[number])}
-                    className="border p-1 rounded text-black"
+                    onValueChange={(val) => changeDay(i, val as typeof days[number])}
                   >
-                    {days.map((d) => (
-                      <option key={d} value={d}>
-                        {d}
-                      </option>
-                    ))}
-                  </select>
+                    <SelectTrigger className="w-32">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {days.map((d) => (
+                        <SelectItem key={d} value={d}>
+                          {d}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </label>
               </div>
               <label className="flex items-center space-x-2">
-                <input
-                  type="checkbox"
-                  checked={r.done || false}
-                  onChange={() => toggleDone(i)}
-                />
+                <Checkbox checked={r.done || false} onCheckedChange={() => toggleDone(i)} />
                 <span>{r.done ? "Completed" : "Mark done"}</span>
               </label>
             </Card>
