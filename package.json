@@ -25,7 +25,7 @@
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^14.6.1",
     "@types/jest": "^29.5.14",
-    "@types/node": "^22",
+    "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "autoprefixer": "^10.4.20",
@@ -35,7 +35,7 @@
     "jest-environment-jsdom": "^29.7.0",
     "postcss": "^8",
     "prisma": "^6.4.1",
-    "tailwindcss": "^4.1.8",
+    "tailwindcss": "^3.4.1",
     "ts-jest": "^29.3.4",
     "typescript": "^5"
   }
