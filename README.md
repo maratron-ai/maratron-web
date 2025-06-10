@@ -2,6 +2,14 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
+Ensure you have Node.js installed (\>=18 <22). We recommend using Node 20 LTS.
+If you use [nvm](https://github.com/nvm-sh/nvm), run:
+
+```bash
+nvm install 20
+nvm use 20
+```
+
 First, run the development server:
 
 ```bash
