@@ -8,7 +8,7 @@ import { UserProfile } from "@maratypes/user";
 import { getUserProfile, updateUserProfile } from "@lib/api/user/user";
 
 export default function UserProfilePage() {
-  const { data: session, status } = useSession();
+  const { data: session, status, update } = useSession();
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -41,6 +41,7 @@ export default function UserProfilePage() {
       setLoading(true);
       await updateUserProfile(updated.id, updated);
       setProfile(updated);
+      await update({ user: { avatarUrl: updated.avatarUrl ?? null } });
       setSaveSuccess(true);
       setTimeout(() => setSaveSuccess(false), 2000);
     } catch {

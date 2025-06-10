@@ -28,9 +28,11 @@ export const authOptions: NextAuthOptions = {
         session.user.id = token.sub;
       }
       if (session.user && (token as JWT & { avatarUrl?: string }).avatarUrl) {
-        session.user.image = (
+        const avatar = (
           token as JWT & { avatarUrl?: string }
         ).avatarUrl as string;
+        session.user.avatarUrl = avatar;
+        session.user.image = avatar;
       }
       return session;
     },

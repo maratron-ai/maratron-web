@@ -9,6 +9,7 @@ declare module "next-auth" {
       name?: string;
       email?: string;
       image?: string;
+      avatarUrl?: string | null;
     } & DefaultSession["user"]; // Also include everything the default session user has
   }
   interface User {
