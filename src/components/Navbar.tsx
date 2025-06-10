@@ -76,7 +76,7 @@ export default function Navbar() {
                   className="focus:outline-none bg-transparent p-0 hover:bg-transparent focus:ring-0"
                 >
                   <Image
-                    src={session.user.image ?? session.user.avatarUrl ?? "/Default_pfp.svg"}
+                    src={session.user.avatarUrl ?? "/Default_pfp.svg"}
                     alt="avatar"
                     width={32}
                     height={32}
@@ -131,7 +131,7 @@ export default function Navbar() {
                 <div className="w-8 h-8 rounded-full overflow-hidden">
                   {" "}
                   <Image
-                    src={session.user.image ?? session.user.avatarUrl ?? "/Default_pfp.svg"}
+                    src={session.user.avatarUrl ?? "/Default_pfp.svg"}
                     alt="avatar"
                     width={24}
                     height={24}

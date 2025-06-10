@@ -32,7 +32,6 @@ export const authOptions: NextAuthOptions = {
           token as JWT & { avatarUrl?: string }
         ).avatarUrl as string;
         session.user.avatarUrl = avatar;
-        session.user.image = avatar;
       }
       return session;
     },
