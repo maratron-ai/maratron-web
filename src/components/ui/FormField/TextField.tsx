@@ -2,6 +2,7 @@
 "use client";
 
 import React from "react";
+import { Input, Label } from "@components/ui";
 
 export interface TextFieldProps
   extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "onChange"> {
@@ -23,18 +24,18 @@ const TextField: React.FC<TextFieldProps> = ({
 }) => {
   return (
     <div className={`space-y-1 ${className}`}>
-      <label htmlFor={name} className="block font-medium">
+      <Label htmlFor={name} className="block font-medium">
         {label}
         {inputProps.required && <span className="text-red-500 ml-1">*</span>}
-      </label>
+      </Label>
 
       {editing ? (
-        <input
+        <Input
           id={name}
           name={name}
           value={value}
           onChange={(e) => onChange(name, e.target.value)}
-          className="mt-1 w-full border rounded px-2 py-1 focus:outline-none focus:ring focus:ring-primary"
+          className="mt-1"
           {...inputProps}
         />
       ) : (

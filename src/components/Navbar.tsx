@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { useState } from "react";
+import { Menu } from "lucide-react";
 
 export default function Navbar() {
   const { data: session, status } = useSession();
@@ -174,20 +175,7 @@ export default function Navbar() {
             aria-expanded={mobileOpen}
             className="p-2 focus:outline-none"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={1.5}
-              stroke="currentColor"
-              className="w-6 h-6"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M3.75 5.25h16.5m-16.5 6h16.5m-16.5 6h16.5"
-              />
-            </svg>
+            <Menu className="w-6 h-6" />
           </button>
         </div>
       </div>
