@@ -16,7 +16,7 @@ export default function HomePage() {
 
   if (!session?.user) {
     return (
-      <main className="min-h-screen flex flex-col items-center justify-center p-4 text-center">
+      <main className="container mx-auto px-4 max-w-screen-lg min-h-screen flex flex-col items-center justify-center text-center">
         <h1 className="text-4xl font-bold mb-4">Welcome to Maratron</h1>
         <p className="mb-6">
           Please{" "}
@@ -32,7 +32,7 @@ export default function HomePage() {
   const userName = session.user.name || session.user.email;
 
   return (
-    <main className="min-h-screen bg-background text-foreground p-4 space-y-10">
+    <main className="container mx-auto px-4 max-w-screen-lg min-h-screen bg-background text-foreground space-y-10">
       <h1 className="text-3xl font-bold">Welcome back, {userName}!</h1>
 
       <section>

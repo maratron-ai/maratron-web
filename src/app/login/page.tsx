@@ -50,7 +50,7 @@ const LoginPage: React.FC = () => {
   // Show loading state while NextAuth checks session (optional)
   if (status === "loading") {
     return (
-      <div className="max-w-4xl mx-auto p-6">
+      <div className="container mx-auto px-4 max-w-screen-lg p-6">
         <h1 className="text-2xl">Loading...</h1>
       </div>
     );
@@ -59,7 +59,7 @@ const LoginPage: React.FC = () => {
   // If already logged in
   if (session?.user) {
     return (
-      <div className="max-w-4xl mx-auto p-6">
+      <div className="container mx-auto px-4 max-w-screen-lg p-6">
         <div className="flex justify-center mb-6">
           <h1 className="text-3xl font-bold">You are logged in!</h1>
         </div>
@@ -77,7 +77,7 @@ const LoginPage: React.FC = () => {
 
   // If not logged in, show the login form
   return (
-    <div className="max-w-4xl mx-auto p-6">
+    <div className="container mx-auto px-4 max-w-screen-lg p-6">
       <div className="flex justify-center mb-6">
         <h1 className="text-3xl font-bold">Login</h1>
       </div>
