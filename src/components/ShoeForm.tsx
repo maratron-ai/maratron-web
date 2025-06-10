@@ -118,7 +118,7 @@ const ShoeForm: React.FC<ShoeFormProps> = ({ onSubmit, initialData }) => {
   if (status === "loading") return <div>Loading...</div>;
 
   return (
-    <Card className="p-6 max-w-lg mx-auto">
+    <Card className="p-6 w-full">
       <h2 className="text-2xl font-semibold mb-4">Add a Shoe</h2>
 
       {success && <p className="text-green-600 mb-4">{success}</p>}

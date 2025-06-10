@@ -164,7 +164,7 @@ const RunForm: React.FC<RunFormProps> = ({ onSubmit }) => {
   if (status === "loading" || profileLoading) return <div>Loading...</div>;
 
   return (
-    <Card className="p-6 max-w-lg mx-auto">
+    <Card className="p-6 w-full">
       <h2 className="text-2xl font-semibold mb-4">Add a Run</h2>
 
       {success && <p className="text-green-600 mb-4">{success}</p>}

@@ -42,7 +42,7 @@ export default function OnboardingProfile() {
   };
 
   return (
-    <div className="max-w-2xl mx-auto py-12">
+    <div className="w-full px-0 py-12">
       <h1 className="text-2xl font-bold mb-4">
         Almost done—tell us about your running!
       </h1>

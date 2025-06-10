@@ -114,13 +114,13 @@ export default function LandingPage() {
               alt="Maratron Logo"
               width={200}
               height={200}
-              className="mx-auto mb-6"
+              className="mb-6"
               priority
             />
             <h1 className="text-5xl sm:text-7xl font-extrabold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
               The AI Coach for Serious Runners
             </h1>
-            <p className="mt-6 text-lg text-foreground/70 max-w-xl mx-auto">
+            <p className="mt-6 text-lg text-foreground/70 w-full px-0">
               Maratron helps you train smarter, race faster, and stay
               injury-free with cutting-edge tech.
             </p>
@@ -146,7 +146,7 @@ export default function LandingPage() {
         id="features"
         className="py-24 px-4 sm:px-6 bg-accent/5 relative z-10"
       >
-        <div className="max-w-6xl mx-auto text-center">
+        <div className="w-full text-center">
           <h2 className="text-3xl sm:text-4xl font-bold mb-12">
             Built for Performance and Progress
           </h2>

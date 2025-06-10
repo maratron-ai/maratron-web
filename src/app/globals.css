@@ -58,11 +58,13 @@ a:hover {
   box-sizing: border-box;
 }
 
-/* Utility classes for container width */
+/* Removed container width restrictions */
 .container {
-  width: 90%;
-  max-width: 1200px;
-  margin: 0 auto;
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding-left: 0;
+  padding-right: 0;
 }
 
 /* Example global heading styles */

@@ -57,7 +57,7 @@ export default function SignupPage() {
 
   return (
     <main className="min-h-screen flex items-center justify-center bg-background text-foreground p-4">
-      <div className="w-full max-w-md">
+      <div className="w-full px-0">
         <h1 className="text-3xl font-bold mb-6 text-center">Sign Up</h1>
         {error && <p className="mb-4 text-red-500">{error}</p>}
         <form onSubmit={handleSubmit} className="space-y-4">

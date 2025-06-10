@@ -48,15 +48,15 @@ export default function PlanPage({ params }: PageProps) {
   }, [id, session?.user, router]);
 
   if (status === "loading" || loading) {
-    return <div className="container mx-auto px-4 max-w-screen-lg p-4">Loading...</div>;
+    return <div className="w-full px-0 p-4">Loading...</div>;
   }
 
   if (!plan) {
-    return <div className="container mx-auto px-4 max-w-screen-lg p-4">Plan not found.</div>;
+    return <div className="w-full px-0 p-4">Plan not found.</div>;
   }
 
   return (
-    <div className="container mx-auto px-4 max-w-screen-lg p-4">
+    <div className="w-full px-0 p-4">
       <h1 className="text-2xl font-bold mb-4">{plan.name}</h1>
       <div className="mb-4 space-x-2">
         <Button onClick={() => setEditing((e) => !e)}>
