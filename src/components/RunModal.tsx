@@ -14,8 +14,7 @@ export default function RunModal({ run, onClose }: RunModalProps) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-      {/* Increased width from w-80 to w-96 */}
-      <Card className="relative w-1/2 max-w-lg bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
+      <Card className="relative w-1/2 bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg w-full">
         <button
           aria-label="Close"
           onClick={onClose}

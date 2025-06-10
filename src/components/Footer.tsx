@@ -8,7 +8,7 @@ export default function Footer() {
         alt="Maratron wordmark"
         width={100}
         height={30}
-        className="mx-auto mb-2"
+        className="mb-2"
       />
       &copy; {new Date().getFullYear()} Maratron. All rights reserved.
     </footer>

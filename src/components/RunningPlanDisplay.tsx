@@ -29,7 +29,7 @@ const RunningPlanDisplay: React.FC<RunningPlanDisplayProps> = ({
     onPlanChange({ ...planData, schedule: newSchedule });
   };
   return (
-    <div className="container p-4">
+    <div className="w-full px-0 py-4">
       <h2 className="text-2xl font-bold text-center mb-4">
         {planName || "Your Running Plan"}
       </h2>
