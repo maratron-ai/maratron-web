@@ -94,7 +94,7 @@ export default function TrainingPlansList() {
           </div>
           <div className="flex gap-2">
             {!plan.active && plan.id && (
-              <Button onClick={() => setActive(plan.id)} className="text-sm px-2 py-1">
+              <Button onClick={() => setActive(plan.id!)} className="text-sm px-2 py-1">
                 Set Active
               </Button>
             )}
