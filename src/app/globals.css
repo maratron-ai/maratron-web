@@ -1,10 +1,12 @@
+/* Global color variables */
+@import "../styles/theme.css";
+
 /* Import Tailwind CSS layers */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Global color variables */
-@import "../styles/theme.css";
+
 
 /* Global base styles */
 html,
