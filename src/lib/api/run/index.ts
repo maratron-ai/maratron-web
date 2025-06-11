@@ -18,10 +18,12 @@ interface RawRunDto {
   trainingEnvironment?: TrainingEnvironment;
   name?: string;
   pace?: string;                 // e.g. "07:30"
-  paceUnit?: DistanceUnit;      
+  paceUnit?: DistanceUnit;
   elevationGain?: number;
   elevationGainUnit?: ElevationUnit;
   notes?: string;
+  createdAt?: string;
+  updatedAt?: string;
   userId: string;
   shoeId?: string;
 }
@@ -41,6 +43,8 @@ const mapRun = (dto: RawRunDto): Run => ({
   elevationGain: dto.elevationGain,
   elevationGainUnit: dto.elevationGainUnit,
   notes: dto.notes,
+  createdAt: dto.createdAt ? new Date(dto.createdAt) : undefined,
+  updatedAt: dto.updatedAt ? new Date(dto.updatedAt) : undefined,
   userId: dto.userId,
   shoeId: dto.shoeId,
 });

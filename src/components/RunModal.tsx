@@ -37,6 +37,17 @@ export default function RunModal({ run, onClose }: RunModalProps) {
         </h2>
         <div className="space-y-2 text-sm text-gray-800 dark:text-gray-200">
           <p>
+            <span className="font-semibold">Run Date:</span>{" "}
+            {new Date(run.date).toLocaleDateString()} {" "}
+            {new Date(run.date).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+          </p>
+          {run.createdAt && (
+            <p>
+              <span className="font-semibold">Added:</span>{" "}
+              {new Date(run.createdAt).toLocaleString()}
+            </p>
+          )}
+          <p>
             <span className="font-semibold">Distance:</span> {run.distance}{" "}
             {run.distanceUnit}
           </p>
