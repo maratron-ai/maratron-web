@@ -132,12 +132,12 @@ export default function WeeklyRuns() {
         {plan.name} - Week {week.weekNumber}
       </h3>
       <Progress value={progressValue} />
-      <div className="space-y-2">
+      <div className="space-y-4">
         {week.runs.map((r, i) => {
           const classes = r.done ? "text-foreground/60 line-through" : undefined;
           return (
-            <Card key={i} className={`flex items-center justify-between ${classes}`}>
-              <div>
+            <Card key={i} className={`p-6 flex items-center justify-between ${classes}`}>
+              <div className="space-y-1">
                 <p className="font-semibold">
                   {r.date?.slice(0, 10)} - {r.type}
                 </p>

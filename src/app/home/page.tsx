@@ -11,11 +11,13 @@ import { Card, Skeleton } from "@components/ui";
 import {
   PlusCircle,
   CalendarCheck,
-  Shoe,
   User,
   Upload,
   BarChart3,
 } from "lucide-react";
+
+import { Icon } from "lucide-react";
+import { sneaker } from "@lucide/lab";
 
 export default function HomePage() {
   const { data: session, status } = useSession();
@@ -53,7 +55,9 @@ export default function HomePage() {
       <DashboardStats />
 
       <section>
-        <h2 className="text-2xl font-bold mb-4 border-b-2 border-primary inline-block pb-1">Quick Actions</h2>
+        <h2 className="text-2xl font-bold mb-4 border-b-2 border-primary inline-block pb-1">
+          Quick Actions
+        </h2>
         {/* Wrap grid in a max-width container */}
         <div className="w-full px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -71,7 +75,7 @@ export default function HomePage() {
             </Link>
             <Link href="/shoes/new">
               <Card className="p-4 flex items-center gap-2 hover:bg-accent-3/10">
-                <Shoe className="w-5 h-5" />
+                <Icon iconNode={sneaker} size={24} />
                 <span>Add New Shoes</span>
               </Card>
             </Link>
@@ -92,28 +96,36 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-      <h2 className="text-2xl font-bold mb-4 border-b-2 border-primary inline-block pb-1">Recent Runs</h2>
+      <h2 className="text-2xl font-bold mb-4 border-b-2 border-primary inline-block pb-1">
+        Recent Runs
+      </h2>
       <div className="w-full px-4 sm:px-6 lg:px-8">
         <section>
           <RecentRuns />
         </section>
       </div>
 
-      <h2 className="text-2xl font-bold mb-4 border-b-2 border-primary inline-block pb-1">This Week&apos;s Runs</h2>
+      <h2 className="text-2xl font-bold mb-4 border-b-2 border-primary inline-block pb-1">
+        This Week&apos;s Runs
+      </h2>
       <div className="w-full px-4 sm:px-6 lg:px-8">
         <section>
           <WeeklyRuns />
         </section>
       </div>
-      
-      <h2 className="text-2xl font-bold mb-4 border-b-2 border-primary inline-block pb-1">Your Training Plan</h2>
+
+      <h2 className="text-2xl font-bold mb-4 border-b-2 border-primary inline-block pb-1">
+        Your Training Plan
+      </h2>
       <div className="w-full px-4 sm:px-6 lg:px-8">
         <section>
           <TrainingPlansList />
         </section>
       </div>
 
-      <h2 className="text-2xl font-bold mb-4 border-b-2 border-primary inline-block pb-1">Your Shoes</h2>
+      <h2 className="text-2xl font-bold mb-4 border-b-2 border-primary inline-block pb-1">
+        Your Shoes
+      </h2>
       <div className="w-full px-4 sm:px-6 lg:px-8">
         <section>
           <ShoesList />

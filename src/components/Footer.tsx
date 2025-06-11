@@ -13,9 +13,24 @@ export default function Footer() {
         />
         <div className="space-x-4">
           <a href="/about">About</a>
-          <a href="https://twitter.com" target="_blank" rel="noopener noreferrer">Twitter</a>
+          {/* <a
+            href="https://twitter.com"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Twitter
+          </a> */}
+          <a
+            href="https://www.instagram.com/maratron.ai/"
+            // target="_blank"
+            // rel="noopener noreferrer"
+          >
+            Instagram
+          </a>
         </div>
-        <div>&copy; {new Date().getFullYear()} Maratron. All rights reserved.</div>
+        <div>
+          &copy; {new Date().getFullYear()} Maratron. All rights reserved.
+        </div>
       </div>
     </footer>
   );

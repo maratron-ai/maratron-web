@@ -71,14 +71,14 @@ export default function TrainingPlansList() {
     return <p className="text-foreground/60">No plans saved.</p>;
 
   return (
-    <div className="space-y-2">
+    <div className="space-y-4">
       {plans.map((plan) => (
-        <Card key={plan.id} className="flex justify-between items-start">
-          <div>
+        <Card key={plan.id} className="p-6 flex justify-between items-start">
+          <div className="space-y-1">
             <Link href={`/plans/${plan.id ?? ""}`} className="font-semibold underline">
               {plan.name}
             </Link>
-            <div className="text-sm">
+            <div className="text-sm space-y-1">
               {plan.planData?.weeks && <span>{plan.planData.weeks} weeks</span>}
               {plan.startDate && (
                 <span className="ml-2">

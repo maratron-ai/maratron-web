@@ -36,6 +36,7 @@ export default function DashboardStats() {
       </Card>
       <Card className="p-4 text-center">
         <div className="text-2xl font-bold">{totalDistance.toFixed(1)}</div>
+        {/* Add units to run below */}
         <div className="text-sm text-muted-foreground">Total Distance</div>
       </Card>
     </div>
