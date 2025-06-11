@@ -6,7 +6,16 @@ import RecentRuns from "@components/RecentRuns";
 import TrainingPlansList from "@components/TrainingPlansList";
 import WeeklyRuns from "@components/WeeklyRuns";
 import ShoesList from "@components/ShoesList";
-import { Skeleton } from "@components/ui";
+import DashboardStats from "@components/DashboardStats";
+import { Card, Skeleton } from "@components/ui";
+import {
+  PlusCircle,
+  CalendarCheck,
+  Shoe,
+  User,
+  Upload,
+  BarChart3,
+} from "lucide-react";
 
 export default function HomePage() {
   const { data: session, status } = useSession();
@@ -41,42 +50,45 @@ export default function HomePage() {
     <main className="w-full px-4 sm:px-6 lg:px-8 min-h-screen bg-background text-foreground space-y-10 pb-20">
       <h1 className="text-3xl font-bold">Welcome back, {userName}!</h1>
       <div className="h-1 w-24 mb-6 bg-gradient-to-r from-brand-from to-brand-to rounded"></div>
+      <DashboardStats />
 
       <section>
         <h2 className="text-2xl font-bold mb-4 border-b-2 border-primary inline-block pb-1">Quick Actions</h2>
         {/* Wrap grid in a max-width container */}
         <div className="w-full px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            <Link
-              href="/runs/new"
-              className="border rounded p-4 hover:bg-accent/20"
-            >
-              Add a Run
+            <Link href="/runs/new">
+              <Card className="p-4 flex items-center gap-2 hover:bg-accent-3/10">
+                <PlusCircle className="w-5 h-5" />
+                <span>Add a Run</span>
+              </Card>
             </Link>
-            <Link
-              href="/plan-generator"
-              className="border rounded p-4 hover:bg-accent/20"
-            >
-              Generate Training Plan
+            <Link href="/plan-generator">
+              <Card className="p-4 flex items-center gap-2 hover:bg-accent-3/10">
+                <CalendarCheck className="w-5 h-5" />
+                <span>Generate Training Plan</span>
+              </Card>
             </Link>
-            <Link
-              href="/shoes/new"
-              className="border rounded p-4 hover:bg-accent/20"
-            >
-              Add New Shoes
+            <Link href="/shoes/new">
+              <Card className="p-4 flex items-center gap-2 hover:bg-accent-3/10">
+                <Shoe className="w-5 h-5" />
+                <span>Add New Shoes</span>
+              </Card>
             </Link>
-            <Link
-              href="/userProfile"
-              className="border rounded p-4 hover:bg-accent/20"
-            >
-              Edit Profile
+            <Link href="/userProfile">
+              <Card className="p-4 flex items-center gap-2 hover:bg-accent-3/10">
+                <User className="w-5 h-5" />
+                <span>Edit Profile</span>
+              </Card>
             </Link>
-            <div className="border rounded p-4 text-foreground/60">
-              Upload workout file (coming soon)
-            </div>
-            <div className="border rounded p-4 text-foreground/60">
-              View progress analytics (coming soon)
-            </div>
+            <Card className="p-4 flex items-center gap-2 text-foreground/60">
+              <Upload className="w-5 h-5" />
+              <span>Upload workout file (coming soon)</span>
+            </Card>
+            <Card className="p-4 flex items-center gap-2 text-foreground/60">
+              <BarChart3 className="w-5 h-5" />
+              <span>View progress analytics (coming soon)</span>
+            </Card>
           </div>
         </div>
       </section>

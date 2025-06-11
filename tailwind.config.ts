@@ -26,6 +26,14 @@ export default {
           opacityValue !== undefined
             ? `rgb(var(--accent-rgb) / ${opacityValue})`
             : `rgb(var(--accent-rgb))`,
+        "accent-2": ({ opacityValue }) =>
+          opacityValue !== undefined
+            ? `rgb(var(--accent-2-rgb) / ${opacityValue})`
+            : `rgb(var(--accent-2-rgb))`,
+        "accent-3": ({ opacityValue }) =>
+          opacityValue !== undefined
+            ? `rgb(var(--accent-3-rgb) / ${opacityValue})`
+            : `rgb(var(--accent-3-rgb))`,
         "brand-from": "var(--brand-from)",
         "brand-to": "var(--brand-to)",
         "brand-orange": "var(--brand-orange)",
