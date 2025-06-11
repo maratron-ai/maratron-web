@@ -4,8 +4,7 @@ import { useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import LandingNavbar from "@components/LandingNavbar";
-import Footer from "@components/Footer";
+
 
 export default function LandingPage() {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -84,7 +83,6 @@ export default function LandingPage() {
 
   return (
     <main className="relative overflow-x-hidden text-foreground bg-transparent">
-      <LandingNavbar />
 
       {/* Full‐screen background video */}
       <video
@@ -154,7 +152,6 @@ export default function LandingPage() {
         </div>
       </section>
 
-      <Footer />
     </main>
   );
 }
