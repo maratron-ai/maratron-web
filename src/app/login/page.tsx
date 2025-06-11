@@ -75,63 +75,65 @@ const LoginPage: React.FC = () => {
 
   // If not logged in, show the login form
   return (
-    <main className="w-full px-4 sm:px-6 lg:px-8 py-6 space-y-6">
-      <h1 className="text-3xl font-bold text-center">Login</h1>
-      {error && <p className="text-red-500 text-center">{error}</p>}
-      <div className="flex justify-center">
-        <button
-          type="button"
-          onClick={jacksonLogin}
-          className="border px-4 py-2 rounded-md hover:bg-blue-50 transition"
-        >
-          Jackson login
-        </button>
-      </div>
-      <form onSubmit={handleLogin} className="space-y-4">
-        <div className="mb-4">
-          <label htmlFor="email" className="block text-gray-700 mb-2">
-            Email:
-          </label>
-          <input
-            id="email"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            className="w-full px-3 py-2 border rounded focus:outline-none focus:ring"
-          />
+    <div className="min-h-screen flex flex-col">
+      <main className="flex-grow w-full px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+        <h1 className="text-3xl font-bold text-center">Login</h1>
+        {error && <p className="text-red-500 text-center">{error}</p>}
+        <div className="flex justify-center">
+          <button
+            type="button"
+            onClick={jacksonLogin}
+            className="border px-4 py-2 rounded-md hover:bg-blue-50 transition"
+          >
+            Jackson login
+          </button>
         </div>
-        <div className="mb-6">
-          <label htmlFor="password" className="block text-gray-700 mb-2">
-            Password:
-          </label>
-          <input
-            id="password"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            className="w-full px-3 py-2 border rounded focus:outline-none focus:ring"
-          />
-        </div>
-        <button
-          type="submit"
-          className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition-colors"
-        >
-          Login
-        </button>
-        <div className="text-center my-4">
-          <span className="text-gray-500">or</span>
-        </div>
-        <button
-          type="button"
-          onClick={() => router.push("/signup")}
-          className="w-full border border-blue-600 text-blue-600 py-2 rounded-md hover:bg-blue-50 transition-colors"
-        >
-          Not registered? Sign up
-        </button>
-      </form>
-    </main>
+        <form onSubmit={handleLogin} className="space-y-4 w-full max-w-sm mx-auto">
+          <div className="mb-4">
+            <label htmlFor="email" className="block text-gray-700 mb-2">
+              Email:
+            </label>
+            <input
+              id="email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              className="w-full px-3 py-2 border rounded focus:outline-none focus:ring"
+            />
+          </div>
+          <div className="mb-6">
+            <label htmlFor="password" className="block text-gray-700 mb-2">
+              Password:
+            </label>
+            <input
+              id="password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              className="w-full px-3 py-2 border rounded focus:outline-none focus:ring"
+            />
+          </div>
+          <button
+            type="submit"
+            className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition-colors"
+          >
+            Login
+          </button>
+          <div className="text-center my-4">
+            <span className="text-gray-500">or</span>
+          </div>
+          <button
+            type="button"
+            onClick={() => router.push("/signup")}
+            className="w-full border border-blue-600 text-blue-600 py-2 rounded-md hover:bg-blue-50 transition-colors"
+          >
+            Not registered? Sign up
+          </button>
+        </form>
+      </main>
+    </div>
   );
 };
 
