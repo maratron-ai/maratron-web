@@ -22,8 +22,8 @@ export default function Navbar() {
   ];
 
   return (
-    <nav className="bg-background border-b border-accent/20">
-      <div className="w-full px-4 sm:px-6 lg:px-8 flex items-center justify-between py-4">
+    <nav className="bg-primary">
+      <div className="w-full px-4 sm:px-6 lg:px-8 flex items-center justify-between py-6">
         {/* Left: Logo and links */}
         <div className="flex items-center">
           <Link href="/" className="text-xl font-bold mr-2">
@@ -173,14 +173,17 @@ export default function Navbar() {
           {/* Hamburger icon (mobile) */}
           <Sheet>
             <SheetTrigger asChild>
-              <button aria-label="Toggle mobile menu" className="p-2 focus:outline-none">
+              <button
+                aria-label="Toggle mobile menu"
+                className="p-2 focus:outline-none"
+              >
                 <Menu className="w-6 h-6" />
               </button>
             </SheetTrigger>
             <SheetContent side="left" className="p-6 space-y-4">
               {status !== "loading" && session?.user ? (
                 navLinks.map((link) => (
-                  <Link key={link.href} href={link.href} className="block" >
+                  <Link key={link.href} href={link.href} className="block">
                     {link.label}
                   </Link>
                 ))
@@ -198,7 +201,10 @@ export default function Navbar() {
                   <Link href="/settings" className="block">
                     Settings
                   </Link>
-                  <button onClick={() => signOut()} className="w-full text-left">
+                  <button
+                    onClick={() => signOut()}
+                    className="w-full text-left"
+                  >
                     Logout
                   </button>
                 </>

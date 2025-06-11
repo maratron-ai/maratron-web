@@ -1,9 +1,9 @@
 :root {
-  --background: #d4d4d8;
+  --background: white;
   --foreground: #4e545c;
-  --primary: #20c1ec;
-  --secondary: #1f81a8;
-  --accent: #293b54;
+  --primary-rgb: 32, 193, 236;    /* #20c1ec */
+  --secondary-rgb: 31, 129, 168;  /* #1f81a8 */
+  --accent-rgb: 41, 59, 84;       /* #293b54 */
   --brand-from: #20c1ec;
   --brand-to: #1f81a8;
   --brand-orange: #2b5976;
@@ -16,9 +16,9 @@
   :root {
     --background: #141b2b;
     --foreground: #d4d4d8;
-    --primary: #20c1ec;
-    --secondary: #1f81a8;
-    --accent: #223443;
+    --primary-rgb: 32, 193, 236;    /* #20c1ec */
+    --secondary-rgb: 31, 129, 168;  /* #1f81a8 */
+    --accent-rgb: 41, 59, 84;       /* #293b54 */
     --brand-from: #20c1ec;
     --brand-to: #1f81a8;
     --brand-orange: #2b5976;

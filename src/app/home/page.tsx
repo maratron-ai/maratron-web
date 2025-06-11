@@ -38,11 +38,12 @@ export default function HomePage() {
   const userName = session.user.name || session.user.email;
 
   return (
-    <main className="w-full px-4 sm:px-6 lg:px-8 min-h-screen bg-background text-foreground space-y-10">
+    <main className="w-full px-4 sm:px-6 lg:px-8 min-h-screen bg-background text-foreground space-y-10 pb-20">
       <h1 className="text-3xl font-bold">Welcome back, {userName}!</h1>
+      <div className="h-1 w-24 mb-6 bg-gradient-to-r from-brand-from to-brand-to rounded"></div>
 
       <section>
-        <h2 className="text-2xl font-semibold mb-4">Quick Actions</h2>
+        <h2 className="text-2xl font-bold mb-4 border-b-2 border-primary inline-block pb-1">Quick Actions</h2>
         {/* Wrap grid in a max-width container */}
         <div className="w-full px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -79,28 +80,28 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-      <h2 className="text-2xl font-semibold mb-4">Recent Runs</h2>
+      <h2 className="text-2xl font-bold mb-4 border-b-2 border-primary inline-block pb-1">Recent Runs</h2>
       <div className="w-full px-4 sm:px-6 lg:px-8">
         <section>
           <RecentRuns />
         </section>
       </div>
 
-      <h2 className="text-2xl font-semibold mb-4">This Week&apos;s Runs</h2>
+      <h2 className="text-2xl font-bold mb-4 border-b-2 border-primary inline-block pb-1">This Week&apos;s Runs</h2>
       <div className="w-full px-4 sm:px-6 lg:px-8">
         <section>
           <WeeklyRuns />
         </section>
       </div>
       
-      <h2 className="text-2xl font-semibold mb-4">Your Training Plan</h2>
+      <h2 className="text-2xl font-bold mb-4 border-b-2 border-primary inline-block pb-1">Your Training Plan</h2>
       <div className="w-full px-4 sm:px-6 lg:px-8">
         <section>
           <TrainingPlansList />
         </section>
       </div>
 
-      <h2 className="text-2xl font-semibold mb-4">Your Shoes</h2>
+      <h2 className="text-2xl font-bold mb-4 border-b-2 border-primary inline-block pb-1">Your Shoes</h2>
       <div className="w-full px-4 sm:px-6 lg:px-8">
         <section>
           <ShoesList />

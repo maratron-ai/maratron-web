@@ -14,9 +14,24 @@ export default {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
-        primary: "var(--primary)",
-        secondary: "var(--secondary)",
-        accent: "var(--accent)",
+        primary: ({ opacityValue }) =>
+          opacityValue !== undefined
+            ? `rgb(var(--primary-rgb) / ${opacityValue})`
+            : `rgb(var(--primary-rgb))`,
+        secondary: ({ opacityValue }) =>
+          opacityValue !== undefined
+            ? `rgb(var(--secondary-rgb) / ${opacityValue})`
+            : `rgb(var(--secondary-rgb))`,
+        accent: ({ opacityValue }) =>
+          opacityValue !== undefined
+            ? `rgb(var(--accent-rgb) / ${opacityValue})`
+            : `rgb(var(--accent-rgb))`,
+        "brand-from": "var(--brand-from)",
+        "brand-to": "var(--brand-to)",
+        "brand-orange": "var(--brand-orange)",
+        "brand-blue": "var(--brand-blue)",
+        "brand-purple": "var(--brand-purple)",
+        "brand-orange-dark": "var(--brand-orange-dark)",
       },
       fontFamily: {
         sans: ["var(--font-inter)", "sans-serif"],
