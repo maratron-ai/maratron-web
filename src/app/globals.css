@@ -58,8 +58,8 @@ p {
 input,
 select,
 textarea {
-  @apply bg-background text-foreground border border-accent rounded px-2 py-1
-         focus:outline-none focus:ring-2 focus:ring-primary;
+  @apply bg-accent-2/10 text-foreground border border-accent-2 rounded px-2 py-1
+         focus:outline-none focus:ring-2 focus:ring-accent-2;
 }
 
 button {
