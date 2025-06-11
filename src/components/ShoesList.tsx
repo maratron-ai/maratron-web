@@ -41,9 +41,9 @@ export default function ShoesList() {
     }
   };
 
-  if (loading) return <p className="text-gray-500">Loading shoes...</p>;
+  if (loading) return <p className="text-foreground/60">Loading shoes...</p>;
   if (shoes.length === 0)
-    return <p className="text-gray-500">No shoes added.</p>;
+    return <p className="text-foreground/60">No shoes added.</p>;
 
   return (
     <div className="space-y-2">
@@ -63,7 +63,7 @@ export default function ShoesList() {
                   {shoe.currentDistance} / {shoe.maxDistance} {shoe.distanceUnit}
                 </span>
                 {isDefault && (
-                  <span className="ml-2 text-green-600 font-medium">default</span>
+                  <span className="ml-2 text-primary font-medium">default</span>
                 )}
               </div>
             </div>

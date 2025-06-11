@@ -43,8 +43,8 @@ export default function WeeklyRuns() {
     fetchPlan();
   }, [session?.user?.id, refresh]);
 
-  if (loading) return <p className="text-gray-500">Loading...</p>;
-  if (!plan) return <p className="text-gray-500">No active plan.</p>;
+  if (loading) return <p className="text-foreground/60">Loading...</p>;
+  if (!plan) return <p className="text-foreground/60">No active plan.</p>;
 
   let weekIndex: number;
   if (plan.planData.startDate) {
@@ -60,13 +60,13 @@ export default function WeeklyRuns() {
   }
   if (weekIndex < 0) {
     return (
-      <p className="text-gray-500">
+      <p className="text-foreground/60">
         {plan.name} training begins {plan.planData.startDate?.slice(0, 10)}
       </p>
     );
   }
   if (!plan.planData.schedule[weekIndex]) {
-    return <p className="text-gray-500">Plan completed!</p>;
+    return <p className="text-foreground/60">Plan completed!</p>;
   }
   const week = plan.planData.schedule[weekIndex];
 
@@ -134,7 +134,7 @@ export default function WeeklyRuns() {
       <Progress value={progressValue} />
       <div className="space-y-2">
         {week.runs.map((r, i) => {
-          const classes = r.done ? "text-gray-500 line-through" : undefined;
+          const classes = r.done ? "text-foreground/60 line-through" : undefined;
           return (
             <Card key={i} className={`flex items-center justify-between ${classes}`}>
               <div>

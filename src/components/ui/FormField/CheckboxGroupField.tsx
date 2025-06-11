@@ -47,16 +47,16 @@ const CheckboxGroupField: React.FC<CheckboxGroupFieldProps> = ({
                   onChange(name, next);
                 }}
                 value={opt.value}
-                className="rounded border-gray-300 text-primary focus:ring-2 focus:ring-primary"
+                className="rounded border-accent text-primary focus:ring-2 focus:ring-primary"
               />
-              <span className="ml-2 text-gray-700 dark:text-gray-300">
+              <span className="ml-2 text-foreground dark:text-foreground">
                 {opt.label}
               </span>
             </label>
           ))}
         </div>
       ) : (
-        <p className="mt-1 text-gray-700 dark:text-gray-300">
+        <p className="mt-1 text-foreground dark:text-foreground">
           {value.length > 0 ? value.join(", ") : "–"}
         </p>
       )}

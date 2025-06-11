@@ -46,21 +46,21 @@ export default function Navbar() {
               <Link
                 href="#features"
                 onClick={() => setMenuOpen(false)}
-                className="px-2 py-1 text-gray-700 hover:bg-gray-100 rounded"
+                className="px-2 py-1 text-foreground hover:bg-accent/20 rounded"
               >
                 Learn More
               </Link>
               <Link
                 href="/login"
                 onClick={() => setMenuOpen(false)}
-                className="px-2 py-1 text-gray-700 hover:bg-gray-100 rounded"
+                className="px-2 py-1 text-foreground hover:bg-accent/20 rounded"
               >
                 Login
               </Link>
               <Link
                 href="/signup"
                 onClick={() => setMenuOpen(false)}
-                className="px-2 py-1 text-gray-700 hover:bg-gray-100 rounded"
+                className="px-2 py-1 text-foreground hover:bg-accent/20 rounded"
               >
                 Sign Up
               </Link>

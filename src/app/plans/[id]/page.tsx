@@ -82,7 +82,7 @@ export default function PlanPage({ params }: PageProps) {
                 console.error(err);
               }
             }}
-            className="bg-green-600 ml-2"
+            className="bg-primary ml-2"
           >
             Save
           </Button>

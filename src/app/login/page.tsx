@@ -64,7 +64,7 @@ const LoginPage: React.FC = () => {
         <div className="flex justify-center">
           <button
             onClick={() => router.push("/home")}
-            className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors"
+            className="bg-primary text-foreground px-4 py-2 rounded-md hover:bg-primary/80 transition-colors"
           >
             Go Home
           </button>
@@ -83,14 +83,14 @@ const LoginPage: React.FC = () => {
           <button
             type="button"
             onClick={jacksonLogin}
-            className="border px-4 py-2 rounded-md hover:bg-blue-50 transition"
+            className="border px-4 py-2 rounded-md hover:bg-accent/20 transition"
           >
             Jackson login
           </button>
         </div>
         <form onSubmit={handleLogin} className="space-y-4 w-full max-w-sm mx-auto">
           <div className="mb-4">
-            <label htmlFor="email" className="block text-gray-700 mb-2">
+            <label htmlFor="email" className="block text-foreground mb-2">
               Email:
             </label>
             <input
@@ -103,7 +103,7 @@ const LoginPage: React.FC = () => {
             />
           </div>
           <div className="mb-6">
-            <label htmlFor="password" className="block text-gray-700 mb-2">
+            <label htmlFor="password" className="block text-foreground mb-2">
               Password:
             </label>
             <input
@@ -117,17 +117,17 @@ const LoginPage: React.FC = () => {
           </div>
           <button
             type="submit"
-            className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition-colors"
+            className="w-full bg-primary text-foreground py-2 rounded-md hover:bg-primary/80 transition-colors"
           >
             Login
           </button>
           <div className="text-center my-4">
-            <span className="text-gray-500">or</span>
+            <span className="text-foreground/80">or</span>
           </div>
           <button
             type="button"
             onClick={() => router.push("/signup")}
-            className="w-full border border-blue-600 text-blue-600 py-2 rounded-md hover:bg-blue-50 transition-colors"
+            className="w-full border border-primary text-primary py-2 rounded-md hover:bg-primary/20 transition-colors"
           >
             Not registered? Sign up
           </button>

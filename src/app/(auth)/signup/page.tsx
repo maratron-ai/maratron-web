@@ -71,7 +71,7 @@ export default function SignupPage() {
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="Your Name"
-              className="w-full px-3 py-2 border border-gray-300 rounded bg-gray-200 focus:ring-2 focus:ring-primary"
+              className="w-full px-3 py-2 border border-accent rounded bg-background focus:ring-2 focus:ring-primary"
             />
           </div>
           <div>
@@ -82,7 +82,7 @@ export default function SignupPage() {
               value={avatarUrl}
               onChange={(e) => setAvatarUrl(e.target.value)}
               placeholder="https://example.com/avatar.png"
-              className="w-full px-3 py-2 border border-gray-300 rounded bg-gray-200 focus:ring-2 focus:ring-primary"
+              className="w-full px-3 py-2 border border-accent rounded bg-background focus:ring-2 focus:ring-primary"
             />
             <input
               type="file"
@@ -110,7 +110,7 @@ export default function SignupPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="you@example.com"
-              className="w-full px-3 py-2 border border-gray-300 rounded bg-gray-200 focus:ring-2 focus:ring-primary"
+              className="w-full px-3 py-2 border border-accent rounded bg-background focus:ring-2 focus:ring-primary"
             />
           </div>
           <div>
@@ -123,12 +123,12 @@ export default function SignupPage() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Password"
-              className="w-full px-3 py-2 border border-gray-300 rounded bg-gray-200 focus:ring-2 focus:ring-primary"
+              className="w-full px-3 py-2 border border-accent rounded bg-background focus:ring-2 focus:ring-primary"
             />
           </div>
           <button
             type="submit"
-            className="w-full bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/90 transition-colors"
+            className="w-full bg-primary text-foreground px-4 py-2 rounded-md hover:bg-primary/90 transition-colors"
           >
             Sign Up
           </button>

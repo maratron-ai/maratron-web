@@ -38,7 +38,7 @@ const TextAreaField: React.FC<TextAreaFieldProps> = ({
           {...props}
         />
       ) : (
-        <p className="mt-1 text-gray-700 dark:text-gray-300">{value ?? "–"}</p>
+        <p className="mt-1 text-foreground dark:text-foreground">{value ?? "–"}</p>
       )}
     </div>
   );

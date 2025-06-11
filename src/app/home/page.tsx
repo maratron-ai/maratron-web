@@ -70,10 +70,10 @@ export default function HomePage() {
             >
               Edit Profile
             </Link>
-            <div className="border rounded p-4 text-gray-500">
+            <div className="border rounded p-4 text-foreground/60">
               Upload workout file (coming soon)
             </div>
-            <div className="border rounded p-4 text-gray-500">
+            <div className="border rounded p-4 text-foreground/60">
               View progress analytics (coming soon)
             </div>
           </div>
