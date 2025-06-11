@@ -38,18 +38,18 @@ export default function UserProfileForm({
         e.preventDefault();
         handleSave();
       }}
-      className="bg-gray-800 p-6 rounded-lg shadow-lg space-y-6"
+      className="bg-background p-6 rounded-lg shadow-lg space-y-6"
     >
-      <div className="flex justify-between items-center border-b border-gray-700 pb-4">
-        <h2 className="text-3xl font-bold text-white">Your Profile</h2>
+      <div className="flex justify-between items-center border-b border-accent pb-4">
+        <h2 className="text-3xl font-bold text-foreground">Your Profile</h2>
         {!alwaysEdit && (
           <button
             type="button"
             onClick={toggleEditing}
-            className={`px-4 py-2 rounded font-medium text-white ${
+            className={`px-4 py-2 rounded font-medium text-foreground ${
               editing
-                ? "bg-gray-600 hover:bg-gray-500"
-                : "bg-blue-600 hover:bg-blue-700"
+                ? "bg-accent hover:bg-accent/80"
+                : "bg-primary hover:bg-primary/80"
             }`}
           >
             {editing ? "Cancel" : "Edit"}
@@ -92,7 +92,7 @@ export default function UserProfileForm({
         <div className="mt-6 flex justify-end">
           <button
             type="submit"
-            className="w-full sm:w-auto bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-2 rounded transition-colors"
+            className="w-full sm:w-auto bg-primary hover:bg-primary/80 text-foreground font-semibold px-6 py-2 rounded transition-colors"
           >
             {submitLabel}
           </button>

@@ -36,9 +36,9 @@ export default function RecentRuns() {
     fetchRuns();
   }, [session?.user?.id]);
 
-  if (loading) return <p className="text-gray-500">Loading runs...</p>;
+  if (loading) return <p className="text-foreground/60">Loading runs...</p>;
   if (runs.length === 0)
-    return <p className="text-gray-500">No runs recorded yet.</p>;
+    return <p className="text-foreground/60">No runs recorded yet.</p>;
 
   return (
     <>

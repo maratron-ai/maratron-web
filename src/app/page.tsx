@@ -43,15 +43,15 @@ export default function Landing() {
             </div>
             <div className="flex items-center justify-center space-x-8 text-sm text-muted-foreground">
               <div className="flex items-center">
-                <CheckCircle className="w-4 h-4 mr-2 text-green-500" />
+                <CheckCircle className="w-4 h-4 mr-2 text-primary" />
                 14-day free trial
               </div>
               <div className="flex items-center">
-                <CheckCircle className="w-4 h-4 mr-2 text-green-500" />
+                <CheckCircle className="w-4 h-4 mr-2 text-primary" />
                 No credit card required
               </div>
               <div className="flex items-center">
-                <CheckCircle className="w-4 h-4 mr-2 text-green-500" />
+                <CheckCircle className="w-4 h-4 mr-2 text-primary" />
                 Cancel anytime
               </div>
             </div>
@@ -92,8 +92,8 @@ export default function Landing() {
               </p>
             </Card>
 
-            <Card className="p-8 border-0 bg-gradient-to-br from-green-50 to-white dark:from-green-950/10 dark:to-background hover:shadow-lg transition-all duration-300">
-              <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-green-600 rounded-lg flex items-center justify-center mb-6">
+            <Card className="p-8 border-0 bg-gradient-to-br from-[var(--brand-from)] to-background hover:shadow-lg transition-all duration-300">
+              <div className="w-12 h-12 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center mb-6">
                 <Watch className="w-6 h-6 text-white" />
               </div>
               <h3 className="text-xl font-semibold mb-4">Seamless Device Integration</h3>
@@ -122,8 +122,8 @@ export default function Landing() {
               </p>
             </Card>
 
-            <Card className="p-8 border-0 bg-gradient-to-br from-yellow-50 to-white dark:from-yellow-950/10 dark:to-background hover:shadow-lg transition-all duration-300">
-              <div className="w-12 h-12 bg-gradient-to-br from-yellow-500 to-yellow-600 rounded-lg flex items-center justify-center mb-6">
+            <Card className="p-8 border-0 bg-gradient-to-br from-[var(--brand-from)] to-background hover:shadow-lg transition-all duration-300">
+              <div className="w-12 h-12 bg-gradient-to-br from-secondary to-primary rounded-lg flex items-center justify-center mb-6">
                 <Award className="w-6 h-6 text-white" />
               </div>
               <h3 className="text-xl font-semibold mb-4">Proven Science</h3>
@@ -216,9 +216,9 @@ export default function Landing() {
               </div>
             </Card>
 
-            <Card className="p-8 border-0 bg-gradient-to-br from-white to-green-50 dark:from-background dark:to-green-950/10">
+            <Card className="p-8 border-0 bg-gradient-to-br from-background to-[var(--brand-from)]">
               <div className="flex items-center mb-6">
-                <div className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center text-white font-bold">
+                <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-foreground font-bold">
                   A
                 </div>
                 <div className="ml-4">
@@ -229,7 +229,7 @@ export default function Landing() {
               <p className="text-muted-foreground mb-4">
                 &quot;With work and kids, I thought Boston was impossible. Maratron adapted to my chaotic schedule and got me there.&quot;
               </p>
-              <div className="text-sm font-medium text-green-600">
+              <div className="text-sm font-medium text-primary">
                 Boston qualifier on limited training time
               </div>
             </Card>
@@ -249,7 +249,7 @@ export default function Landing() {
               Join the thousands of runners who&apos;ve discovered what&apos;s possible when science meets personalization. Your breakthrough is waiting.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" className="bg-white text-gray-900 hover:bg-gray-100 text-lg px-8 py-6">
+              <Button size="lg" className="bg-background text-foreground hover:bg-accent/10 text-lg px-8 py-6">
                 Start Your Free Assessment
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>

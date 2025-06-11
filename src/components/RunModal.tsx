@@ -14,27 +14,27 @@ export default function RunModal({ run, onClose }: RunModalProps) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-      <Card className="relative w-1/2 bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg w-full">
+      <Card className="relative w-1/2 bg-background p-6 rounded-lg shadow-lg w-full">
         <button
           aria-label="Close"
           onClick={onClose}
           className="
-            absolute 
-            top-2 right-2 
-            bg-transparent 
-            text-2xl font-bold 
-            text-gray-500 dark:text-gray-300 
-            hover:text-gray-200 dark:hover:text-white 
+            absolute
+            top-2 right-2
+            bg-transparent
+            text-2xl font-bold
+            text-foreground/60 dark:text-foreground/60
+            hover:text-foreground
             focus:outline-none
           "
         >
           ×
         </button>
 
-        <h2 className="text-lg font-semibold mb-4 text-gray-900 dark:text-gray-100">
+        <h2 className="text-lg font-semibold mb-4 text-foreground">
           {run.name || getRunName(run)}
         </h2>
-        <div className="space-y-2 text-sm text-gray-800 dark:text-gray-200">
+        <div className="space-y-2 text-sm text-foreground">
           <p>
             <span className="font-semibold">Distance:</span> {run.distance}{" "}
             {run.distanceUnit}

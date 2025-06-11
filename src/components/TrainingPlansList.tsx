@@ -66,9 +66,9 @@ export default function TrainingPlansList() {
     }
   };
 
-  if (loading) return <p className="text-gray-500">Loading plans...</p>;
+  if (loading) return <p className="text-foreground/60">Loading plans...</p>;
   if (plans.length === 0)
-    return <p className="text-gray-500">No plans saved.</p>;
+    return <p className="text-foreground/60">No plans saved.</p>;
 
   return (
     <div className="space-y-2">
@@ -88,7 +88,7 @@ export default function TrainingPlansList() {
                 </span>
               )}
               {plan.active && (
-                <span className="ml-2 text-green-600 font-medium">active</span>
+                <span className="ml-2 text-primary font-medium">active</span>
               )}
             </div>
           </div>

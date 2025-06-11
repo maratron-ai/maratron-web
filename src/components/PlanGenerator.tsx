@@ -222,7 +222,7 @@ const [targetDistance, setTargetDistance] = useState<number>(
           )}
           <button
             type="submit"
-            className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
+            className="w-full bg-primary text-foreground p-2 rounded hover:bg-primary/80"
           >
             Generate Plan
           </button>
@@ -252,7 +252,7 @@ const [targetDistance, setTargetDistance] = useState<number>(
             <button
               type="button"
               onClick={() => setStartDate("")}
-              className="mt-1 text-sm underline text-blue-600"
+              className="mt-1 text-sm underline text-primary"
             >
               Clear
             </button>
@@ -270,7 +270,7 @@ const [targetDistance, setTargetDistance] = useState<number>(
             <button
               type="button"
               onClick={() => setEndDate("")}
-              className="mt-1 text-sm underline text-blue-600"
+              className="mt-1 text-sm underline text-primary"
             >
               Clear
             </button>
@@ -299,7 +299,7 @@ const [targetDistance, setTargetDistance] = useState<number>(
                   alert("Failed to save plan");
                 }
               }}
-              className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+              className="bg-primary text-foreground px-4 py-2 rounded hover:bg-primary/80"
             >
               Save Plan
             </button>
@@ -308,7 +308,7 @@ const [targetDistance, setTargetDistance] = useState<number>(
               onClick={() => {
                 setEditPlan((prev) => !prev);
               }}
-              className="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600"
+              className="bg-secondary text-foreground px-4 py-2 rounded hover:bg-secondary/80"
             >
               Edit
             </button>
@@ -338,14 +338,14 @@ const [targetDistance, setTargetDistance] = useState<number>(
                     );
                     alert("JSON copied to clipboard!");
                   }}
-                  className="ml-2 text-blue-500 underline"
+                  className="ml-2 text-primary underline"
                 >
                   Copy JSON
                 </button>
               )}
             </label>
             {showJson && (
-              <pre className="bg-gray-100 p-4 rounded overflow-x-auto mt-2 text-gray-800">
+              <pre className="bg-background p-4 rounded overflow-x-auto mt-2 text-foreground">
                 {JSON.stringify(planData, null, 2)}
               </pre>
             )}

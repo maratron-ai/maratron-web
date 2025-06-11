@@ -3,37 +3,8 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Define custom properties for theming */
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-  --primary: #813fdc;
-  --secondary: #9b6edbe1;
-  --accent: #bac4d6;
-  --brand-from: #f97316;
-  --brand-to: #3b82f6;
-  --brand-orange: #f97316;
-  --brand-blue: #3b82f6;
-  --brand-purple: #9333ea;
-  --brand-orange-dark: #ea580c;
-}
-
-/* Dark mode styles using the prefers-color-scheme media query */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-    --primary: #813fdc;
-    --secondary: #9b6edbe1;
-    --accent: #bac4d6;
-    --brand-from: #f97316;
-    --brand-to: #3b82f6;
-    --brand-orange: #f97316;
-    --brand-blue: #3b82f6;
-    --brand-purple: #9333ea;
-    --brand-orange-dark: #ea580c;
-  }
-}
+/* Import color variables */
+@import "../styles/theme.css";
 
 /* Global base styles */
 html,
@@ -85,13 +56,13 @@ p {
 input,
 select,
 textarea {
-  @apply bg-gray-300 text-black border border-gray-300 rounded px-2 py-1
+  @apply bg-background text-foreground border border-accent rounded px-2 py-1
          focus:outline-none focus:ring-2 focus:ring-primary;
 }
 
 button {
-  @apply bg-gray-400 text-black px-4 py-2 rounded hover:bg-gray-400
-         transition-colors focus:outline-none focus:ring-2 focus:ring-primary;
+  @apply bg-primary text-foreground px-4 py-2 rounded hover:bg-primary/80
+         transition-colors focus:outline-none focus:ring-2 focus:ring-secondary;
 }
 button.avatar-btn {
   @apply bg-transparent hover:bg-transparent p-0 text-transparent rounded-none focus:outline-none focus:ring-0;

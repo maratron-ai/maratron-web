@@ -69,7 +69,7 @@ export default function UserProfilePage() {
       <main className="w-full px-4 sm:px-6 lg:px-8 py-6">
         <p>
           Please{" "}
-          <a href="/login" className="underline text-blue-600">
+          <a href="/login" className="underline text-primary">
             log in
           </a>{" "}
           to view your profile.
@@ -106,7 +106,7 @@ export default function UserProfilePage() {
         </button>
       </div>
       {saveSuccess && (
-        <div className="mb-4 text-green-600">Profile updated!</div>
+        <div className="mb-4 text-primary">Profile updated!</div>
       )}
       {profile && <UserProfileForm initialUser={profile} onSave={handleSave} />}
     </main>

@@ -49,7 +49,7 @@ const SelectField: React.FC<SelectFieldProps> = ({
           ))}
         </select>
       ) : (
-        <p className="mt-1 text-gray-700 dark:text-gray-300">
+        <p className="mt-1 text-foreground dark:text-foreground">
           {options.find((opt) => opt.value === value)?.label ?? "–"}
         </p>
       )}
