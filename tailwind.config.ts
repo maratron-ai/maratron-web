@@ -14,13 +14,9 @@ export default {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
-        primary: {
-          DEFAULT: "#7c3aed",
-          light: "#a855f7",
-          dark: "#6b21a8",
-        },
-        accent: "#f97316",
+        primary: "var(--primary)",
         secondary: "var(--secondary)",
+        accent: "var(--accent)",
       },
       fontFamily: {
         sans: ["var(--font-inter)", "sans-serif"],

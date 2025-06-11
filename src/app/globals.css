@@ -10,6 +10,12 @@
   --primary: #813fdc;
   --secondary: #9b6edbe1;
   --accent: #bac4d6;
+  --brand-from: #f97316;
+  --brand-to: #3b82f6;
+  --brand-orange: #f97316;
+  --brand-blue: #3b82f6;
+  --brand-purple: #9333ea;
+  --brand-orange-dark: #ea580c;
 }
 
 /* Dark mode styles using the prefers-color-scheme media query */
@@ -20,6 +26,12 @@
     --primary: #813fdc;
     --secondary: #9b6edbe1;
     --accent: #bac4d6;
+    --brand-from: #f97316;
+    --brand-to: #3b82f6;
+    --brand-orange: #f97316;
+    --brand-blue: #3b82f6;
+    --brand-purple: #9333ea;
+    --brand-orange-dark: #ea580c;
   }
 }
 
