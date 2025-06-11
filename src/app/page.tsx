@@ -16,31 +16,13 @@ import {
 export default function Landing() {
   return (
     <div className="min-h-screen bg-background">
-      {/* Navigation */}
-      <nav className="border-b border-border/40 bg-background/80 backdrop-blur-sm sticky top-0 z-50">
-        <div className="w-full px-0 py-4 flex items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-gradient-to-br from-orange-500 to-blue-600 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-sm">M</span>
-            </div>
-            <span className="text-xl font-bold">Maratron</span>
-          </div>
-          <div className="hidden md:flex items-center space-x-8">
-            <a href="#features" className="text-muted-foreground hover:text-foreground transition-colors">Features</a>
-            <a href="#science" className="text-muted-foreground hover:text-foreground transition-colors">Science</a>
-            <a href="#testimonials" className="text-muted-foreground hover:text-foreground transition-colors">Success Stories</a>
-            <Button variant="outline" size="sm">Log In</Button>
-            <Button size="sm">Start Free Trial</Button>
-          </div>
-        </div>
-      </nav>
 
       {/* Hero Section */}
       <section className="relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-orange-50 via-blue-50 to-orange-50 dark:from-orange-950/20 dark:via-blue-950/20 dark:to-orange-950/20"></div>
-        <div className="w-full px-0 py-20 relative">
+        <div className="w-full px-4 sm:px-6 lg:px-8 py-20 relative">
           <div className="w-full text-center">
-            <Badge className="mb-6 bg-gradient-to-r from-orange-500 to-blue-600 text-white border-0">
+            <Badge className="mb-6 bg-gradient-to-r from-[var(--brand-from)] to-[var(--brand-to)] text-white border-0">
               Powered by Advanced AI Training Science
             </Badge>
             <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-br from-foreground via-foreground to-muted-foreground bg-clip-text text-transparent leading-tight">
@@ -50,7 +32,7 @@ export default function Landing() {
               Break through plateaus and achieve your marathon dreams with AI-powered training that adapts to you. No more rigid plans—just intelligent coaching that evolves with every step.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-              <Button size="lg" className="bg-gradient-to-r from-orange-500 to-blue-600 hover:from-orange-600 hover:to-blue-700 text-white border-0 text-lg px-8 py-6">
+              <Button size="lg" className="bg-gradient-to-r from-[var(--brand-from)] to-[var(--brand-to)] hover:from-[var(--brand-from)]/90 hover:to-[var(--brand-to)]/90 text-white border-0 text-lg px-8 py-6">
                 Start Your Free Assessment
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
@@ -79,10 +61,10 @@ export default function Landing() {
 
       {/* Features Section */}
       <section id="features" className="py-20">
-        <div className="w-full px-0">
+        <div className="w-full px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
-              Training That Actually <span className="text-gradient bg-gradient-to-r from-orange-500 to-blue-600 bg-clip-text text-transparent">Gets You There</span>
+              Training That Actually <span className="text-gradient bg-gradient-to-r from-[var(--brand-from)] to-[var(--brand-to)] bg-clip-text text-transparent">Gets You There</span>
             </h2>
             <p className="text-xl text-muted-foreground mx-auto max-w-screen-md px-4">
               Stop guessing. Start succeeding. Maratron combines cutting-edge AI with proven training science to create your perfect marathon journey.
@@ -91,7 +73,7 @@ export default function Landing() {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
             <Card className="p-8 border-0 bg-gradient-to-br from-orange-50 to-white dark:from-orange-950/10 dark:to-background hover:shadow-lg transition-all duration-300">
-              <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-orange-600 rounded-lg flex items-center justify-center mb-6">
+              <div className="w-12 h-12 bg-gradient-to-br from-[var(--brand-orange)] to-[var(--brand-orange-dark)] rounded-lg flex items-center justify-center mb-6">
                 <Brain className="w-6 h-6 text-white" />
               </div>
               <h3 className="text-xl font-semibold mb-4">AI-Powered Personalization</h3>
@@ -101,7 +83,7 @@ export default function Landing() {
             </Card>
 
             <Card className="p-8 border-0 bg-gradient-to-br from-blue-50 to-white dark:from-blue-950/10 dark:to-background hover:shadow-lg transition-all duration-300">
-              <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg flex items-center justify-center mb-6">
+              <div className="w-12 h-12 bg-gradient-to-br from-[var(--brand-blue)] to-[var(--brand-blue)] rounded-lg flex items-center justify-center mb-6">
                 <Target className="w-6 h-6 text-white" />
               </div>
               <h3 className="text-xl font-semibold mb-4">VO₂ Max & Race Prediction</h3>
@@ -155,10 +137,10 @@ export default function Landing() {
 
       {/* Science Section */}
       <section id="science" className="py-20 bg-muted/30">
-        <div className="w-full px-0">
+        <div className="w-full px-4 sm:px-6 lg:px-8">
           <div className="w-full text-center">
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
-              Backed by Science, Powered by <span className="text-gradient bg-gradient-to-r from-orange-500 to-blue-600 bg-clip-text text-transparent">Intelligence</span>
+              Backed by Science, Powered by <span className="text-gradient bg-gradient-to-r from-[var(--brand-from)] to-[var(--brand-to)] bg-clip-text text-transparent">Intelligence</span>
             </h2>
             <p className="text-xl text-muted-foreground mb-12">
               We don&apos;t just use buzzwords—we implement proven methodologies that elite coaches have used for decades, now enhanced with AI precision.
@@ -170,7 +152,7 @@ export default function Landing() {
                 <p className="text-muted-foreground mb-4">
                   The gold standard in running science. Our AI implements Dr. Daniels&apos; proven training zones and pacing strategies, adapting them to your unique physiology and progress.
                 </p>
-                <div className="text-sm text-orange-600 font-medium">Used by Olympic athletes worldwide</div>
+                <div className="text-sm text-[var(--brand-orange-dark)] font-medium">Used by Olympic athletes worldwide</div>
               </Card>
               
               <Card className="p-8 text-left">
@@ -178,7 +160,7 @@ export default function Landing() {
                 <p className="text-muted-foreground mb-4">
                   Acute to Chronic Workload Ratio prevents injury by monitoring your training stress. Our AI constantly calculates the sweet spot between progression and safety.
                 </p>
-                <div className="text-sm text-blue-600 font-medium">Reduces injury risk by up to 60%</div>
+                <div className="text-sm text-[var(--brand-blue)] font-medium">Reduces injury risk by up to 60%</div>
               </Card>
             </div>
           </div>
@@ -187,10 +169,10 @@ export default function Landing() {
 
       {/* Testimonials Section */}
       <section id="testimonials" className="py-20">
-        <div className="w-full px-0">
+        <div className="w-full px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
-              Real Runners, Real <span className="text-gradient bg-gradient-to-r from-orange-500 to-blue-600 bg-clip-text text-transparent">Results</span>
+              Real Runners, Real <span className="text-gradient bg-gradient-to-r from-[var(--brand-from)] to-[var(--brand-to)] bg-clip-text text-transparent">Results</span>
             </h2>
             <p className="text-xl text-muted-foreground">
               Join thousands of runners who&apos;ve shattered their personal bests with Maratron
@@ -200,7 +182,7 @@ export default function Landing() {
           <div className="grid md:grid-cols-3 gap-8">
             <Card className="p-8 border-0 bg-gradient-to-br from-white to-orange-50 dark:from-background dark:to-orange-950/10">
               <div className="flex items-center mb-6">
-                <div className="w-12 h-12 bg-orange-500 rounded-full flex items-center justify-center text-white font-bold">
+                <div className="w-12 h-12 bg-[var(--brand-orange)] rounded-full flex items-center justify-center text-white font-bold">
                   S
                 </div>
                 <div className="ml-4">
@@ -211,14 +193,14 @@ export default function Landing() {
               <p className="text-muted-foreground mb-4">
                 &quot;I went from struggling with 5Ks to finishing my first marathon in 3:45. Maratron made it feel achievable every step of the way.&quot;
               </p>
-              <div className="text-sm font-medium text-orange-600">
+              <div className="text-sm font-medium text-[var(--brand-orange-dark)]">
                 Improved by 47 minutes from goal time
               </div>
             </Card>
 
             <Card className="p-8 border-0 bg-gradient-to-br from-white to-blue-50 dark:from-background dark:to-blue-950/10">
               <div className="flex items-center mb-6">
-                <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold">
+                <div className="w-12 h-12 bg-[var(--brand-blue)] rounded-full flex items-center justify-center text-white font-bold">
                   M
                 </div>
                 <div className="ml-4">
@@ -229,7 +211,7 @@ export default function Landing() {
               <p className="text-muted-foreground mb-4">
                 &quot;After years of the same training, I was stuck at 3:20. Maratron&apos;s AI found gaps I never knew existed. New PR: 3:02!&quot;
               </p>
-              <div className="text-sm font-medium text-blue-600">
+              <div className="text-sm font-medium text-[var(--brand-blue)]">
                 18-minute personal best after 3 years
               </div>
             </Card>
@@ -256,9 +238,9 @@ export default function Landing() {
       </section>
 
       {/* Final CTA Section */}
-      <section className="py-20 bg-gradient-to-br from-orange-500 via-blue-600 to-purple-600 text-white relative overflow-hidden">
+      <section className="py-20 bg-gradient-to-br from-[var(--brand-from)] via-[var(--brand-to)] to-[var(--brand-purple)] text-white relative overflow-hidden">
         <div className="absolute inset-0 bg-black/20"></div>
-        <div className="w-full px-0 relative">
+        <div className="w-full px-4 sm:px-6 lg:px-8 relative">
           <div className="w-full text-center">
             <h2 className="text-4xl md:text-6xl font-bold mb-6">
               Ready to Rewrite Your Running Story?
@@ -283,51 +265,6 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="border-t border-border bg-muted/30">
-        <div className="w-full px-0 py-16">
-          <div className="grid md:grid-cols-4 gap-8">
-            <div className="md:col-span-2">
-              <div className="flex items-center space-x-2 mb-4">
-                <div className="w-8 h-8 bg-gradient-to-br from-orange-500 to-blue-600 rounded-lg flex items-center justify-center">
-                  <span className="text-white font-bold text-sm">M</span>
-                </div>
-                <span className="text-xl font-bold">Maratron</span>
-              </div>
-              <p className="text-muted-foreground mb-6 mx-auto max-w-screen-md px-4">
-                Your AI-powered marathon coach that adapts, evolves, and inspires. Because every runner deserves a plan that works for them.
-              </p>
-              <div className="flex items-center space-x-4 text-sm text-muted-foreground">
-                <span>© 2024 Maratron</span>
-                <span>•</span>
-                <a href="#" className="hover:text-foreground transition-colors">Privacy</a>
-                <span>•</span>
-                <a href="#" className="hover:text-foreground transition-colors">Terms</a>
-              </div>
-            </div>
-            
-            <div>
-              <h4 className="font-semibold mb-4">Product</h4>
-              <div className="space-y-2 text-sm text-muted-foreground">
-                <a href="#" className="block hover:text-foreground transition-colors">Features</a>
-                <a href="#" className="block hover:text-foreground transition-colors">Pricing</a>
-                <a href="#" className="block hover:text-foreground transition-colors">Integrations</a>
-                <a href="#" className="block hover:text-foreground transition-colors">API</a>
-              </div>
-            </div>
-            
-            <div>
-              <h4 className="font-semibold mb-4">Support</h4>
-              <div className="space-y-2 text-sm text-muted-foreground">
-                <a href="#" className="block hover:text-foreground transition-colors">Help Center</a>
-                <a href="#" className="block hover:text-foreground transition-colors">Contact Us</a>
-                <a href="#" className="block hover:text-foreground transition-colors">Community</a>
-                <a href="#" className="block hover:text-foreground transition-colors">Blog</a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </footer>
     </div>
   );
 }
