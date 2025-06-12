@@ -55,7 +55,7 @@ describe("social api helpers", () => {
   it("updateSocialProfile puts data", async () => {
     mockedAxios.put.mockResolvedValue({ data: { id: "p1", username: "t" } });
     const result = await updateSocialProfile("p1", { bio: "hi" });
-    expect(mockedAxios.put).toHaveBeenCalledWith("/api/social/profile/p1", { bio: "hi" });
+    expect(mockedAxios.put).toHaveBeenCalledWith("/api/social/profile/byId/p1", { bio: "hi" });
     expect(result).toEqual({ id: "p1", username: "t" });
   });
 });
