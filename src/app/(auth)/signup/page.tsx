@@ -3,7 +3,7 @@
 import { useState, FormEvent } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { createUserProfile, uploadAvatar } from "@lib/api/user/user"; // Adjust path if necessary
+import { createUserProfile } from "@lib/api/user/user";
 import { Card, Input, Label, Button } from "@components/ui";
 
 
@@ -11,18 +11,8 @@ export default function SignupPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [avatarUrl, setAvatarUrl] = useState("");
   const [error, setError] = useState("");
   const router = useRouter();
-
-  const handleFileChange = async (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    const url = await uploadAvatar(file);
-    setAvatarUrl(url);
-  };
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -32,7 +22,7 @@ export default function SignupPage() {
     }
 
     try {
-      const createUserRes = await createUserProfile({ name, email, avatarUrl });
+      const createUserRes = await createUserProfile({ name, email });
 
       if (createUserRes?.status === 201 || createUserRes?.status === 200) {
         // Now sign in the new user

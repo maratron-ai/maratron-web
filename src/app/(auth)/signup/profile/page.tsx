@@ -6,6 +6,7 @@ import { updateUserProfile } from "@lib/api/user/user";
 import UserProfileForm from "@components/UserProfileForm";
 import { UserProfile } from "@maratypes/user";
 import { useEffect } from "react";
+import { Card } from "@components/ui";
 
 export default function OnboardingProfile() {
   const { data: session, status, update } = useSession();
@@ -42,16 +43,23 @@ export default function OnboardingProfile() {
   };
 
   return (
-    <div className="w-full px-4 sm:px-6 lg:px-8 py-12">
-      <h1 className="text-2xl font-bold mb-4">
-        Almost done—tell us about your running!
-      </h1>
-      <UserProfileForm
-        initialUser={initialUser}
-        onSave={onSave}
-        alwaysEdit
-        submitLabel="Finish Setup"
-      />
+    <div className="min-h-screen bg-background">
+      <section className="relative py-20 overflow-hidden flex items-center justify-center">
+        <div className="absolute inset-0 bg-background/80 backdrop-blur-sm" />
+        <div className="relative w-full px-4 sm:px-6 lg:px-8 flex justify-center">
+          <Card className="w-full max-w-2xl p-8 bg-white/90 dark:bg-white/10 shadow-xl space-y-6">
+            <h1 className="text-3xl font-bold text-center">
+              Almost done—tell us about your running!
+            </h1>
+            <UserProfileForm
+              initialUser={initialUser}
+              onSave={onSave}
+              alwaysEdit
+              submitLabel="Finish Setup"
+            />
+          </Card>
+        </div>
+      </section>
     </div>
   );
 }
