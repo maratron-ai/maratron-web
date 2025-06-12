@@ -80,20 +80,23 @@ export default function Navbar() {
                   aria-expanded={desktopMenuOpen}
                   className="focus:outline-none bg-transparent p-0 hover:bg-transparent focus:ring-0"
                 >
-                  {session.user.avatarUrl ? (
-                    <Image
-                      src={session.user.avatarUrl}
-                      alt="avatar"
-                      width={32}
-                      height={32}
-                      className="w-8 h-8 rounded-full object-cover"
-                    />
-                  ) : (
-                    <DefaultAvatar
-                      seed={session.user.id || session.user.email || ""}
-                      size={32}
-                    />
-                  )}
+                  
+                    {session.user?.avatarUrl ? (
+                      <Image
+                        src={session.user.avatarUrl}
+                        alt={session.user.name || "User Avatar"}
+                        width={32}
+                        height={32}
+                        className="w-8 h-8 rounded-full object-cover border border-muted"
+                        priority
+                      />
+                    ) : (
+                      <DefaultAvatar
+                        seed={session.user?.id || session.user?.email || "user"}
+                        size={32}
+                      />
+                    )}
+                  
                 </button>
                 {desktopMenuOpen && (
                   <div className="absolute right-0 mt-2 w-40 bg-background border border-accent/20 rounded shadow-md z-50">
