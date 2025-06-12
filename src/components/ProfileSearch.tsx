@@ -4,6 +4,7 @@ import axios from "axios";
 import { useSession } from "next-auth/react";
 import type { SocialUserProfile } from "@maratypes/social";
 import { Input, Button, Card } from "@components/ui";
+import FollowUserButton from "@components/FollowUserButton";
 
 export default function ProfileSearch() {
   const { data: session } = useSession();
@@ -62,17 +63,6 @@ export default function ProfileSearch() {
     return () => clearTimeout(timeout);
   }, [query]);
 
-  const follow = async (id: string) => {
-    if (!myProfileId) return;
-    try {
-      await axios.post("/api/social/follow", {
-        followerId: myProfileId,
-        followingId: id,
-      });
-    } catch (err) {
-      console.error(err);
-    }
-  };
 
   if (!session?.user?.id) return <p>Please log in to search.</p>;
   if (loading) return <p className="text-foreground/60">Loading...</p>;
@@ -110,9 +100,7 @@ export default function ProfileSearch() {
               </div>
             </div>
             {myProfileId && myProfileId !== p.id && (
-              <Button onClick={() => follow(p.id)} size="sm">
-                Follow
-              </Button>
+              <FollowUserButton profileId={p.id} />
             )}
           </Card>
         ))}

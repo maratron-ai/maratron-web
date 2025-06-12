@@ -1,5 +1,5 @@
 import axios from "axios";
-import { createSocialProfile, followUser, unfollowUser, createPost } from "../social";
+import { createSocialProfile, followUser, unfollowUser, createPost, isFollowing } from "../social";
 import type { RunPost } from "@maratypes/social";
 
 jest.mock("axios");
@@ -26,6 +26,15 @@ describe("social api helpers", () => {
     mockedAxios.delete.mockResolvedValue({ data: {} });
     await unfollowUser("a", "b");
     expect(mockedAxios.delete).toHaveBeenCalledWith("/api/social/follow", { data: { followerId: "a", followingId: "b" } });
+  });
+
+  it("isFollowing fetches data", async () => {
+    mockedAxios.get.mockResolvedValue({ data: { following: true } });
+    const result = await isFollowing("a", "b");
+    expect(mockedAxios.get).toHaveBeenCalledWith(
+      "/api/social/follow?followerId=a&followingId=b"
+    );
+    expect(result).toBe(true);
   });
 
   it("createPost posts data", async () => {
