@@ -1,0 +1,48 @@
+import { useRef } from "react";
+import { Avatar, AvatarImage, AvatarFallback, Button } from "@components/ui";
+import { uploadAvatar } from "@lib/api/user/user";
+
+interface AvatarUploadProps {
+  value?: string;
+  onChange?: (url: string) => void;
+  disabled?: boolean;
+}
+
+export default function AvatarUpload({ value, onChange, disabled }: AvatarUploadProps) {
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const url = await uploadAvatar(file);
+    onChange?.(url);
+  };
+
+  return (
+    <div className="flex items-center space-x-4">
+      <Avatar className="h-20 w-20">
+        <AvatarImage src={value || "/Default_pfp.svg"} alt="Avatar preview" />
+        <AvatarFallback>?</AvatarFallback>
+      </Avatar>
+      <div>
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          onClick={() => inputRef.current?.click()}
+          disabled={disabled}
+        >
+          Upload
+        </Button>
+        <input
+          ref={inputRef}
+          type="file"
+          accept="image/*"
+          onChange={handleFileChange}
+          className="hidden"
+          disabled={disabled}
+        />
+      </div>
+    </div>
+  );
+}

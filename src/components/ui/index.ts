@@ -24,3 +24,4 @@ export * from './checkbox';
 export * from './radio-group';
 export * from './slider';
 export * from './select';
+export { default as AvatarUpload } from './avatar-upload';

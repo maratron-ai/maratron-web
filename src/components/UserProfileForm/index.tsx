@@ -6,6 +6,7 @@ import PhysicalStatsSection from "./PhysicalStatsSection";
 import GoalsSection from "./GoalsSection";
 import PreferencesSection from "./PreferencesSection";
 import { useUserProfileForm } from "@hooks/useUserProfileForm";
+import { Button } from "@components/ui";
 
 interface Props {
   initialUser: UserProfile;
@@ -43,7 +44,7 @@ export default function UserProfileForm({
       <div className="flex justify-between items-center border-b border-accent pb-4">
         <h2 className="text-3xl font-bold text-foreground">Your Profile</h2>
         {!alwaysEdit && (
-          <button
+          <Button
             type="button"
             onClick={toggleEditing}
             className={`px-4 py-2 rounded font-medium text-foreground ${
@@ -53,7 +54,7 @@ export default function UserProfileForm({
             }`}
           >
             {editing ? "Cancel" : "Edit"}
-          </button>
+          </Button>
         )}
       </div>
 
@@ -90,12 +91,12 @@ export default function UserProfileForm({
 
       {editing && (
         <div className="mt-6 flex justify-end">
-          <button
+          <Button
             type="submit"
-            className="w-full sm:w-auto bg-primary hover:bg-primary/80 text-foreground font-semibold px-6 py-2 rounded transition-colors"
+            className="w-full sm:w-auto bg-gradient-to-r from-[var(--brand-from)] to-[var(--brand-to)] text-white border-0 hover:from-[var(--brand-from)]/90 hover:to-[var(--brand-to)]/90"
           >
             {submitLabel}
-          </button>
+          </Button>
         </div>
       )}
     </form>

@@ -1,9 +1,8 @@
-import { TextField, SelectField } from "@components/ui";
+import { TextField, SelectField, AvatarUpload } from "@components/ui";
 import { UserProfile } from "@maratypes/user";
 import styles from "./Section.module.css";
 import type { Gender } from "@maratypes/user";
 import Image from "next/image";
-import { uploadAvatar } from "@lib/api/user/user";
 
 // runtime list of gender options
 const genderValues: Gender[] = ["Male", "Female", "Other"];
@@ -28,14 +27,6 @@ export default function BasicInfoSection({
   const handleFieldChange = (name: string, value: string) =>
     onChange(name as keyof UserProfile, value);
 
-  const handleFileChange = async (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    const url = await uploadAvatar(file);
-    onChange("avatarUrl", url);
-  };
 
   return (
     <section className={styles.card}>
@@ -43,27 +34,11 @@ export default function BasicInfoSection({
       {isEditing ? (
         <div>
           <div className="flex items-center space-x-4 mb-4">
-          <Image
-            src={formData.avatarUrl || "/Default_pfp.svg"}
-            alt="Avatar preview"
-            width={80}
-            height={80}
-            className="w-20 h-20 rounded-full object-cover"
-          />
-          <TextField
-            label="Avatar URL"
-            name="avatarUrl"
-            value={formData.avatarUrl || ""}
-            editing={isEditing}
-            onChange={handleFieldChange}
-          />
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleFileChange}
-            className="mt-4"
-          />
-        </div>
+            <AvatarUpload
+              value={formData.avatarUrl}
+              onChange={(url) => onChange("avatarUrl", url)}
+            />
+          </div>
           <TextField
             label="Name"
             name="name"
