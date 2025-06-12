@@ -14,26 +14,11 @@ export default {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
-        primary: ({ opacityValue }) =>
-          opacityValue !== undefined
-            ? `rgb(var(--primary-rgb) / ${opacityValue})`
-            : `rgb(var(--primary-rgb))`,
-        secondary: ({ opacityValue }) =>
-          opacityValue !== undefined
-            ? `rgb(var(--secondary-rgb) / ${opacityValue})`
-            : `rgb(var(--secondary-rgb))`,
-        accent: ({ opacityValue }) =>
-          opacityValue !== undefined
-            ? `rgb(var(--accent-rgb) / ${opacityValue})`
-            : `rgb(var(--accent-rgb))`,
-        "accent-2": ({ opacityValue }) =>
-          opacityValue !== undefined
-            ? `rgb(var(--accent-2-rgb) / ${opacityValue})`
-            : `rgb(var(--accent-2-rgb))`,
-        "accent-3": ({ opacityValue }) =>
-          opacityValue !== undefined
-            ? `rgb(var(--accent-3-rgb) / ${opacityValue})`
-            : `rgb(var(--accent-3-rgb))`,
+        primary: "rgb(var(--primary-rgb) / <alpha-value>)",
+        secondary: "rgb(var(--secondary-rgb) / <alpha-value>)",
+        accent: "rgb(var(--accent-rgb) / <alpha-value>)",
+        "accent-2": "rgb(var(--accent-2-rgb) / <alpha-value>)",
+        "accent-3": "rgb(var(--accent-3-rgb) / <alpha-value>)",
         "brand-from": "var(--brand-from)",
         "brand-to": "var(--brand-to)",
         "brand-orange": "var(--brand-orange)",

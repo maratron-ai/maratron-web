@@ -19,27 +19,31 @@ export default function Landing() {
 
       {/* Hero Section */}
       <section className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-orange-50 via-blue-50 to-orange-50 dark:from-orange-950/20 dark:via-blue-950/20 dark:to-orange-950/20"></div>
+        <div className="absolute inset-0 bg-white/60 dark:bg-white/5 backdrop-blur-sm"></div>
         <div className="w-full px-4 sm:px-6 lg:px-8 py-20 relative">
-          <div className="w-full text-center">
+          <div className="w-full text-center bg-red">
             <Badge className="mb-6 bg-gradient-to-r from-[var(--brand-from)] to-[var(--brand-to)] text-white border-0">
               Powered by Advanced AI Training Science
             </Badge>
-            <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-br from-foreground via-foreground to-muted-foreground bg-clip-text text-transparent leading-tight">
+            <h1 className="text-5xl md:text-7xl font-bold mb-6 text-foreground leading-tight drop-shadow-sm">
               Your Personal Marathon Coach, Reimagined
             </h1>
             <p className="text-xl md:text-2xl text-muted-foreground mb-8 leading-relaxed mx-auto max-w-screen-md px-4">
               Break through plateaus and achieve your marathon dreams with AI-powered training that adapts to you. No more rigid plans—just intelligent coaching that evolves with every step.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-              <Button size="lg" className="bg-gradient-to-r from-[var(--brand-from)] to-[var(--brand-to)] hover:from-[var(--brand-from)]/90 hover:to-[var(--brand-to)]/90 text-white border-0 text-lg px-8 py-6">
-                Start Your Free Assessment
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
-              <Button variant="outline" size="lg" className="text-lg px-8 py-6">
-                <PlayCircle className="mr-2 h-5 w-5" />
-                Watch Demo
-              </Button>
+              <a href="/signup">
+                <Button size="lg" className="bg-gradient-to-r from-[var(--brand-from)] to-[var(--brand-to)] hover:from-[var(--brand-from)]/90 hover:to-[var(--brand-to)]/90 text-white border-0 text-lg px-8 py-6">
+                  Start Now
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Button>
+              </a>
+              <a href="https://www.youtube.com/watch?v=0_DjDdfqtUE" target="_blank" rel="noopener noreferrer">
+                <Button variant="outline" size="lg" className="text-lg px-8 py-6">
+                  <PlayCircle className="mr-2 h-5 w-5" />
+                  Watch Demo
+                </Button>
+              </a>
             </div>
             <div className="flex items-center justify-center space-x-8 text-sm text-muted-foreground">
               <div className="flex items-center">
@@ -72,8 +76,8 @@ export default function Landing() {
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-            <Card className="p-8 border-0 bg-gradient-to-br from-orange-50 to-white dark:from-orange-950/10 dark:to-background hover:shadow-lg transition-all duration-300">
-              <div className="w-12 h-12 bg-gradient-to-br from-[var(--brand-orange)] to-[var(--brand-orange-dark)] rounded-lg flex items-center justify-center mb-6">
+            <Card className="p-8 border border-muted bg-white/90 dark:bg-white/10 shadow-xl transition-all duration-300">
+              <div className="w-12 h-12 bg-gradient-to-br from-[var(--brand-purple)] to-[var(--brand-blue)] rounded-lg flex items-center justify-center mb-6 ring-2 ring-white/40 dark:ring-white/10">
                 <Brain className="w-6 h-6 text-white" />
               </div>
               <h3 className="text-xl font-semibold mb-4">AI-Powered Personalization</h3>
@@ -82,8 +86,8 @@ export default function Landing() {
               </p>
             </Card>
 
-            <Card className="p-8 border-0 bg-gradient-to-br from-blue-50 to-white dark:from-blue-950/10 dark:to-background hover:shadow-lg transition-all duration-300">
-              <div className="w-12 h-12 bg-gradient-to-br from-[var(--brand-blue)] to-[var(--brand-blue)] rounded-lg flex items-center justify-center mb-6">
+            <Card className="p-8 border border-muted bg-white/90 dark:bg-white/10 shadow-xl transition-all duration-300">
+              <div className="w-12 h-12 bg-gradient-to-br from-[var(--brand-purple)] to-[var(--brand-blue)] rounded-lg flex items-center justify-center mb-6 ring-2 ring-white/40 dark:ring-white/10">
                 <Target className="w-6 h-6 text-white" />
               </div>
               <h3 className="text-xl font-semibold mb-4">VO₂ Max & Race Prediction</h3>
@@ -92,8 +96,8 @@ export default function Landing() {
               </p>
             </Card>
 
-            <Card className="p-8 border-0 bg-gradient-to-br from-[var(--brand-from)] to-background hover:shadow-lg transition-all duration-300">
-              <div className="w-12 h-12 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center mb-6">
+            <Card className="p-8 border border-muted bg-white/90 dark:bg-white/10 shadow-xl transition-all duration-300">
+              <div className="w-12 h-12 bg-gradient-to-br from-[var(--brand-purple)] to-[var(--brand-blue)] rounded-lg flex items-center justify-center mb-6 ring-2 ring-white/40 dark:ring-white/10">
                 <Watch className="w-6 h-6 text-white" />
               </div>
               <h3 className="text-xl font-semibold mb-4">Seamless Device Integration</h3>
@@ -102,8 +106,8 @@ export default function Landing() {
               </p>
             </Card>
 
-            <Card className="p-8 border-0 bg-gradient-to-br from-purple-50 to-white dark:from-purple-950/10 dark:to-background hover:shadow-lg transition-all duration-300">
-              <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-purple-600 rounded-lg flex items-center justify-center mb-6">
+            <Card className="p-8 border border-muted bg-white/90 dark:bg-white/10 shadow-xl transition-all duration-300">
+              <div className="w-12 h-12 bg-gradient-to-br from-[var(--brand-purple)] to-[var(--brand-blue)] rounded-lg flex items-center justify-center mb-6 ring-2 ring-white/40 dark:ring-white/10">
                 <TrendingUp className="w-6 h-6 text-white" />
               </div>
               <h3 className="text-xl font-semibold mb-4">Smart Load Management</h3>
@@ -112,8 +116,8 @@ export default function Landing() {
               </p>
             </Card>
 
-            <Card className="p-8 border-0 bg-gradient-to-br from-red-50 to-white dark:from-red-950/10 dark:to-background hover:shadow-lg transition-all duration-300">
-              <div className="w-12 h-12 bg-gradient-to-br from-red-500 to-red-600 rounded-lg flex items-center justify-center mb-6">
+            <Card className="p-8 border border-muted bg-white/90 dark:bg-white/10 shadow-xl transition-all duration-300">
+              <div className="w-12 h-12 bg-gradient-to-br from-[var(--brand-purple)] to-[var(--brand-blue)] rounded-lg flex items-center justify-center mb-6 ring-2 ring-white/40 dark:ring-white/10">
                 <Clock className="w-6 h-6 text-white" />
               </div>
               <h3 className="text-xl font-semibold mb-4">Perfect Tapering</h3>
@@ -122,8 +126,8 @@ export default function Landing() {
               </p>
             </Card>
 
-            <Card className="p-8 border-0 bg-gradient-to-br from-[var(--brand-from)] to-background hover:shadow-lg transition-all duration-300">
-              <div className="w-12 h-12 bg-gradient-to-br from-secondary to-primary rounded-lg flex items-center justify-center mb-6">
+            <Card className="p-8 border border-muted bg-white/90 dark:bg-white/10 shadow-xl transition-all duration-300">
+              <div className="w-12 h-12 bg-gradient-to-br from-[var(--brand-purple)] to-[var(--brand-blue)] rounded-lg flex items-center justify-center mb-6 ring-2 ring-white/40 dark:ring-white/10">
                 <Award className="w-6 h-6 text-white" />
               </div>
               <h3 className="text-xl font-semibold mb-4">Proven Science</h3>
@@ -136,7 +140,7 @@ export default function Landing() {
       </section>
 
       {/* Science Section */}
-      <section id="science" className="py-20 bg-muted/30">
+      <section id="science" className="py-20 bg-white/50 dark:bg-white/5 backdrop-blur">
         <div className="w-full px-4 sm:px-6 lg:px-8">
           <div className="w-full text-center">
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
@@ -147,7 +151,7 @@ export default function Landing() {
             </p>
             
             <div className="grid md:grid-cols-2 gap-8">
-              <Card className="p-8 text-left">
+              <Card className="p-8 border border-muted bg-white/90 dark:bg-white/10 shadow-xl transition-all duration-300 text-left">
                 <h3 className="text-2xl font-semibold mb-4">Jack Daniels&apos; VDOT</h3>
                 <p className="text-muted-foreground mb-4">
                   The gold standard in running science. Our AI implements Dr. Daniels&apos; proven training zones and pacing strategies, adapting them to your unique physiology and progress.
@@ -155,7 +159,7 @@ export default function Landing() {
                 <div className="text-sm text-[var(--brand-orange-dark)] font-medium">Used by Olympic athletes worldwide</div>
               </Card>
               
-              <Card className="p-8 text-left">
+              <Card className="p-8 border border-muted bg-white/90 dark:bg-white/10 shadow-xl transition-all duration-300 text-left">
                 <h3 className="text-2xl font-semibold mb-4">ACWR Load Management</h3>
                 <p className="text-muted-foreground mb-4">
                   Acute to Chronic Workload Ratio prevents injury by monitoring your training stress. Our AI constantly calculates the sweet spot between progression and safety.
@@ -180,9 +184,9 @@ export default function Landing() {
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
-            <Card className="p-8 border-0 bg-gradient-to-br from-white to-orange-50 dark:from-background dark:to-orange-950/10">
+            <Card className="p-8 border border-muted bg-white/90 dark:bg-white/10 shadow-xl transition-all duration-300">
               <div className="flex items-center mb-6">
-                <div className="w-12 h-12 bg-[var(--brand-orange)] rounded-full flex items-center justify-center text-white font-bold">
+                <div className="w-12 h-12 bg-gradient-to-br from-[var(--brand-purple)] to-[var(--brand-blue)] rounded-full flex items-center justify-center text-white font-bold ring-2 ring-white/40 dark:ring-white/10">
                   S
                 </div>
                 <div className="ml-4">
@@ -198,9 +202,9 @@ export default function Landing() {
               </div>
             </Card>
 
-            <Card className="p-8 border-0 bg-gradient-to-br from-white to-blue-50 dark:from-background dark:to-blue-950/10">
+            <Card className="p-8 border border-muted bg-white/90 dark:bg-white/10 shadow-xl transition-all duration-300">
               <div className="flex items-center mb-6">
-                <div className="w-12 h-12 bg-[var(--brand-blue)] rounded-full flex items-center justify-center text-white font-bold">
+                <div className="w-12 h-12 bg-gradient-to-br from-[var(--brand-purple)] to-[var(--brand-blue)] rounded-full flex items-center justify-center text-white font-bold ring-2 ring-white/40 dark:ring-white/10">
                   M
                 </div>
                 <div className="ml-4">
@@ -216,9 +220,9 @@ export default function Landing() {
               </div>
             </Card>
 
-            <Card className="p-8 border-0 bg-gradient-to-br from-background to-[var(--brand-from)]">
+            <Card className="p-8 border border-muted bg-white/90 dark:bg-white/10 shadow-xl transition-all duration-300">
               <div className="flex items-center mb-6">
-                <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-foreground font-bold">
+                <div className="w-12 h-12 bg-gradient-to-br from-[var(--brand-purple)] to-[var(--brand-blue)] rounded-full flex items-center justify-center text-white font-bold ring-2 ring-white/40 dark:ring-white/10">
                   A
                 </div>
                 <div className="ml-4">
@@ -238,8 +242,7 @@ export default function Landing() {
       </section>
 
       {/* Final CTA Section */}
-      <section className="py-20 bg-gradient-to-br from-[var(--brand-from)] via-[var(--brand-to)] to-[var(--brand-purple)] text-white relative overflow-hidden">
-        <div className="absolute inset-0 bg-black/20"></div>
+      <section className="py-20 bg-white/80 dark:bg-white/5 backdrop-blur-sm text-foreground relative overflow-hidden">
         <div className="w-full px-4 sm:px-6 lg:px-8 relative">
           <div className="w-full text-center">
             <h2 className="text-4xl md:text-6xl font-bold mb-6">
@@ -249,17 +252,21 @@ export default function Landing() {
               Join the thousands of runners who&apos;ve discovered what&apos;s possible when science meets personalization. Your breakthrough is waiting.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" className="bg-background text-foreground hover:bg-accent/10 text-lg px-8 py-6">
-                Start Your Free Assessment
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
-              <Button variant="outline" size="lg" className="border-white text-white hover:bg-white/10 text-lg px-8 py-6">
-                <PlayCircle className="mr-2 h-5 w-5" />
-                See How It Works
-              </Button>
+              <a href="/signup">
+                <Button size="lg" className="bg-[var(--brand-from)] text-white hover:bg-[var(--brand-to)] text-lg px-8 py-6">
+                  Start Now
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Button>
+              </a>
+              <a href="https://www.youtube.com/watch?v=0_DjDdfqtUE" target="_blank" rel="noopener noreferrer">
+                <Button variant="outline" size="lg" className="border-foreground text-foreground hover:bg-muted/20 dark:border-white dark:text-white dark:hover:bg-white/10 text-lg px-8 py-6">
+                  <PlayCircle className="mr-2 h-5 w-5" />
+                  See How It Works
+                </Button>
+              </a>
             </div>
             <p className="text-sm mt-6 opacity-75">
-              Start your 14-day free trial today. No commitment, just results.
+              Free to get started. No commitment, just results.
             </p>
           </div>
         </div>
