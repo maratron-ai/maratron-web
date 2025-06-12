@@ -97,6 +97,8 @@ const CollapsibleWeek: React.FC<CollapsibleWeekProps> = ({
           {weekPlan.phase && ` – ${weekPlan.phase} phase`} - Total Mileage:
           {" "}
           {weekPlan.weeklyMileage} {weekPlan.unit}
+          {weekPlan.runs.length === 1 && weekPlan.runs[0].type === "marathon" &&
+            " – Marathon Week"}
           {isWeekComplete ? " (Complete)" : ""}
         </h3>
         <span className="text-2xl">{isOpen ? "−" : "+"}</span>

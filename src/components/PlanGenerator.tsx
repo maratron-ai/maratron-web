@@ -116,7 +116,13 @@ const [targetDistance, setTargetDistance] = useState<number>(
         plan = generateClassicMarathonPlan(opts);
         break;
     }
-    setPlanData(plan);
+    if (endDate) {
+      const withDates = assignDatesToPlan(plan, { endDate });
+      setPlanData(withDates);
+      setStartDate(withDates.startDate?.slice(0, 10) ?? "");
+    } else {
+      setPlanData(plan);
+    }
   };
 
   return (
@@ -139,6 +145,19 @@ const [targetDistance, setTargetDistance] = useState<number>(
               min={8}
               value={weeks}
               onChange={(e) => setWeeks(Number(e.target.value))}
+              className="border p-2 rounded"
+            />
+          </div>
+          {/* Race Date */}
+          <div className="flex flex-col">
+            <label htmlFor="raceDate" className="mb-1">
+              Race Date:
+            </label>
+            <input
+              id="raceDate"
+              type="date"
+              value={endDate}
+              onChange={(e) => setEndDate(e.target.value)}
               className="border p-2 rounded"
             />
           </div>

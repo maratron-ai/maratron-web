@@ -278,40 +278,45 @@ export function generateLongDistancePlan(
       zones.tempo
     }) for ${tempoMileage} ${distanceUnit}, plus ${WUCD_PERCENT * 100}% WU/CD`;
 
-    const runs: PlannedRun[] = [
-      {
-        type: "easy",
-        unit: distanceUnit,
-        mileage: easyMileage,
-        targetPace: { unit: distanceUnit, pace: zones.easy },
-      },
-      {
-        type: "interval",
-        unit: distanceUnit,
-        mileage: intervalMileage,
-        targetPace: { unit: distanceUnit, pace: zones.interval },
-        notes: intervalNotes,
-      },
-      {
-        type: "tempo",
-        unit: distanceUnit,
-        mileage: tempoMileage,
-        targetPace: { unit: distanceUnit, pace: formatPace(tempoSecNum) },
-        notes: tempoNotes,
-      },
-      {
-        type: "long",
-        unit: distanceUnit,
-        mileage: roundToHalf(longDist),
-        targetPace: { unit: distanceUnit, pace: zones.marathon },
-      },
-    ];
+    let runs: PlannedRun[];
     if (week === weeks) {
-      runs[runs.length - 1] = {
-        ...runs[runs.length - 1],
-        type: "marathon",
-        mileage: roundToHalf(targetDistance),
-      };
+      runs = [
+        {
+          type: "marathon",
+          unit: distanceUnit,
+          mileage: roundToHalf(targetDistance),
+          targetPace: { unit: distanceUnit, pace: zones.marathon },
+        },
+      ];
+    } else {
+      runs = [
+        {
+          type: "easy",
+          unit: distanceUnit,
+          mileage: easyMileage,
+          targetPace: { unit: distanceUnit, pace: zones.easy },
+        },
+        {
+          type: "interval",
+          unit: distanceUnit,
+          mileage: intervalMileage,
+          targetPace: { unit: distanceUnit, pace: zones.interval },
+          notes: intervalNotes,
+        },
+        {
+          type: "tempo",
+          unit: distanceUnit,
+          mileage: tempoMileage,
+          targetPace: { unit: distanceUnit, pace: formatPace(tempoSecNum) },
+          notes: tempoNotes,
+        },
+        {
+          type: "long",
+          unit: distanceUnit,
+          mileage: roundToHalf(longDist),
+          targetPace: { unit: distanceUnit, pace: zones.marathon },
+        },
+      ];
     }
 
     const weeklyMileage = roundToHalf(runs.reduce((tot, r) => tot + r.mileage, 0));
