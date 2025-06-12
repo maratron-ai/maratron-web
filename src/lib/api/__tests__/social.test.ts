@@ -1,5 +1,12 @@
 import axios from "axios";
-import { createSocialProfile, followUser, unfollowUser, createPost, isFollowing } from "../social";
+import {
+  createSocialProfile,
+  followUser,
+  unfollowUser,
+  createPost,
+  isFollowing,
+  updateSocialProfile,
+} from "../social";
 import type { RunPost } from "@maratypes/social";
 
 jest.mock("axios");
@@ -43,5 +50,12 @@ describe("social api helpers", () => {
     const result = await createPost({ distance: 1 });
     expect(mockedAxios.post).toHaveBeenCalledWith("/api/social/posts", { distance: 1 });
     expect(result).toEqual(post);
+  });
+
+  it("updateSocialProfile puts data", async () => {
+    mockedAxios.put.mockResolvedValue({ data: { id: "p1", username: "t" } });
+    const result = await updateSocialProfile("p1", { bio: "hi" });
+    expect(mockedAxios.put).toHaveBeenCalledWith("/api/social/profile/p1", { bio: "hi" });
+    expect(result).toEqual({ id: "p1", username: "t" });
   });
 });

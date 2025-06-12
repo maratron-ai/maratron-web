@@ -44,3 +44,14 @@ export const createPost = async (
   return post;
 };
 
+
+export const updateSocialProfile = async (
+  id: string,
+  data: Partial<SocialUserProfile>
+): Promise<SocialUserProfile> => {
+  const { data: profile } = await axios.put<SocialUserProfile>(
+    `/api/social/profile/${id}`,
+    data
+  );
+  return profile;
+};
