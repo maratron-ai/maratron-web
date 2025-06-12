@@ -3,6 +3,7 @@ import { UserProfile } from "@maratypes/user";
 import styles from "./Section.module.css";
 import type { Gender } from "@maratypes/user";
 import Image from "next/image";
+import DefaultAvatar from "@components/DefaultAvatar";
 
 // runtime list of gender options
 const genderValues: Gender[] = ["Male", "Female", "Other"];
@@ -96,13 +97,21 @@ export default function BasicInfoSection({
       ) : (
         <dl className={`${styles.list} flex flex-col gap-4`}>
           <div className="md:col-span-2 flex items-center mb-4">
-            <Image
-              src={formData.avatarUrl || "/Default_pfp.svg"}
-              alt="Avatar"
-              width={80}
-              height={80}
-              className="w-20 h-20 rounded-full object-cover"
-            />
+            {formData.avatarUrl ? (
+              <Image
+                src={formData.avatarUrl}
+                alt="Avatar"
+                width={80}
+                height={80}
+                className="w-20 h-20 rounded-full object-cover"
+              />
+            ) : (
+              <DefaultAvatar
+                seed={formData.email || formData.name || ""}
+                size={80}
+                className="w-20 h-20"
+              />
+            )}
           </div>
           <div>
             <dt className={styles.label}>Name</dt>

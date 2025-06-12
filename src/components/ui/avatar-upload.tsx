@@ -1,6 +1,7 @@
 import { useRef } from "react";
 import { Avatar, AvatarImage, AvatarFallback, Button } from "@components/ui";
 import { uploadAvatar } from "@lib/api/user/user";
+import DefaultAvatar from "@components/DefaultAvatar";
 
 interface AvatarUploadProps {
   value?: string;
@@ -21,8 +22,10 @@ export default function AvatarUpload({ value, onChange, disabled }: AvatarUpload
   return (
     <div className="flex items-center space-x-4">
       <Avatar className="h-20 w-20">
-        <AvatarImage src={value || "/Default_pfp.svg"} alt="Avatar preview" />
-        <AvatarFallback>?</AvatarFallback>
+        {value && <AvatarImage src={value} alt="Avatar preview" />}
+        <AvatarFallback>
+          <DefaultAvatar seed="upload" size={80} className="w-full h-full" />
+        </AvatarFallback>
       </Avatar>
       <div>
         <Button

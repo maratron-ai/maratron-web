@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { useState } from "react";
 import { Menu } from "lucide-react";
+import DefaultAvatar from "@components/DefaultAvatar";
 import { Sheet, SheetContent, SheetTrigger } from "@components/ui";
 import ModeToggle from "@components/ModeToggle";
 
@@ -77,13 +78,20 @@ export default function Navbar() {
                   aria-expanded={desktopMenuOpen}
                   className="focus:outline-none bg-transparent p-0 hover:bg-transparent focus:ring-0"
                 >
-                  <Image
-                    src={session.user.avatarUrl ?? "/Default_pfp.svg"}
-                    alt="avatar"
-                    width={32}
-                    height={32}
-                    className="w-8 h-8 rounded-full object-cover"
-                  />
+                  {session.user.avatarUrl ? (
+                    <Image
+                      src={session.user.avatarUrl}
+                      alt="avatar"
+                      width={32}
+                      height={32}
+                      className="w-8 h-8 rounded-full object-cover"
+                    />
+                  ) : (
+                    <DefaultAvatar
+                      seed={session.user.id || session.user.email || ""}
+                      size={32}
+                    />
+                  )}
                 </button>
                 {desktopMenuOpen && (
                   <div className="absolute right-0 mt-2 w-40 bg-background border border-accent/20 rounded shadow-md">
@@ -132,14 +140,20 @@ export default function Navbar() {
                 className="focus:outline-none"
               >
                 <div className="w-8 h-8 rounded-full overflow-hidden">
-                  {" "}
-                  <Image
-                    src={session.user.avatarUrl ?? "/Default_pfp.svg"}
-                    alt="avatar"
-                    width={24}
-                    height={24}
-                    className="object-cover"
-                  />
+                  {session.user.avatarUrl ? (
+                    <Image
+                      src={session.user.avatarUrl}
+                      alt="avatar"
+                      width={24}
+                      height={24}
+                      className="object-cover"
+                    />
+                  ) : (
+                    <DefaultAvatar
+                      seed={session.user.id || session.user.email || ""}
+                      size={32}
+                    />
+                  )}
                 </div>
               </button>
               {mobileMenuOpen && (
