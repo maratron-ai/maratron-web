@@ -116,13 +116,30 @@ const [targetDistance, setTargetDistance] = useState<number>(
         plan = generateClassicMarathonPlan(opts);
         break;
     }
-    if (endDate) {
-      const withDates = assignDatesToPlan(plan, { endDate });
-      setPlanData(withDates);
-      setStartDate(withDates.startDate?.slice(0, 10) ?? "");
-    } else {
-      setPlanData(plan);
+    // Assign default start and end dates if not provided
+    const today = new Date();
+    const assumedStartDate = today.toISOString().slice(0, 10);
+    let assumedEndDate = endDate;
+
+    if (!endDate) {
+      const projectedEndDate = new Date(today);
+      projectedEndDate.setDate(today.getDate() + weeks * 7);
+
+      // Adjust to nearest following Sunday
+      const dayOfWeek = projectedEndDate.getDay(); // 0 is Sunday
+      const daysToAdd = (7 - dayOfWeek) % 7;
+      projectedEndDate.setDate(projectedEndDate.getDate() + daysToAdd);
+
+      assumedEndDate = projectedEndDate.toISOString().slice(0, 10);
     }
+
+    const withDates = assignDatesToPlan(plan, {
+      startDate: assumedStartDate,
+      endDate: assumedEndDate,
+    });
+    setPlanData(withDates);
+    setStartDate(withDates.startDate?.slice(0, 10) ?? "");
+    setEndDate(withDates.endDate?.slice(0, 10) ?? "");
   };
 
   return (
@@ -259,41 +276,15 @@ const [targetDistance, setTargetDistance] = useState<number>(
             className="border p-2 rounded w-full"
           />
         </div>
-        <div className="mb-4">
-          <label className="block mb-1 font-semibold">Start Date</label>
-          <input
-            type="date"
-            value={startDate}
-            onChange={(e) => setStartDate(e.target.value)}
-            className="border p-2 rounded w-full"
-          />
-          {startDate && (
-            <button
-              type="button"
-              onClick={() => setStartDate("")}
-              className="mt-1 text-sm underline text-primary"
-            >
-              Clear
-            </button>
-          )}
-        </div>
-        <div className="mb-4">
-          <label className="block mb-1 font-semibold">Race Date</label>
-          <input
-            type="date"
-            value={endDate}
-            onChange={(e) => setEndDate(e.target.value)}
-            className="border p-2 rounded w-full"
-          />
-          {endDate && (
-            <button
-              type="button"
-              onClick={() => setEndDate("")}
-              className="mt-1 text-sm underline text-primary"
-            >
-              Clear
-            </button>
-          )}
+        <div className="mb-4 flex gap-8">
+          <div>
+            <label className="block mb-1 font-semibold">Start Date</label>
+            <p className="text-foreground">{startDate}</p>
+          </div>
+          <div>
+            <label className="block mb-1 font-semibold">Race Date</label>
+            <p className="text-foreground">{endDate}</p>
+          </div>
         </div>
           <div className="mt-4 flex justify-center gap-4">
             <button
@@ -308,8 +299,8 @@ const [targetDistance, setTargetDistance] = useState<number>(
                     userId: user.id!,
                     planData: planWithDates,
                     name: planName,
-                    startDate: startDate ? new Date(startDate).toISOString() : undefined,
-                    endDate: endDate ? new Date(endDate).toISOString() : undefined,
+                    startDate: startDate ? new Date(startDate) : new Date(),
+                    endDate: endDate ? new Date(endDate) : undefined,
                     active: false,
                   });
                   alert("Plan saved");
