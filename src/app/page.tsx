@@ -19,7 +19,7 @@ export default function Landing() {
 
       {/* Hero Section */}
       <section className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-white/60 dark:bg-white/5 backdrop-blur-sm"></div>
+        <div className="absolute inset-0 bg-white/60 dark:bg-white/5 backdrop-blur-sm z-0"></div>
         <div className="w-full px-4 sm:px-6 lg:px-8 py-20 relative">
           <div className="w-full text-center bg-red">
             <Badge className="mb-6 bg-gradient-to-r from-[var(--brand-from)] to-[var(--brand-to)] text-white border-0">
