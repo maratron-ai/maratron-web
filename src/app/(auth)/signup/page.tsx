@@ -75,22 +75,6 @@ export default function SignupPage() {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="avatar">Profile Picture</Label>
-                <Input
-                  type="url"
-                  id="avatar"
-                  value={avatarUrl}
-                  onChange={(e) => setAvatarUrl(e.target.value)}
-                  placeholder="https://example.com/avatar.png"
-                />
-                <Input type="file" accept="image/*" onChange={handleFileChange} className="mt-2" />
-              </div>
-              {avatarUrl && (
-                <div className="flex justify-center">
-                  <img src={avatarUrl} alt="Avatar preview" className="w-20 h-20 rounded-full object-cover" />
-                </div>
-              )}
-              <div className="space-y-2">
                 <Label htmlFor="email">Email</Label>
                 <Input
                   type="email"
