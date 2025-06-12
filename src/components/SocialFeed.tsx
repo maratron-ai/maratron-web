@@ -6,6 +6,7 @@ import { useSession } from "next-auth/react";
 import { useSocialProfile } from "@hooks/useSocialProfile";
 import CreateSocialPost from "@components/CreateSocialPost";
 import { Button } from "@components/ui";
+import Link from "next/link";
 
 export default function SocialFeed() {
   const { data: session } = useSession();
@@ -59,9 +60,14 @@ export default function SocialFeed() {
                 className="w-8 h-8 rounded-full object-cover"
               />
             )}
-            <span className="font-semibold">
-              {post.userProfile?.username}
-            </span>
+            {post.userProfile?.username && (
+              <Link
+                href={`/u/${post.userProfile.username}`}
+                className="font-semibold hover:underline"
+              >
+                {post.userProfile.username}
+              </Link>
+            )}
           </div>
           <p className="font-medium">
             {post.distance} mi in {post.time}
