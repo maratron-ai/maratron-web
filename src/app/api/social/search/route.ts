@@ -16,7 +16,7 @@ export async function GET(req: NextRequest) {
         })),
       },
       include: {
-        user: { select: { name: true, _count: { select: { runs: true } } } },
+        user: { select: { name: true, avatarUrl: true, _count: { select: { runs: true } } } },
         _count: { select: { followers: true, following: true } },
       },
       take: 10,
@@ -34,6 +34,7 @@ export async function GET(req: NextRequest) {
           username: p.username,
           bio: p.bio,
           profilePhoto: p.profilePhoto,
+          avatarUrl: p.user.avatarUrl,
           createdAt: p.createdAt,
           updatedAt: p.updatedAt,
           name: p.user.name,

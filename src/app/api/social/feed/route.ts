@@ -14,7 +14,11 @@ export async function GET(req: NextRequest) {
     const ids = followed.map((f) => f.followingId);
     const posts = await prisma.runPost.findMany({
       where: { userProfileId: { in: ids } },
-      include: { userProfile: true },
+      include: {
+        userProfile: {
+          include: { user: { select: { avatarUrl: true } } },
+        },
+      },
       orderBy: { createdAt: "desc" },
     });
     return NextResponse.json(posts);

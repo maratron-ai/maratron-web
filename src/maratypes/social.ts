@@ -4,6 +4,7 @@ export interface SocialUserProfile {
   username: string;
   bio?: string;
   profilePhoto?: string;
+  avatarUrl?: string;
   createdAt: Date;
   updatedAt: Date;
   name?: string;
@@ -22,7 +23,7 @@ export interface RunPost {
   photoUrl?: string;
   createdAt: Date;
   updatedAt: Date;
-  userProfile?: SocialUserProfile;
+  userProfile?: SocialUserProfile & { user?: { avatarUrl?: string } };
   likeCount?: number;
   commentCount?: number;
 }

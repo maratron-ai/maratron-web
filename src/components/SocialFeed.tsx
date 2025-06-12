@@ -7,6 +7,7 @@ import { useSocialProfile } from "@hooks/useSocialProfile";
 import CreateSocialPost from "@components/CreateSocialPost";
 import { Button } from "@components/ui";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function SocialFeed() {
   const { data: session } = useSession();
@@ -52,14 +53,17 @@ export default function SocialFeed() {
       {posts.map((post) => (
         <div key={post.id} className="border rounded-md p-4">
           <div className="flex items-center gap-2 mb-2">
-            {post.userProfile?.profilePhoto && (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                src={post.userProfile.profilePhoto}
-                alt={post.userProfile.username}
-                className="w-8 h-8 rounded-full object-cover"
-              />
-            )}
+            <Image
+              src={
+                post.userProfile?.user?.avatarUrl ||
+                post.userProfile?.profilePhoto ||
+                "/default_profile.png"
+              }
+              alt={post.userProfile?.username || "avatar"}
+              width={32}
+              height={32}
+              className="w-8 h-8 rounded-full object-cover"
+            />
             {post.userProfile?.username && (
               <Link
                 href={`/u/${post.userProfile.username}`}
