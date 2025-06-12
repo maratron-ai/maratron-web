@@ -25,7 +25,7 @@ export default function Navbar() {
   ];
 
   return (
-    <nav className="bg-white dark:bg-[#111827] border-b border-muted dark:border-white/10 backdrop-blur-sm">
+    <nav className="bg-white dark:bg-[#111827] border-b border-muted dark:border-white/10 backdrop-blur-sm relative z-20">
       <div className="w-full px-4 sm:px-6 lg:px-8 flex items-center justify-between py-6">
         {/* Left: Logo and links */}
         <div className="flex items-center">
@@ -96,7 +96,7 @@ export default function Navbar() {
                   )}
                 </button>
                 {desktopMenuOpen && (
-                  <div className="absolute right-0 mt-2 w-40 bg-background border border-accent/20 rounded shadow-md">
+                  <div className="absolute right-0 mt-2 w-40 bg-background border border-accent/20 rounded shadow-md z-50">
                     <Link
                       href="/userProfile"
                       className="block px-4 py-2 hover:bg-accent/20"
@@ -159,7 +159,7 @@ export default function Navbar() {
                 </div>
               </button>
               {mobileMenuOpen && (
-                <div className="absolute right-0 mt-2 w-40 bg-background border border-accent/20 rounded shadow-md">
+                <div className="absolute right-0 mt-2 w-40 bg-background border border-accent/20 rounded shadow-md z-50">
                   <Link
                     href="/userProfile"
                     className="block px-4 py-2 hover:bg-accent/20"

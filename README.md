@@ -12,16 +12,7 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-**The only functional pages rn are http://localhost:3000/profile (or http://localhost:3000/api/users)**
-
-
 # Maratron Documentation (WIP)
-
-## Unorganized Notes
-- Using prisma for ORM
-- using postgres@15
-- no UI or styling is done this is just raw
-
 
 ## Database Setup and Access Documentation
 
