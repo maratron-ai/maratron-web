@@ -50,91 +50,89 @@ const LoginPage: React.FC = () => {
   // Show loading state while NextAuth checks session (optional)
   if (status === "loading") {
     return (
-      <div className="max-w-4xl mx-auto p-6">
+      <main className="w-full px-4 sm:px-6 lg:px-8 py-6">
         <h1 className="text-2xl">Loading...</h1>
-      </div>
+      </main>
     );
   }
 
   // If already logged in
   if (session?.user) {
     return (
-      <div className="max-w-4xl mx-auto p-6">
-        <div className="flex justify-center mb-6">
-          <h1 className="text-3xl font-bold">You are logged in!</h1>
-        </div>
+      <main className="w-full px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+        <h1 className="text-3xl font-bold text-center">You are logged in!</h1>
         <div className="flex justify-center">
           <button
             onClick={() => router.push("/home")}
-            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors"
+            className="bg-primary text-foreground px-4 py-2 rounded-md hover:bg-primary/80 transition-colors"
           >
             Go Home
           </button>
         </div>
-      </div>
+      </main>
     );
   }
 
   // If not logged in, show the login form
   return (
-    <div className="max-w-4xl mx-auto p-6">
-      <div className="flex justify-center mb-6">
-        <h1 className="text-3xl font-bold">Login</h1>
-      </div>
-      {error && <p className="text-red-500 text-center mb-4">{error}</p>}
-      <div className="flex justify-center mb-4">
-        <button
-          type="button"
-          onClick={jacksonLogin}
-          className="w-half border justify-center hover:bg-blue-50"
-        >
-          Jackson login
-        </button>
-      </div>
-      <form onSubmit={handleLogin} className="max-w-md mx-auto">
-        <div className="mb-4">
-          <label htmlFor="email" className="block text-gray-700 mb-2">
-            Email:
-          </label>
-          <input
-            id="email"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            className="w-full px-3 py-2 border rounded focus:outline-none focus:ring"
-          />
+    <div className="min-h-screen flex flex-col">
+      <main className="flex-grow w-full px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+        <h1 className="text-3xl font-bold text-center">Login</h1>
+        {error && <p className="text-red-500 text-center">{error}</p>}
+        <div className="flex justify-center">
+          <button
+            type="button"
+            onClick={jacksonLogin}
+            className="border px-4 py-2 rounded-md hover:bg-accent/20 transition"
+          >
+            Jackson login
+          </button>
         </div>
-        <div className="mb-6">
-          <label htmlFor="password" className="block text-gray-700 mb-2">
-            Password:
-          </label>
-          <input
-            id="password"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            className="w-full px-3 py-2 border rounded focus:outline-none focus:ring"
-          />
-        </div>
-        <button
-          type="submit"
-          className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition-colors"
-        >
-          Login
-        </button>
-        <div className="text-center my-4">
-          <span className="text-gray-500">or</span>
-        </div>
-        <button
-          type="button"
-          onClick={() => router.push("/signup")}
-          className="w-full border border-blue-600 text-blue-600 py-2 rounded hover:bg-blue-50 transition-colors"
-        >
-          Not registered? Sign up
-        </button>
-      </form>
+        <form onSubmit={handleLogin} className="space-y-4 w-full max-w-sm mx-auto">
+          <div className="mb-4">
+            <label htmlFor="email" className="block text-foreground mb-2">
+              Email:
+            </label>
+            <input
+              id="email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              className="w-full px-3 py-2 border rounded focus:outline-none focus:ring"
+            />
+          </div>
+          <div className="mb-6">
+            <label htmlFor="password" className="block text-foreground mb-2">
+              Password:
+            </label>
+            <input
+              id="password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              className="w-full px-3 py-2 border rounded focus:outline-none focus:ring"
+            />
+          </div>
+          <button
+            type="submit"
+            className="w-full bg-primary text-foreground py-2 rounded-md hover:bg-primary/80 transition-colors"
+          >
+            Login
+          </button>
+          <div className="text-center my-4">
+            <span className="text-foreground/80">or</span>
+          </div>
+          <button
+            type="button"
+            onClick={() => router.push("/signup")}
+            className="w-full border border-primary text-primary py-2 rounded-md hover:bg-primary/20 transition-colors"
+          >
+            Not registered? Sign up
+          </button>
+        </form>
+      </main>
     </div>
   );
 };

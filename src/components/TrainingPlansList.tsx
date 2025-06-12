@@ -66,19 +66,19 @@ export default function TrainingPlansList() {
     }
   };
 
-  if (loading) return <p className="text-gray-500">Loading plans...</p>;
+  if (loading) return <p className="text-foreground/60">Loading plans...</p>;
   if (plans.length === 0)
-    return <p className="text-gray-500">No plans saved.</p>;
+    return <p className="text-foreground/60">No plans saved.</p>;
 
   return (
-    <div className="space-y-2">
+    <div className="space-y-4">
       {plans.map((plan) => (
-        <Card key={plan.id} className="flex justify-between items-start">
-          <div>
+        <Card key={plan.id} className="p-6 flex justify-between items-start">
+          <div className="space-y-1">
             <Link href={`/plans/${plan.id ?? ""}`} className="font-semibold underline">
               {plan.name}
             </Link>
-            <div className="text-sm">
+            <div className="text-sm space-y-1">
               {plan.planData?.weeks && <span>{plan.planData.weeks} weeks</span>}
               {plan.startDate && (
                 <span className="ml-2">
@@ -88,7 +88,7 @@ export default function TrainingPlansList() {
                 </span>
               )}
               {plan.active && (
-                <span className="ml-2 text-green-600 font-medium">active</span>
+                <span className="ml-2 text-primary font-medium">active</span>
               )}
             </div>
           </div>

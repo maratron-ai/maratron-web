@@ -31,6 +31,15 @@ export default function ShoesList() {
       .finally(() => setLoading(false));
   }, [session?.user?.id]);
 
+  // Sort so the default shoe is first, then by recency
+  const sortedShoes = [...shoes].sort((a, b) => {
+    if (a.id === defaultId) return -1;
+    if (b.id === defaultId) return 1;
+    const aTime = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+    const bTime = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+    return bTime - aTime;
+  });
+
   const setDefault = async (id: string) => {
     if (!session?.user?.id) return;
     try {
@@ -41,29 +50,29 @@ export default function ShoesList() {
     }
   };
 
-  if (loading) return <p className="text-gray-500">Loading shoes...</p>;
+  if (loading) return <p className="text-foreground/60">Loading shoes...</p>;
   if (shoes.length === 0)
-    return <p className="text-gray-500">No shoes added.</p>;
+    return <p className="text-foreground/60">No shoes added.</p>;
 
   return (
-    <div className="space-y-2">
-      {shoes.map((shoe) => {
+    <div className="space-y-4">
+      {sortedShoes.map((shoe) => {
         const isDefault = shoe.id === defaultId;
         return (
-          <Card key={shoe.id} className="flex justify-between items-start">
-            <div>
+          <Card key={shoe.id} className="p-6 flex justify-between items-start">
+            <div className="space-y-1">
               <p className="font-semibold">{shoe.name}</p>
-              <div className="text-sm">
+              <div className="text-sm space-y-1">
                 <span>
                   {shoe.createdAt
                     ? new Date(shoe.createdAt).toLocaleDateString()
                     : ""}
                 </span>
                 <span className="ml-2">
-                  {shoe.currentDistance} / {shoe.maxDistance} {shoe.distanceUnit}
+                  {(Math.round(shoe.currentDistance * 10) / 10).toFixed(0)} / {(Math.round(shoe.maxDistance * 10) / 10).toFixed(0)} {shoe.distanceUnit}
                 </span>
                 {isDefault && (
-                  <span className="ml-2 text-green-600 font-medium">default</span>
+                  <span className="ml-2 text-primary font-medium">default</span>
                 )}
               </div>
             </div>

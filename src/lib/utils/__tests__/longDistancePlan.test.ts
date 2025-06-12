@@ -27,7 +27,8 @@ describe("generateLongDistancePlan cutback weeks", () => {
       26.2
     );
     const lastWeek = plan.schedule[weeks - 1];
-    const lastRun = lastWeek.runs[lastWeek.runs.length - 1];
+    expect(lastWeek.runs).toHaveLength(1);
+    const lastRun = lastWeek.runs[0];
     expect(lastRun.type).toBe("marathon");
     expect(lastWeek.notes).toBe("Race week");
   });

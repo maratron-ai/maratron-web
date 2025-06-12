@@ -60,33 +60,43 @@ export default function UserProfilePage() {
 
   // Not authenticated
   if (status === "loading") {
-    return <div className="max-w-4xl mx-auto p-6">Loading...</div>;
+    return (
+      <main className="w-full px-4 sm:px-6 lg:px-8 py-6">Loading...</main>
+    );
   }
   if (status !== "authenticated" || !session.user) {
     return (
-      <div className="max-w-4xl mx-auto p-6">
+      <main className="w-full px-4 sm:px-6 lg:px-8 py-6">
         <p>
           Please{" "}
-          <a href="/login" className="underline text-blue-600">
+          <a href="/login" className="underline text-primary">
             log in
           </a>{" "}
           to view your profile.
         </p>
-      </div>
+      </main>
     );
   }
 
   // Profile loading or error
   if (loading) {
-    return <div className="max-w-4xl mx-auto p-6">Loading profile...</div>;
+    return (
+      <main className="w-full px-4 sm:px-6 lg:px-8 py-6">
+        Loading profile...
+      </main>
+    );
   }
   if (error) {
-    return <div className="max-w-4xl mx-auto p-6 text-red-600">{error}</div>;
+    return (
+      <main className="w-full px-4 sm:px-6 lg:px-8 py-6 text-red-600">
+        {error}
+      </main>
+    );
   }
 
   // Render the form
   return (
-    <div className="max-w-4xl mx-auto p-6">
+    <main className="w-full px-4 sm:px-6 lg:px-8 py-6 space-y-6">
       <div className="flex justify-end mb-6">
         <button
           onClick={() => signOut()}
@@ -96,9 +106,9 @@ export default function UserProfilePage() {
         </button>
       </div>
       {saveSuccess && (
-        <div className="mb-4 text-green-600">Profile updated!</div>
+        <div className="mb-4 text-primary">Profile updated!</div>
       )}
       {profile && <UserProfileForm initialUser={profile} onSave={handleSave} />}
-    </div>
+    </main>
   );
 }

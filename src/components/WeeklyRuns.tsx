@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { listRunningPlans, updateRunningPlan } from "@lib/api/plan";
 import { createRun } from "@lib/api/run";
-import { Card } from "@components/ui";
+import { Card, Select, SelectTrigger, SelectContent, SelectItem, SelectValue, Checkbox, Progress } from "@components/ui";
 import type { RunningPlan } from "@maratypes/runningPlan";
 import { assignDatesToPlan } from "@utils/running/planDates";
 import { calculateDurationFromPace } from "@utils/running/calculateDuration";
@@ -43,8 +43,8 @@ export default function WeeklyRuns() {
     fetchPlan();
   }, [session?.user?.id, refresh]);
 
-  if (loading) return <p className="text-gray-500">Loading...</p>;
-  if (!plan) return <p className="text-gray-500">No active plan.</p>;
+  if (loading) return <p className="text-foreground/60">Loading...</p>;
+  if (!plan) return <p className="text-foreground/60">No active plan.</p>;
 
   let weekIndex: number;
   if (plan.planData.startDate) {
@@ -60,13 +60,13 @@ export default function WeeklyRuns() {
   }
   if (weekIndex < 0) {
     return (
-      <p className="text-gray-500">
+      <p className="text-foreground/60">
         {plan.name} training begins {plan.planData.startDate?.slice(0, 10)}
       </p>
     );
   }
   if (!plan.planData.schedule[weekIndex]) {
-    return <p className="text-gray-500">Plan completed!</p>;
+    return <p className="text-foreground/60">Plan completed!</p>;
   }
   const week = plan.planData.schedule[weekIndex];
 
@@ -123,17 +123,23 @@ export default function WeeklyRuns() {
     }
   };
 
+  const completed = week.runs.filter((r) => r.done).length;
+  const progressValue = (completed / week.runs.length) * 100;
+
   return (
     <div className="space-y-4">
       <h3 className="text-xl font-semibold">
         {plan.name} - Week {week.weekNumber}
       </h3>
-      <div className="space-y-2">
+      <Progress value={progressValue} />
+      <div className="space-y-4">
         {week.runs.map((r, i) => {
-          const classes = r.done ? "text-gray-500 line-through" : undefined;
+          const classes = r.done
+            ? "bg-accent/10 text-foreground/60 line-through"
+            : "";
           return (
-            <Card key={i} className={`flex items-center justify-between ${classes}`}>
-              <div>
+            <Card key={i} className={`p-6 flex items-center justify-between ${classes}`}>
+              <div className="space-y-1">
                 <p className="font-semibold">
                   {r.date?.slice(0, 10)} - {r.type}
                 </p>
@@ -143,25 +149,25 @@ export default function WeeklyRuns() {
                 {r.notes && <p className="text-sm">{r.notes}</p>}
                 <label className="block text-sm mt-1">
                   <span className="mr-2">Day:</span>
-                  <select
+                  <Select
                     value={r.day || "Sunday"}
-                    onChange={(e) => changeDay(i, e.target.value as typeof days[number])}
-                    className="border p-1 rounded text-black"
+                    onValueChange={(val) => changeDay(i, val as typeof days[number])}
                   >
-                    {days.map((d) => (
-                      <option key={d} value={d}>
-                        {d}
-                      </option>
-                    ))}
-                  </select>
+                    <SelectTrigger className="w-32">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {days.map((d) => (
+                        <SelectItem key={d} value={d}>
+                          {d}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </label>
               </div>
               <label className="flex items-center space-x-2">
-                <input
-                  type="checkbox"
-                  checked={r.done || false}
-                  onChange={() => toggleDone(i)}
-                />
+                <Checkbox checked={r.done || false} onCheckedChange={() => toggleDone(i)} />
                 <span>{r.done ? "Completed" : "Mark done"}</span>
               </label>
             </Card>

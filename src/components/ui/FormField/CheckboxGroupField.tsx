@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { Label } from "@components/ui";
 
 export interface CheckboxGroupFieldProps
   extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "onChange"> {
@@ -24,10 +25,10 @@ const CheckboxGroupField: React.FC<CheckboxGroupFieldProps> = ({
 }) => {
   return (
     <div className={`space-y-1 ${className}`}>
-      <label htmlFor={name} className="block font-medium">
+      <Label htmlFor={name} className="block font-medium">
         {label}
         {inputProps.required && <span className="text-red-500 ml-1">*</span>}
-      </label>
+      </Label>
 
       {editing ? (
         <div className="flex flex-wrap gap-4">
@@ -46,16 +47,16 @@ const CheckboxGroupField: React.FC<CheckboxGroupFieldProps> = ({
                   onChange(name, next);
                 }}
                 value={opt.value}
-                className="rounded border-gray-300 text-primary focus:ring-2 focus:ring-primary"
+                className="rounded border-accent text-primary focus:ring-2 focus:ring-primary"
               />
-              <span className="ml-2 text-gray-700 dark:text-gray-300">
+              <span className="ml-2 text-foreground dark:text-foreground">
                 {opt.label}
               </span>
             </label>
           ))}
         </div>
       ) : (
-        <p className="mt-1 text-gray-700 dark:text-gray-300">
+        <p className="mt-1 text-foreground dark:text-foreground">
           {value.length > 0 ? value.join(", ") : "–"}
         </p>
       )}

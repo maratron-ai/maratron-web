@@ -29,7 +29,7 @@ const RunningPlanDisplay: React.FC<RunningPlanDisplayProps> = ({
     onPlanChange({ ...planData, schedule: newSchedule });
   };
   return (
-    <div className="container p-4">
+    <div className="w-full px-4 sm:px-6 lg:px-8 py-4">
       <h2 className="text-2xl font-bold text-center mb-4">
         {planName || "Your Running Plan"}
       </h2>
@@ -82,29 +82,31 @@ const CollapsibleWeek: React.FC<CollapsibleWeekProps> = ({
 
   return (
     <div
-      className={`border border-gray-300 rounded shadow-sm mb-4 ${
-        isWeekComplete ? "bg-gray-100 text-gray-500" : ""
+      className={`border border-accent rounded shadow-sm mb-4 ${
+        isWeekComplete ? "bg-background text-foreground/60" : ""
       }`}
     >
       <div
         className={`flex justify-between items-center p-4 cursor-pointer ${
-          isWeekComplete ? "bg-gray-500" : "bg-gray-300"
+          isWeekComplete ? "bg-accent" : "bg-accent/30"
         }`}
         onClick={() => setIsOpen((prev) => !prev)}
       >
-        <h3 className="text-xl font-semibold text-gray-800">
+        <h3 className="text-xl font-semibold text-foreground">
           Week {weekPlan.weekNumber}
           {weekPlan.phase && ` – ${weekPlan.phase} phase`} - Total Mileage:
           {" "}
           {weekPlan.weeklyMileage} {weekPlan.unit}
+          {weekPlan.runs.length === 1 && weekPlan.runs[0].type === "marathon" &&
+            " – Marathon Week"}
           {isWeekComplete ? " (Complete)" : ""}
         </h3>
         <span className="text-2xl">{isOpen ? "−" : "+"}</span>
       </div>
       {isOpen && (
         <div
-          className={`p-4 text-gray-800 ${
-            isWeekComplete ? "bg-gray-200" : "bg-gray-400"
+          className={`p-4 text-foreground ${
+            isWeekComplete ? "bg-background" : "bg-accent/50"
           }`}
         >
           <p className="mb-2">Start: {weekPlan.startDate?.slice(0, 10)}</p>
@@ -113,11 +115,11 @@ const CollapsibleWeek: React.FC<CollapsibleWeekProps> = ({
             {weekPlan.runs.map((run, index) => {
               const past = run.date ? new Date(run.date) < new Date() : false;
               const classes =
-                past || run.done ? "text-gray-500 line-through" : "";
+                past || run.done ? "text-foreground/60 line-through" : "";
               return (
                 <li
                   key={index}
-                  className={`border-t border-gray-300 pt-2 space-y-1 ${classes}`}
+                  className={`border-t border-accent pt-2 space-y-1 ${classes}`}
                 >
                   {editable ? (
                     <div className="space-y-1">
@@ -133,7 +135,7 @@ const CollapsibleWeek: React.FC<CollapsibleWeekProps> = ({
                               e.target.value
                             )
                           }
-                          className="border p-1 rounded text-black"
+                          className="border p-1 rounded text-foreground"
                         >
                           {runTypes.map((t) => (
                             <option key={t} value={t}>
@@ -156,7 +158,7 @@ const CollapsibleWeek: React.FC<CollapsibleWeekProps> = ({
                               Math.round(Number(e.target.value) * 10) / 10
                             )
                           }
-                          className="border p-1 rounded text-black"
+                          className="border p-1 rounded text-foreground"
                         />
                         <span className="ml-1">{run.unit}</span>
                       </label>
@@ -171,7 +173,7 @@ const CollapsibleWeek: React.FC<CollapsibleWeekProps> = ({
                               pace: formatPace(parsePace(e.target.value)),
                             })
                           }
-                          className="border p-1 rounded text-black"
+                          className="border p-1 rounded text-foreground"
                         />
                       </label>
                       <label className="block">
@@ -186,7 +188,7 @@ const CollapsibleWeek: React.FC<CollapsibleWeekProps> = ({
                               e.target.value as DayOfWeek
                             )
                           }
-                          className="border p-1 rounded text-black"
+                          className="border p-1 rounded text-foreground"
                         >
                           {days.map((d) => (
                             <option key={d} value={d}>
@@ -203,7 +205,7 @@ const CollapsibleWeek: React.FC<CollapsibleWeekProps> = ({
                           onChange={(e) =>
                             updateRun(weekIndex, index, "notes", e.target.value)
                           }
-                          className="border p-1 rounded text-black w-full"
+                          className="border p-1 rounded text-foreground w-full"
                         />
                       </label>
                       <label className="block">
@@ -313,7 +315,7 @@ const BulkDaySetter: React.FC<BulkDaySetterProps> = ({ planData, onPlanChange })
       <select
         value={type}
         onChange={(e) => setType(e.target.value as PlannedRun["type"])}
-        className="border p-1 rounded text-black"
+        className="border p-1 rounded text-foreground"
       >
         {runTypes.map((t) => (
           <option key={t} value={t}>
@@ -325,7 +327,7 @@ const BulkDaySetter: React.FC<BulkDaySetterProps> = ({ planData, onPlanChange })
       <select
         value={day}
         onChange={(e) => setDay(e.target.value as DayOfWeek)}
-        className="border p-1 rounded text-black"
+        className="border p-1 rounded text-foreground"
       >
         {days.map((d) => (
           <option key={d} value={d}>
@@ -336,7 +338,7 @@ const BulkDaySetter: React.FC<BulkDaySetterProps> = ({ planData, onPlanChange })
       <button
         type="button"
         onClick={apply}
-        className="bg-blue-500 text-white px-3 py-1 rounded"
+        className="bg-primary text-foreground px-3 py-1 rounded"
       >
         Apply
       </button>

@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { Label } from "@components/ui";
 
 export interface SelectFieldProps
   extends Omit<React.SelectHTMLAttributes<HTMLSelectElement>, "onChange"> {
@@ -24,10 +25,10 @@ const SelectField: React.FC<SelectFieldProps> = ({
 }) => {
   return (
     <div className={`space-y-1 ${className}`}>
-      <label htmlFor={name} className="block font-medium">
+      <Label htmlFor={name} className="block font-medium">
         {label}
         {selectProps.required && <span className="text-red-500 ml-1">*</span>}
-      </label>
+      </Label>
 
       {editing ? (
         <select
@@ -48,7 +49,7 @@ const SelectField: React.FC<SelectFieldProps> = ({
           ))}
         </select>
       ) : (
-        <p className="mt-1 text-gray-700 dark:text-gray-300">
+        <p className="mt-1 text-foreground dark:text-foreground">
           {options.find((opt) => opt.value === value)?.label ?? "–"}
         </p>
       )}

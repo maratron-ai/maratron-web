@@ -9,7 +9,7 @@ export default function Navbar() {
 
   return (
     <nav className="fixed top-0 left-0 w-full z-20 py-4">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 flex justify-center items-center">
+      <div className="w-full px-4 sm:px-6 lg:px-8 flex justify-center items-center">
         <div className="relative">
           <button
             onClick={() => setMenuOpen((open) => !open)}
@@ -46,21 +46,21 @@ export default function Navbar() {
               <Link
                 href="#features"
                 onClick={() => setMenuOpen(false)}
-                className="px-2 py-1 text-gray-700 hover:bg-gray-100 rounded"
+                className="px-2 py-1 text-foreground hover:bg-accent/20 rounded"
               >
                 Learn More
               </Link>
               <Link
                 href="/login"
                 onClick={() => setMenuOpen(false)}
-                className="px-2 py-1 text-gray-700 hover:bg-gray-100 rounded"
+                className="px-2 py-1 text-foreground hover:bg-accent/20 rounded"
               >
                 Login
               </Link>
               <Link
                 href="/signup"
                 onClick={() => setMenuOpen(false)}
-                className="px-2 py-1 text-gray-700 hover:bg-gray-100 rounded"
+                className="px-2 py-1 text-foreground hover:bg-accent/20 rounded"
               >
                 Sign Up
               </Link>

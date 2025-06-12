@@ -6,6 +6,7 @@ import PhysicalStatsSection from "./PhysicalStatsSection";
 import GoalsSection from "./GoalsSection";
 import PreferencesSection from "./PreferencesSection";
 import { useUserProfileForm } from "@hooks/useUserProfileForm";
+import { Button } from "@components/ui";
 
 interface Props {
   initialUser: UserProfile;
@@ -38,22 +39,22 @@ export default function UserProfileForm({
         e.preventDefault();
         handleSave();
       }}
-      className="bg-gray-800 p-6 rounded-lg shadow-lg space-y-6"
+      className="space-y-6"
     >
-      <div className="flex justify-between items-center border-b border-gray-700 pb-4">
-        <h2 className="text-3xl font-bold text-white">Your Profile</h2>
+      <div className="flex justify-between items-center border-b border-accent pb-4">
+        <h2 className="text-3xl font-bold text-foreground">Your Profile</h2>
         {!alwaysEdit && (
-          <button
+          <Button
             type="button"
             onClick={toggleEditing}
-            className={`px-4 py-2 rounded font-medium text-white ${
+            className={`px-4 py-2 rounded font-medium ${
               editing
-                ? "bg-gray-600 hover:bg-gray-500"
-                : "bg-blue-600 hover:bg-blue-700"
+                ? "bg-accent text-foreground hover:bg-accent/80"
+                : "bg-gradient-to-r from-[var(--brand-from)] to-[var(--brand-to)] text-white border-0 hover:from-[var(--brand-from)]/90 hover:to-[var(--brand-to)]/90"
             }`}
           >
             {editing ? "Cancel" : "Edit"}
-          </button>
+          </Button>
         )}
       </div>
 
@@ -90,12 +91,12 @@ export default function UserProfileForm({
 
       {editing && (
         <div className="mt-6 flex justify-end">
-          <button
+          <Button
             type="submit"
-            className="w-full sm:w-auto bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-2 rounded transition-colors"
+            className="w-full sm:w-auto bg-gradient-to-r from-[var(--brand-from)] to-[var(--brand-to)] text-white border-0 hover:from-[var(--brand-from)]/90 hover:to-[var(--brand-to)]/90"
           >
             {submitLabel}
-          </button>
+          </Button>
         </div>
       )}
     </form>

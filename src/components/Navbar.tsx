@@ -4,10 +4,13 @@ import Link from "next/link";
 import Image from "next/image";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { useState } from "react";
+import { Menu } from "lucide-react";
+import DefaultAvatar from "@components/DefaultAvatar";
+import { Sheet, SheetContent, SheetTrigger } from "@components/ui";
+import ModeToggle from "@components/ModeToggle";
 
 export default function Navbar() {
   const { data: session, status } = useSession();
-  const [mobileOpen, setMobileOpen] = useState(false);
   const [desktopMenuOpen, setDesktopMenuOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -20,8 +23,8 @@ export default function Navbar() {
   ];
 
   return (
-    <nav className="bg-background border-b border-accent/20">
-      <div className="w-full px-4 md:px-8 flex items-center justify-between py-4">
+    <nav className="bg-white dark:bg-[#111827] border-b border-muted dark:border-white/10 backdrop-blur-sm">
+      <div className="w-full px-4 sm:px-6 lg:px-8 flex items-center justify-between py-6">
         {/* Left: Logo and links */}
         <div className="flex items-center">
           <Link href="/" className="text-xl font-bold mr-2">
@@ -75,13 +78,20 @@ export default function Navbar() {
                   aria-expanded={desktopMenuOpen}
                   className="focus:outline-none bg-transparent p-0 hover:bg-transparent focus:ring-0"
                 >
-                  <Image
-                    src={session.user.avatarUrl ?? "/Default_pfp.svg"}
-                    alt="avatar"
-                    width={32}
-                    height={32}
-                    className="w-8 h-8 rounded-full object-cover"
-                  />
+                  {session.user.avatarUrl ? (
+                    <Image
+                      src={session.user.avatarUrl}
+                      alt="avatar"
+                      width={32}
+                      height={32}
+                      className="w-8 h-8 rounded-full object-cover"
+                    />
+                  ) : (
+                    <DefaultAvatar
+                      seed={session.user.id || session.user.email || ""}
+                      size={32}
+                    />
+                  )}
                 </button>
                 {desktopMenuOpen && (
                   <div className="absolute right-0 mt-2 w-40 bg-background border border-accent/20 rounded shadow-md">
@@ -115,6 +125,7 @@ export default function Navbar() {
               Sign In
             </button>
           )}
+          <ModeToggle />
         </div>
 
         {/* Mobile Hamburger and Avatar */}
@@ -129,14 +140,20 @@ export default function Navbar() {
                 className="focus:outline-none"
               >
                 <div className="w-8 h-8 rounded-full overflow-hidden">
-                  {" "}
-                  <Image
-                    src={session.user.avatarUrl ?? "/Default_pfp.svg"}
-                    alt="avatar"
-                    width={24}
-                    height={24}
-                    className="object-cover"
-                  />
+                  {session.user.avatarUrl ? (
+                    <Image
+                      src={session.user.avatarUrl}
+                      alt="avatar"
+                      width={24}
+                      height={24}
+                      className="object-cover"
+                    />
+                  ) : (
+                    <DefaultAvatar
+                      seed={session.user.id || session.user.email || ""}
+                      size={32}
+                    />
+                  )}
                 </div>
               </button>
               {mobileMenuOpen && (
@@ -168,97 +185,51 @@ export default function Navbar() {
           )}
 
           {/* Hamburger icon (mobile) */}
-          <button
-            onClick={() => setMobileOpen((o) => !o)}
-            aria-label="Toggle mobile menu"
-            aria-expanded={mobileOpen}
-            className="p-2 focus:outline-none"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={1.5}
-              stroke="currentColor"
-              className="w-6 h-6"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M3.75 5.25h16.5m-16.5 6h16.5m-16.5 6h16.5"
-              />
-            </svg>
-          </button>
-        </div>
-      </div>
-
-      {/* Mobile menu */}
-      <div
-        className={`md:hidden overflow-hidden transition-[max-height] duration-300 ${
-          mobileOpen ? "max-h-screen" : "max-h-0"
-        }`}
-      >
-        <div className="px-4 pb-4 pt-2 space-y-1">
-          {status !== "loading" && session?.user ? (
-            navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="block py-2 hover:text-primary"
-                onClick={() => setMobileOpen(false)}
-              >
-                {link.label}
-              </Link>
-            ))
-          ) : (
-            <Link
-              href="/about"
-              className="block py-2 hover:text-primary"
-              onClick={() => setMobileOpen(false)}
-            >
-              About
-            </Link>
-          )}
-
-          <hr className="my-2" />
-
-          {status !== "loading" && session?.user ? (
-            <>
-              <Link
-                href="/userProfile"
-                className="block py-2 hover:text-primary"
-                onClick={() => setMobileOpen(false)}
-              >
-                Profile
-              </Link>
-              <Link
-                href="/settings"
-                className="block py-2 hover:text-primary"
-                onClick={() => setMobileOpen(false)}
-              >
-                Settings
-              </Link>
+          <Sheet>
+            <SheetTrigger asChild>
               <button
-                onClick={() => {
-                  signOut();
-                  setMobileOpen(false);
-                }}
-                className="w-full text-left py-2 hover:text-primary"
+                aria-label="Toggle mobile menu"
+                className="p-2 focus:outline-none"
               >
-                Logout
+                <Menu className="w-6 h-6" />
               </button>
-            </>
-          ) : (
-            <button
-              onClick={() => {
-                signIn();
-                setMobileOpen(false);
-              }}
-              className="w-full text-left py-2 hover:text-primary"
-            >
-              Sign In
-            </button>
-          )}
+            </SheetTrigger>
+            <SheetContent side="left" className="p-6 space-y-4">
+              {status !== "loading" && session?.user ? (
+                navLinks.map((link) => (
+                  <Link key={link.href} href={link.href} className="block">
+                    {link.label}
+                  </Link>
+                ))
+              ) : (
+                <Link href="/about" className="block">
+                  About
+                </Link>
+              )}
+              <hr />
+              {status !== "loading" && session?.user ? (
+                <>
+                  <Link href="/userProfile" className="block">
+                    Profile
+                  </Link>
+                  <Link href="/settings" className="block">
+                    Settings
+                  </Link>
+                  <button
+                    onClick={() => signOut()}
+                    className="w-full text-left"
+                  >
+                    Logout
+                  </button>
+                </>
+              ) : (
+                <button onClick={() => signIn()} className="w-full text-left">
+                  Sign In
+                </button>
+              )}
+              <ModeToggle />
+            </SheetContent>
+          </Sheet>
         </div>
       </div>
     </nav>

@@ -3,25 +3,16 @@
 import { useState, FormEvent } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { createUserProfile, uploadAvatar } from "@lib/api/user/user"; // Adjust path if necessary
+import { createUserProfile } from "@lib/api/user/user";
+import { Card, Input, Label, Button } from "@components/ui";
 
 
 export default function SignupPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [avatarUrl, setAvatarUrl] = useState("");
   const [error, setError] = useState("");
   const router = useRouter();
-
-  const handleFileChange = async (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    const url = await uploadAvatar(file);
-    setAvatarUrl(url);
-  };
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -31,7 +22,7 @@ export default function SignupPage() {
     }
 
     try {
-      const createUserRes = await createUserProfile({ name, email, avatarUrl });
+      const createUserRes = await createUserProfile({ name, email });
 
       if (createUserRes?.status === 201 || createUserRes?.status === 200) {
         // Now sign in the new user
@@ -56,84 +47,53 @@ export default function SignupPage() {
   };
 
   return (
-    <main className="min-h-screen flex items-center justify-center bg-background text-foreground p-4">
-      <div className="w-full max-w-md">
-        <h1 className="text-3xl font-bold mb-6 text-center">Sign Up</h1>
-        {error && <p className="mb-4 text-red-500">{error}</p>}
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label htmlFor="name" className="block mb-1">
-              Name
-            </label>
-            <input
-              type="text"
-              id="name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="Your Name"
-              className="w-full px-3 py-2 border border-gray-300 rounded bg-gray-200 focus:ring-2 focus:ring-primary"
-            />
-          </div>
-          <div>
-            <label htmlFor="avatar" className="block mb-1">Profile Picture</label>
-            <input
-              type="url"
-              id="avatar"
-              value={avatarUrl}
-              onChange={(e) => setAvatarUrl(e.target.value)}
-              placeholder="https://example.com/avatar.png"
-              className="w-full px-3 py-2 border border-gray-300 rounded bg-gray-200 focus:ring-2 focus:ring-primary"
-            />
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleFileChange}
-              className="mt-2"
-            />
-          </div>
-          {avatarUrl && (
-            <div className="flex justify-center">
-              <img
-                src={avatarUrl}
-                alt="Avatar preview"
-                className="w-20 h-20 rounded-full object-cover"
-              />
-            </div>
-          )}
-          <div>
-            <label htmlFor="email" className="block mb-1">
-              Email
-            </label>
-            <input
-              type="email"
-              id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="you@example.com"
-              className="w-full px-3 py-2 border border-gray-300 rounded bg-gray-200 focus:ring-2 focus:ring-primary"
-            />
-          </div>
-          <div>
-            <label htmlFor="password" className="block mb-1">
-              Password
-            </label>
-            <input
-              type="password"
-              id="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Password"
-              className="w-full px-3 py-2 border border-gray-300 rounded bg-gray-200 focus:ring-2 focus:ring-primary"
-            />
-          </div>
-          <button
-            type="submit"
-            className="w-full bg-primary text-white px-4 py-2 rounded hover:bg-primary-dark transition-colors"
-          >
-            Sign Up
-          </button>
-        </form>
-      </div>
-    </main>
+    <div className="min-h-screen bg-background">
+      <section className="relative py-20 overflow-hidden flex items-center justify-center">
+        <div className="absolute inset-0 bg-background/80 backdrop-blur-sm" />
+        <div className="relative w-full px-4 sm:px-6 lg:px-8 flex justify-center">
+          <Card className="w-full max-w-md p-8 bg-white/90 dark:bg-white/10 shadow-xl space-y-6">
+            <h1 className="text-3xl font-bold text-center">Create Your Account</h1>
+            {error && <p className="text-red-500 text-center">{error}</p>}
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="name">Name</Label>
+                <Input
+                  id="name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder="Your Name"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="email">Email</Label>
+                <Input
+                  type="email"
+                  id="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="you@example.com"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="password">Password</Label>
+                <Input
+                  type="password"
+                  id="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Password"
+                />
+              </div>
+              <Button
+                type="submit"
+                className="w-full bg-gradient-to-r from-[var(--brand-from)] to-[var(--brand-to)] text-white border-0 hover:from-[var(--brand-from)]/90 hover:to-[var(--brand-to)]/90"
+              >
+                Sign Up
+              </Button>
+            </form>
+          </Card>
+        </div>
+      </section>
+    </div>
   );
 }
