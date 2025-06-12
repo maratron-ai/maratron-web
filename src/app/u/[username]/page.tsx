@@ -1,48 +1,142 @@
 import { notFound } from "next/navigation";
-import type { SocialUserProfile } from "@maratypes/social";
+import Link from "next/link";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../../api/auth/[...nextauth]/route";
+import type { SocialUserProfile, RunPost } from "@maratypes/social";
 import FollowUserButton from "@components/FollowUserButton";
+import { prisma } from "@lib/prisma";
 
-async function getProfile(username: string): Promise<SocialUserProfile | null> {
-  const baseUrl =
-    process.env.NEXT_PUBLIC_BASE_URL ||
-    (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
-  const res = await fetch(`${baseUrl}/api/social/profile/${username}`);
-  if (!res.ok) return null;
-  return res.json();
+async function getProfileData(username: string) {
+  const profile = await prisma.userProfile.findUnique({
+    where: { username },
+    include: {
+      user: { select: { name: true, _count: { select: { runs: true } } } },
+      _count: { select: { followers: true, following: true } },
+      followers: { select: { follower: true } },
+      following: { select: { following: true } },
+    },
+  });
+  if (!profile) return null;
+
+  const total = await prisma.run.aggregate({
+    where: { userId: profile.userId },
+    _sum: { distance: true },
+  });
+  const posts = await prisma.runPost.findMany({
+    where: { userProfileId: profile.id },
+    include: { _count: { select: { likes: true, comments: true } } },
+    orderBy: { createdAt: "desc" },
+  });
+  const likeActivity = await prisma.like.count({ where: { userProfileId: profile.id } });
+  const commentActivity = await prisma.comment.count({ where: { userProfileId: profile.id } });
+
+  return {
+    id: profile.id,
+    userId: profile.userId,
+    username: profile.username,
+    bio: profile.bio,
+    profilePhoto: profile.profilePhoto,
+    createdAt: profile.createdAt,
+    updatedAt: profile.updatedAt,
+    name: profile.user.name,
+    runCount: profile.user._count.runs,
+    totalDistance: total._sum.distance ?? 0,
+    followerCount: profile._count.followers,
+    followingCount: profile._count.following,
+    posts,
+    followers: profile.followers.map((f) => f.follower),
+    following: profile.following.map((f) => f.following),
+    likeActivity,
+    commentActivity,
+  } as const;
 }
 
 interface Props {
-  params: Promise<{ username: string }>;
+  params: { username: string };
 }
 
 export default async function UserProfilePage({ params }: Props) {
-  const { username } = await params;
-  const profile = await getProfile(username);
-  if (!profile) return notFound();
+  const { username } = params;
+  const data = await getProfileData(username);
+  if (!data) return notFound();
+
+  const session = await getServerSession(authOptions);
+  const isSelf = session?.user?.id === data.userId;
 
   return (
-    <div className="w-full px-4 sm:px-6 lg:px-8 py-6 space-y-4">
+    <div className="w-full px-4 sm:px-6 lg:px-8 py-6 space-y-6">
       <div className="flex items-center gap-4">
-        {profile.profilePhoto && (
+        {data.profilePhoto && (
           // eslint-disable-next-line @next/next/no-img-element
           <img
-            src={profile.profilePhoto}
-            alt={profile.username}
+            src={data.profilePhoto}
+            alt={data.username}
             className="w-16 h-16 rounded-full object-cover"
           />
         )}
         <div>
-          <h1 className="text-2xl font-bold">{profile.name ?? profile.username}</h1>
-          {profile.bio && <p className="text-foreground/70">{profile.bio}</p>}
+          <h1 className="text-2xl font-bold">{data.name ?? data.username}</h1>
+          {data.bio && <p className="text-foreground/70">{data.bio}</p>}
         </div>
       </div>
       <div className="flex gap-4 text-foreground/80">
-        <span>{profile.runCount ?? 0} runs</span>
-        <span>{profile.totalDistance ?? 0} mi total</span>
-        <span>{profile.followerCount ?? 0} followers</span>
-        <span>{profile.followingCount ?? 0} following</span>
+        <span>{data.runCount ?? 0} runs</span>
+        <span>{data.totalDistance ?? 0} mi total</span>
+        <span>{data.followerCount ?? 0} followers</span>
+        <span>{data.followingCount ?? 0} following</span>
       </div>
-      <FollowUserButton profileId={profile.id} />
+      {isSelf ? (
+        <Link href="/social/profile/edit" className="text-primary underline">
+          Edit Profile
+        </Link>
+      ) : (
+        <FollowUserButton profileId={data.id} />
+      )}
+
+      <div className="space-y-4">
+        <h2 className="text-xl font-semibold">Posts</h2>
+        {data.posts.length === 0 && <p>No posts yet.</p>}
+        {data.posts.map((post: RunPost) => (
+          <div key={post.id} className="border rounded-md p-4">
+            <p className="font-medium">
+              {post.distance} mi in {post.time}
+            </p>
+            {post.caption && <p className="mt-2">{post.caption}</p>}
+            {post.photoUrl && (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={post.photoUrl}
+                alt="Run photo"
+                className="mt-2 rounded-md"
+              />
+            )}
+            <div className="text-sm text-foreground/60 mt-1">
+              <span>{post._count?.likes ?? 0} likes</span>{" "}
+              <span>{post._count?.comments ?? 0} comments</span>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {isSelf && (
+        <div className="space-y-4">
+          <h2 className="text-xl font-semibold">Followers</h2>
+          <ul className="list-disc ml-6">
+            {data.followers.map((f: SocialUserProfile) => (
+              <li key={f.id}>{f.username}</li>
+            ))}
+          </ul>
+          <h2 className="text-xl font-semibold">Following</h2>
+          <ul className="list-disc ml-6">
+            {data.following.map((f: SocialUserProfile) => (
+              <li key={f.id}>{f.username}</li>
+            ))}
+          </ul>
+          <p className="text-sm text-foreground/60">
+            Likes made: {data.likeActivity} | Comments made: {data.commentActivity}
+          </p>
+        </div>
+      )}
     </div>
   );
 }
