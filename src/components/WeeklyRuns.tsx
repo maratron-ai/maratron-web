@@ -134,7 +134,9 @@ export default function WeeklyRuns() {
       <Progress value={progressValue} />
       <div className="space-y-4">
         {week.runs.map((r, i) => {
-          const classes = r.done ? "text-foreground/60 line-through" : undefined;
+          const classes = r.done
+            ? "bg-accent/10 text-foreground/60 line-through"
+            : "";
           return (
             <Card key={i} className={`p-6 flex items-center justify-between ${classes}`}>
               <div className="space-y-1">
