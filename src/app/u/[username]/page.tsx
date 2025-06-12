@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import type { SocialUserProfile } from "@maratypes/social";
+import FollowUserButton from "@components/FollowUserButton";
 
 async function getProfile(username: string): Promise<SocialUserProfile | null> {
   const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL ?? ""}/api/social/profile/${username}`);
@@ -37,6 +38,7 @@ export default async function UserProfilePage({ params }: Props) {
         <span>{profile.followerCount ?? 0} followers</span>
         <span>{profile.followingCount ?? 0} following</span>
       </div>
+      <FollowUserButton profileId={profile.id} />
     </div>
   );
 }

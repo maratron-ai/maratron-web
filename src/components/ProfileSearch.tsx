@@ -10,6 +10,7 @@ export default function ProfileSearch() {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<SocialUserProfile[]>([]);
   const [myProfileId, setMyProfileId] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchMyProfile = async () => {
@@ -19,9 +20,13 @@ export default function ProfileSearch() {
             `/api/social/profile/byUser/${session.user.id}`
           );
           setMyProfileId(data.id);
-        } catch (err) {
-          console.error(err);
+        } catch {
+          setMyProfileId(null);
+        } finally {
+          setLoading(false);
         }
+      } else {
+        setLoading(false);
       }
     };
     fetchMyProfile();
@@ -50,6 +55,18 @@ export default function ProfileSearch() {
       console.error(err);
     }
   };
+
+  if (!session?.user?.id) return <p>Please log in to search.</p>;
+  if (loading) return <p className="text-foreground/60">Loading...</p>;
+  if (!myProfileId)
+    return (
+      <div className="space-y-2">
+        <p>Create your social profile first.</p>
+        <Button asChild>
+          <a href="/social/profile/new">Create Social Profile</a>
+        </Button>
+      </div>
+    );
 
   return (
     <div>

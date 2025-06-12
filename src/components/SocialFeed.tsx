@@ -3,35 +3,51 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import type { RunPost } from "@maratypes/social";
 import { useSession } from "next-auth/react";
+import { useSocialProfile } from "@hooks/useSocialProfile";
+import CreateSocialPost from "@components/CreateSocialPost";
+import { Button } from "@components/ui";
 
 export default function SocialFeed() {
   const { data: session } = useSession();
+  const { profile, loading: profileLoading } = useSocialProfile();
   const [posts, setPosts] = useState<RunPost[]>([]);
   const [loading, setLoading] = useState(true);
 
+  const fetchFeed = async () => {
+    if (!session?.user?.id) return;
+    try {
+      const { data } = await axios.get<RunPost[]>(
+        `/api/social/feed?userId=${session.user.id}`
+      );
+      setPosts(data);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchFeed = async () => {
-      if (!session?.user?.id) return;
-      try {
-        const { data } = await axios.get<RunPost[]>(
-          `/api/social/feed?userId=${session.user.id}`
-        );
-        setPosts(data);
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
     fetchFeed();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session?.user?.id]);
 
   if (!session?.user?.id) return <p>Please log in to view your feed.</p>;
-  if (loading) return <p className="text-foreground/60">Loading feed...</p>;
-  if (posts.length === 0) return <p>No posts yet.</p>;
+  if (profileLoading || loading) return <p className="text-foreground/60">Loading feed...</p>;
+  if (!profile)
+    return (
+      <div className="space-y-2">
+        <p>You need a social profile to use the feed.</p>
+        <Button asChild>
+          <a href="/social/profile/new">Create Social Profile</a>
+        </Button>
+      </div>
+    );
 
   return (
     <div className="space-y-6">
+      <CreateSocialPost onCreated={fetchFeed} />
+      {posts.length === 0 && <p>No posts yet.</p>}
       {posts.map((post) => (
         <div key={post.id} className="border rounded-md p-4">
           <div className="flex items-center gap-2 mb-2">
