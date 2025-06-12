@@ -50,7 +50,7 @@ export const updateSocialProfile = async (
   data: Partial<SocialUserProfile>
 ): Promise<SocialUserProfile> => {
   const { data: profile } = await axios.put<SocialUserProfile>(
-    `/api/social/profile/${id}`,
+    `/api/social/profile/byId/${id}`,
     data
   );
   return profile;
