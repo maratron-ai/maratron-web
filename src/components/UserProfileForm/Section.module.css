@@ -9,7 +9,7 @@
   @apply grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4;
 }
 .label {
-  @apply text-sm font-medium text-foreground/70;
+  @apply text-sm font-medium text-foreground opacity-70;
 }
 .value {
   @apply mt-1 text-foreground;
