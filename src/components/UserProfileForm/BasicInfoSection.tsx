@@ -32,7 +32,7 @@ export default function BasicInfoSection({
     <section className={styles.card}>
       <h3 className={styles.title}>Basic Information</h3>
       {isEditing ? (
-        <div>
+        <div className="flex flex-col gap-6">
           <div className="flex items-center space-x-4 mb-4">
             <AvatarUpload
               value={formData.avatarUrl}
@@ -52,7 +52,7 @@ export default function BasicInfoSection({
             name="email"
             type="email"
             value={formData.email || ""}
-            editing={false}
+            editing={true}
             onChange={handleFieldChange}
             required
           />
@@ -94,7 +94,7 @@ export default function BasicInfoSection({
           />
         </div>
       ) : (
-        <dl className={styles.list}>
+        <dl className={`${styles.list} flex flex-col gap-4`}>
           <div className="md:col-span-2 flex items-center mb-4">
             <Image
               src={formData.avatarUrl || "/Default_pfp.svg"}

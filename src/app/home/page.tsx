@@ -49,7 +49,7 @@ export default function HomePage() {
   const userName = session.user.name || session.user.email;
 
   return (
-    <main className="w-full px-4 sm:px-6 lg:px-8 min-h-screen bg-background text-foreground space-y-10 pb-20">
+    <main className="w-full px-4 sm:px-6 lg:px-8 min-h-screen bg-background text-foreground space-y-10 pt-8 pb-20">
       <h1 className="text-3xl font-bold">Welcome back, {userName}!</h1>
       <div className="h-1 w-24 mb-6 bg-gradient-to-r from-brand-from to-brand-to rounded"></div>
       <DashboardStats />
