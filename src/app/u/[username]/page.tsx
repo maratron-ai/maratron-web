@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../api/auth/[...nextauth]/route";
 import type { SocialUserProfile, RunPost } from "@maratypes/social";
@@ -10,7 +11,7 @@ async function getProfileData(username: string) {
   const profile = await prisma.userProfile.findUnique({
     where: { username },
     include: {
-      user: { select: { name: true, _count: { select: { runs: true } } } },
+      user: { select: { name: true, avatarUrl: true, _count: { select: { runs: true } } } },
       _count: { select: { followers: true, following: true } },
       followers: { select: { follower: true } },
       following: { select: { following: true } },
@@ -36,6 +37,7 @@ async function getProfileData(username: string) {
     username: profile.username,
     bio: profile.bio,
     profilePhoto: profile.profilePhoto,
+    avatarUrl: profile.user.avatarUrl,
     createdAt: profile.createdAt,
     updatedAt: profile.updatedAt,
     name: profile.user.name,
@@ -65,18 +67,17 @@ export default async function UserProfilePage({ params }: Props) {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <main className="flex-grow">
-        <section className="max-w-3xl mx-auto">
+      <main className="flex-grow w-full px-4 sm:px-6 lg:px-8">
+        <section className="max-w-3xl mx-auto py-6">
           <div className="p-4 space-y-6">
             <div className="flex items-center gap-6 p-4 rounded-md bg-background border">
-              {data.profilePhoto && (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={data.profilePhoto}
-                  alt={data.username}
-                  className="w-16 h-16 rounded-full object-cover"
-                />
-              )}
+              <Image
+                src={data.avatarUrl || data.profilePhoto || "/default_profile.png"}
+                alt={data.username}
+                width={64}
+                height={64}
+                className="w-16 h-16 rounded-full object-cover"
+              />
               <div>
                 <h1 className="text-2xl font-bold">{data.name ?? data.username}</h1>
                 {data.bio && <p className="text-foreground/70">{data.bio}</p>}

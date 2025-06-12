@@ -5,6 +5,7 @@ import { useSession } from "next-auth/react";
 import type { SocialUserProfile } from "@maratypes/social";
 import { Input, Button, Card } from "@components/ui";
 import FollowUserButton from "@components/FollowUserButton";
+import Image from "next/image";
 
 export default function ProfileSearch() {
   const { data: session } = useSession();
@@ -89,14 +90,23 @@ export default function ProfileSearch() {
       <div className="space-y-4">
         {results.map((p) => (
           <Card key={p.id} className="p-4 flex items-center justify-between">
-            <div>
-              <a href={`/u/${p.username}`} className="font-semibold">
-                {p.name ?? p.username}
-              </a>
-              {p.bio && <p className="text-foreground/70">{p.bio}</p>}
-              <div className="text-sm text-foreground/60">
-                <span>{p.runCount ?? 0} runs</span>{" "}
-                <span>{p.followerCount ?? 0} followers</span>
+            <div className="flex items-center gap-4">
+              <Image
+                src={p.avatarUrl || "/default_profile.png"}
+                alt={p.username}
+                width={40}
+                height={40}
+                className="w-10 h-10 rounded-full object-cover"
+              />
+              <div>
+                <a href={`/u/${p.username}`} className="font-semibold">
+                  {p.name ?? p.username}
+                </a>
+                {p.bio && <p className="text-foreground/70">{p.bio}</p>}
+                <div className="text-sm text-foreground/60">
+                  <span>{p.runCount ?? 0} runs</span>{" "}
+                  <span>{p.followerCount ?? 0} followers</span>
+                </div>
               </div>
             </div>
             {myProfileId && myProfileId !== p.id && (
