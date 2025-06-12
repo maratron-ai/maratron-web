@@ -123,13 +123,21 @@ export default async function UserProfilePage({ params }: Props) {
           <h2 className="text-xl font-semibold">Followers</h2>
           <ul className="list-disc ml-6">
             {data.followers.map((f: SocialUserProfile) => (
-              <li key={f.id}>{f.username}</li>
+              <li key={f.id}>
+                <Link href={`/u/${f.username}`} className="hover:underline">
+                  {f.username}
+                </Link>
+              </li>
             ))}
           </ul>
           <h2 className="text-xl font-semibold">Following</h2>
           <ul className="list-disc ml-6">
             {data.following.map((f: SocialUserProfile) => (
-              <li key={f.id}>{f.username}</li>
+              <li key={f.id}>
+                <Link href={`/u/${f.username}`} className="hover:underline">
+                  {f.username}
+                </Link>
+              </li>
             ))}
           </ul>
           <p className="text-sm text-foreground/60">
