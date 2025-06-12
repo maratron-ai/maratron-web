@@ -39,7 +39,7 @@ export default function UserProfileForm({
         e.preventDefault();
         handleSave();
       }}
-      className="bg-background p-6 rounded-lg shadow-lg space-y-6"
+      className="space-y-6 p-8 bg-white/90 dark:bg-white/10 rounded-lg border border-muted shadow-xl"
     >
       <div className="flex justify-between items-center border-b border-accent pb-4">
         <h2 className="text-3xl font-bold text-foreground">Your Profile</h2>
@@ -47,10 +47,10 @@ export default function UserProfileForm({
           <Button
             type="button"
             onClick={toggleEditing}
-            className={`px-4 py-2 rounded font-medium text-foreground ${
+            className={`px-4 py-2 rounded font-medium ${
               editing
-                ? "bg-accent hover:bg-accent/80"
-                : "bg-primary hover:bg-primary/80"
+                ? "bg-accent text-foreground hover:bg-accent/80"
+                : "bg-gradient-to-r from-[var(--brand-from)] to-[var(--brand-to)] text-white border-0 hover:from-[var(--brand-from)]/90 hover:to-[var(--brand-to)]/90"
             }`}
           >
             {editing ? "Cancel" : "Edit"}
