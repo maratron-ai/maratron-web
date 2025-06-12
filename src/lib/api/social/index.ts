@@ -27,6 +27,16 @@ export const unfollowUser = async (
   });
 };
 
+export const isFollowing = async (
+  followerId: string,
+  followingId: string
+): Promise<boolean> => {
+  const { data } = await axios.get<{ following: boolean }>(
+    `/api/social/follow?followerId=${followerId}&followingId=${followingId}`
+  );
+  return data.following;
+};
+
 export const createPost = async (
   data: Partial<RunPost>
 ): Promise<RunPost> => {

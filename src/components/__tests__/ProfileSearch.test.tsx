@@ -29,7 +29,10 @@ describe("ProfileSearch", () => {
       if (url.includes("/byUser/")) {
         return Promise.resolve({ data: { id: "p1" } });
       }
-      return Promise.resolve({ data: [{ id: "p2", username: "runner" }] });
+      if (url.includes("/search")) {
+        return Promise.resolve({ data: [{ id: "p2", username: "runner" }] });
+      }
+      return Promise.resolve({ data: { following: false } });
     });
     const user = userEvent.setup();
 

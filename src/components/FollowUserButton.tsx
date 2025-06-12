@@ -1,8 +1,8 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { useSocialProfile } from "@hooks/useSocialProfile";
-import { followUser } from "@lib/api/social";
+import { followUser, unfollowUser, isFollowing } from "@lib/api/social";
 import { Button } from "@components/ui";
 
 interface Props {
@@ -12,22 +12,47 @@ interface Props {
 export default function FollowUserButton({ profileId }: Props) {
   const { data: session } = useSession();
   const { profile } = useSocialProfile();
-  const [done, setDone] = useState(false);
+  const [following, setFollowing] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [processing, setProcessing] = useState(false);
 
-  if (!session?.user || !profile || profile.id === profileId) return null;
+  useEffect(() => {
+    const check = async () => {
+      if (profile) {
+        try {
+          const res = await isFollowing(profile.id, profileId);
+          setFollowing(res);
+        } catch {
+          setFollowing(false);
+        }
+      }
+      setLoading(false);
+    };
+    check();
+  }, [profile, profileId]);
 
-  const onFollow = async () => {
+  if (!session?.user || !profile || profile.id === profileId || loading) return null;
+
+  const onToggle = async () => {
+    setProcessing(true);
     try {
-      await followUser(profile.id, profileId);
-      setDone(true);
+      if (following) {
+        await unfollowUser(profile.id, profileId);
+        setFollowing(false);
+      } else {
+        await followUser(profile.id, profileId);
+        setFollowing(true);
+      }
     } catch (err) {
       console.error(err);
+    } finally {
+      setProcessing(false);
     }
   };
 
   return (
-    <Button onClick={onFollow} size="sm" disabled={done} className="mt-2">
-      {done ? "Following" : "Follow"}
+    <Button onClick={onToggle} size="sm" disabled={processing} className="mt-2">
+      {following ? "Unfollow" : "Follow"}
     </Button>
   );
 }
