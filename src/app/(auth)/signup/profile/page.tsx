@@ -47,7 +47,7 @@ export default function OnboardingProfile() {
       <section className="relative py-20 overflow-hidden flex items-center justify-center">
         <div className="absolute inset-0 bg-background/80 backdrop-blur-sm" />
         <div className="relative w-full px-4 sm:px-6 lg:px-8 flex justify-center">
-          <Card className="w-full max-w-2xl p-8 bg-white/90 dark:bg-white/10 shadow-xl space-y-6">
+          <Card className="w-full max-w-2xl p-8 bg-background border border-muted shadow-xl space-y-6">
             <h1 className="text-3xl font-bold text-center">
               Almost done—tell us about your running!
             </h1>

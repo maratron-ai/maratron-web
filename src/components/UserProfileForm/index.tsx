@@ -39,7 +39,7 @@ export default function UserProfileForm({
         e.preventDefault();
         handleSave();
       }}
-      className="space-y-6 p-8 bg-white/90 dark:bg-white/10 rounded-lg border border-muted shadow-xl"
+      className="space-y-6"
     >
       <div className="flex justify-between items-center border-b border-accent pb-4">
         <h2 className="text-3xl font-bold text-foreground">Your Profile</h2>
