@@ -20,6 +20,7 @@ export default function Navbar() {
     { href: "/shoes/new", label: "Add Shoe" },
     { href: "/plan-generator", label: "Plans" },
     { href: "/social/feed", label: "Social" },
+    { href: "/social/search", label: "Find Runners" },
     { href: "/about", label: "About" },
   ];
 
