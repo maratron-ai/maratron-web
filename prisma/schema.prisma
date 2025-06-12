@@ -86,6 +86,8 @@ model User {
   runningPlans                 RunningPlan[]
   shoes                        Shoe[]    @relation("UserShoes")
 
+  profile                      UserProfile?
+
   // Default shoe relation
   defaultShoeId                String?   @unique
   defaultShoe                  Shoe?     @relation("UserDefaultShoe", fields: [defaultShoeId], references: [id])
@@ -158,4 +160,71 @@ model RunningPlan {
   user      User     @relation(fields: [userId], references: [id])
 
   @@map("RunningPlans")
+}
+
+model UserProfile {
+  id          String   @id @default(uuid())
+  userId      String   @unique
+  username    String   @unique
+  bio         String?
+  profilePhoto String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user        User     @relation(fields: [userId], references: [id])
+  posts       RunPost[]
+  following   Follow[] @relation("following")
+  followers   Follow[] @relation("followers")
+  comments    Comment[]
+  likes       Like[]
+}
+
+model RunPost {
+  id            String     @id @default(uuid())
+  userProfileId String
+  distance      Float
+  time          String
+  caption       String?
+  photoUrl      String?
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+
+  userProfile   UserProfile @relation(fields: [userProfileId], references: [id])
+  comments      Comment[]
+  likes         Like[]
+}
+
+model Follow {
+  id           String   @id @default(uuid())
+  followerId   String
+  followingId  String
+  createdAt    DateTime @default(now())
+
+  follower     UserProfile @relation("following", fields: [followerId], references: [id])
+  following    UserProfile @relation("followers", fields: [followingId], references: [id])
+
+  @@unique([followerId, followingId])
+}
+
+model Comment {
+  id            String   @id @default(uuid())
+  postId        String
+  userProfileId String
+  text          String
+  createdAt     DateTime @default(now())
+
+  post          RunPost     @relation(fields: [postId], references: [id])
+  userProfile   UserProfile @relation(fields: [userProfileId], references: [id])
+}
+
+model Like {
+  id            String   @id @default(uuid())
+  postId        String
+  userProfileId String
+  createdAt     DateTime @default(now())
+
+  post          RunPost     @relation(fields: [postId], references: [id])
+  userProfile   UserProfile @relation(fields: [userProfileId], references: [id])
+
+  @@unique([postId, userProfileId])
 }
