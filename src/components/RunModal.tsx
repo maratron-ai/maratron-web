@@ -14,7 +14,7 @@ export default function RunModal({ run, onClose }: RunModalProps) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-      <Card className="relative w-1/2 bg-background p-6 rounded-lg shadow-lg w-full">
+      <Card className="relative w-1/2 bg-background p-6 rounded-lg shadow-lg">
         <button
           aria-label="Close"
           onClick={onClose}
