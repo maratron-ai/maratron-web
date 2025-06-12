@@ -33,6 +33,7 @@ export default async function UserProfilePage({ params }: Props) {
       </div>
       <div className="flex gap-4 text-foreground/80">
         <span>{profile.runCount ?? 0} runs</span>
+        <span>{profile.totalDistance ?? 0} mi total</span>
         <span>{profile.followerCount ?? 0} followers</span>
         <span>{profile.followingCount ?? 0} following</span>
       </div>

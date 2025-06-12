@@ -8,6 +8,7 @@ export interface SocialUserProfile {
   updatedAt: Date;
   name?: string;
   runCount?: number;
+  totalDistance?: number;
   followerCount?: number;
   followingCount?: number;
 }

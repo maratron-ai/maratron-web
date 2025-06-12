@@ -1,0 +1,87 @@
+"use client";
+import { useState, useEffect, FormEvent } from "react";
+import axios from "axios";
+import { useSession } from "next-auth/react";
+import type { SocialUserProfile } from "@maratypes/social";
+import { Input, Button, Card } from "@components/ui";
+
+export default function ProfileSearch() {
+  const { data: session } = useSession();
+  const [query, setQuery] = useState("");
+  const [results, setResults] = useState<SocialUserProfile[]>([]);
+  const [myProfileId, setMyProfileId] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchMyProfile = async () => {
+      if (session?.user?.id) {
+        try {
+          const { data } = await axios.get<SocialUserProfile>(
+            `/api/social/profile/byUser/${session.user.id}`
+          );
+          setMyProfileId(data.id);
+        } catch (err) {
+          console.error(err);
+        }
+      }
+    };
+    fetchMyProfile();
+  }, [session?.user?.id]);
+
+  const handleSearch = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      const { data } = await axios.get<SocialUserProfile[]>(
+        `/api/social/search?q=${encodeURIComponent(query)}`
+      );
+      setResults(data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const follow = async (id: string) => {
+    if (!myProfileId) return;
+    try {
+      await axios.post("/api/social/follow", {
+        followerId: myProfileId,
+        followingId: id,
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  return (
+    <div>
+      <form onSubmit={handleSearch} className="flex gap-2 mb-4">
+        <Input
+          placeholder="Search runners"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+        />
+        <Button type="submit">Search</Button>
+      </form>
+      <div className="space-y-4">
+        {results.map((p) => (
+          <Card key={p.id} className="p-4 flex items-center justify-between">
+            <div>
+              <a href={`/u/${p.username}`} className="font-semibold">
+                {p.name ?? p.username}
+              </a>
+              {p.bio && <p className="text-foreground/70">{p.bio}</p>}
+              <div className="text-sm text-foreground/60">
+                <span>{p.runCount ?? 0} runs</span>{" "}
+                <span>{p.followerCount ?? 0} followers</span>
+              </div>
+            </div>
+            {myProfileId && myProfileId !== p.id && (
+              <Button onClick={() => follow(p.id)} size="sm">
+                Follow
+              </Button>
+            )}
+          </Card>
+        ))}
+      </div>
+    </div>
+  );
+}

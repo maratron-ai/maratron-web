@@ -19,6 +19,7 @@ export default function Navbar() {
     { href: "/runs/new", label: "Add Run" },
     { href: "/shoes/new", label: "Add Shoe" },
     { href: "/plan-generator", label: "Plans" },
+    { href: "/social/feed", label: "Social" },
     { href: "/about", label: "About" },
   ];
 

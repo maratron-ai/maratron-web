@@ -1,17 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@lib/prisma";
 
-export async function GET(_req: NextRequest, ctx: { params: { username: string } }) {
-  const { username } = ctx.params;
+export async function GET(_req: NextRequest, ctx: { params: { id: string } }) {
+  const { id } = ctx.params;
   try {
     const profile = await prisma.userProfile.findUnique({
-      where: { username },
+      where: { userId: id },
       include: {
         user: {
-          select: {
-            name: true,
-            _count: { select: { runs: true } },
-          },
+          select: { name: true, _count: { select: { runs: true } } },
         },
         _count: { select: { followers: true, following: true } },
       },
@@ -19,7 +16,7 @@ export async function GET(_req: NextRequest, ctx: { params: { username: string }
     if (!profile) return NextResponse.json({ error: "Not found" }, { status: 404 });
 
     const total = await prisma.run.aggregate({
-      where: { userId: profile.userId },
+      where: { userId: id },
       _sum: { distance: true },
     });
 
