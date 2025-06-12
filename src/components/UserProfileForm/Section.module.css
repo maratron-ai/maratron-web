@@ -1,9 +1,9 @@
 /* Section.module.css */
 .card {
-  @apply p-8 rounded-lg border border-muted bg-white/90 dark:bg-white/10 shadow-xl;
+  @apply space-y-4;
 }
 .title {
-  @apply text-2xl font-semibold mb-4 text-foreground;
+  @apply text-xl font-semibold mb-2 text-foreground;
 }
 .list {
   @apply grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4;
