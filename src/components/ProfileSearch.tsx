@@ -44,6 +44,24 @@ export default function ProfileSearch() {
     }
   };
 
+  useEffect(() => {
+    if (!query) {
+      setResults([]);
+      return;
+    }
+    const timeout = setTimeout(async () => {
+      try {
+        const { data } = await axios.get<SocialUserProfile[]>(
+          `/api/social/search?q=${encodeURIComponent(query)}`
+        );
+        setResults(data);
+      } catch (err) {
+        console.error(err);
+      }
+    }, 300);
+    return () => clearTimeout(timeout);
+  }, [query]);
+
   const follow = async (id: string) => {
     if (!myProfileId) return;
     try {

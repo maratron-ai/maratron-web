@@ -3,17 +3,21 @@ import type { SocialUserProfile } from "@maratypes/social";
 import FollowUserButton from "@components/FollowUserButton";
 
 async function getProfile(username: string): Promise<SocialUserProfile | null> {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL ?? ""}/api/social/profile/${username}`);
+  const baseUrl =
+    process.env.NEXT_PUBLIC_BASE_URL ||
+    (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
+  const res = await fetch(`${baseUrl}/api/social/profile/${username}`);
   if (!res.ok) return null;
   return res.json();
 }
 
 interface Props {
-  params: { username: string };
+  params: Promise<{ username: string }>;
 }
 
 export default async function UserProfilePage({ params }: Props) {
-  const profile = await getProfile(params.username);
+  const { username } = await params;
+  const profile = await getProfile(username);
   if (!profile) return notFound();
 
   return (
