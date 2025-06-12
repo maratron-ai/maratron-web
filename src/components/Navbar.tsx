@@ -22,7 +22,7 @@ export default function Navbar() {
   ];
 
   return (
-    <nav className="bg-primary">
+    <nav className="bg-white dark:bg-[#111827] border-b border-muted dark:border-white/10 backdrop-blur-sm">
       <div className="w-full px-4 sm:px-6 lg:px-8 flex items-center justify-between py-6">
         {/* Left: Logo and links */}
         <div className="flex items-center">
