@@ -4,13 +4,16 @@ import { prisma } from "@lib/prisma";
 export async function GET(req: NextRequest) {
   const q = req.nextUrl.searchParams.get("q") || "";
   if (!q) return NextResponse.json([]);
+  const tokens = q.split(/\s+/).filter(Boolean);
   try {
     const profiles = await prisma.userProfile.findMany({
       where: {
-        OR: [
-          { username: { contains: q, mode: "insensitive" } },
-          { user: { name: { contains: q, mode: "insensitive" } } },
-        ],
+        AND: tokens.map((t) => ({
+          OR: [
+            { username: { contains: t, mode: "insensitive" } },
+            { user: { name: { contains: t, mode: "insensitive" } } },
+          ],
+        })),
       },
       include: {
         user: { select: { name: true, _count: { select: { runs: true } } } },

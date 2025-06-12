@@ -39,9 +39,10 @@ describe("ProfileSearch", () => {
     await waitFor(() => screen.getByPlaceholderText(/search runners/i));
 
     await user.type(screen.getByPlaceholderText(/search runners/i), "run");
-    await user.click(screen.getByRole("button", { name: /search/i }));
 
-    await waitFor(() => expect(mockedAxios.get).toHaveBeenCalledWith("/api/social/search?q=run"));
+    await waitFor(() =>
+      expect(mockedAxios.get).toHaveBeenCalledWith("/api/social/search?q=run")
+    );
     expect(await screen.findByText(/runner/)).toBeInTheDocument();
   });
 });
