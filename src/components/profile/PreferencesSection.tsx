@@ -1,4 +1,4 @@
-import { SelectField, CheckboxGroupField } from "@components/ui";
+import { SelectField } from "@components/ui";
 import { User } from "@maratypes/user";
 import { ChangeHandler } from "./GoalsSection";
 import styles from "./Section.module.css";

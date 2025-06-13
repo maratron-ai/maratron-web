@@ -30,6 +30,6 @@ describe("ProfileInfoCard", () => {
     render(<ProfileInfoCard profile={profile} user={user} isSelf />);
     expect(screen.getByRole("heading", { name: /runner/i })).toBeInTheDocument();
     expect(screen.getByText(/5 runs/)).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /edit/i })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /edit/i })).toBeInTheDocument();
   });
 });
