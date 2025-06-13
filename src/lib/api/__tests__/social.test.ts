@@ -6,8 +6,12 @@ import {
   createPost,
   isFollowing,
   updateSocialProfile,
+  likePost,
+  unlikePost,
+  addComment,
+  listComments,
 } from "../social";
-import type { RunPost } from "@maratypes/social";
+import type { RunPost, Comment } from "@maratypes/social";
 
 jest.mock("axios");
 const mockedAxios = axios as jest.Mocked<typeof axios>;
@@ -57,5 +61,50 @@ describe("social api helpers", () => {
     const result = await updateSocialProfile("p1", { bio: "hi" });
     expect(mockedAxios.put).toHaveBeenCalledWith("/api/social/profile/byId/p1", { bio: "hi" });
     expect(result).toEqual({ id: "p1", username: "t" });
+  });
+
+  it("likePost posts data", async () => {
+    mockedAxios.post.mockResolvedValue({ data: {} });
+    await likePost("post1", "profile1");
+    expect(mockedAxios.post).toHaveBeenCalledWith(
+      "/api/social/posts/post1/like",
+      { socialProfileId: "profile1" }
+    );
+  });
+
+  it("unlikePost deletes data", async () => {
+    mockedAxios.delete.mockResolvedValue({ data: {} });
+    await unlikePost("post1", "profile1");
+    expect(mockedAxios.delete).toHaveBeenCalledWith(
+      "/api/social/posts/post1/like",
+      { data: { socialProfileId: "profile1" } }
+    );
+  });
+
+  it("addComment posts data", async () => {
+    const comment: Comment = {
+      id: "c1",
+      postId: "p",
+      socialProfileId: "s",
+      text: "hi",
+      createdAt: new Date(),
+    } as Comment;
+    mockedAxios.post.mockResolvedValue({ data: comment });
+    const result = await addComment("p", "s", "hi");
+    expect(mockedAxios.post).toHaveBeenCalledWith(
+      "/api/social/posts/p/comments",
+      { socialProfileId: "s", text: "hi" }
+    );
+    expect(result).toEqual(comment);
+  });
+
+  it("listComments gets data", async () => {
+    const comments: Comment[] = [];
+    mockedAxios.get.mockResolvedValue({ data: comments });
+    const result = await listComments("p");
+    expect(mockedAxios.get).toHaveBeenCalledWith(
+      "/api/social/posts/p/comments"
+    );
+    expect(result).toEqual(comments);
   });
 });

@@ -1,10 +1,11 @@
 import { notFound } from "next/navigation";
-import Link from "next/link";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../api/auth/[...nextauth]/route";
 import type { SocialProfile, RunPost } from "@maratypes/social";
 import FollowUserButton from "@components/social/FollowUserButton";
 import ProfileInfoCard from "@components/social/ProfileInfoCard";
+import LikeButton from "@components/social/LikeButton";
+import CommentSection from "@components/social/CommentSection";
 import { Card } from "@components/ui";
 import { prisma } from "@lib/prisma";
 
@@ -115,10 +116,12 @@ export default async function UserProfilePage({ params }: Props) {
                 // eslint-disable-next-line @next/next/no-img-element
                 <img src={post.photoUrl} alt="Run photo" className="mt-2 rounded-md" />
               )}
-              <div className="text-sm text-foreground/60 mt-1">
-                <span>{post._count?.likes ?? 0} likes</span>{" "}
-                <span>{post._count?.comments ?? 0} comments</span>
-              </div>
+              <LikeButton
+                postId={post.id}
+                initialLiked={false}
+                initialCount={post._count?.likes ?? 0}
+              />
+              <CommentSection postId={post.id} />
             </Card>
           ))}
         </section>
