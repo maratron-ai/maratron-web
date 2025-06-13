@@ -1,6 +1,6 @@
 "use client";
 import { useSocialProfile } from "@hooks/useSocialProfile";
-import SocialProfileEditForm from "@components/SocialProfileEditForm";
+import SocialProfileEditForm from "@components/social/SocialProfileEditForm";
 
 export default function EditSocialProfilePage() {
   const { profile, loading } = useSocialProfile();

@@ -1,15 +1,15 @@
 import styles from "./Section.module.css";
 import { TextAreaField } from "@components/ui";
-import { User } from "@maratypes/user";
+import { RunnerProfile } from "@maratypes/runnerProfile";
 
-// Generic change handler for exactly matching User field types
-export type ChangeHandler = <K extends keyof User>(
+// Generic change handler for exactly matching RunnerProfile field types
+export type ChangeHandler = <K extends keyof RunnerProfile>(
   field: K,
-  value: User[K]
+  value: RunnerProfile[K]
 ) => void;
 
 interface Props {
-  formData: Partial<User>;
+  formData: Partial<RunnerProfile>;
   isEditing: boolean;
   onChange: ChangeHandler;
 }
@@ -34,7 +34,7 @@ export default function GoalsSection({ formData, isEditing, onChange }: Props) {
             name="injuryHistory"
             value={formData.injuryHistory || ""}
             editing={isEditing}
-            onChange={(name, value) => onChange(name as keyof User, value)}
+            onChange={(name, value) => onChange(name as keyof RunnerProfile, value)}
           />
         </div>
       ) : (

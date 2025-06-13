@@ -3,13 +3,13 @@ import { DayOfWeek, TrainingEnvironment } from "@maratypes/basics";
 import {
   TrainingLevel,
   Device,
-} from "@maratypes/user";
+} from "@maratypes/runnerProfile";
 
 
 // Training level values
 const trainingLevelValues = Object.values(TrainingLevel) as TrainingLevel[];
 
-const userProfileSchema = Yup.object().shape({
+const runnerProfileSchema = Yup.object().shape({
   id: Yup.string().nullable(),
   name: Yup.string().required("Name is required"),
   email: Yup.string().email("Invalid email").required("Email is required"),
@@ -126,4 +126,4 @@ const userProfileSchema = Yup.object().shape({
     .default("feet"),
 });
 
-export default userProfileSchema;
+export default runnerProfileSchema;

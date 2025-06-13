@@ -3,14 +3,14 @@
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { listShoes } from "@lib/api/shoe";
-import { updateUserProfile } from "@lib/api/user/user";
-import { useUserProfile } from "@hooks/useUserProfile";
+import { updateRunnerProfile } from "@lib/api/user/user";
+import { useRunnerProfile } from "@hooks/useRunnerProfile";
 import type { Shoe } from "@maratypes/shoe";
 import { Card, Button } from "@components/ui";
 
 export default function ShoesList() {
   const { data: session } = useSession();
-  const { profile } = useUserProfile();
+  const { profile } = useRunnerProfile();
   const [shoes, setShoes] = useState<Shoe[]>([]);
   const [loading, setLoading] = useState(true);
   const [defaultId, setDefaultId] = useState<string | undefined>();
@@ -43,7 +43,7 @@ export default function ShoesList() {
   const setDefault = async (id: string) => {
     if (!session?.user?.id) return;
     try {
-      await updateUserProfile(session.user.id, { defaultShoeId: id });
+      await updateRunnerProfile(session.user.id, { defaultShoeId: id });
       setDefaultId(id);
     } catch (err) {
       console.error(err);

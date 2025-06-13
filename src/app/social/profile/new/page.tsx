@@ -1,4 +1,4 @@
-import SocialProfileForm from "@components/SocialProfileForm";
+import SocialProfileForm from "@components/social/SocialProfileForm";
 
 export default function NewSocialProfilePage() {
   return (

@@ -2,9 +2,9 @@
 
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { updateUserProfile } from "@lib/api/user/user";
-import UserProfileForm from "@components/UserProfileForm";
-import { User } from "@maratypes/user";
+import { updateRunnerProfile } from "@lib/api/user/user";
+import RunnerProfileForm from "@components/profile/RunnerProfileForm";
+import { RunnerProfile } from "@maratypes/runnerProfile";
 import { useEffect } from "react";
 import { Card } from "@components/ui";
 
@@ -27,7 +27,7 @@ export default function OnboardingProfile() {
 
   // Prefill the form using session.user
   // You'll need to load any additional fields from your database if needed
-  const initialUser: User = {
+  const initialUser: RunnerProfile = {
     id: session.user.id!,
     name: session.user.name ?? "",
     email: session.user.email ?? "",
@@ -35,8 +35,8 @@ export default function OnboardingProfile() {
   // ...other fields (may need to fetch from API if your User is more than name/email)
   };
 
-  const onSave = async (updated: User) => {
-    await updateUserProfile(initialUser.id, updated);
+  const onSave = async (updated: RunnerProfile) => {
+    await updateRunnerProfile(initialUser.id, updated);
     // Refresh session so avatar updates in navbar
     await update({ user: { avatarUrl: updated.avatarUrl ?? null } });
     router.push("/home");
@@ -51,7 +51,7 @@ export default function OnboardingProfile() {
             <h1 className="text-3xl font-bold text-center">
               Almost done—tell us about your running!
             </h1>
-            <UserProfileForm
+            <RunnerProfileForm
               initialUser={initialUser}
               onSave={onSave}
               alwaysEdit

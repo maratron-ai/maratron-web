@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import RunForm from "@components/RunForm";
+import RunForm from "@components/runs/RunForm";
 import { createRun } from "@lib/api/run";
 import { Run } from "@maratypes/run";
 

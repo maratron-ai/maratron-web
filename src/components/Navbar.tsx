@@ -101,7 +101,7 @@ export default function Navbar() {
                 {desktopMenuOpen && (
                   <div className="absolute right-0 mt-2 w-40 bg-background border border-accent/20 rounded shadow-md z-50">
                     <Link
-                      href="/userProfile"
+                      href="/profile"
                       className="block px-4 py-2 hover:bg-accent/20"
                     >
                       Profile
@@ -164,7 +164,7 @@ export default function Navbar() {
               {mobileMenuOpen && (
                 <div className="absolute right-0 mt-2 w-40 bg-background border border-accent/20 rounded shadow-md z-50">
                   <Link
-                    href="/userProfile"
+                    href="/profile"
                     className="block px-4 py-2 hover:bg-accent/20"
                   >
                     Profile
@@ -214,7 +214,7 @@ export default function Navbar() {
               <hr />
               {status !== "loading" && session?.user ? (
                 <>
-                  <Link href="/userProfile" className="block">
+                  <Link href="/profile" className="block">
                     Profile
                   </Link>
                   <Link href="/settings" className="block">

@@ -4,7 +4,7 @@ import axios from "axios";
 import { useSession } from "next-auth/react";
 import type { SocialUserProfile } from "@maratypes/social";
 import { Input, Button, Card } from "@components/ui";
-import FollowUserButton from "@components/FollowUserButton";
+import FollowUserButton from "@components/social/FollowUserButton";
 import Image from "next/image";
 
 export default function ProfileSearch() {

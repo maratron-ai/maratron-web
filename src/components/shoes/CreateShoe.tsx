@@ -1,11 +1,11 @@
 "use client";
 
 import React from "react";
-import ShoeForm from "@components/ShoeForm";
+import ShoeForm from "@components/shoes/ShoeForm";
 import { createShoe } from "@lib/api/shoe";
 import { Shoe } from "@maratypes/shoe";
 import { useSession } from "next-auth/react";
-import { updateUserProfile } from "@lib/api/user/user";
+import { updateRunnerProfile } from "@lib/api/user/user";
 
 const CreateShoe: React.FC = () => {
   const { data: session, status } = useSession();
@@ -24,7 +24,7 @@ const CreateShoe: React.FC = () => {
       const createdShoe = await createShoe(shoeWithUser);
       console.log("Shoe created successfully:", createdShoe);
       if (makeDefault) {
-        await updateUserProfile(session.user.id, {
+        await updateRunnerProfile(session.user.id, {
           defaultShoeId: createdShoe.id,
         });
       }

@@ -2,7 +2,7 @@ import "@testing-library/jest-dom";
 import React from "react";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import ProfileSearch from "../ProfileSearch";
+import ProfileSearch from "../social/ProfileSearch";
 import { useSession } from "next-auth/react";
 import axios from "axios";
 

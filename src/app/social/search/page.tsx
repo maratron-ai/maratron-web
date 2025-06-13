@@ -1,4 +1,4 @@
-import ProfileSearch from "@components/ProfileSearch";
+import ProfileSearch from "@components/social/ProfileSearch";
 
 export default function SearchPage() {
   return (

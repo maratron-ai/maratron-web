@@ -1,7 +1,7 @@
 import "@testing-library/jest-dom";
 import React from "react";
 import { render, screen, waitFor } from "@testing-library/react";
-import SocialFeed from "../SocialFeed";
+import SocialFeed from "../social/SocialFeed";
 import { useSession } from "next-auth/react";
 import { useSocialProfile } from "@hooks/useSocialProfile";
 import axios from "axios";
@@ -10,7 +10,7 @@ jest.mock("next-auth/react", () => ({ useSession: jest.fn() }));
 jest.mock("@hooks/useSocialProfile", () => ({ useSocialProfile: jest.fn() }));
 jest.mock("axios");
 
-jest.mock("@components/CreateSocialPost", () => ({ __esModule: true, default: () => <div data-testid="create-post" /> }));
+jest.mock("@components/social/CreateSocialPost", () => ({ __esModule: true, default: () => <div data-testid="create-post" /> }));
 
 const mockedSession = useSession as jest.Mock;
 const mockedUseProfile = useSocialProfile as jest.Mock;

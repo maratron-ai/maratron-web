@@ -4,7 +4,7 @@ import Image from "next/image";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../api/auth/[...nextauth]/route";
 import type { SocialUserProfile, RunPost } from "@maratypes/social";
-import FollowUserButton from "@components/FollowUserButton";
+import FollowUserButton from "@components/social/FollowUserButton";
 import { prisma } from "@lib/prisma";
 
 async function getProfileData(username: string) {

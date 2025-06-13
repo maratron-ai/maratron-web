@@ -47,12 +47,12 @@ export async function PUT(
           : updatedRun.distance * 1000;
       const seconds = parseDuration(updatedRun.duration);
       const vo2 = Math.round(calculateVO2MaxJackDaniels(meters, seconds));
-      const user = await prisma.user.findUnique({
+      const user = await prisma.runnerProfile.findUnique({
         where: { id: updatedRun.userId },
         select: { VO2Max: true },
       });
       if (user && (user.VO2Max === null || vo2 > user.VO2Max)) {
-        await prisma.user.update({ where: { id: updatedRun.userId }, data: { VO2Max: vo2 } });
+        await prisma.runnerProfile.update({ where: { id: updatedRun.userId }, data: { VO2Max: vo2 } });
       }
     } catch (err) {
       console.error("Failed to update VO2Max", err);

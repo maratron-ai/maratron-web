@@ -2,7 +2,7 @@ import "@testing-library/jest-dom";
 import React from "react";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import FollowUserButton from "../FollowUserButton";
+import FollowUserButton from "../social/FollowUserButton";
 import { followUser, unfollowUser, isFollowing } from "@lib/api/social";
 import { useSession } from "next-auth/react";
 import { useSocialProfile } from "@hooks/useSocialProfile";

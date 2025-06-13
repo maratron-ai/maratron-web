@@ -5,7 +5,7 @@ import { Prisma } from "@prisma/client";
 
 export async function GET() {
   try {
-    const users = await prisma.user.findMany();
+    const users = await prisma.runnerProfile.findMany();
     return NextResponse.json(users);
   } catch (error) {
     console.error("Error fetching users:", error);
@@ -28,7 +28,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Check if a user with this email already exists
-    const existingUser = await prisma.user.findUnique({
+    const existingUser = await prisma.runnerProfile.findUnique({
       where: { email },
     });
     if (existingUser) {
@@ -39,7 +39,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Create the new user
-    const newUser = await prisma.user.create({
+    const newUser = await prisma.runnerProfile.create({
       data: { ...body, VO2Max: body.VO2Max ?? 30 },
     });
     return NextResponse.json(newUser, { status: 201 });

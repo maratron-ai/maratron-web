@@ -1,5 +1,5 @@
-import CreateShoe from "@components/CreateShoe";
-import ShoesList from "@components/ShoesList";
+import CreateShoe from "@components/shoes/CreateShoe";
+import ShoesList from "@components/shoes/ShoesList";
 
 export default function NewShoePage() {
   return (

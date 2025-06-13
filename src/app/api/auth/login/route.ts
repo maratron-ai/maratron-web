@@ -25,7 +25,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const user = await prisma.user.findUnique({ where: { email } });
+    const user = await prisma.runnerProfile.findUnique({ where: { email } });
     if (!user) {
       return NextResponse.json(
         { error: "Invalid email or password" },

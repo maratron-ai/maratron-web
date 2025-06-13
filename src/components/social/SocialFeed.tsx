@@ -4,7 +4,7 @@ import axios from "axios";
 import type { RunPost } from "@maratypes/social";
 import { useSession } from "next-auth/react";
 import { useSocialProfile } from "@hooks/useSocialProfile";
-import CreateSocialPost from "@components/CreateSocialPost";
+import CreateSocialPost from "@components/social/CreateSocialPost";
 import { Button } from "@components/ui";
 import Link from "next/link";
 import Image from "next/image";

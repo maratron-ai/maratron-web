@@ -1,8 +1,8 @@
 import { SelectField, CheckboxGroupField } from "@components/ui";
-import { User } from "@maratypes/user";
+import { RunnerProfile } from "@maratypes/runnerProfile";
 import { ChangeHandler } from "./GoalsSection";
 import styles from "./Section.module.css";
-// import type { DayOfWeek } from "@maratypes/user";
+// import type { DayOfWeek } from "@maratypes/runnerProfile";
 
 // Options for Device: label shown to user, value is Prisma enum key
 const deviceOptions = [
@@ -17,7 +17,7 @@ const deviceOptions = [
 ];
 
 interface Props {
-  formData: Partial<User>;
+  formData: Partial<RunnerProfile>;
   isEditing: boolean;
   onChange: ChangeHandler;
 }
@@ -47,7 +47,7 @@ export default function PreferencesSection({
             value={formData.preferredTrainingDays || []}
             editing={isEditing}
             onChange={(name, value) =>
-              onChange(name as keyof User, value)
+              onChange(name as keyof RunnerProfile, value)
             }
           />
           <SelectField
@@ -62,7 +62,7 @@ export default function PreferencesSection({
             value={formData.preferredTrainingEnvironment || ""}
             editing={isEditing}
             onChange={(name, value) =>
-              onChange(name as keyof User, value)
+              onChange(name as keyof RunnerProfile, value)
             }
           />
           <SelectField
@@ -72,7 +72,7 @@ export default function PreferencesSection({
             value={formData.device || ""}
             editing={isEditing}
             onChange={(name, value) =>
-              onChange(name as keyof User, value)
+              onChange(name as keyof RunnerProfile, value)
             }
           />
         </div>

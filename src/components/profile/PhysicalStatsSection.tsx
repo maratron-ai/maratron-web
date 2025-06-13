@@ -1,10 +1,10 @@
 import { TextField } from "@components/ui";
-import { User } from "@maratypes/user";
+import { RunnerProfile } from "@maratypes/runnerProfile";
 import { ChangeHandler } from "./GoalsSection";
 import styles from "./Section.module.css";
 
 interface Props {
-  formData: Partial<User>;
+  formData: Partial<RunnerProfile>;
   isEditing: boolean;
   onChange: ChangeHandler;
 }
@@ -25,7 +25,7 @@ export default function PhysicalStatsSection({
             type="number"
             value={formData.height ?? ""}
             editing={isEditing}
-            onChange={(name, value) => onChange(name as keyof User, value)}
+            onChange={(name, value) => onChange(name as keyof RunnerProfile, value)}
           />
           <TextField
             label="Weight (lbs)"
@@ -33,7 +33,7 @@ export default function PhysicalStatsSection({
             type="number"
             value={formData.weight ?? ""}
             editing={isEditing}
-            onChange={(name, value) => onChange(name as keyof User, value)}
+            onChange={(name, value) => onChange(name as keyof RunnerProfile, value)}
           />
           <TextField
             label="Years Running"
@@ -41,7 +41,7 @@ export default function PhysicalStatsSection({
             type="number"
             value={formData.yearsRunning ?? ""}
             editing={isEditing}
-            onChange={(name, value) => onChange(name as keyof User, value)}
+            onChange={(name, value) => onChange(name as keyof RunnerProfile, value)}
           />
           {/* Weekly mileage shouldn't be editable by user */}
           {/* <TextField

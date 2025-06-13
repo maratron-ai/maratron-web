@@ -59,7 +59,7 @@ enum Gender {
   Other
 }
 
-model User {
+model RunnerProfile {
   id                           String              @id @default(uuid())
   name                         String
   email                        String              @unique
@@ -92,7 +92,7 @@ model User {
   defaultShoeId                String?   @unique
   defaultShoe                  Shoe?     @relation("UserDefaultShoe", fields: [defaultShoeId], references: [id])
 
-  @@map("Users")
+  @@map("RunnerProfiles")
 }
 
 model Shoe {
@@ -109,10 +109,10 @@ model Shoe {
 
   // Owner
   userId            String
-  user              User     @relation("UserShoes", fields: [userId], references: [id])
+  user              RunnerProfile     @relation("UserShoes", fields: [userId], references: [id])
 
   // Back-ref for default shoe relation
-  defaultForUser    User?    @relation("UserDefaultShoe")
+  defaultForUser    RunnerProfile?    @relation("UserDefaultShoe")
 
   runs              Run[]
 
@@ -136,7 +136,7 @@ model Run {
   updatedAt           DateTime            @updatedAt
 
   userId              String
-  user                User   @relation(fields: [userId], references: [id])
+  user                RunnerProfile   @relation(fields: [userId], references: [id])
 
   // Shoe used in this run (optional for legacy runs)
   shoeId              String?
@@ -157,7 +157,7 @@ model RunningPlan {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  user      User     @relation(fields: [userId], references: [id])
+  user      RunnerProfile     @relation(fields: [userId], references: [id])
 
   @@map("RunningPlans")
 }
@@ -171,7 +171,7 @@ model UserProfile {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  user        User     @relation(fields: [userId], references: [id])
+  user        RunnerProfile     @relation(fields: [userId], references: [id])
   posts       RunPost[]
   following   Follow[] @relation("following")
   followers   Follow[] @relation("followers")

@@ -1,16 +1,16 @@
 import { useState, useCallback } from "react";
 import { useSession } from "next-auth/react";
-import userProfileSchema from "@lib/schemas/userProfileSchema";
+import runnerProfileSchema from "@lib/schemas/runnerProfileSchema";
 import isYupValidationError from "@lib/utils/validation/isYupValidationError";
-import { User } from "@maratypes/user";
-import { updateUserProfile } from "@lib/api/user/user";
+import { RunnerProfile } from "@maratypes/runnerProfile";
+import { updateRunnerProfile } from "@lib/api/user/user";
 
-export function useUserProfileForm(
-  initial: User,
-  onSuccess: (u: User) => void
+export function useRunnerProfileForm(
+  initial: RunnerProfile,
+  onSuccess: (u: RunnerProfile) => void
 ) {
   const { update } = useSession();
-  const [formData, setFormData] = useState<Partial<User>>(initial);
+  const [formData, setFormData] = useState<Partial<RunnerProfile>>(initial);
   const [isEditing, setIsEditing] = useState(false);
   const [validationErrors, setValidationErrors] = useState<string[]>([]);
 
@@ -20,7 +20,8 @@ export function useUserProfileForm(
     setFormData(initial);
   }, [initial]);
 
-  const handleChange = useCallback((field: keyof User, value: User[keyof User]) => {
+  const handleChange = useCallback(
+    (field: keyof RunnerProfile, value: RunnerProfile[keyof RunnerProfile]) => {
     setFormData((fd) => ({ ...fd, [field]: value }));
   }, []);
 
@@ -28,12 +29,12 @@ export function useUserProfileForm(
     setValidationErrors([]);
     const raw = { id: initial.id, ...formData };
     try {
-      const valid = await userProfileSchema.validate(raw, {
+      const valid = await runnerProfileSchema.validate(raw, {
         abortEarly: false,
         stripUnknown: true,
       });
-      const { id, ...payload } = valid as { id: string } & Partial<User>;
-      const updated = await updateUserProfile(id, payload);
+      const { id, ...payload } = valid as { id: string } & Partial<RunnerProfile>;
+      const updated = await updateRunnerProfile(id, payload);
       onSuccess(updated);
       if (update) {
         try {

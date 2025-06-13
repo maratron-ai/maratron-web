@@ -1,7 +1,7 @@
 //src/lib/api/user/user.ts
 
 import axios from "axios";
-import { User } from "@maratypes/user";
+import { RunnerProfile } from "@maratypes/runnerProfile";
 
 export const uploadAvatar = async (file: File): Promise<string> => {
   const formData = new FormData();
@@ -14,9 +14,9 @@ export const uploadAvatar = async (file: File): Promise<string> => {
 
 
 // updates
-export const updateUserProfile = async (
+export const updateRunnerProfile = async (
   userId: string,
-  data: Partial<User>
+  data: Partial<RunnerProfile>
 ) => {
   // put req
   const response = await axios.put(`/api/users/${userId}`, data);
@@ -25,14 +25,14 @@ export const updateUserProfile = async (
 
 
 // creates new
-export const createUserProfile = async (data: Partial<User>) => {
+export const createRunnerProfile = async (data: Partial<RunnerProfile>) => {
   // post req
   const response = await axios.post(`/api/users`, data);
   return response;
 };
 
 // fetch by id
-export const getUserProfile = async (userId: string): Promise<User> => {
+export const getRunnerProfile = async (userId: string): Promise<RunnerProfile> => {
   const response = await axios.get(`/api/users/${userId}`);
   return response.data;
 };

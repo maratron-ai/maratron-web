@@ -1,15 +1,15 @@
-// src/app/userProfile/page.tsx
+// src/app/profile/page.tsx
 "use client";
 
 import React, { useEffect, useState } from "react";
 import { useSession, signOut } from "next-auth/react";
-import UserProfileForm from "@components/UserProfileForm";
-import { User } from "@maratypes/user";
-import { getUserProfile, updateUserProfile } from "@lib/api/user/user";
+import RunnerProfileForm from "@components/profile/RunnerProfileForm";
+import { RunnerProfile } from "@maratypes/runnerProfile";
+import { getRunnerProfile, updateRunnerProfile } from "@lib/api/user/user";
 
-export default function UserProfilePage() {
+export default function RunnerProfilePage() {
   const { data: session, status, update } = useSession();
-  const [profile, setProfile] = useState<User | null>(null);
+  const [profile, setProfile] = useState<RunnerProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [saveSuccess, setSaveSuccess] = useState(false);
@@ -20,7 +20,7 @@ export default function UserProfilePage() {
       if (session?.user?.id) {
         try {
           setLoading(true);
-          const userProfile = await getUserProfile(session.user.id);
+          const userProfile = await getRunnerProfile(session.user.id);
           setProfile(userProfile);
         } catch {
           setError("Failed to load user profile.");
@@ -36,10 +36,10 @@ export default function UserProfilePage() {
   }, [session, status]);
 
   // Handle save
-  const handleSave = async (updated: User) => {
+  const handleSave = async (updated: RunnerProfile) => {
     try {
       setLoading(true);
-      await updateUserProfile(updated.id, updated);
+      await updateRunnerProfile(updated.id, updated);
       setProfile(updated);
       await update({
         user: {
@@ -108,7 +108,9 @@ export default function UserProfilePage() {
       {saveSuccess && (
         <div className="mb-4 text-primary">Profile updated!</div>
       )}
-      {profile && <UserProfileForm initialUser={profile} onSave={handleSave} />}
+      {profile && (
+        <RunnerProfileForm initialUser={profile} onSave={handleSave} />
+      )}
     </main>
   );
 }

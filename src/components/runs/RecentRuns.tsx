@@ -5,7 +5,7 @@ import { useSession } from "next-auth/react";
 import { listRuns } from "@lib/api/run";
 import { getRunName } from "@utils/running/getRunName";
 import type { Run } from "@maratypes/run";
-import RunModal from "@components/RunModal";
+import RunModal from "@components/runs/RunModal";
 
 export default function RecentRuns() {
   const { data: session } = useSession();
