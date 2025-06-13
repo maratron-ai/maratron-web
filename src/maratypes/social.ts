@@ -26,6 +26,10 @@ export interface RunPost {
   socialProfile?: SocialProfile & { user?: { avatarUrl?: string } };
   likeCount?: number;
   commentCount?: number;
+  _count?: {
+    likes: number;
+    comments: number;
+  };
 }
 
 export interface Follow {
