@@ -42,14 +42,18 @@ export default function SocialHomePage() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <main className="flex-grow w-full px-4 sm:px-6 lg:px-8 py-6 space-y-8">
-        <ProfileInfoCard profile={profile} user={user ?? undefined} isSelf />
-        <div className="max-w-3xl mx-auto">
+      <main className="flex-grow w-full px-4 sm:px-6 lg:px-8 py-6 flex space-x-8">
+        <aside className="w-1/4 bg-gray-100 p-4">
+          {/* Placeholder vertical sidebar */}
+          <p>Sidebar</p>
+        </aside>
+        <section className="w-1/2">
           <ProfileSearch />
-        </div>
-        <div className="max-w-3xl mx-auto">
           <SocialFeed />
-        </div>
+        </section>
+        <aside className="w-1/4">
+          <ProfileInfoCard profile={profile} user={user ?? undefined} isSelf />
+        </aside>
       </main>
     </div>
   );
