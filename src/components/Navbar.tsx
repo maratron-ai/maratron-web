@@ -3,7 +3,8 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useSession, signIn, signOut } from "next-auth/react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 import { Menu } from "lucide-react";
 import DefaultAvatar from "@components/DefaultAvatar";
 import { Sheet, SheetContent, SheetTrigger } from "@components/ui";
@@ -13,6 +14,28 @@ export default function Navbar() {
   const { data: session, status } = useSession();
   const [desktopMenuOpen, setDesktopMenuOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const pathname = usePathname();
+
+  // Close dropdowns when route changes
+  useEffect(() => {
+    setDesktopMenuOpen(false);
+    setMobileMenuOpen(false);
+  }, [pathname]);
+
+  // Auto-close dropdowns after 5 seconds
+  useEffect(() => {
+    if (desktopMenuOpen) {
+      const timer = setTimeout(() => setDesktopMenuOpen(false), 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [desktopMenuOpen]);
+
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      const timer = setTimeout(() => setMobileMenuOpen(false), 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [mobileMenuOpen]);
 
   const navLinks = [
     { href: "/home", label: "Home" },
