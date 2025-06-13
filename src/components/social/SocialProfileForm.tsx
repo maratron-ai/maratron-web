@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, FormEvent } from "react";
+import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { createSocialProfile } from "@lib/api/social";
 import { Card, Button } from "@components/ui";
@@ -16,6 +17,7 @@ export default function SocialProfileForm({ onCreated }: Props) {
   const [bio, setBio] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const router = useRouter();
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -37,6 +39,8 @@ export default function SocialProfileForm({ onCreated }: Props) {
       setUsername("");
       setBio("");
       onCreated?.();
+      
+      router.push("/social");
     } catch {
       setError("Failed to create profile");
     }
