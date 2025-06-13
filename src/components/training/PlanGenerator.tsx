@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { useUser } from "@hooks/useUser";
 import { TrainingLevel } from "@maratypes/user";
-import ToggleSwitch from "./ToggleSwitch";
+import ToggleSwitch from "@components/ToggleSwitch";
 import RunningPlanDisplay from "./RunningPlanDisplay";
 import {
   generate5kPlan,
@@ -218,9 +218,9 @@ const [targetDistance, setTargetDistance] = useState<number>(
           </div>
           {/* Goal Input Mode */}
           <div className="flex flex-col">
-            <label htmlFor="inputMode" className="mb-1">
+            {/* <label htmlFor="inputMode" className="mb-1">
               Goal Input:
-            </label>
+            </label> */}
             <ToggleSwitch
               checked={useTotalTime}
               onChange={(c) => setUseTotalTime(c)}

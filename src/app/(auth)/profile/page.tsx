@@ -98,12 +98,12 @@ export default function UserPage() {
   return (
     <main className="w-full px-4 sm:px-6 lg:px-8 py-6 space-y-6">
       <div className="flex justify-end mb-6">
-        <button
+        {/* <button
           onClick={() => signOut()}
           className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
         >
           Logout
-        </button>
+        </button> */}
       </div>
       {saveSuccess && (
         <div className="mb-4 text-primary">Profile updated!</div>

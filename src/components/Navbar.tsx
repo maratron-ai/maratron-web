@@ -8,7 +8,7 @@ import { usePathname } from "next/navigation";
 import { Menu } from "lucide-react";
 import DefaultAvatar from "@components/DefaultAvatar";
 import { Sheet, SheetContent, SheetTrigger } from "@components/ui";
-import ModeToggle from "@components/ModeToggle";
+// import ModeToggle from "@components/ModeToggle";
 
 export default function Navbar() {
   const { data: session, status } = useSession();
@@ -67,7 +67,7 @@ export default function Navbar() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="hover:text-primary transition-colors"
+                  className="text-foreground hover:text-[rgb(var(--primary-rgb))] transition-colors"
                 >
                   {link.label}
                 </Link>
@@ -76,13 +76,13 @@ export default function Navbar() {
               <>
                 <Link
                   href="/about"
-                  className="hover:text-primary transition-colors"
+                  className="text-foreground hover:text-[rgb(var(--primary-rgb))] transition-colors"
                 >
                   About
                 </Link>
                 <Link
                   href="/contact"
-                  className="hover:text-primary transition-colors"
+                  className="text-foreground hover:text-[rgb(var(--primary-rgb))] transition-colors"
                 >
                   Contact
                 </Link>
@@ -115,7 +115,6 @@ export default function Navbar() {
                       />
                     ) : (
                       <DefaultAvatar
-                        seed={session.user?.id || session.user?.email || "user"}
                         size={32}
                       />
                     )}
@@ -153,7 +152,7 @@ export default function Navbar() {
               Sign In
             </button>
           )}
-          <ModeToggle />
+          {/* <ModeToggle /> */}
         </div>
 
         {/* Mobile Hamburger and Avatar */}
@@ -178,7 +177,6 @@ export default function Navbar() {
                     />
                   ) : (
                     <DefaultAvatar
-                      seed={session.user.id || session.user.email || ""}
                       size={32}
                     />
                   )}
@@ -255,7 +253,7 @@ export default function Navbar() {
                   Sign In
                 </button>
               )}
-              <ModeToggle />
+              {/* <ModeToggle /> */}
             </SheetContent>
           </Sheet>
         </div>

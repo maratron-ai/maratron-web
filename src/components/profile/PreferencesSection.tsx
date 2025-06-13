@@ -32,7 +32,7 @@ export default function PreferencesSection({
       <h3 className={styles.title}>Preferences & Device</h3>
       {isEditing ? (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <CheckboxGroupField
+          {/* <CheckboxGroupField
             label="Preferred Training Days"
             name="preferredTrainingDays"
             options={[
@@ -49,7 +49,7 @@ export default function PreferencesSection({
             onChange={(name, value) =>
               onChange(name as keyof User, value)
             }
-          />
+          /> */}
           <SelectField
             label="Environment"
             name="preferredTrainingEnvironment"
