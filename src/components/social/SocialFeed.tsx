@@ -5,6 +5,8 @@ import type { RunPost } from "@maratypes/social";
 import { useSession } from "next-auth/react";
 import { useSocialProfile } from "@hooks/useSocialProfile";
 import CreateSocialPost from "@components/social/CreateSocialPost";
+import LikeButton from "@components/social/LikeButton";
+import CommentSection from "@components/social/CommentSection";
 import { Button } from "@components/ui";
 import Link from "next/link";
 import Image from "next/image";
@@ -86,6 +88,12 @@ export default function SocialFeed() {
               className="mt-2 rounded-md"
             />
           )}
+          <LikeButton
+            postId={post.id}
+            initialLiked={post.liked ?? false}
+            initialCount={post.likeCount ?? post._count?.likes ?? 0}
+          />
+          <CommentSection postId={post.id} />
         </div>
       ))}
     </div>

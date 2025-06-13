@@ -1,5 +1,5 @@
 import axios from "axios";
-import type { SocialProfile, RunPost } from "@maratypes/social";
+import type { SocialProfile, RunPost, Comment } from "@maratypes/social";
 
 export const createSocialProfile = async (
   data: Pick<SocialProfile, "userId" | "username"> & Partial<SocialProfile>
@@ -54,4 +54,41 @@ export const updateSocialProfile = async (
     data
   );
   return profile;
+};
+
+export const likePost = async (
+  postId: string,
+  profileId: string
+): Promise<void> => {
+  await axios.post(`/api/social/posts/${postId}/like`, {
+    socialProfileId: profileId,
+  });
+};
+
+export const unlikePost = async (
+  postId: string,
+  profileId: string
+): Promise<void> => {
+  await axios.delete(`/api/social/posts/${postId}/like`, {
+    data: { socialProfileId: profileId },
+  });
+};
+
+export const addComment = async (
+  postId: string,
+  profileId: string,
+  text: string
+): Promise<Comment> => {
+  const { data: comment } = await axios.post<Comment>(
+    `/api/social/posts/${postId}/comments`,
+    { socialProfileId: profileId, text }
+  );
+  return comment;
+};
+
+export const listComments = async (postId: string): Promise<Comment[]> => {
+  const { data: comments } = await axios.get<Comment[]>(
+    `/api/social/posts/${postId}/comments`
+  );
+  return comments;
 };

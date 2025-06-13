@@ -26,6 +26,8 @@ export interface RunPost {
   socialProfile?: SocialProfile & { user?: { avatarUrl?: string } };
   likeCount?: number;
   commentCount?: number;
+  /** Indicates whether the current user liked the post */
+  liked?: boolean;
   _count?: {
     likes: number;
     comments: number;
