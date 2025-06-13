@@ -2,11 +2,11 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@lib/prisma";
 
 export async function POST(req: NextRequest, ctx: { params: { id: string } }) {
-  const { userProfileId, text } = await req.json();
+  const { socialProfileId, text } = await req.json();
   const { id } = ctx.params;
   try {
     const comment = await prisma.comment.create({
-      data: { postId: id, userProfileId, text },
+      data: { postId: id, socialProfileId, text },
     });
     return NextResponse.json(comment, { status: 201 });
   } catch (err) {
@@ -20,7 +20,7 @@ export async function GET(_req: NextRequest, ctx: { params: { id: string } }) {
   try {
     const comments = await prisma.comment.findMany({
       where: { postId: id },
-      include: { userProfile: true },
+      include: { socialProfile: true },
       orderBy: { createdAt: "asc" },
     });
     return NextResponse.json(comments);

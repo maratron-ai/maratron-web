@@ -93,10 +93,10 @@ Once connected with `psql`, you can run the following commands to interact with 
   \dt
   ```
 
-- **Query a Table (e.g., RunnerProfile):**
+- **Query a Table (e.g., User):**
 
   ```sql
-  SELECT * FROM "RunnerProfiles";
+  SELECT * FROM "Users";
   ```
 
 - **Exit psql:**

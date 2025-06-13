@@ -9,7 +9,7 @@ export async function GET(
   const { params } = await context
   const { id } = await params
   try {
-    const user = await prisma.runnerProfile.findUnique({
+    const user = await prisma.user.findUnique({
       where: { id },
     })
     if (!user) {
@@ -33,7 +33,7 @@ export async function PUT(
   const { id } = await params;
   try {
     const body = await request.json();
-    const updatedUser = await prisma.runnerProfile.update({
+    const updatedUser = await prisma.user.update({
       where: { id },
       data: body,
     });
@@ -54,7 +54,7 @@ export async function DELETE(
   const { params } = await context;
   const { id } = await params;
   try {
-    await prisma.runnerProfile.delete({
+    await prisma.user.delete({
       where: { id },
     });
     return NextResponse.json({ message: "User deleted" }, { status: 200 });

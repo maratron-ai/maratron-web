@@ -6,7 +6,7 @@ export async function GET(_req: NextRequest, context: { params: { id: string } }
   try {
     const post = await prisma.runPost.findUnique({
       where: { id },
-      include: { userProfile: true, comments: true, likes: true },
+      include: { socialProfile: true, comments: true, likes: true },
     });
     if (!post) return NextResponse.json({ error: "Not found" }, { status: 404 });
     return NextResponse.json(post);

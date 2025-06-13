@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import axios from "axios";
-import type { SocialUserProfile } from "@maratypes/social";
+import type { SocialProfile } from "@maratypes/social";
 
 export function useSocialProfile() {
   const { data: session } = useSession();
-  const [profile, setProfile] = useState<SocialUserProfile | null>(null);
+  const [profile, setProfile] = useState<SocialProfile | null>(null);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -16,7 +16,7 @@ export function useSocialProfile() {
       }
       setLoading(true);
       try {
-        const { data } = await axios.get<SocialUserProfile>(
+        const { data } = await axios.get<SocialProfile>(
           `/api/social/profile/byUser/${session.user.id}`
         );
         setProfile(data);

@@ -3,12 +3,12 @@ import Link from "next/link";
 import Image from "next/image";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../api/auth/[...nextauth]/route";
-import type { SocialUserProfile, RunPost } from "@maratypes/social";
+import type { SocialProfile, RunPost } from "@maratypes/social";
 import FollowUserButton from "@components/social/FollowUserButton";
 import { prisma } from "@lib/prisma";
 
 async function getProfileData(username: string) {
-  const profile = await prisma.userProfile.findUnique({
+  const profile = await prisma.socialProfile.findUnique({
     where: { username },
     include: {
       user: {
@@ -31,12 +31,12 @@ async function getProfileData(username: string) {
     _sum: { distance: true },
   });
   const posts = await prisma.runPost.findMany({
-    where: { userProfileId: profile.id },
+    where: { socialProfileId: profile.id },
     include: { _count: { select: { likes: true, comments: true } } },
     orderBy: { createdAt: "desc" },
   });
-  const likeActivity = await prisma.like.count({ where: { userProfileId: profile.id } });
-  const commentActivity = await prisma.comment.count({ where: { userProfileId: profile.id } });
+  const likeActivity = await prisma.like.count({ where: { socialProfileId: profile.id } });
+  const commentActivity = await prisma.comment.count({ where: { socialProfileId: profile.id } });
 
   return {
     id: profile.id,
@@ -148,7 +148,7 @@ export default async function UserProfilePage({ params }: Props) {
             <div className="p-4 border rounded-md bg-background space-y-2">
               <h2 className="text-xl font-semibold">Followers</h2>
               <ul className="list-disc ml-6">
-                {data.followers.map((f: SocialUserProfile) => (
+                {data.followers.map((f: SocialProfile) => (
                   <li key={f.id}>
                     <Link href={`/u/${f.username}`} className="hover:underline">
                       {f.username}
@@ -158,7 +158,7 @@ export default async function UserProfilePage({ params }: Props) {
               </ul>
               <h2 className="text-xl font-semibold">Following</h2>
               <ul className="list-disc ml-6">
-                {data.following.map((f: SocialUserProfile) => (
+                {data.following.map((f: SocialProfile) => (
                   <li key={f.id}>
                     <Link href={`/u/${f.username}`} className="hover:underline">
                       {f.username}

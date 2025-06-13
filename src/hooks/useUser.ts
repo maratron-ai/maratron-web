@@ -1,12 +1,12 @@
-// src/hooks/useRunnerProfile.ts
+// src/hooks/useUser.ts
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import { RunnerProfile } from "@maratypes/runnerProfile";
+import { User } from "@maratypes/user";
 import axios from "axios";
 
-export function useRunnerProfile() {
+export function useUser() {
   const { data: session } = useSession();
-  const [profile, setProfile] = useState<RunnerProfile | null>(null);
+  const [profile, setProfile] = useState<User | null>(null);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {

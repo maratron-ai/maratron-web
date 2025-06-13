@@ -10,7 +10,7 @@ export async function POST(req: NextRequest) {
     );
   }
   try {
-    const profile = await prisma.userProfile.create({
+    const profile = await prisma.socialProfile.create({
       data: { userId, username, bio, profilePhoto },
     });
     return NextResponse.json(profile, { status: 201 });

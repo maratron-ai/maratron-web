@@ -13,7 +13,7 @@ export const authOptions: NextAuthOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        const user = await prisma.runnerProfile.findUnique({
+        const user = await prisma.user.findUnique({
           where: { email: credentials?.email },
         });
         if (!user) return null;

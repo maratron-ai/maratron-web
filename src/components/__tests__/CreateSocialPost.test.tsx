@@ -45,7 +45,7 @@ describe("CreateSocialPost", () => {
     await user.click(screen.getByRole("button", { name: /post/i }));
 
     expect(mockedCreate).toHaveBeenCalledWith({
-      userProfileId: "p1",
+      socialProfileId: "p1",
       distance: 3,
       time: "00:20:00",
       caption: "Nice run",

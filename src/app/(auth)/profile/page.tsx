@@ -3,13 +3,13 @@
 
 import React, { useEffect, useState } from "react";
 import { useSession, signOut } from "next-auth/react";
-import RunnerProfileForm from "@components/profile/RunnerProfileForm";
-import { RunnerProfile } from "@maratypes/runnerProfile";
-import { getRunnerProfile, updateRunnerProfile } from "@lib/api/user/user";
+import UserForm from "@components/profile/UserProfileForm";
+import { User } from "@maratypes/user";
+import { getUser, updateUser } from "@lib/api/user/user";
 
-export default function RunnerProfilePage() {
+export default function UserPage() {
   const { data: session, status, update } = useSession();
-  const [profile, setProfile] = useState<RunnerProfile | null>(null);
+  const [profile, setProfile] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [saveSuccess, setSaveSuccess] = useState(false);
@@ -20,7 +20,7 @@ export default function RunnerProfilePage() {
       if (session?.user?.id) {
         try {
           setLoading(true);
-          const userProfile = await getRunnerProfile(session.user.id);
+          const userProfile = await getUser(session.user.id);
           setProfile(userProfile);
         } catch {
           setError("Failed to load user profile.");
@@ -36,10 +36,10 @@ export default function RunnerProfilePage() {
   }, [session, status]);
 
   // Handle save
-  const handleSave = async (updated: RunnerProfile) => {
+  const handleSave = async (updated: User) => {
     try {
       setLoading(true);
-      await updateRunnerProfile(updated.id, updated);
+      await updateUser(updated.id, updated);
       setProfile(updated);
       await update({
         user: {
@@ -109,7 +109,7 @@ export default function RunnerProfilePage() {
         <div className="mb-4 text-primary">Profile updated!</div>
       )}
       {profile && (
-        <RunnerProfileForm initialUser={profile} onSave={handleSave} />
+        <UserForm initialUser={profile} onSave={handleSave} />
       )}
     </main>
   );

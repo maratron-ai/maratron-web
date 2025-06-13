@@ -1,16 +1,16 @@
 import { useState, useCallback } from "react";
 import { useSession } from "next-auth/react";
-import runnerProfileSchema from "@lib/schemas/runnerProfileSchema";
+import userSchema from "@lib/schemas/userSchema";
 import isYupValidationError from "@lib/utils/validation/isYupValidationError";
-import { RunnerProfile } from "@maratypes/runnerProfile";
-import { updateRunnerProfile } from "@lib/api/user/user";
+import { User } from "@maratypes/user";
+import { updateUser } from "@lib/api/user/user";
 
-export function useRunnerProfileForm(
-  initial: RunnerProfile,
-  onSuccess: (u: RunnerProfile) => void
+export function useUserForm(
+  initial: User,
+  onSuccess: (u: User) => void
 ) {
   const { update } = useSession();
-  const [formData, setFormData] = useState<Partial<RunnerProfile>>(initial);
+  const [formData, setFormData] = useState<Partial<User>>(initial);
   const [isEditing, setIsEditing] = useState(false);
   const [validationErrors, setValidationErrors] = useState<string[]>([]);
 
@@ -21,7 +21,7 @@ export function useRunnerProfileForm(
   }, [initial]);
 
   const handleChange = useCallback(
-    (field: keyof RunnerProfile, value: RunnerProfile[keyof RunnerProfile]) => {
+    (field: keyof User, value: User[keyof User]) => {
     setFormData((fd) => ({ ...fd, [field]: value }));
   }, []);
 
@@ -29,12 +29,12 @@ export function useRunnerProfileForm(
     setValidationErrors([]);
     const raw = { id: initial.id, ...formData };
     try {
-      const valid = await runnerProfileSchema.validate(raw, {
+      const valid = await userSchema.validate(raw, {
         abortEarly: false,
         stripUnknown: true,
       });
-      const { id, ...payload } = valid as { id: string } & Partial<RunnerProfile>;
-      const updated = await updateRunnerProfile(id, payload);
+      const { id, ...payload } = valid as { id: string } & Partial<User>;
+      const updated = await updateUser(id, payload);
       onSuccess(updated);
       if (update) {
         try {

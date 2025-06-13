@@ -12,7 +12,7 @@ const CreateRun: React.FC = () => {
     try {
       // attach the current user's ID here
       // For example, if you have an auth hook:
-      // run.userProfileId = currentUserId;
+      // run.socialProfileId = currentUserId;
 
       const createdRun = await createRun(run);
       console.log("Run created successfully:", createdRun);

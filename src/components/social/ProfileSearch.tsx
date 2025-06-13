@@ -2,7 +2,7 @@
 import { useState, useEffect, FormEvent } from "react";
 import axios from "axios";
 import { useSession } from "next-auth/react";
-import type { SocialUserProfile } from "@maratypes/social";
+import type { SocialProfile } from "@maratypes/social";
 import { Input, Button, Card } from "@components/ui";
 import FollowUserButton from "@components/social/FollowUserButton";
 import Image from "next/image";
@@ -10,7 +10,7 @@ import Image from "next/image";
 export default function ProfileSearch() {
   const { data: session } = useSession();
   const [query, setQuery] = useState("");
-  const [results, setResults] = useState<SocialUserProfile[]>([]);
+  const [results, setResults] = useState<SocialProfile[]>([]);
   const [myProfileId, setMyProfileId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -18,7 +18,7 @@ export default function ProfileSearch() {
     const fetchMyProfile = async () => {
       if (session?.user?.id) {
         try {
-          const { data } = await axios.get<SocialUserProfile>(
+          const { data } = await axios.get<SocialProfile>(
             `/api/social/profile/byUser/${session.user.id}`
           );
           setMyProfileId(data.id);
@@ -37,7 +37,7 @@ export default function ProfileSearch() {
   const handleSearch = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const { data } = await axios.get<SocialUserProfile[]>(
+      const { data } = await axios.get<SocialProfile[]>(
         `/api/social/search?q=${encodeURIComponent(query)}`
       );
       setResults(data);
@@ -53,7 +53,7 @@ export default function ProfileSearch() {
     }
     const timeout = setTimeout(async () => {
       try {
-        const { data } = await axios.get<SocialUserProfile[]>(
+        const { data } = await axios.get<SocialProfile[]>(
           `/api/social/search?q=${encodeURIComponent(query)}`
         );
         setResults(data);

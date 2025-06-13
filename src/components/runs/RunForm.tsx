@@ -7,7 +7,7 @@ import runSchema from "@lib/schemas/runSchema";
 import calculatePace from "@lib/utils/running/calculatePace";
 import isYupValidationError from "@lib/utils/validation/isYupValidationError";
 import { useSession } from "next-auth/react";
-import { useRunnerProfile } from "@hooks/useRunnerProfile";
+import { useUser } from "@hooks/useUser";
 import { listShoes } from "@lib/api/shoe";
 import { getRunName } from "@utils/running/getRunName";
 
@@ -44,7 +44,7 @@ interface RunFormProps {
 
 const RunForm: React.FC<RunFormProps> = ({ onSubmit }) => {
   const { data: session, status } = useSession();
-  const { profile, loading: profileLoading } = useRunnerProfile();
+  const { profile, loading: profileLoading } = useUser();
 
   const buildInitialForm = useCallback((): FormData => ({
     date: getLocalDateTime(),

@@ -5,11 +5,11 @@ import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { listRuns } from "@lib/api/run";
 import { Card } from "@components/ui";
-import { useRunnerProfile } from "@hooks/useRunnerProfile";
+import { useUser } from "@hooks/useUser";
 
 export default function DashboardStats() {
   const { data: session } = useSession();
-  const { profile } = useRunnerProfile();
+  const { profile } = useUser();
   const [runCount, setRunCount] = useState(0);
   const [totalDistance, setTotalDistance] = useState(0);
   const [unit, setUnit] = useState<"miles" | "kilometers">("miles");

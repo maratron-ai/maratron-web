@@ -31,7 +31,7 @@ describe("SocialFeed", () => {
   it("shows posts", async () => {
     mockedSession.mockReturnValue({ data: { user: { id: "u1" } } });
     mockedUseProfile.mockReturnValue({ profile: { id: "p1" }, loading: false });
-    mockedAxios.get.mockResolvedValue({ data: [{ id: "post1", distance: 3, time: "00:20:00", userProfile: { username: "tester" } }] });
+    mockedAxios.get.mockResolvedValue({ data: [{ id: "post1", distance: 3, time: "00:20:00", socialProfile: { username: "tester" } }] });
 
     render(<SocialFeed />);
 

@@ -1,24 +1,24 @@
 "use client";
 
-import { RunnerProfile } from "@maratypes/runnerProfile";
+import { User } from "@maratypes/user";
 import BasicInfoSection from "./BasicInfoSection";
 import PhysicalStatsSection from "./PhysicalStatsSection";
 import GoalsSection from "./GoalsSection";
 import PreferencesSection from "./PreferencesSection";
-import { useRunnerProfileForm } from "@hooks/useRunnerProfileForm";
+import { useUserForm } from "@hooks/useUserForm";
 import { Button } from "@components/ui";
 
 interface Props {
-  initialUser: RunnerProfile;
-  onSave: (u: RunnerProfile) => void;
+  initialUser: User;
+  onSave: (u: User) => void;
   /** always show fields in edit mode */
   alwaysEdit?: boolean;
   submitLabel?: string;
 }
 
-export default function RunnerProfileForm({
-  initialUser, 
-  onSave, 
+export default function UserProfileForm({
+  initialUser,
+  onSave,
   alwaysEdit = false, 
   submitLabel = "Save Profile"
 }: Props) {
@@ -29,7 +29,7 @@ export default function RunnerProfileForm({
     handleChange,
     handleSave,
     toggleEditing,
-  } = useRunnerProfileForm(initialUser, onSave);
+  } = useUserForm(initialUser, onSave);
   // if alwaysEdit, override hook state
   const editing = alwaysEdit ? true : isEditing;
 

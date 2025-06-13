@@ -1,4 +1,4 @@
-export interface SocialUserProfile {
+export interface SocialProfile {
   id: string;
   userId: string;
   username: string;
@@ -16,14 +16,14 @@ export interface SocialUserProfile {
 
 export interface RunPost {
   id: string;
-  userProfileId: string;
+  socialProfileId: string;
   distance: number;
   time: string;
   caption?: string | null;
   photoUrl?: string | null;
   createdAt: Date;
   updatedAt: Date;
-  userProfile?: SocialUserProfile & { user?: { avatarUrl?: string } };
+  socialProfile?: SocialProfile & { user?: { avatarUrl?: string } };
   likeCount?: number;
   commentCount?: number;
 }
@@ -38,15 +38,15 @@ export interface Follow {
 export interface Comment {
   id: string;
   postId: string;
-  userProfileId: string;
+  socialProfileId: string;
   text: string;
   createdAt: Date;
-  userProfile?: SocialUserProfile;
+  socialProfile?: SocialProfile;
 }
 
 export interface Like {
   id: string;
   postId: string;
-  userProfileId: string;
+  socialProfileId: string;
   createdAt: Date;
 }
