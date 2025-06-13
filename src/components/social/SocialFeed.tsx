@@ -86,7 +86,7 @@ export default function SocialFeed() {
             <img
               src={post.photoUrl}
               alt="Run photo"
-              className="mt-2 rounded-md h-64 w-full object-cover cursor-pointer"
+              className="mt-2 rounded-md h-64 w-64 object-cover cursor-pointer"
               onClick={() => setSelectedImage(post.photoUrl!)}
             />
           )}
@@ -99,10 +99,14 @@ export default function SocialFeed() {
         </div>
       ))}
       <Dialog open={!!selectedImage} onOpenChange={(o) => !o && setSelectedImage(null)}>
-        <DialogContent className="p-0 max-w-3xl">
+        <DialogContent className="p-0">
           {selectedImage && (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={selectedImage} alt="Run photo" className="w-full h-full object-contain" />
+            <img
+              src={selectedImage}
+              alt="Run photo"
+              className="w-64 h-64 object-contain"
+            />
           )}
         </DialogContent>
       </Dialog>
