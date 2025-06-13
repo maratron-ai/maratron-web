@@ -30,23 +30,35 @@ export default function ProfileInfoCard({ profile, user, isSelf }: Props) {
       />
       <div className="flex-1 min-w-0 break-words">
         <h2 className="text-xl font-bold truncate">
-          @{profile.username}
+          <a href={`/u/${profile.username}`} className="font-semibold">
+            @{profile.username}
+          </a>
           <span className="block text-sm text-foreground opacity-60 font-normal">
             Since {joinedText}
           </span>
         </h2>
 
         {profile.bio && (
-          <p className="text-sm text-foreground/70 break-words">{profile.bio}</p>
+          <p className="text-sm text-foreground/70 break-words">
+            {profile.bio}
+          </p>
         )}
         <div className="hidden sm:flex sm:flex-wrap sm:justify-between gap-4 text-sm text-muted-foreground mt-2">
           <div className="flex gap-4 flex-wrap min-w-0">
-            <span className="text-center break-words">{profile.runCount ?? 0} runs</span>
-            <span className="text-center break-words">{profile.totalDistance ?? 0} mi</span>
+            <span className="text-center break-words">
+              {profile.runCount ?? 0} runs
+            </span>
+            <span className="text-center break-words">
+              {profile.totalDistance ?? 0} mi
+            </span>
           </div>
           <div className="flex gap-4 flex-wrap min-w-0">
-            <span className="text-center break-words">{profile.followerCount ?? 0} followers</span>
-            <span className="text-center break-words">{profile.followingCount ?? 0} following</span>
+            <span className="text-center break-words">
+              {profile.followerCount ?? 0} followers
+            </span>
+            <span className="text-center break-words">
+              {profile.followingCount ?? 0} following
+            </span>
           </div>
         </div>
       </div>
