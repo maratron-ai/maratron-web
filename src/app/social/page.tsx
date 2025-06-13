@@ -41,18 +41,17 @@ export default function SocialHomePage() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <main className="flex-grow w-full px-4 sm:px-6 lg:px-8 py-6 flex space-x-8">
-        <aside className="w-1/4 bg-gray-100 p-4">
-          {/* Placeholder vertical sidebar */}
-          <p>Sidebar</p>
-        </aside>
-        <section className="w-1/2">
-          <ProfileSearch />
+    <div className="min-h-screen bg-background">
+      <main className="container mx-auto px-4 max-w-screen-lg py-8 flex flex-col lg:flex-row gap-8">
+        <section className="lg:w-2/3 order-2 lg:order-1 space-y-6">
           <SocialFeed />
         </section>
-        <aside className="w-1/4">
+        <aside className="lg:w-1/3 order-1 lg:order-2 space-y-6">
           <ProfileInfoCard profile={profile} user={user ?? undefined} isSelf />
+          <div>
+            <h2 className="text-lg font-semibold mb-2">Find Runners</h2>
+            <ProfileSearch />
+          </div>
         </aside>
       </main>
     </div>
