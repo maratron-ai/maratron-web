@@ -39,12 +39,9 @@ export default function Navbar() {
 
   const navLinks = [
     { href: "/home", label: "Home" },
-    { href: "/runs/new", label: "Add Run" },
-    { href: "/shoes/new", label: "Add Shoe" },
     { href: "/plan-generator", label: "Plans" },
     { href: "/social/feed", label: "Social" },
     { href: "/social/search", label: "Find Runners" },
-    { href: "/about", label: "About" },
   ];
 
   return (
