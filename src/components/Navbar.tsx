@@ -39,7 +39,6 @@ export default function Navbar() {
 
   const navLinks = [
     { href: "/home", label: "Home" },
-    { href: "/plan-generator", label: "Gen. a Plan" },
     { href: "/social", label: "Social" },
     { href: "/social/feed", label: "Social Feed" },
     { href: "/social/search", label: "Find Runners" },
