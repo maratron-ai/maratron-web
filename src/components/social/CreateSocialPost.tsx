@@ -3,8 +3,8 @@ import { useState, FormEvent, useEffect } from "react";
 import { createPost } from "@lib/api/social";
 import { listRuns } from "@lib/api/run";
 import { useSocialProfile } from "@hooks/useSocialProfile";
-import { Card, Button } from "@components/ui";
-import { TextField, TextAreaField, SelectField } from "@components/ui/FormField";
+import { Card, Button, PhotoUpload } from "@components/ui";
+import { TextAreaField, SelectField } from "@components/ui/FormField";
 import { getRunName } from "@utils/running/getRunName";
 import type { Run } from "@maratypes/run";
 
@@ -100,12 +100,7 @@ export default function CreateSocialPost({ onCreated }: Props) {
           onChange={(_n, v) => setCaption(String(v))}
           rows={2}
         />
-        <TextField
-          label="Photo URL"
-          name="photoUrl"
-          value={photoUrl}
-          onChange={(_n, v) => setPhotoUrl(String(v))}
-        />
+        <PhotoUpload value={photoUrl} onChange={(url) => setPhotoUrl(url)} />
         <div className="flex justify-end">
           <Button type="submit" size="sm">
             Post

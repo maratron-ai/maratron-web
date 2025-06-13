@@ -7,7 +7,7 @@ import { useSocialProfile } from "@hooks/useSocialProfile";
 import CreateSocialPost from "@components/social/CreateSocialPost";
 import LikeButton from "@components/social/LikeButton";
 import CommentSection from "@components/social/CommentSection";
-import { Button } from "@components/ui";
+import { Button, Dialog, DialogContent } from "@components/ui";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -16,6 +16,7 @@ export default function SocialFeed() {
   const { profile, loading: profileLoading } = useSocialProfile();
   const [posts, setPosts] = useState<RunPost[]>([]);
   const [loading, setLoading] = useState(true);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   const fetchFeed = async () => {
     if (!session?.user?.id) return;
@@ -85,7 +86,8 @@ export default function SocialFeed() {
             <img
               src={post.photoUrl}
               alt="Run photo"
-              className="mt-2 rounded-md"
+              className="mt-2 rounded-md h-64 w-full object-cover cursor-pointer"
+              onClick={() => setSelectedImage(post.photoUrl!)}
             />
           )}
           <LikeButton
@@ -96,6 +98,14 @@ export default function SocialFeed() {
           <CommentSection postId={post.id} />
         </div>
       ))}
+      <Dialog open={!!selectedImage} onOpenChange={(o) => !o && setSelectedImage(null)}>
+        <DialogContent className="p-0 max-w-3xl">
+          {selectedImage && (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={selectedImage} alt="Run photo" className="w-full h-full object-contain" />
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
