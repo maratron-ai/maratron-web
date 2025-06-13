@@ -2,7 +2,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { useSession, signOut } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import UserForm from "@components/profile/UserProfileForm";
 import { User } from "@maratypes/user";
 import { getUser, updateUser } from "@lib/api/user/user";
