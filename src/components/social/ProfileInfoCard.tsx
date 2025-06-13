@@ -43,22 +43,22 @@ export default function ProfileInfoCard({ profile, user, isSelf }: Props) {
             {profile.bio}
           </p>
         )}
-        <div className="hidden sm:flex sm:flex-wrap sm:justify-between gap-4 text-sm text-muted-foreground mt-2">
-          <div className="flex gap-4 flex-wrap min-w-0">
-            <span className="text-center break-words">
-              {profile.runCount ?? 0} runs
-            </span>
-            <span className="text-center break-words">
-              {profile.totalDistance ?? 0} mi
-            </span>
+        <div className="flex flex-col sm:flex-row justify-center items-center text-center gap-4 text-sm text-muted-foreground mt-2">
+          <div className="flex items-baseline justify-center w-full sm:w-auto gap-1">
+            <span className="text-lg font-semibold">{profile.runCount ?? 0}</span>
+            <span className="text-sm opacity-60">runs</span>
           </div>
-          <div className="flex gap-4 flex-wrap min-w-0">
-            <span className="text-center break-words">
-              {profile.followerCount ?? 0} followers
-            </span>
-            <span className="text-center break-words">
-              {profile.followingCount ?? 0} following
-            </span>
+          <div className="flex items-baseline justify-center w-full sm:w-auto gap-1">
+            <span className="text-lg font-semibold">{profile.totalDistance ?? 0}</span>
+            <span className="text-sm opacity-60">mi</span>
+          </div>
+          <div className="flex items-baseline justify-center w-full sm:w-auto gap-1">
+            <span className="text-lg font-semibold">{profile.followerCount ?? 0}</span>
+            <span className="text-sm opacity-60">followers</span>
+          </div>
+          <div className="flex items-baseline justify-center w-full sm:w-auto gap-1">
+            <span className="text-lg font-semibold">{profile.followingCount ?? 0}</span>
+            <span className="text-sm opacity-60">following</span>
           </div>
         </div>
       </div>

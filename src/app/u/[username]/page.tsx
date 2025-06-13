@@ -90,8 +90,16 @@ export default async function UserProfilePage({ params }: Props) {
 
   return (
     <div className="min-h-screen bg-background">
-      <main className="container mx-auto px-4 max-w-screen-lg py-8 flex flex-col lg:flex-row gap-8">
-        <section className="lg:w-2/3 order-2 lg:order-1 space-y-6">
+      <main className="container mx-auto px-4 max-w-screen-lg py-8 flex flex-col gap-8">
+        <div className="w-full flex flex-col items-stretch space-y-4">
+          <ProfileInfoCard
+            profile={profile}
+            user={{ avatarUrl: data.avatarUrl ?? undefined, createdAt: data.userCreatedAt }}
+            isSelf={isSelf}
+          />
+          {!isSelf && <FollowUserButton profileId={data.id} />}
+        </div>
+        <section className="w-full space-y-6">
           <h2 className="text-xl font-semibold">Posts</h2>
           {data.posts.length === 0 && <p>No posts yet.</p>}
           {data.posts.map((post: RunPost) => (
@@ -113,43 +121,7 @@ export default async function UserProfilePage({ params }: Props) {
               </div>
             </Card>
           ))}
-
-          {isSelf && (
-            <Card className="space-y-2 p-4">
-              <h2 className="text-xl font-semibold">Followers</h2>
-              <ul className="list-disc ml-6">
-                {data.followers.map((f: SocialProfile) => (
-                  <li key={f.id}>
-                    <Link href={`/u/${f.username}`} className="hover:underline">
-                      {f.username}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-              <h2 className="text-xl font-semibold">Following</h2>
-              <ul className="list-disc ml-6">
-                {data.following.map((f: SocialProfile) => (
-                  <li key={f.id}>
-                    <Link href={`/u/${f.username}`} className="hover:underline">
-                      {f.username}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-              <p className="text-sm text-foreground/60">
-                Likes made: {data.likeActivity} | Comments made: {data.commentActivity}
-              </p>
-            </Card>
-          )}
         </section>
-        <aside className="lg:w-1/3 order-1 lg:order-2 space-y-6">
-          <ProfileInfoCard
-            profile={profile}
-            user={{ avatarUrl: data.avatarUrl ?? undefined, createdAt: data.userCreatedAt }}
-            isSelf={isSelf}
-          />
-          {!isSelf && <FollowUserButton profileId={data.id} />}
-        </aside>
       </main>
     </div>
   );

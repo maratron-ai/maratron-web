@@ -1,3 +1,5 @@
+"use client";
+
 import { useRef } from "react";
 import { Avatar, AvatarImage, AvatarFallback, Button } from "@components/ui";
 import { uploadAvatar } from "@lib/api/user/user";
