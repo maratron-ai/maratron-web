@@ -20,7 +20,7 @@ export type Device =
 
 export type Gender = "Male" | "Female" | "Other";
 
-export interface UserProfile {
+export interface User {
   id: string;
   name: string;
   email: string;

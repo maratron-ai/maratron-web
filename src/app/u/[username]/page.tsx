@@ -11,7 +11,14 @@ async function getProfileData(username: string) {
   const profile = await prisma.userProfile.findUnique({
     where: { username },
     include: {
-      user: { select: { name: true, avatarUrl: true, _count: { select: { runs: true } } } },
+      user: {
+        select: {
+          name: true,
+          avatarUrl: true,
+          createdAt: true,
+          _count: { select: { runs: true } },
+        },
+      },
       _count: { select: { followers: true, following: true } },
       followers: { select: { follower: true } },
       following: { select: { following: true } },
@@ -38,6 +45,7 @@ async function getProfileData(username: string) {
     bio: profile.bio,
     profilePhoto: profile.profilePhoto,
     avatarUrl: profile.user.avatarUrl,
+    userCreatedAt: profile.user.createdAt,
     createdAt: profile.createdAt,
     updatedAt: profile.updatedAt,
     name: profile.user.name,
@@ -80,6 +88,10 @@ export default async function UserProfilePage({ params }: Props) {
               />
               <div>
                 <h1 className="text-2xl font-bold">{data.name ?? data.username}</h1>
+                <p className="text-sm text-foreground/60">
+                  @{data.username} • Joined{' '}
+                  {new Date(data.userCreatedAt).toLocaleDateString()}
+                </p>
                 {data.bio && <p className="text-foreground/70">{data.bio}</p>}
               </div>
             </div>
@@ -112,6 +124,9 @@ export default async function UserProfilePage({ params }: Props) {
                 <p className="text-base font-semibold">
                   {post.distance} mi in {post.time}
                 </p>
+                <div className="text-sm text-foreground/60">
+                  {new Date(post.createdAt).toLocaleString()}
+                </div>
                 {post.caption && <p className="mt-2">{post.caption}</p>}
                 {post.photoUrl && (
                   // eslint-disable-next-line @next/next/no-img-element

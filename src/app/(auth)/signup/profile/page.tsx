@@ -4,7 +4,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { updateUserProfile } from "@lib/api/user/user";
 import UserProfileForm from "@components/UserProfileForm";
-import { UserProfile } from "@maratypes/user";
+import { User } from "@maratypes/user";
 import { useEffect } from "react";
 import { Card } from "@components/ui";
 
@@ -27,15 +27,15 @@ export default function OnboardingProfile() {
 
   // Prefill the form using session.user
   // You'll need to load any additional fields from your database if needed
-  const initialUser: UserProfile = {
+  const initialUser: User = {
     id: session.user.id!,
     name: session.user.name ?? "",
     email: session.user.email ?? "",
 
-    // ...other fields (may need to fetch from API if your UserProfile is more than name/email)
+  // ...other fields (may need to fetch from API if your User is more than name/email)
   };
 
-  const onSave = async (updated: UserProfile) => {
+  const onSave = async (updated: User) => {
     await updateUserProfile(initialUser.id, updated);
     // Refresh session so avatar updates in navbar
     await update({ user: { avatarUrl: updated.avatarUrl ?? null } });

@@ -4,12 +4,12 @@
 import React, { useEffect, useState } from "react";
 import { useSession, signOut } from "next-auth/react";
 import UserProfileForm from "@components/UserProfileForm";
-import { UserProfile } from "@maratypes/user";
+import { User } from "@maratypes/user";
 import { getUserProfile, updateUserProfile } from "@lib/api/user/user";
 
 export default function UserProfilePage() {
   const { data: session, status, update } = useSession();
-  const [profile, setProfile] = useState<UserProfile | null>(null);
+  const [profile, setProfile] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [saveSuccess, setSaveSuccess] = useState(false);
@@ -36,7 +36,7 @@ export default function UserProfilePage() {
   }, [session, status]);
 
   // Handle save
-  const handleSave = async (updated: UserProfile) => {
+  const handleSave = async (updated: User) => {
     try {
       setLoading(true);
       await updateUserProfile(updated.id, updated);
