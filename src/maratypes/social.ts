@@ -2,12 +2,12 @@ export interface SocialUserProfile {
   id: string;
   userId: string;
   username: string;
-  bio?: string;
-  profilePhoto?: string;
-  avatarUrl?: string;
+  bio?: string | null;
+  profilePhoto?: string | null;
+  avatarUrl?: string | null;
   createdAt: Date;
   updatedAt: Date;
-  name?: string;
+  name?: string | null;
   runCount?: number;
   totalDistance?: number;
   followerCount?: number;
@@ -19,8 +19,8 @@ export interface RunPost {
   userProfileId: string;
   distance: number;
   time: string;
-  caption?: string;
-  photoUrl?: string;
+  caption?: string | null;
+  photoUrl?: string | null;
   createdAt: Date;
   updatedAt: Date;
   userProfile?: SocialUserProfile & { user?: { avatarUrl?: string } };
