@@ -7,6 +7,10 @@ import SocialProfileForm from "../social/SocialProfileForm";
 import { createSocialProfile } from "@lib/api/social";
 import { useSession } from "next-auth/react";
 
+jest.mock("next/navigation", () => ({
+  useRouter: () => ({ push: jest.fn() }),
+}));
+
 jest.mock("@lib/api/social");
 jest.mock("next-auth/react", () => ({ useSession: jest.fn() }));
 
