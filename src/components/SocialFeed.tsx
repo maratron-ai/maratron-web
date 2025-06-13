@@ -52,7 +52,7 @@ export default function SocialFeed() {
       {posts.length === 0 && <p>No posts yet.</p>}
       {posts.map((post) => (
         <div key={post.id} className="border rounded-md p-4">
-          <div className="flex items-center gap-2 mb-2">
+          <div className="flex items-center gap-2 mb-1">
             <Image
               src={
                 post.userProfile?.user?.avatarUrl ||
@@ -72,6 +72,9 @@ export default function SocialFeed() {
                 {post.userProfile.username}
               </Link>
             )}
+          </div>
+          <div className="text-sm text-foreground/60 mb-2">
+            {new Date(post.createdAt).toLocaleString()}
           </div>
           <p className="font-medium">
             {post.distance} mi in {post.time}

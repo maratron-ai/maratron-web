@@ -1,6 +1,6 @@
 "use client";
 
-import { UserProfile } from "@maratypes/user";
+import { User } from "@maratypes/user";
 import BasicInfoSection from "./BasicInfoSection";
 import PhysicalStatsSection from "./PhysicalStatsSection";
 import GoalsSection from "./GoalsSection";
@@ -9,8 +9,8 @@ import { useUserProfileForm } from "@hooks/useUserProfileForm";
 import { Button } from "@components/ui";
 
 interface Props {
-  initialUser: UserProfile;
-  onSave: (u: UserProfile) => void;
+  initialUser: User;
+  onSave: (u: User) => void;
   /** always show fields in edit mode */
   alwaysEdit?: boolean;
   submitLabel?: string;

@@ -1,5 +1,5 @@
 import { TextField, SelectField, AvatarUpload } from "@components/ui";
-import { UserProfile } from "@maratypes/user";
+import { User } from "@maratypes/user";
 import styles from "./Section.module.css";
 import type { Gender } from "@maratypes/user";
 import Image from "next/image";
@@ -15,9 +15,9 @@ const genderOptions = genderValues.map((g) => ({
 }));
 
 interface Props {
-  formData: Partial<UserProfile>;
+  formData: Partial<User>;
   isEditing: boolean;
-  onChange: (field: keyof UserProfile, value: string) => void;
+  onChange: (field: keyof User, value: string) => void;
 }
 
 export default function BasicInfoSection({
@@ -26,7 +26,7 @@ export default function BasicInfoSection({
   onChange,
 }: Props) {
   const handleFieldChange = (name: string, value: string) =>
-    onChange(name as keyof UserProfile, value);
+    onChange(name as keyof User, value);
 
 
   return (

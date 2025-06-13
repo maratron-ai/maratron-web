@@ -1,12 +1,12 @@
 // src/hooks/useUserProfile.ts
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import { UserProfile } from "@maratypes/user";
+import { User } from "@maratypes/user";
 import axios from "axios";
 
 export function useUserProfile() {
   const { data: session } = useSession();
-  const [profile, setProfile] = useState<UserProfile | null>(null);
+  const [profile, setProfile] = useState<User | null>(null);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
