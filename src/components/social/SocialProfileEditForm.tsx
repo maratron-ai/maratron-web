@@ -14,7 +14,6 @@ interface Props {
 export default function SocialProfileEditForm({ profile, onUpdated }: Props) {
   const [username, setUsername] = useState(profile.username);
   const [bio, setBio] = useState(profile.bio ?? "");
-  const [profilePhoto, setProfilePhoto] = useState(profile.profilePhoto ?? "");
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
@@ -27,7 +26,6 @@ export default function SocialProfileEditForm({ profile, onUpdated }: Props) {
       const updated = await updateSocialProfile(profile.id, {
         username,
         bio,
-        profilePhoto,
       });
       setSuccess(true);
       onUpdated?.(updated);
@@ -59,12 +57,6 @@ export default function SocialProfileEditForm({ profile, onUpdated }: Props) {
           value={bio}
           onChange={(_n, v) => setBio(String(v))}
           rows={2}
-        />
-        <TextField
-          label="Profile Photo URL"
-          name="profilePhoto"
-          value={profilePhoto}
-          onChange={(_n, v) => setProfilePhoto(String(v))}
         />
         <div className="flex justify-end">
           <Button type="submit" disabled={saving}>

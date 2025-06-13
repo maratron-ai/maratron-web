@@ -43,7 +43,6 @@ async function getProfileData(username: string) {
     userId: profile.userId,
     username: profile.username,
     bio: profile.bio,
-    profilePhoto: profile.profilePhoto,
     avatarUrl: profile.user.avatarUrl,
     userCreatedAt: profile.user.createdAt,
     createdAt: profile.createdAt,
@@ -80,7 +79,7 @@ export default async function UserProfilePage({ params }: Props) {
           <div className="p-4 space-y-6">
             <div className="flex items-center gap-6 p-4 rounded-md bg-background border">
               <Image
-                src={data.avatarUrl || data.profilePhoto || "/default_profile.png"}
+                src={data.avatarUrl || "/default_profile.png"}
                 alt={data.username}
                 width={64}
                 height={64}

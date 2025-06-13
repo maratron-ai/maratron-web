@@ -33,7 +33,6 @@ describe("SocialProfileForm", () => {
       userId: "u1",
       username: "tester",
       bio: undefined,
-      profilePhoto: undefined,
     });
     expect(onCreated).toHaveBeenCalled();
     expect(await screen.findByText(/profile created!/i)).toBeInTheDocument();

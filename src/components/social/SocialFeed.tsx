@@ -55,9 +55,7 @@ export default function SocialFeed() {
           <div className="flex items-center gap-2 mb-1">
             <Image
               src={
-                post.socialProfile?.user?.avatarUrl ||
-                post.socialProfile?.profilePhoto ||
-                "/default_profile.png"
+                post.socialProfile?.user?.avatarUrl || "/default_profile.png"
               }
               alt={post.socialProfile?.username || "avatar"}
               width={32}
