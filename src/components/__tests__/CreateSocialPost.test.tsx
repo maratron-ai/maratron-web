@@ -3,7 +3,7 @@ import "@testing-library/jest-dom";
 import React from "react";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import CreateSocialPost from "../CreateSocialPost";
+import CreateSocialPost from "../social/CreateSocialPost";
 import { createPost } from "@lib/api/social";
 import { listRuns } from "@lib/api/run";
 import { useSocialProfile } from "@hooks/useSocialProfile";
@@ -45,7 +45,7 @@ describe("CreateSocialPost", () => {
     await user.click(screen.getByRole("button", { name: /post/i }));
 
     expect(mockedCreate).toHaveBeenCalledWith({
-      userProfileId: "p1",
+      socialProfileId: "p1",
       distance: 3,
       time: "00:20:00",
       caption: "Nice run",

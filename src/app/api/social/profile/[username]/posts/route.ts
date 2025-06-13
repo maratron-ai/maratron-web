@@ -4,10 +4,10 @@ import { prisma } from "@lib/prisma";
 export async function GET(_req: NextRequest, ctx: { params: { username: string } }) {
   const { username } = ctx.params;
   try {
-    const profile = await prisma.userProfile.findUnique({ where: { username } });
+    const profile = await prisma.socialProfile.findUnique({ where: { username } });
     if (!profile) return NextResponse.json({ error: "Not found" }, { status: 404 });
     const posts = await prisma.runPost.findMany({
-      where: { userProfileId: profile.id },
+      where: { socialProfileId: profile.id },
       include: { _count: { select: { likes: true, comments: true } } },
       orderBy: { createdAt: "desc" },
     });

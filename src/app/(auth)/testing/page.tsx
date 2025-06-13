@@ -1,10 +1,10 @@
 "use client";
 
-import PaceCalculator from "@components/PaceCalculator";
-import CreateRun from "@components/CreateRun";
+import PaceCalculator from "@components/training/PaceCalculator";
+import CreateRun from "@components/runs/CreateRun";
 import AuthTest from "@components/AuthTest";
-import PlanGenerator from "@components/PlanGenerator";
-import CreateShoe from "@components/CreateShoe";
+import PlanGenerator from "@components/training/PlanGenerator";
+import CreateShoe from "@components/shoes/CreateShoe";
 
 const ProfilePage = () => {
   return (

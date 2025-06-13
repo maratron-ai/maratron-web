@@ -86,7 +86,7 @@ model User {
   runningPlans                 RunningPlan[]
   shoes                        Shoe[]    @relation("UserShoes")
 
-  profile                      UserProfile?
+  profile                      SocialProfile?
 
   // Default shoe relation
   defaultShoeId                String?   @unique
@@ -162,7 +162,7 @@ model RunningPlan {
   @@map("RunningPlans")
 }
 
-model UserProfile {
+model SocialProfile {
   id          String   @id @default(uuid())
   userId      String   @unique
   username    String   @unique
@@ -181,7 +181,7 @@ model UserProfile {
 
 model RunPost {
   id            String     @id @default(uuid())
-  userProfileId String
+  socialProfileId String
   distance      Float
   time          String
   caption       String?
@@ -189,7 +189,7 @@ model RunPost {
   createdAt     DateTime   @default(now())
   updatedAt     DateTime   @updatedAt
 
-  userProfile   UserProfile @relation(fields: [userProfileId], references: [id])
+  socialProfile   SocialProfile @relation(fields: [socialProfileId], references: [id])
   comments      Comment[]
   likes         Like[]
 }
@@ -200,8 +200,8 @@ model Follow {
   followingId  String
   createdAt    DateTime @default(now())
 
-  follower     UserProfile @relation("following", fields: [followerId], references: [id])
-  following    UserProfile @relation("followers", fields: [followingId], references: [id])
+  follower     SocialProfile @relation("following", fields: [followerId], references: [id])
+  following    SocialProfile @relation("followers", fields: [followingId], references: [id])
 
   @@unique([followerId, followingId])
 }
@@ -209,22 +209,22 @@ model Follow {
 model Comment {
   id            String   @id @default(uuid())
   postId        String
-  userProfileId String
+  socialProfileId String
   text          String
   createdAt     DateTime @default(now())
 
   post          RunPost     @relation(fields: [postId], references: [id])
-  userProfile   UserProfile @relation(fields: [userProfileId], references: [id])
+  socialProfile   SocialProfile @relation(fields: [socialProfileId], references: [id])
 }
 
 model Like {
   id            String   @id @default(uuid())
   postId        String
-  userProfileId String
+  socialProfileId String
   createdAt     DateTime @default(now())
 
   post          RunPost     @relation(fields: [postId], references: [id])
-  userProfile   UserProfile @relation(fields: [userProfileId], references: [id])
+  socialProfile   SocialProfile @relation(fields: [socialProfileId], references: [id])
 
-  @@unique([postId, userProfileId])
+  @@unique([postId, socialProfileId])
 }

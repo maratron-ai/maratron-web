@@ -45,7 +45,7 @@ describe("social api helpers", () => {
   });
 
   it("createPost posts data", async () => {
-    const post: RunPost = { id: "1", userProfileId: "p", distance: 1, time: "00:10:00", createdAt: new Date(), updatedAt: new Date() } as RunPost;
+    const post: RunPost = { id: "1", socialProfileId: "p", distance: 1, time: "00:10:00", createdAt: new Date(), updatedAt: new Date() } as RunPost;
     mockedAxios.post.mockResolvedValue({ data: post });
     const result = await createPost({ distance: 1 });
     expect(mockedAxios.post).toHaveBeenCalledWith("/api/social/posts", { distance: 1 });

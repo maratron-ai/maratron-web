@@ -6,7 +6,7 @@ export async function GET(req: NextRequest) {
   if (!q) return NextResponse.json([]);
   const tokens = q.split(/\s+/).filter(Boolean);
   try {
-    const profiles = await prisma.userProfile.findMany({
+    const profiles = await prisma.socialProfile.findMany({
       where: {
         AND: tokens.map((t) => ({
           OR: [

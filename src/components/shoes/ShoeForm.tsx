@@ -5,7 +5,7 @@ import { Shoe } from "@maratypes/shoe";
 import { shoeSchema } from "@lib/schemas/shoeSchema";
 import isYupValidationError from "@lib/utils/validation/isYupValidationError";
 import { useSession } from "next-auth/react";
-import { useUserProfile } from "@hooks/useUserProfile";
+import { useUser } from "@hooks/useUser";
 
 import { Card, Button } from "@components/ui";
 import {
@@ -45,7 +45,7 @@ const initialForm: FormData = {
 
 const ShoeForm: React.FC<ShoeFormProps> = ({ onSubmit, initialData }) => {
   const { data: session, status } = useSession();
-  const { profile } = useUserProfile();
+  const { profile } = useUser();
   const [form, setForm] = useState<FormData>({
     ...initialForm,
     ...initialData,

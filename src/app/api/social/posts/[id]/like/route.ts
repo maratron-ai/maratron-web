@@ -2,13 +2,13 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@lib/prisma";
 
 export async function POST(req: NextRequest, ctx: { params: { id: string } }) {
-  const { userProfileId } = await req.json();
+  const { socialProfileId } = await req.json();
   const { id } = ctx.params;
   try {
     const like = await prisma.like.upsert({
-      where: { postId_userProfileId: { postId: id, userProfileId } },
+      where: { postId_socialProfileId: { postId: id, socialProfileId } },
       update: {},
-      create: { postId: id, userProfileId },
+      create: { postId: id, socialProfileId },
     });
     return NextResponse.json(like, { status: 201 });
   } catch (err) {
@@ -18,11 +18,11 @@ export async function POST(req: NextRequest, ctx: { params: { id: string } }) {
 }
 
 export async function DELETE(req: NextRequest, ctx: { params: { id: string } }) {
-  const { userProfileId } = await req.json();
+  const { socialProfileId } = await req.json();
   const { id } = ctx.params;
   try {
     await prisma.like.delete({
-      where: { postId_userProfileId: { postId: id, userProfileId } },
+      where: { postId_socialProfileId: { postId: id, socialProfileId } },
     });
     return NextResponse.json({});
   } catch (err) {

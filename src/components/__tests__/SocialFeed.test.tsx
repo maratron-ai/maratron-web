@@ -1,7 +1,7 @@
 import "@testing-library/jest-dom";
 import React from "react";
 import { render, screen, waitFor } from "@testing-library/react";
-import SocialFeed from "../SocialFeed";
+import SocialFeed from "../social/SocialFeed";
 import { useSession } from "next-auth/react";
 import { useSocialProfile } from "@hooks/useSocialProfile";
 import axios from "axios";
@@ -10,7 +10,7 @@ jest.mock("next-auth/react", () => ({ useSession: jest.fn() }));
 jest.mock("@hooks/useSocialProfile", () => ({ useSocialProfile: jest.fn() }));
 jest.mock("axios");
 
-jest.mock("@components/CreateSocialPost", () => ({ __esModule: true, default: () => <div data-testid="create-post" /> }));
+jest.mock("@components/social/CreateSocialPost", () => ({ __esModule: true, default: () => <div data-testid="create-post" /> }));
 
 const mockedSession = useSession as jest.Mock;
 const mockedUseProfile = useSocialProfile as jest.Mock;
@@ -31,7 +31,7 @@ describe("SocialFeed", () => {
   it("shows posts", async () => {
     mockedSession.mockReturnValue({ data: { user: { id: "u1" } } });
     mockedUseProfile.mockReturnValue({ profile: { id: "p1" }, loading: false });
-    mockedAxios.get.mockResolvedValue({ data: [{ id: "post1", distance: 3, time: "00:20:00", userProfile: { username: "tester" } }] });
+    mockedAxios.get.mockResolvedValue({ data: [{ id: "post1", distance: 3, time: "00:20:00", socialProfile: { username: "tester" } }] });
 
     render(<SocialFeed />);
 

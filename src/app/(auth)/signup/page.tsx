@@ -3,7 +3,7 @@
 import { useState, FormEvent } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { createUserProfile } from "@lib/api/user/user";
+import { createUser } from "@lib/api/user/user";
 import { Card, Input, Label, Button } from "@components/ui";
 
 
@@ -22,7 +22,7 @@ export default function SignupPage() {
     }
 
     try {
-      const createUserRes = await createUserProfile({ name, email });
+      const createUserRes = await createUser({ name, email });
 
       if (createUserRes?.status === 201 || createUserRes?.status === 200) {
         // Now sign in the new user

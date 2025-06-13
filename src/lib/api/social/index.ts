@@ -1,10 +1,10 @@
 import axios from "axios";
-import type { SocialUserProfile, RunPost } from "@maratypes/social";
+import type { SocialProfile, RunPost } from "@maratypes/social";
 
 export const createSocialProfile = async (
-  data: Pick<SocialUserProfile, "userId" | "username"> & Partial<SocialUserProfile>
-): Promise<SocialUserProfile> => {
-  const { data: profile } = await axios.post<SocialUserProfile>(
+  data: Pick<SocialProfile, "userId" | "username"> & Partial<SocialProfile>
+): Promise<SocialProfile> => {
+  const { data: profile } = await axios.post<SocialProfile>(
     "/api/social/profile",
     data
   );
@@ -47,9 +47,9 @@ export const createPost = async (
 
 export const updateSocialProfile = async (
   id: string,
-  data: Partial<SocialUserProfile>
-): Promise<SocialUserProfile> => {
-  const { data: profile } = await axios.put<SocialUserProfile>(
+  data: Partial<SocialProfile>
+): Promise<SocialProfile> => {
+  const { data: profile } = await axios.put<SocialProfile>(
     `/api/social/profile/byId/${id}`,
     data
   );

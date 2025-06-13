@@ -5,7 +5,7 @@ import BasicInfoSection from "./BasicInfoSection";
 import PhysicalStatsSection from "./PhysicalStatsSection";
 import GoalsSection from "./GoalsSection";
 import PreferencesSection from "./PreferencesSection";
-import { useUserProfileForm } from "@hooks/useUserProfileForm";
+import { useUserForm } from "@hooks/useUserForm";
 import { Button } from "@components/ui";
 
 interface Props {
@@ -16,9 +16,9 @@ interface Props {
   submitLabel?: string;
 }
 
-export default function UserProfileForm({ 
-  initialUser, 
-  onSave, 
+export default function UserProfileForm({
+  initialUser,
+  onSave,
   alwaysEdit = false, 
   submitLabel = "Save Profile"
 }: Props) {
@@ -29,7 +29,7 @@ export default function UserProfileForm({
     handleChange,
     handleSave,
     toggleEditing,
-  } = useUserProfileForm(initialUser, onSave);
+  } = useUserForm(initialUser, onSave);
   // if alwaysEdit, override hook state
   const editing = alwaysEdit ? true : isEditing;
 

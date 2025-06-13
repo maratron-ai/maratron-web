@@ -2,8 +2,8 @@
 
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { updateUserProfile } from "@lib/api/user/user";
-import UserProfileForm from "@components/UserProfileForm";
+import { updateUser } from "@lib/api/user/user";
+import UserForm from "@components/profile/UserProfileForm";
 import { User } from "@maratypes/user";
 import { useEffect } from "react";
 import { Card } from "@components/ui";
@@ -36,7 +36,7 @@ export default function OnboardingProfile() {
   };
 
   const onSave = async (updated: User) => {
-    await updateUserProfile(initialUser.id, updated);
+    await updateUser(initialUser.id, updated);
     // Refresh session so avatar updates in navbar
     await update({ user: { avatarUrl: updated.avatarUrl ?? null } });
     router.push("/home");
@@ -51,7 +51,7 @@ export default function OnboardingProfile() {
             <h1 className="text-3xl font-bold text-center">
               Almost done—tell us about your running!
             </h1>
-            <UserProfileForm
+            <UserForm
               initialUser={initialUser}
               onSave={onSave}
               alwaysEdit

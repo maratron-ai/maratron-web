@@ -1,14 +1,14 @@
 "use client";
 
 import { useState, FormEvent } from "react";
-import type { SocialUserProfile } from "@maratypes/social";
+import type { SocialProfile } from "@maratypes/social";
 import { updateSocialProfile } from "@lib/api/social";
 import { Card, Button } from "@components/ui";
 import { TextField, TextAreaField } from "@components/ui/FormField";
 
 interface Props {
-  profile: SocialUserProfile;
-  onUpdated?: (p: SocialUserProfile) => void;
+  profile: SocialProfile;
+  onUpdated?: (p: SocialProfile) => void;
 }
 
 export default function SocialProfileEditForm({ profile, onUpdated }: Props) {

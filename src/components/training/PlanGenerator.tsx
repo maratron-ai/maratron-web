@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { useUserProfile } from "@hooks/useUserProfile";
+import { useUser } from "@hooks/useUser";
 import { TrainingLevel } from "@maratypes/user";
 import ToggleSwitch from "./ToggleSwitch";
 import RunningPlanDisplay from "./RunningPlanDisplay";
@@ -26,7 +26,7 @@ const DISTANCE_INFO: Record<RaceType, { miles: number; km: number; weeks: number
 const DEFAULT_RACE: RaceType = "full";
 
 const PlanGenerator: React.FC = () => {
-  const { profile: user, loading } = useUserProfile();
+  const { profile: user, loading } = useUser();
 
   // Set initial state to user's info (if available), fallback to defaults
 const [raceType, setRaceType] = useState<RaceType>(DEFAULT_RACE);

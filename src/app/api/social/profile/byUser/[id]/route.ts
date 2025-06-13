@@ -4,7 +4,7 @@ import { prisma } from "@lib/prisma";
 export async function GET(_req: NextRequest, ctx: { params: { id: string } }) {
   const { id } = await ctx.params;
   try {
-    const profile = await prisma.userProfile.findUnique({
+    const profile = await prisma.socialProfile.findUnique({
       where: { userId: id },
       include: {
         user: {

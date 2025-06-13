@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import RunForm from "@components/RunForm";
+import RunForm from "@components/runs/RunForm";
 import { createRun } from "@lib/api/run";
 import { Run } from "@maratypes/run";
 
@@ -12,7 +12,7 @@ const CreateRun: React.FC = () => {
     try {
       // attach the current user's ID here
       // For example, if you have an auth hook:
-      // run.userProfileId = currentUserId;
+      // run.socialProfileId = currentUserId;
 
       const createdRun = await createRun(run);
       console.log("Run created successfully:", createdRun);

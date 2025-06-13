@@ -2,11 +2,11 @@
 
 import Link from "next/link";
 import { useSession } from "next-auth/react";
-import RecentRuns from "@components/RecentRuns";
-import TrainingPlansList from "@components/TrainingPlansList";
-import WeeklyRuns from "@components/WeeklyRuns";
-import ShoesList from "@components/ShoesList";
-import DashboardStats from "@components/DashboardStats";
+import RecentRuns from "@components/runs/RecentRuns";
+import TrainingPlansList from "@components/training/TrainingPlansList";
+import WeeklyRuns from "@components/runs/WeeklyRuns";
+import ShoesList from "@components/shoes/ShoesList";
+import DashboardStats from "@components/runs/DashboardStats";
 import { Card, Skeleton } from "@components/ui";
 import {
   PlusCircle,
@@ -79,7 +79,7 @@ export default function HomePage() {
                 <span>Add New Shoes</span>
               </Card>
             </Link>
-            <Link href="/userProfile">
+            <Link href="/profile">
               <Card className="p-4 flex items-center gap-2 hover:bg-accent-3/10">
                 <User className="w-5 h-5" />
                 <span>Edit Profile</span>

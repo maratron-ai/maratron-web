@@ -14,7 +14,7 @@ export const uploadAvatar = async (file: File): Promise<string> => {
 
 
 // updates
-export const updateUserProfile = async (
+export const updateUser = async (
   userId: string,
   data: Partial<User>
 ) => {
@@ -25,14 +25,14 @@ export const updateUserProfile = async (
 
 
 // creates new
-export const createUserProfile = async (data: Partial<User>) => {
+export const createUser = async (data: Partial<User>) => {
   // post req
   const response = await axios.post(`/api/users`, data);
   return response;
 };
 
 // fetch by id
-export const getUserProfile = async (userId: string): Promise<User> => {
+export const getUser = async (userId: string): Promise<User> => {
   const response = await axios.get(`/api/users/${userId}`);
   return response.data;
 };

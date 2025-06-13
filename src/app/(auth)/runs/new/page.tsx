@@ -1,4 +1,4 @@
-import CreateRun from "@components/CreateRun";
+import CreateRun from "@components/runs/CreateRun";
 
 const NewRunPage = () => (
   <div className="w-full px-4 sm:px-6 lg:px-8 p-4">

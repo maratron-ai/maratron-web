@@ -1,11 +1,11 @@
 import { useState, useCallback } from "react";
 import { useSession } from "next-auth/react";
-import userProfileSchema from "@lib/schemas/userProfileSchema";
+import userSchema from "@lib/schemas/userSchema";
 import isYupValidationError from "@lib/utils/validation/isYupValidationError";
 import { User } from "@maratypes/user";
-import { updateUserProfile } from "@lib/api/user/user";
+import { updateUser } from "@lib/api/user/user";
 
-export function useUserProfileForm(
+export function useUserForm(
   initial: User,
   onSuccess: (u: User) => void
 ) {
@@ -20,7 +20,8 @@ export function useUserProfileForm(
     setFormData(initial);
   }, [initial]);
 
-  const handleChange = useCallback((field: keyof User, value: User[keyof User]) => {
+  const handleChange = useCallback(
+    (field: keyof User, value: User[keyof User]) => {
     setFormData((fd) => ({ ...fd, [field]: value }));
   }, []);
 
@@ -28,12 +29,12 @@ export function useUserProfileForm(
     setValidationErrors([]);
     const raw = { id: initial.id, ...formData };
     try {
-      const valid = await userProfileSchema.validate(raw, {
+      const valid = await userSchema.validate(raw, {
         abortEarly: false,
         stripUnknown: true,
       });
       const { id, ...payload } = valid as { id: string } & Partial<User>;
-      const updated = await updateUserProfile(id, payload);
+      const updated = await updateUser(id, payload);
       onSuccess(updated);
       if (update) {
         try {

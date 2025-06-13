@@ -1,4 +1,4 @@
-import PlanGenerator from "@components/PlanGenerator";
+import PlanGenerator from "@components/training/PlanGenerator";
 
 const PlanGeneratorPage = () => {
   return (

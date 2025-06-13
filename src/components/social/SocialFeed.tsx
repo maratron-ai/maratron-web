@@ -4,7 +4,7 @@ import axios from "axios";
 import type { RunPost } from "@maratypes/social";
 import { useSession } from "next-auth/react";
 import { useSocialProfile } from "@hooks/useSocialProfile";
-import CreateSocialPost from "@components/CreateSocialPost";
+import CreateSocialPost from "@components/social/CreateSocialPost";
 import { Button } from "@components/ui";
 import Link from "next/link";
 import Image from "next/image";
@@ -55,21 +55,21 @@ export default function SocialFeed() {
           <div className="flex items-center gap-2 mb-1">
             <Image
               src={
-                post.userProfile?.user?.avatarUrl ||
-                post.userProfile?.profilePhoto ||
+                post.socialProfile?.user?.avatarUrl ||
+                post.socialProfile?.profilePhoto ||
                 "/default_profile.png"
               }
-              alt={post.userProfile?.username || "avatar"}
+              alt={post.socialProfile?.username || "avatar"}
               width={32}
               height={32}
               className="w-8 h-8 rounded-full object-cover"
             />
-            {post.userProfile?.username && (
+            {post.socialProfile?.username && (
               <Link
-                href={`/u/${post.userProfile.username}`}
+                href={`/u/${post.socialProfile.username}`}
                 className="font-semibold hover:underline"
               >
-                {post.userProfile.username}
+                {post.socialProfile.username}
               </Link>
             )}
           </div>
