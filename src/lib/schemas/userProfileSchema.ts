@@ -1,8 +1,7 @@
 import * as Yup from "yup";
-import { DayOfWeek } from "@maratypes/basics";
+import { DayOfWeek, TrainingEnvironment } from "@maratypes/basics";
 import {
   TrainingLevel,
-  TrainingEnvironment,
   Device,
 } from "@maratypes/user";
 
