@@ -14,7 +14,6 @@ export default function SocialProfileForm({ onCreated }: Props) {
   const { data: session } = useSession();
   const [username, setUsername] = useState("");
   const [bio, setBio] = useState("");
-  const [profilePhoto, setProfilePhoto] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
@@ -33,12 +32,10 @@ export default function SocialProfileForm({ onCreated }: Props) {
         userId: session.user.id,
         username,
         bio: bio || undefined,
-        profilePhoto: profilePhoto || undefined,
       });
       setSuccess("Profile created!");
       setUsername("");
       setBio("");
-      setProfilePhoto("");
       onCreated?.();
     } catch {
       setError("Failed to create profile");
@@ -64,12 +61,6 @@ export default function SocialProfileForm({ onCreated }: Props) {
           value={bio}
           onChange={(_n, v) => setBio(String(v))}
           rows={2}
-        />
-        <TextField
-          label="Profile Photo URL"
-          name="profilePhoto"
-          value={profilePhoto}
-          onChange={(_n, v) => setProfilePhoto(String(v))}
         />
         <div className="flex justify-end">
           <Button type="submit">Create Profile</Button>
