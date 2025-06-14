@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@lib/prisma";
+import { defaultPlanName, getDistanceLabel, RaceType } from "@utils/running/planName";
 
 function parseDateUTC(date: string | Date): Date {
   if (date instanceof Date) {
@@ -56,7 +57,15 @@ export async function POST(request: NextRequest) {
     }
 
     const count = await prisma.runningPlan.count({ where: { userId } });
-    const defaultName = `Training Plan ${count + 1}`;
+    let defaultName = `Training Plan ${count + 1}`;
+    if (!name && body.raceType) {
+      const race = body.raceType as RaceType;
+      const label = getDistanceLabel(race);
+      const raceCount = await prisma.runningPlan.count({
+        where: { userId, name: { startsWith: label } },
+      });
+      defaultName = defaultPlanName(race, raceCount + 1);
+    }
     const isFirstPlan = count === 0;
 
     let start = startDate ? parseDateUTC(startDate) : undefined;
