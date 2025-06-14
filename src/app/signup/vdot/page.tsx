@@ -31,8 +31,16 @@ export default function SignupVDOTPage() {
         <div className="absolute inset-0 bg-background/80 backdrop-blur-sm" />
         <div className="relative w-full px-4 sm:px-6 lg:px-8 flex justify-center">
           <Card className="w-full max-w-md p-8 bg-background border border-muted shadow-xl space-y-6">
-            <h1 className="text-3xl font-bold text-center">Estimate Your VDOT</h1>
-            <VDOTEstimator userId={session.user.id!} onComplete={handleComplete} />
+            <h1 className="text-3xl font-bold text-center">
+              Estimate Your VDOT
+            </h1>
+            <p className="text-center text-sm text-muted-foreground">
+              This should be your fastest total time for the given distance.
+            </p>
+            <VDOTEstimator
+              userId={session.user.id!}
+              onComplete={handleComplete}
+            />
           </Card>
         </div>
       </section>
