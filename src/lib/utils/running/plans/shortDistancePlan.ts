@@ -1,20 +1,5 @@
 import { calculatePaceForVO2Max } from "../jackDaniels";
 import { WeekPlan, RunningPlanData, PlannedRun } from "@maratypes/runningPlan";
-import { formatPace } from "@utils/running/paces";
-
-// const formatPace = (sec: number): string => {
-//   const m = Math.floor(sec / 60);
-//   const s = Math.round(sec % 60);
-//   return `${m}:${s.toString().padStart(2, "0")}`;
-// };
-
-const MIN_WEEKS = 6;
-const FOUR_WEEK_CYCLE = 4;
-const TAPER_FACTOR = 0.75;
-const FOUR_WEEK_FACTOR = 0.85;
-const EASY_PERCENT = 0.2;
-const TEMPO_PERCENT = 0.25;
-const WUCD_PERCENT = 0.1; // warm-up/cool-down as fraction of run
 
 export const Units = ["miles", "kilometers"] as const;
 export type Unit = (typeof Units)[number];
@@ -25,253 +10,155 @@ export enum TrainingLevel {
   Advanced = "advanced",
 }
 
-const RAW_INTERVAL_WORKOUTS = [
-  {
-    description: "10×400 m sprints",
-    reps: 10,
-    distanceMeters: 400,
-    notes: "Sprint at I-pace with 60–90 s jog recovery.",
-  },
-  {
-    description: "6×800 m repeats",
-    reps: 6,
-    distanceMeters: 800,
-    notes: "Run at I-pace with equal jog recovery.",
-  },
-  {
-    description: "8×200 m hills",
-    reps: 8,
-    distanceMeters: 200,
-    notes: "Uphill at I-pace, jog downhill.",
-  },
-  {
-    description: "5×1 km repeats",
-    reps: 5,
-    distanceMeters: 1000,
-    notes: "Run at I-pace with 2–3 min recovery.",
-  },
-] as const;
+const MIN_WEEKS = 6;
+const TAPER_WEEKS = 1;
 
-export interface IntervalWorkout {
-  description: string;
-  reps: number;
-  distanceMeters: number;
-  notes: string;
-}
+const LONG_RUN_PCT = {
+  beginner: { start: 1.0, peak: 1.3 },
+  intermediate: { start: 1.2, peak: 1.5 },
+  advanced: { start: 1.4, peak: 1.8 },
+} as const;
 
-// -- Validation to enforce data validity at edges
-function validateWorkout(w: Partial<IntervalWorkout>): IntervalWorkout {
-  if (!w.description || w.reps! <= 0 || w.distanceMeters! <= 0 || !w.notes) {
-    throw new Error(`Invalid workout entry: ${JSON.stringify(w)}`);
-  }
-  return w as IntervalWorkout;
-}
-export const INTERVAL_WORKOUTS: readonly IntervalWorkout[] =
-  RAW_INTERVAL_WORKOUTS.map((w) => validateWorkout(w));
+const WEEKLY_MILEAGE_MULT = {
+  beginner: { start: 2.0, peak: 3.0 },
+  intermediate: { start: 2.5, peak: 4.0 },
+  advanced: { start: 3.0, peak: 5.0 },
+} as const;
 
-interface PaceZones {
-  easy: string;
-  marathon: string;
-  tempo: string;
-  interval: string;
-}
+const EASY_PCT = 0.5;
+const INTERVAL_PCT = 0.2;
+const TEMPO_PCT = 0.15;
+const TAPER_ADJ = 0.7;
 
-// -- Immutable progression state
-interface ProgressionState {
-  week: number;
-  mileage: number;
-}
-function computeMileageProgression(
-  weeks: number,
-  startingMileage: number,
-  taperStart: number,
-  volumeRule: { increasePct: number; maxAdd: number }
-): ProgressionState[] {
-  return Array.from({ length: weeks }, (_, i) => i + 1).reduce<
-    ProgressionState[]
-  >((acc, week) => {
-    const prev = acc[acc.length - 1]?.mileage ?? startingMileage;
-    let mileage: number;
-    if (week >= taperStart) {
-      mileage = prev * TAPER_FACTOR;
-    } else if (week % FOUR_WEEK_CYCLE === 0) {
-      mileage = prev * FOUR_WEEK_FACTOR;
-    } else {
-      mileage = Math.min(
-        prev * (1 + volumeRule.increasePct),
-        prev + volumeRule.maxAdd
-      );
+function chooseReps(totalMeters: number) {
+  const options = [200, 400, 800, 1000];
+  let rep = 400;
+  for (const d of options) {
+    const reps = Math.round(totalMeters / d);
+    if (reps <= 10) {
+      rep = d;
+      break;
     }
-    return [...acc, { week, mileage }];
-  }, []);
+  }
+  const reps = Math.max(1, Math.round(totalMeters / rep));
+  return { scheme: `${reps}×${rep}m`, totalMeters: reps * rep };
 }
 
 export function generateShortDistancePlan(
   weeks: number,
-  targetDistance: number,
+  raceDistance: number,
   distanceUnit: Unit,
   trainingLevel: TrainingLevel,
   vo2max: number,
-  startingWeeklyMileage: number,
-  targetPace?: string,
-  targetTotalTime?: string
 ): RunningPlanData {
   if (weeks < MIN_WEEKS) throw new Error(`Plan must be ≥ ${MIN_WEEKS} weeks.`);
-  if (targetDistance <= 0) throw new Error("Distance must be > 0");
-  if (startingWeeklyMileage <= 0) startingWeeklyMileage = targetDistance;
+  if (raceDistance <= 0) throw new Error("Distance must be > 0");
 
-  // -- helpers
-  const parseHMS = (s: string): number => {
-    const parts = s.split(":").map(Number);
-    return parts.length === 3
-      ? parts[0] * 3600 + parts[1] * 60 + parts[2]
-      : parts[0] * 60 + parts[1];
-  };
-
-  // -- compute goal pace override
-  let goalPaceSec: number | undefined;
-  if (targetTotalTime) {
-    goalPaceSec = parseHMS(targetTotalTime) / targetDistance;
-  } else if (targetPace) {
-    goalPaceSec = parseHMS(targetPace);
-  }
-
-  // -- distance conversions
+  const kmPerMile = 1.60934;
+  const toKm = (d: number) =>
+    distanceUnit === "miles" ? d * kmPerMile : d;
+  const fromKm = (d: number) =>
+    distanceUnit === "miles" ? d / kmPerMile : d;
   const toMeters = distanceUnit === "miles" ? 1609.34 : 1000;
-  const raceMeters = targetDistance * toMeters;
 
-  // -- pace zones
-  const zones: PaceZones = {
-    easy: calculatePaceForVO2Max(raceMeters, vo2max, "E"),
-    marathon: calculatePaceForVO2Max(raceMeters, vo2max, "M"),
-    tempo: calculatePaceForVO2Max(raceMeters, vo2max, "T"),
-    interval: calculatePaceForVO2Max(raceMeters, vo2max, "I"),
-  };
-  if (goalPaceSec !== undefined) zones.marathon = formatPace(goalPaceSec);
+  const raceKm = toKm(raceDistance);
+  const raceMeters = raceKm * 1000;
 
-  // -- edge-case validation for tempo pace
-  const easySec = parseHMS(zones.easy);
-  let tempoSecNum = parseHMS(zones.tempo);
-  const marathonSec = parseHMS(zones.marathon);
-  if (tempoSecNum >= easySec) {
-    tempoSecNum = easySec * 0.95; // Adjust tempo pace to be generically faster than easy pace
-    // throw new Error(
-    //   `Tempo pace (${zones.tempo}) should be faster than easy pace (${zones.easy}).`
-    // );
-  }
-  if (tempoSecNum >= marathonSec) {
-    tempoSecNum = marathonSec * 0.95;
-    // throw new Error(
-    //   `Tempo pace (${zones.tempo}) should be faster than marathon pace (${zones.marathon}).`
-    // );
-  }
+  const paceE = calculatePaceForVO2Max(raceMeters, vo2max, "E");
+  const paceM = calculatePaceForVO2Max(raceMeters, vo2max, "M");
+  const paceT = calculatePaceForVO2Max(raceMeters, vo2max, "T");
+  const paceI = calculatePaceForVO2Max(raceMeters, vo2max, "I");
 
-  // -- bounds for long-run progression
-  const levelBounds = {
-    [TrainingLevel.Beginner]: { startPct: 0.4, peakPct: 0.65 },
-    [TrainingLevel.Intermediate]: { startPct: 0.5, peakPct: 0.75 },
-    [TrainingLevel.Advanced]: { startPct: 0.6, peakPct: 0.85 },
-  } as const;
-  const { startPct, peakPct } = levelBounds[trainingLevel];
-  const initialLong = targetDistance * startPct;
-  const peakLong = targetDistance * peakPct;
+  const buildWeeks = weeks - TAPER_WEEKS;
+  const phases = [
+    ...Array(buildWeeks).fill("Build" as const),
+    ...Array(TAPER_WEEKS).fill("Taper" as const),
+  ];
 
-  const volumeRules = {
-    [TrainingLevel.Beginner]: { increasePct: 0.05, maxAdd: 5 },
-    [TrainingLevel.Intermediate]: { increasePct: 0.1, maxAdd: 10 },
-    [TrainingLevel.Advanced]: { increasePct: 0.15, maxAdd: 15 },
-  } as const;
+  const schedule: WeekPlan[] = [];
+  const { start: SM, peak: PM } = WEEKLY_MILEAGE_MULT[trainingLevel];
+  const { start: LS, peak: LP } = LONG_RUN_PCT[trainingLevel];
 
-  const taperStart = weeks - 2;
-  const progression = computeMileageProgression(
-    weeks,
-    startingWeeklyMileage,
-    taperStart,
-    volumeRules[trainingLevel]
-  );
+  const round1 = (n: number) => Math.round(n * 10) / 10;
 
-  const schedule: WeekPlan[] = progression.map(({ week, mileage }) => {
+  for (let w = 1; w <= weeks; w++) {
+    const phase = phases[w - 1];
+    let weeklyMileageKm: number;
+    if (phase === "Build") {
+      const ratio = buildWeeks === 1 ? 1 : (w - 1) / (buildWeeks - 1);
+      weeklyMileageKm = raceKm * (SM + (PM - SM) * ratio);
+    } else {
+      weeklyMileageKm = raceKm * PM;
+    }
+    weeklyMileageKm = round1(weeklyMileageKm);
 
-    // Long-run progression logic
-    const longDist =
-      week < taperStart
-        ? initialLong +
-          (peakLong - initialLong) *
-            Math.min(Math.max((week - 1) / (taperStart - 1), 0), 1)
-        : peakLong * Math.pow(TAPER_FACTOR, week - (taperStart - 1));
+    const easyKm = weeklyMileageKm * EASY_PCT;
+    let intervalKm = weeklyMileageKm * INTERVAL_PCT;
+    let tempoKm = weeklyMileageKm * TEMPO_PCT;
 
-    // Interval workout with rep-specific pace
-    const workout = INTERVAL_WORKOUTS[(week - 1) % INTERVAL_WORKOUTS.length];
-    const intervalMileage = Number(
-      ((workout.reps * workout.distanceMeters) / toMeters).toFixed(1)
-    );
-    const baseIntervalPaceSec = parseHMS(zones.interval);
-    const repDistanceUnits = workout.distanceMeters / toMeters;
-    const repPaceSec = baseIntervalPaceSec * repDistanceUnits;
-    const repPace = formatPace(repPaceSec);
-    let intervalNotes = `${workout.description} – ${workout.notes}`;
-    intervalNotes += ` Each ${workout.distanceMeters}m in ~${repPace}`;
-    if (workout.description.toLowerCase().includes("sprint")) {
-      intervalNotes += `; total sprint distance: ${intervalMileage} ${distanceUnit}.`;
+    const longPct =
+      phase === "Build"
+        ? LS + (LP - LS) * ((w - 1) / (buildWeeks - 1))
+        : LP;
+    let longKm = raceKm * longPct;
+
+    if (phase === "Taper") {
+      intervalKm *= TAPER_ADJ;
+      tempoKm *= TAPER_ADJ;
+      longKm *= TAPER_ADJ;
     }
 
-    // Easy & tempo runs
-    const easyMileage = Number((mileage * EASY_PERCENT).toFixed(1));
-    const tempoMileage = Number((mileage * TEMPO_PERCENT).toFixed(1));
-    const tempoNotes = `Tempo at T-pace (${
-      zones.tempo
-    }) for ${tempoMileage} ${distanceUnit}, plus ${WUCD_PERCENT * 100}% WU/CD`;
-
+    const intervalReps = chooseReps(intervalKm * 1000);
     const runs: PlannedRun[] = [
       {
         type: "easy",
         unit: distanceUnit,
-        mileage: easyMileage,
-        targetPace: { unit: distanceUnit, pace: zones.easy },
+        mileage: round1(fromKm(easyKm)),
+        targetPace: { unit: distanceUnit, pace: paceE },
       },
       {
         type: "interval",
         unit: distanceUnit,
-        mileage: intervalMileage,
-        targetPace: { unit: distanceUnit, pace: zones.interval },
-        notes: intervalNotes,
+        mileage: round1(intervalReps.totalMeters / toMeters),
+        targetPace: { unit: distanceUnit, pace: paceI },
+        notes: `${intervalReps.scheme} @ I-pace`,
       },
       {
         type: "tempo",
         unit: distanceUnit,
-        mileage: tempoMileage,
-        targetPace: { unit: distanceUnit, pace: formatPace(tempoSecNum) },
-        notes: tempoNotes,
+        mileage: round1(fromKm(tempoKm)),
+        targetPace: { unit: distanceUnit, pace: paceT },
+        notes: `${tempoKm.toFixed(1)} km @ T-pace`,
       },
       {
         type: "long",
         unit: distanceUnit,
-        mileage: Number(longDist.toFixed(1)),
-        targetPace: { unit: distanceUnit, pace: zones.marathon },
+        mileage: round1(fromKm(longKm)),
+        targetPace: { unit: distanceUnit, pace: paceE },
+        notes: `${longKm.toFixed(1)} km @ E-pace`,
       },
     ];
-    if (week === weeks) {
+
+    if (w === weeks) {
       runs[runs.length - 1] = {
         ...runs[runs.length - 1],
         type: "marathon",
-        mileage: Number(targetDistance.toFixed(1)),
+        mileage: round1(fromKm(raceKm)),
+        targetPace: { unit: distanceUnit, pace: paceM },
       };
     }
 
-    const weeklyMileage = Number(
-      runs.reduce((tot, r) => tot + r.mileage, 0).toFixed(1)
-    );
+    const weeklyMileage = round1(runs.reduce((tot, r) => tot + r.mileage, 0));
 
-    const notes = week === weeks ? "Race week" : week >= taperStart ? "Taper week" : undefined;
-
-    return {
-      weekNumber: week,
-      weeklyMileage,
+    schedule.push({
+      weekNumber: w,
+      phase,
       unit: distanceUnit,
+      weeklyMileage,
       runs,
-      notes,
-    };
-  });
+      notes: phase === "Taper" ? "Taper week" : "Build week",
+    });
+  }
 
   return { weeks, schedule, notes: "Generated by Maratron" };
 }
