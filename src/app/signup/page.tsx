@@ -51,9 +51,9 @@ export default function SignupPage() {
       <section className="relative py-20 overflow-hidden flex items-center justify-center">
         <div className="absolute inset-0 bg-background/80 backdrop-blur-sm" />
         <div className="relative w-full px-4 sm:px-6 lg:px-8 flex justify-center">
-          <Card className="w-full max-w-md p-8 bg-white/90 dark:bg-white/10 shadow-xl space-y-6">
+          <Card className="w-full max-w-md p-8 bg-background/90 dark:bg-background/40 shadow-xl space-y-6">
             <h1 className="text-3xl font-bold text-center">Create Your Account</h1>
-            {error && <p className="text-red-500 text-center">{error}</p>}
+            {error && <p className="text-brand-orange-dark text-center">{error}</p>}
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="name">Name</Label>

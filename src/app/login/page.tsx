@@ -78,7 +78,7 @@ const LoginPage: React.FC = () => {
     <div className="min-h-screen flex flex-col">
       <main className="flex-grow w-full px-4 sm:px-6 lg:px-8 py-6 space-y-6">
         <h1 className="text-3xl font-bold text-center">Login</h1>
-        {error && <p className="text-red-500 text-center">{error}</p>}
+        {error && <p className="text-brand-orange-dark text-center">{error}</p>}
         <div className="flex justify-center">
           <button
             type="button"

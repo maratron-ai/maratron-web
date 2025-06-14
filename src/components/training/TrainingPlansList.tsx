@@ -101,7 +101,7 @@ export default function TrainingPlansList() {
             {plan.id && (
               <Button
                 onClick={() => deletePlan(plan.id!)}
-                className="text-sm px-2 py-1 bg-red-600 hover:bg-red-700"
+                className="text-sm px-2 py-1 bg-brand-orange-dark hover:bg-brand-orange"
               >
                 Delete
               </Button>
