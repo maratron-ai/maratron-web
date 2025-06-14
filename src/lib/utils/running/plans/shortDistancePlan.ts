@@ -1,4 +1,5 @@
-import { calculatePaceForVDOT } from "../jackDaniels";
+import { calculateGoalPaceForVDOT } from "../jackDaniels";
+import { parsePace, getPacesFromRacePace } from "../paces";
 import { WeekPlan, RunningPlanData, PlannedRun } from "@maratypes/runningPlan";
 
 export const Units = ["miles", "kilometers"] as const;
@@ -10,7 +11,8 @@ export enum TrainingLevel {
   Advanced = "advanced",
 }
 
-const MIN_WEEKS = 6;
+const MIN_WEEKS = 4;
+const MAX_WEEKS = 16;
 const TAPER_WEEKS = 1;
 
 const LONG_RUN_PCT = {
@@ -27,8 +29,10 @@ const WEEKLY_MILEAGE_MULT = {
 
 const EASY_PCT = 0.5;
 const INTERVAL_PCT = 0.2;
-const TEMPO_PCT = 0.15;
-const TAPER_ADJ = 0.7;
+const TEMPO_PCT = 0.22;
+const TAPER_FACTOR = 0.7;
+
+const MIN_TEMPO_RATIO = 0.5; // minimum tempo distance as fraction of race
 
 function chooseReps(totalMeters: number) {
   const options = [200, 400, 800, 1000];
@@ -51,8 +55,13 @@ export function generateShortDistancePlan(
   trainingLevel: TrainingLevel,
   vdot: number,
 ): RunningPlanData {
-  if (weeks < MIN_WEEKS) throw new Error(`Plan must be ≥ ${MIN_WEEKS} weeks.`);
+  if (!Number.isInteger(weeks) || weeks < MIN_WEEKS || weeks > MAX_WEEKS)
+    throw new Error(
+      `Weeks must be an integer between ${MIN_WEEKS} and ${MAX_WEEKS}.`
+    );
   if (raceDistance <= 0) throw new Error("Distance must be > 0");
+  if (!Units.includes(distanceUnit)) throw new Error("Invalid distance unit");
+  if (vdot <= 0) throw new Error("VDOT must be > 0");
 
   const kmPerMile = 1.60934;
   const toKm = (d: number) =>
@@ -64,10 +73,9 @@ export function generateShortDistancePlan(
   const raceKm = toKm(raceDistance);
   const raceMeters = raceKm * 1000;
 
-  const paceE = calculatePaceForVDOT(raceMeters, vdot, "E");
-  const paceM = calculatePaceForVDOT(raceMeters, vdot, "M");
-  const paceT = calculatePaceForVDOT(raceMeters, vdot, "T");
-  const paceI = calculatePaceForVDOT(raceMeters, vdot, "I");
+  const goalPace = calculateGoalPaceForVDOT(raceMeters, vdot);
+  const { easy: paceE, threshold: paceT, interval: paceI } =
+    getPacesFromRacePace(parsePace(goalPace));
 
   const buildWeeks = weeks - TAPER_WEEKS;
   const phases = [
@@ -90,41 +98,55 @@ export function generateShortDistancePlan(
     } else {
       weeklyMileageKm = raceKm * PM;
     }
+    if (phase === "Taper") {
+      weeklyMileageKm *= TAPER_FACTOR;
+    }
     weeklyMileageKm = round1(weeklyMileageKm);
 
-    const easyKm = weeklyMileageKm * EASY_PCT;
-    let intervalKm = weeklyMileageKm * INTERVAL_PCT;
+    const easyKmTotal = weeklyMileageKm * EASY_PCT;
+    const easyKmSplit = easyKmTotal / 2;
+    const intervalKm = weeklyMileageKm * INTERVAL_PCT;
     let tempoKm = weeklyMileageKm * TEMPO_PCT;
+    if (phase !== "Taper") {
+      tempoKm = Math.max(tempoKm, raceKm * MIN_TEMPO_RATIO);
+    }
 
     const longPct =
       phase === "Build"
         ? LS + (LP - LS) * ((w - 1) / (buildWeeks - 1))
         : LP;
     let longKm = raceKm * longPct;
-
     if (phase === "Taper") {
-      intervalKm *= TAPER_ADJ;
-      tempoKm *= TAPER_ADJ;
-      longKm *= TAPER_ADJ;
+      longKm *= TAPER_FACTOR;
     }
 
     const intervalReps = chooseReps(intervalKm * 1000);
     const runs: PlannedRun[] = [
       {
         type: "easy",
+        day: "Monday",
         unit: distanceUnit,
-        mileage: round1(fromKm(easyKm)),
+        mileage: round1(fromKm(easyKmSplit)),
         targetPace: { unit: distanceUnit, pace: paceE },
       },
       {
         type: "interval",
+        day: "Wednesday",
         unit: distanceUnit,
         mileage: round1(intervalReps.totalMeters / toMeters),
         targetPace: { unit: distanceUnit, pace: paceI },
         notes: `${intervalReps.scheme} @ I-pace`,
       },
       {
+        type: "easy",
+        day: "Thursday",
+        unit: distanceUnit,
+        mileage: round1(fromKm(easyKmSplit)),
+        targetPace: { unit: distanceUnit, pace: paceE },
+      },
+      {
         type: "tempo",
+        day: "Saturday",
         unit: distanceUnit,
         mileage: round1(fromKm(tempoKm)),
         targetPace: { unit: distanceUnit, pace: paceT },
@@ -132,6 +154,7 @@ export function generateShortDistancePlan(
       },
       {
         type: "long",
+        day: "Sunday",
         unit: distanceUnit,
         mileage: round1(fromKm(longKm)),
         targetPace: { unit: distanceUnit, pace: paceE },
@@ -142,9 +165,9 @@ export function generateShortDistancePlan(
     if (w === weeks) {
       runs[runs.length - 1] = {
         ...runs[runs.length - 1],
-        type: "marathon",
+        type: "race",
         mileage: round1(fromKm(raceKm)),
-        targetPace: { unit: distanceUnit, pace: paceM },
+        targetPace: { unit: distanceUnit, pace: goalPace },
       };
     }
 

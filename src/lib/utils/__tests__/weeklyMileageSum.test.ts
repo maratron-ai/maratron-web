@@ -12,7 +12,7 @@ describe("weeklyMileage totals", () => {
   });
 
   it("short plan weekly mileage equals sum of runs", () => {
-    const plan = generateShortDistancePlan(8, 6.2, "miles", ShortLevel.Beginner, 40, 6.2);
+    const plan = generateShortDistancePlan(8, 6.2, "miles", ShortLevel.Beginner, 40);
     plan.schedule.forEach((week) => {
       const sum = week.runs.reduce((tot, r) => tot + r.mileage, 0);
       expect(Number(sum.toFixed(1))).toBeCloseTo(week.weeklyMileage, 1);
