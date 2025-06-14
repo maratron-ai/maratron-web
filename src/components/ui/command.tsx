@@ -40,4 +40,3 @@ export const CommandEmpty = CommandPrimitive.Empty;
 export const CommandItem = CommandPrimitive.Item;
 export const CommandGroup = CommandPrimitive.Group;
 export const CommandSeparator = CommandPrimitive.Separator;
-export const CommandShortcut = CommandPrimitive.Shortcut;

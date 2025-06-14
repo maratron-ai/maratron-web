@@ -26,7 +26,7 @@ export default function AvatarUpload({ value, onChange, disabled }: AvatarUpload
       <Avatar className="h-20 w-20">
         {value && <AvatarImage src={value} alt="Avatar preview" />}
         <AvatarFallback>
-          <DefaultAvatar seed="upload" size={80} className="w-full h-full" />
+          <DefaultAvatar size={80} className="w-full h-full" />
         </AvatarFallback>
       </Avatar>
       <div>
