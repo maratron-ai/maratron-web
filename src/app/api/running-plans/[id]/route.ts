@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@lib/prisma";
+import type { RunningPlanData } from "@maratypes/runningPlan";
 
 function parseDateUTC(date: string | Date): Date {
   if (date instanceof Date) {
@@ -20,8 +21,8 @@ function addWeeks(date: Date, weeks: number): Date {
 
 export async function GET(request: NextRequest, context: { params: { id: string } }) {
   try {
-    const { params } = await context
-    const { id } = await params
+    const { params } = context
+    const { id } = params
     const plan = await prisma.runningPlan.findUnique({ where: { id } });
     if (!plan) {
       return NextResponse.json({ error: "Plan not found" }, { status: 404 });
@@ -39,7 +40,7 @@ export async function GET(request: NextRequest, context: { params: { id: string 
 export async function PUT(request: NextRequest, context: { params: { id: string } }) {
   try {
     const body = await request.json();
-    const { params } = await context;
+    const { params } = context;
     const { id } = params;
 
     const existing = await prisma.runningPlan.findUnique({ where: { id } });
@@ -47,16 +48,17 @@ export async function PUT(request: NextRequest, context: { params: { id: string 
       return NextResponse.json({ error: "Plan not found" }, { status: 404 });
     }
 
+    const existingPlanData = existing.planData as unknown as RunningPlanData;
     const newWeeks =
-      body.weeks ?? body.planData?.weeks ?? existing.weeks ?? existing.planData?.weeks;
+      body.weeks ?? body.planData?.weeks ?? existing.weeks ?? existingPlanData.weeks;
 
     let start = body.startDate ? parseDateUTC(body.startDate) : existing.startDate ?? undefined;
     let end = body.endDate ? parseDateUTC(body.endDate) : existing.endDate ?? undefined;
 
     if (body.startDate && !body.endDate) {
-      end = addWeeks(start, Number(newWeeks) - 1);
+      end = addWeeks(start!, Number(newWeeks) - 1);
     } else if (body.endDate && !body.startDate) {
-      start = addWeeks(end, -(Number(newWeeks) - 1));
+      start = addWeeks(end!, -(Number(newWeeks) - 1));
     }
 
     const updated = await prisma.runningPlan.update({
@@ -76,7 +78,7 @@ export async function PUT(request: NextRequest, context: { params: { id: string 
 
 export async function DELETE(request: NextRequest, context: { params: { id: string } }) {
   try {
-    const { params } = await context
+    const { params } = context
     const { id } = params
     await prisma.runningPlan.delete({ where: { id } });
     return NextResponse.json({ message: "Plan deleted" }, { status: 200 });

@@ -588,6 +588,7 @@ const runningPlanData: RunningPlanData = {
 // Wrap the planData in a RunningPlan object
 const runningPlan: RunningPlan = {
   userId: "user123", // replace with actual user id
+  name: "SuperCoffee Marathon Plan",
   planData: runningPlanData,
   createdAt: new Date(),
   updatedAt: new Date(),
