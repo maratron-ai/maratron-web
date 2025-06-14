@@ -14,6 +14,7 @@ export default {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        muted: "var(--muted)",
         "muted-foreground": "var(--muted-foreground)",
         primary: "rgb(var(--primary-rgb) / <alpha-value>)",
         secondary: "rgb(var(--secondary-rgb) / <alpha-value>)",
