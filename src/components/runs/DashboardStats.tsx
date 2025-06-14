@@ -41,6 +41,9 @@ export default function DashboardStats() {
       }
     }
     fetchRuns();
+    const handle = () => fetchRuns();
+    window.addEventListener("runsUpdated", handle);
+    return () => window.removeEventListener("runsUpdated", handle);
   }, [session?.user, profile?.defaultDistanceUnit]);
 
   return (

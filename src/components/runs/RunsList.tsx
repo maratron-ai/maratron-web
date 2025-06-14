@@ -35,6 +35,9 @@ export default function RunsList() {
     };
 
     fetchRuns();
+    const handle = () => fetchRuns();
+    window.addEventListener("runsUpdated", handle);
+    return () => window.removeEventListener("runsUpdated", handle);
   }, [session?.user?.id]);
 
   if (loading)

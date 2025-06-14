@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { listRunningPlans, updateRunningPlan } from "@lib/api/plan";
-import { createRun } from "@lib/api/run";
+import { createRun, deleteRun, listRuns } from "@lib/api/run";
 import { Card, Select, SelectTrigger, SelectContent, SelectItem, SelectValue, Checkbox, Progress, Spinner } from "@components/ui";
 import type { RunningPlan } from "@maratypes/runningPlan";
 import { assignDatesToPlan } from "@utils/running/planDates";
@@ -121,6 +121,27 @@ export default function WeeklyRuns() {
           userId: plan.userId,
           name: `${plan.name} - Week ${weekIndex + 1} - ${run.type}`,
         });
+        if (typeof window !== "undefined") {
+          window.dispatchEvent(new Event("runsUpdated"));
+        }
+      } else if (wasDone && !run.done) {
+        const runs = await listRuns();
+        const userRuns = runs
+          .filter(
+            (r) =>
+              r.userId === plan.userId &&
+              r.name === `${plan.name} - Week ${weekIndex + 1} - ${run.type}`
+          )
+          .sort(
+            (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+          );
+        const toDelete = userRuns[0];
+        if (toDelete?.id) {
+          await deleteRun(toDelete.id);
+          if (typeof window !== "undefined") {
+            window.dispatchEvent(new Event("runsUpdated"));
+          }
+        }
       }
       setPlan(updated);
     } catch (err) {
