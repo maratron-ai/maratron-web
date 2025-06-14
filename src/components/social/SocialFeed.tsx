@@ -90,12 +90,17 @@ export default function SocialFeed() {
               onClick={() => setSelectedImage(post.photoUrl!)}
             />
           )}
-          <LikeButton
-            postId={post.id}
-            initialLiked={post.liked ?? false}
-            initialCount={post.likeCount ?? post._count?.likes ?? 0}
-          />
-          <CommentSection postId={post.id} />
+          <div className="flex gap-2 mt-2">
+            <LikeButton
+              postId={post.id}
+              initialLiked={post.liked ?? false}
+              initialCount={post.likeCount ?? post._count?.likes ?? 0}
+            />
+            <CommentSection
+              postId={post.id}
+              initialCount={post.commentCount ?? post._count?.comments ?? 0}
+            />
+          </div>
         </div>
       ))}
       <Dialog open={!!selectedImage} onOpenChange={(o) => !o && setSelectedImage(null)}>

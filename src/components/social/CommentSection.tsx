@@ -5,19 +5,29 @@ import { listComments, addComment } from "@lib/api/social";
 import type { Comment } from "@maratypes/social";
 import { Button, Input } from "@components/ui";
 import Image from "next/image";
+import { MessageCircle } from "lucide-react";
 
 interface Props {
   postId: string;
+  initialCount?: number;
+  onCommentAdded?: () => void;
 }
 
-export default function CommentSection({ postId }: Props) {
+export default function CommentSection({
+  postId,
+  initialCount = 0,
+  onCommentAdded,
+}: Props) {
   const { profile } = useSocialProfile();
   const [comments, setComments] = useState<Comment[]>([]);
   const [text, setText] = useState("");
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [count, setCount] = useState(initialCount);
 
   const fetchComments = useCallback(async () => {
+    setLoading(true);
     try {
       const data = await listComments(postId);
       setComments(data);
@@ -27,8 +37,10 @@ export default function CommentSection({ postId }: Props) {
   }, [postId]);
 
   useEffect(() => {
-    fetchComments();
-  }, [fetchComments]);
+    if (open) {
+      fetchComments();
+    }
+  }, [open, fetchComments]);
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -37,6 +49,8 @@ export default function CommentSection({ postId }: Props) {
     try {
       const comment = await addComment(postId, profile.id, text.trim());
       setComments((c) => [...c, comment]);
+      setCount((c) => c + 1);
+      onCommentAdded?.();
       setText("");
     } finally {
       setSubmitting(false);
@@ -45,38 +59,50 @@ export default function CommentSection({ postId }: Props) {
 
   return (
     <div className="mt-2 space-y-2">
-      {loading ? (
-        <p className="text-sm text-foreground/60">Loading comments...</p>
-      ) : (
-        comments.map((c) => (
-          <div key={c.id} className="flex items-start gap-2 text-sm">
-            <Image
-              src={c.socialProfile?.avatarUrl || "/default_profile.png"}
-              alt={c.socialProfile?.username || "avatar"}
-              width={24}
-              height={24}
-              className="w-6 h-6 rounded-full object-cover"
-            />
-            <p>
-              <span className="font-semibold">{c.socialProfile?.username}</span>{" "}
-              {c.text}
-            </p>
-          </div>
-        ))
-      )}
-      {profile && (
-        <form onSubmit={onSubmit} className="flex gap-2">
-          <Input
-            value={text}
-            onChange={(e) => setText(e.target.value)}
-            placeholder="Add a comment"
-            className="h-8"
-          />
-          <Button type="submit" size="sm" disabled={submitting || !text.trim()}
-            >
-            Post
-          </Button>
-        </form>
+      <Button
+        size="sm"
+        variant={open ? "secondary" : "outline"}
+        onClick={() => setOpen((o) => !o)}
+        className="flex items-center gap-1"
+      >
+        <MessageCircle className="w-4 h-4" />
+        {count}
+      </Button>
+      {open && (
+        <>
+          {loading ? (
+            <p className="text-sm text-foreground/60">Loading comments...</p>
+          ) : (
+            comments.map((c) => (
+              <div key={c.id} className="flex items-start gap-2 text-sm">
+                <Image
+                  src={c.socialProfile?.avatarUrl || "/default_profile.png"}
+                  alt={c.socialProfile?.username || "avatar"}
+                  width={24}
+                  height={24}
+                  className="w-6 h-6 rounded-full object-cover"
+                />
+                <p>
+                  <span className="font-semibold">{c.socialProfile?.username}</span>{" "}
+                  {c.text}
+                </p>
+              </div>
+            ))
+          )}
+          {profile && (
+            <form onSubmit={onSubmit} className="flex gap-2 mt-2">
+              <Input
+                value={text}
+                onChange={(e) => setText(e.target.value)}
+                placeholder="Add a comment"
+                className="h-8"
+              />
+              <Button type="submit" size="sm" disabled={submitting || !text.trim()}>
+                Post
+              </Button>
+            </form>
+          )}
+        </>
       )}
     </div>
   );
