@@ -114,7 +114,7 @@ export default function WeeklyRuns() {
           distance: run.mileage,
           distanceUnit: run.unit,
           userId: plan.userId,
-          name: `Week ${weekIndex + 1} - ${run.type}`,
+          name: `${plan.name} - Week ${weekIndex + 1} - ${run.type}`,
         });
       }
       setPlan(updated);
