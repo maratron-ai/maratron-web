@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { useSocialProfile } from "@hooks/useSocialProfile";
 import { likePost, unlikePost } from "@lib/api/social";
 import { Button } from "@components/ui";
+import { Heart } from "lucide-react";
 
 interface Props {
   postId: string;
@@ -42,8 +43,18 @@ export default function LikeButton({ postId, initialLiked = false, initialCount 
   if (!profile) return null;
 
   return (
-    <Button size="sm" variant={liked ? "secondary" : "outline"} onClick={toggleLike} disabled={processing} className="mt-2">
-      {liked ? "Unlike" : "Like"} ({count})
+    <Button
+      size="sm"
+      variant={liked ? "secondary" : "outline"}
+      onClick={toggleLike}
+      disabled={processing}
+      className="flex items-center gap-1"
+      aria-label={liked ? "Unlike" : "Like"}
+    >
+      <Heart
+        className={`w-4 h-4 ${liked ? "fill-current text-primary" : ""}`}
+      />
+      {count}
     </Button>
   );
 }
