@@ -3,11 +3,12 @@
   display: inline-flex;
   width: 200px; 
   height: 40px; 
-  border: 1px solid var(--accent);
+  border: 1px solid rgba(var(--accent-rgb), 0.5);
   border-radius: 12px;
-  background-color: transparent;
+  background-color: rgba(var(--primary-rgb), 0.1);
   overflow: hidden;
   cursor: pointer;
+  box-shadow: 0 0 0 2px rgba(var(--primary-rgb), 0.1);
 }
 
 .input {
@@ -29,17 +30,19 @@
   content: "";
   position: absolute;
   top: 0;
-  left: 0;
+  left: 4px;
   width: 50%;
   height: 100%;
-  background-color: #fff;
+  background-color: rgb(var(--primary-rgb));
   border-radius: 12px;
-  transition: transform 0.3s ease;
+  transition: transform 1s ease, left 1s ease;
   z-index: 0;
+  transform: translateX(0);
 }
 
 .input:checked + .slider::before {
   transform: translateX(100%);
+  left: calc(100% - 4px - 50%);
 }
 
 .labelLeft,
@@ -49,21 +52,18 @@
   line-height: 40px;
   font-size: 1rem;
   font-weight: 500;
-  color: var(--accent);
+  background-color: var(--background);
+  color: var(--foreground);
   position: relative;
   z-index: 1;
 }
 
 .input:not(:checked) + .slider .labelLeft {
-  background-image: linear-gradient(to right, var(--primary), var(--secondary));
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
+  background-color: var(--foreground);
+  color: var(--background);
 }
 
 .input:checked + .slider .labelRight {
-  background-image: linear-gradient(to right, var(--primary), var(--secondary));
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
+  background-color: var(--foreground);
+  color: var(--background);
 }

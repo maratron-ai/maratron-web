@@ -3,23 +3,45 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useSession, signIn, signOut } from "next-auth/react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 import { Menu } from "lucide-react";
 import DefaultAvatar from "@components/DefaultAvatar";
 import { Sheet, SheetContent, SheetTrigger } from "@components/ui";
-import ModeToggle from "@components/ModeToggle";
+// import ModeToggle from "@components/ModeToggle";
 
 export default function Navbar() {
   const { data: session, status } = useSession();
   const [desktopMenuOpen, setDesktopMenuOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const pathname = usePathname();
+
+  // Close dropdowns when route changes
+  useEffect(() => {
+    setDesktopMenuOpen(false);
+    setMobileMenuOpen(false);
+  }, [pathname]);
+
+  // Auto-close dropdowns after 5 seconds
+  useEffect(() => {
+    if (desktopMenuOpen) {
+      const timer = setTimeout(() => setDesktopMenuOpen(false), 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [desktopMenuOpen]);
+
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      const timer = setTimeout(() => setMobileMenuOpen(false), 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [mobileMenuOpen]);
 
   const navLinks = [
     { href: "/home", label: "Home" },
-    { href: "/runs/new", label: "Add Run" },
-    { href: "/shoes/new", label: "Add Shoe" },
-    { href: "/plan-generator", label: "Plans" },
-    { href: "/about", label: "About" },
+    { href: "/social", label: "Social" },
+    { href: "/social/feed", label: "Social Feed" },
+    { href: "/social/search", label: "Find Runners" },
   ];
 
   return (
@@ -42,7 +64,7 @@ export default function Navbar() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="hover:text-primary transition-colors"
+                  className="text-foreground hover:text-[rgb(var(--primary-rgb))] transition-colors"
                 >
                   {link.label}
                 </Link>
@@ -51,13 +73,13 @@ export default function Navbar() {
               <>
                 <Link
                   href="/about"
-                  className="hover:text-primary transition-colors"
+                  className="text-foreground hover:text-[rgb(var(--primary-rgb))] transition-colors"
                 >
                   About
                 </Link>
                 <Link
                   href="/contact"
-                  className="hover:text-primary transition-colors"
+                  className="text-foreground hover:text-[rgb(var(--primary-rgb))] transition-colors"
                 >
                   Contact
                 </Link>
@@ -78,25 +100,27 @@ export default function Navbar() {
                   aria-expanded={desktopMenuOpen}
                   className="focus:outline-none bg-transparent p-0 hover:bg-transparent focus:ring-0"
                 >
-                  {session.user.avatarUrl ? (
-                    <Image
-                      src={session.user.avatarUrl}
-                      alt="avatar"
-                      width={32}
-                      height={32}
-                      className="w-8 h-8 rounded-full object-cover"
-                    />
-                  ) : (
-                    <DefaultAvatar
-                      seed={session.user.id || session.user.email || ""}
-                      size={32}
-                    />
-                  )}
+                  
+                    {session.user?.avatarUrl ? (
+                      <Image
+                        src={session.user.avatarUrl}
+                        alt={session.user.name || "User Avatar"}
+                        width={32}
+                        height={32}
+                        className="w-8 h-8 rounded-full object-cover border border-muted"
+                        priority
+                      />
+                    ) : (
+                      <DefaultAvatar
+                        size={32}
+                      />
+                    )}
+                  
                 </button>
                 {desktopMenuOpen && (
                   <div className="absolute right-0 mt-2 w-40 bg-background border border-accent/20 rounded shadow-md z-50">
                     <Link
-                      href="/userProfile"
+                      href="/profile"
                       className="block px-4 py-2 hover:bg-accent/20"
                     >
                       Profile
@@ -120,12 +144,12 @@ export default function Navbar() {
           ) : (
             <button
               onClick={() => signIn()}
-              className="bg-primary text-white px-4 py-2 rounded hover:bg-primary/90"
+              className="hover:text-primary transition-colors"
             >
               Sign In
             </button>
           )}
-          <ModeToggle />
+          {/* <ModeToggle /> */}
         </div>
 
         {/* Mobile Hamburger and Avatar */}
@@ -150,7 +174,6 @@ export default function Navbar() {
                     />
                   ) : (
                     <DefaultAvatar
-                      seed={session.user.id || session.user.email || ""}
                       size={32}
                     />
                   )}
@@ -159,7 +182,7 @@ export default function Navbar() {
               {mobileMenuOpen && (
                 <div className="absolute right-0 mt-2 w-40 bg-background border border-accent/20 rounded shadow-md z-50">
                   <Link
-                    href="/userProfile"
+                    href="/profile"
                     className="block px-4 py-2 hover:bg-accent/20"
                   >
                     Profile
@@ -209,7 +232,7 @@ export default function Navbar() {
               <hr />
               {status !== "loading" && session?.user ? (
                 <>
-                  <Link href="/userProfile" className="block">
+                  <Link href="/profile" className="block">
                     Profile
                   </Link>
                   <Link href="/settings" className="block">
@@ -227,7 +250,7 @@ export default function Navbar() {
                   Sign In
                 </button>
               )}
-              <ModeToggle />
+              {/* <ModeToggle /> */}
             </SheetContent>
           </Sheet>
         </div>

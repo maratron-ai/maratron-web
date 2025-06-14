@@ -20,7 +20,7 @@ export type Device =
 
 export type Gender = "Male" | "Female" | "Other";
 
-export interface UserProfile {
+export interface User {
   id: string;
   name: string;
   email: string;
@@ -45,4 +45,7 @@ export interface UserProfile {
 
   shoes?: Shoe[];
   defaultShoeId?: string;
+
+  createdAt?: Date;
+  updatedAt?: Date;
 }

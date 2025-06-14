@@ -6,7 +6,7 @@ import { useSession } from "next-auth/react";
 import { getRunningPlan, updateRunningPlan } from "@lib/api/plan";
 import { assignDatesToPlan } from "@utils/running/planDates";
 import type { RunningPlan } from "@maratypes/runningPlan";
-import RunningPlanDisplay from "@components/RunningPlanDisplay";
+import RunningPlanDisplay from "@components/training/RunningPlanDisplay";
 import { Button } from "@components/ui";
 
 interface PageProps {
