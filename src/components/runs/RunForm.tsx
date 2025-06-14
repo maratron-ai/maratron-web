@@ -171,7 +171,7 @@ const RunForm: React.FC<RunFormProps> = ({ onSubmit }) => {
       {errors.length > 0 && (
         <div className="space-y-1 mb-4">
           {errors.map((err, i) => (
-            <p key={i} className="text-red-600 text-sm">
+            <p key={i} className="text-brand-orange-dark text-sm">
               {err}
             </p>
           ))}

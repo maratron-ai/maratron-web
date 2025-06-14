@@ -27,7 +27,7 @@ const SelectField: React.FC<SelectFieldProps> = ({
     <div className={`space-y-1 ${className}`}>
       <Label htmlFor={name} className="block font-medium">
         {label}
-        {selectProps.required && <span className="text-red-500 ml-1">*</span>}
+        {selectProps.required && <span className="text-brand-orange-dark ml-1">*</span>}
       </Label>
 
       {editing ? (

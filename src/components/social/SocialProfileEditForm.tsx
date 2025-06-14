@@ -41,7 +41,7 @@ export default function SocialProfileEditForm({ profile, onUpdated }: Props) {
   return (
     <Card className="p-6 w-full max-w-md">
       <h2 className="text-2xl font-semibold mb-4">Edit Social Profile</h2>
-      {error && <p className="text-red-600 mb-2">{error}</p>}
+      {error && <p className="text-brand-orange-dark mb-2">{error}</p>}
       {success && <p className="text-primary mb-2">Profile updated!</p>}
       <form onSubmit={handleSubmit} className="space-y-4">
         <TextField
