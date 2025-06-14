@@ -2,6 +2,7 @@
 "use client";
 import React, { useState, FormEvent } from "react";
 import { useSession, signIn, signOut } from "next-auth/react";
+import { Spinner } from "@components/ui";
 
 const AuthTest: React.FC = () => {
   const { data: session, status } = useSession();
@@ -28,7 +29,11 @@ const AuthTest: React.FC = () => {
   };
 
   if (status === "loading") {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex justify-center py-4">
+        <Spinner className="h-4 w-4" />
+      </div>
+    );
   }
 
   return (

@@ -7,7 +7,7 @@ import isYupValidationError from "@lib/utils/validation/isYupValidationError";
 import { useSession } from "next-auth/react";
 import { useUser } from "@hooks/useUser";
 
-import { Card, Button } from "@components/ui";
+import { Card, Button, Spinner } from "@components/ui";
 import {
   TextField,
   SelectField,
@@ -115,7 +115,12 @@ const ShoeForm: React.FC<ShoeFormProps> = ({ onSubmit, initialData }) => {
     }
   };
 
-  if (status === "loading") return <div>Loading...</div>;
+  if (status === "loading")
+    return (
+      <div className="flex justify-center py-4">
+        <Spinner className="h-4 w-4" />
+      </div>
+    );
 
   return (
     <Card className="p-6 w-full">

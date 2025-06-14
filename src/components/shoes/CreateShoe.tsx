@@ -6,6 +6,7 @@ import { createShoe } from "@lib/api/shoe";
 import { Shoe } from "@maratypes/shoe";
 import { useSession } from "next-auth/react";
 import { updateUser } from "@lib/api/user/user";
+import { Spinner } from "@components/ui";
 
 const CreateShoe: React.FC = () => {
   const { data: session, status } = useSession();
@@ -35,7 +36,12 @@ const CreateShoe: React.FC = () => {
     }
   };
 
-  if (status === "loading") return <div>Loading...</div>;
+  if (status === "loading")
+    return (
+      <div className="flex justify-center py-4">
+        <Spinner className="h-4 w-4" />
+      </div>
+    );
 
   return (
     <div>

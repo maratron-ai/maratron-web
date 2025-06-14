@@ -7,7 +7,7 @@ import { useSocialProfile } from "@hooks/useSocialProfile";
 import CreateSocialPost from "@components/social/CreateSocialPost";
 import LikeButton from "@components/social/LikeButton";
 import CommentSection from "@components/social/CommentSection";
-import { Button, Dialog, DialogContent } from "@components/ui";
+import { Button, Dialog, DialogContent, Spinner } from "@components/ui";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -38,7 +38,12 @@ export default function SocialFeed() {
   }, [session?.user?.id]);
 
   if (!session?.user?.id) return <p>Please log in to view your feed.</p>;
-  if (profileLoading || loading) return <p className="text-foreground/60">Loading feed...</p>;
+  if (profileLoading || loading)
+    return (
+      <div className="flex justify-center py-4">
+        <Spinner className="h-4 w-4" />
+      </div>
+    );
   if (!profile)
     return (
       <div className="space-y-2">

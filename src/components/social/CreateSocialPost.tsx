@@ -3,7 +3,7 @@ import { useState, FormEvent, useEffect } from "react";
 import { createPost } from "@lib/api/social";
 import { listRuns } from "@lib/api/run";
 import { useSocialProfile } from "@hooks/useSocialProfile";
-import { Card, Button, PhotoUpload } from "@components/ui";
+import { Card, Button, PhotoUpload, Spinner } from "@components/ui";
 import { TextAreaField, SelectField } from "@components/ui/FormField";
 import { getRunName } from "@utils/running/getRunName";
 import type { Run } from "@maratypes/run";
@@ -77,7 +77,9 @@ export default function CreateSocialPost({ onCreated }: Props) {
       {success && <p className="text-primary mb-2">{success}</p>}
       <form onSubmit={handleSubmit} className="space-y-2">
         {loadingRuns ? (
-          <p>Loading runs...</p>
+          <div className="flex justify-center py-2">
+            <Spinner className="h-4 w-4" />
+          </div>
         ) : runs.length === 0 ? (
           <p>No recent runs found.</p>
         ) : (

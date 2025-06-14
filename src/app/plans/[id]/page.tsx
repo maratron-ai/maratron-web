@@ -7,7 +7,7 @@ import { getRunningPlan, updateRunningPlan } from "@lib/api/plan";
 import { assignDatesToPlan } from "@utils/running/planDates";
 import type { RunningPlan } from "@maratypes/runningPlan";
 import RunningPlanDisplay from "@components/training/RunningPlanDisplay";
-import { Button } from "@components/ui";
+import { Button, Spinner } from "@components/ui";
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -50,7 +50,9 @@ export default function PlanPage({ params }: PageProps) {
   if (status === "loading" || loading) {
     return (
       <main className="w-full px-4 sm:px-6 lg:px-8 py-4">
-        Loading...
+        <div className="flex justify-center py-4">
+          <Spinner className="h-5 w-5" />
+        </div>
       </main>
     );
   }

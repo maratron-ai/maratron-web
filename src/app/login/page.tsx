@@ -3,6 +3,7 @@
 import React, { useState, FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { signIn, useSession } from "next-auth/react";
+import { Spinner } from "@components/ui";
 
 const LoginPage: React.FC = () => {
   const { data: session, status } = useSession();
@@ -51,7 +52,9 @@ const LoginPage: React.FC = () => {
   if (status === "loading") {
     return (
       <main className="w-full px-4 sm:px-6 lg:px-8 py-6">
-        <h1 className="text-2xl">Loading...</h1>
+        <div className="flex justify-center py-4">
+          <Spinner className="h-4 w-4" />
+        </div>
       </main>
     );
   }

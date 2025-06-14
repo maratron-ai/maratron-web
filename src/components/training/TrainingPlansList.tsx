@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { listRunningPlans, updateRunningPlan, deleteRunningPlan } from "@lib/api/plan";
 import type { RunningPlan } from "@maratypes/runningPlan";
-import { Card, Button } from "@components/ui";
+import { Card, Button, Spinner } from "@components/ui";
 
 export default function TrainingPlansList() {
   const { data: session } = useSession();
@@ -66,7 +66,12 @@ export default function TrainingPlansList() {
     }
   };
 
-  if (loading) return <p className="text-foreground/60">Loading plans...</p>;
+  if (loading)
+    return (
+      <div className="flex justify-center py-4">
+        <Spinner className="h-4 w-4" />
+      </div>
+    );
   if (plans.length === 0)
     return <p className="text-foreground/60">No plans saved.</p>;
 
