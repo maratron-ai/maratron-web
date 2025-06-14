@@ -106,7 +106,10 @@ export default function BasicInfoSection({
                 className="w-20 h-20 rounded-full object-cover"
               />
             ) : (
-              <DefaultAvatar size={80} className="w-20 h-20" />
+              <DefaultAvatar
+                size={80}
+                className="border border-brand-to bg-brand-from"
+              />
             )}
           </div>
           <div>
