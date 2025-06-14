@@ -38,7 +38,7 @@ const [weeks, setWeeks] = useState<number>(DISTANCE_INFO[DEFAULT_RACE].weeks);
 const [targetDistance, setTargetDistance] = useState<number>(
   DISTANCE_INFO[DEFAULT_RACE].miles
 );
-  const [vo2max, setVo2max] = useState<number>(30);
+  const [vdot, setVdot] = useState<number>(30);
   const [useTotalTime, setUseTotalTime] = useState<boolean>(false);
   const [targetPace, setTargetPace] = useState<string>("10:00");
   const [targetTotalTime, setTargetTotalTime] = useState<string>("3:45:00");
@@ -74,12 +74,12 @@ const [targetDistance, setTargetDistance] = useState<number>(
   useEffect(() => {
     if (user) {
       if (user.trainingLevel) setTrainingLevel(user.trainingLevel);
-      setVo2max(user.VO2Max ?? 30);
+      setVdot(user.VDOT ?? 30);
       if (user.defaultDistanceUnit) setDistanceUnit(user.defaultDistanceUnit);
       // if (user.defaultShoeId) setDefaultShoeId(user.defaultShoeId);
       // Optionally, set other user-specific defaults
     } else {
-      setVo2max(30);
+      setVdot(30);
     }
   }, [user]);
 
@@ -97,7 +97,7 @@ const [targetDistance, setTargetDistance] = useState<number>(
       weeks,
       distanceUnit,
       trainingLevel,
-      vo2max,
+      vdot,
       startingWeeklyMileage: targetDistance,
       targetPace: useTotalTime ? undefined : targetPace,
       targetTotalTime: useTotalTime ? targetTotalTime : undefined,

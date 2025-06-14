@@ -86,10 +86,10 @@ export default function BasicInfoSection({
             onChange={handleFieldChange}
           />
           <TextField
-            label="VO₂ Max"
-            name="VO2Max"
+            label="VDOT"
+            name="VDOT"
             type="number"
-            value={formData.VO2Max ?? ""}
+            value={formData.VDOT ?? ""}
             editing={isEditing}
             onChange={handleFieldChange}
           />
@@ -132,8 +132,8 @@ export default function BasicInfoSection({
             </dd>
           </div>
           <div>
-            <dt className={styles.label}>VO₂ Max</dt>
-            <dd className={styles.value}>{formData.VO2Max ?? "N/A"}</dd>
+            <dt className={styles.label}>VDOT</dt>
+            <dd className={styles.value}>{formData.VDOT ?? "N/A"}</dd>
           </div>
         </dl>
       )}

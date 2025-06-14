@@ -27,7 +27,7 @@ CREATE TABLE "Users" (
     "age" INTEGER,
     "gender" "Gender",
     "trainingLevel" "TrainingLevel",
-    "VO2Max" INTEGER,
+    "VDOT" INTEGER,
     "goals" TEXT[],
     "avatarUrl" TEXT,
     "yearsRunning" INTEGER,

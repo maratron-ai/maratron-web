@@ -1,7 +1,7 @@
 // app/api/runs/[id]/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@lib/prisma";
-import { calculateVO2MaxJackDaniels } from "@utils/running/jackDaniels";
+import { calculateVDOTJackDaniels } from "@utils/running/jackDaniels";
 import { parseDuration } from "@utils/time";
 
 export async function GET(
@@ -46,16 +46,16 @@ export async function PUT(
           ? updatedRun.distance * 1609.34
           : updatedRun.distance * 1000;
       const seconds = parseDuration(updatedRun.duration);
-      const vo2 = Math.round(calculateVO2MaxJackDaniels(meters, seconds));
+      const vdot = Math.round(calculateVDOTJackDaniels(meters, seconds));
       const user = await prisma.user.findUnique({
         where: { id: updatedRun.userId },
-        select: { VO2Max: true },
+        select: { VDOT: true },
       });
-      if (user && (user.VO2Max === null || vo2 > user.VO2Max)) {
-        await prisma.user.update({ where: { id: updatedRun.userId }, data: { VO2Max: vo2 } });
+      if (user && (user.VDOT === null || vdot > user.VDOT)) {
+        await prisma.user.update({ where: { id: updatedRun.userId }, data: { VDOT: vdot } });
       }
     } catch (err) {
-      console.error("Failed to update VO2Max", err);
+      console.error("Failed to update VDOT", err);
     }
 
     return NextResponse.json(updatedRun, { status: 200 });

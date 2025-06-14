@@ -27,7 +27,7 @@ export interface User {
   age?: number;
   gender?: Gender;
   trainingLevel?: TrainingLevel;
-  VO2Max?: number;
+  VDOT?: number;
   goals?: string[];
   avatarUrl?: string;
   yearsRunning?: number;
