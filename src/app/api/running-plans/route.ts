@@ -57,6 +57,7 @@ export async function POST(request: NextRequest) {
 
     const count = await prisma.runningPlan.count({ where: { userId } });
     const defaultName = `Training Plan ${count + 1}`;
+    const isFirstPlan = count === 0;
 
     let start = startDate ? parseDateUTC(startDate) : undefined;
     let end = endDate ? parseDateUTC(endDate) : undefined;
@@ -78,7 +79,7 @@ export async function POST(request: NextRequest) {
         name: name || defaultName,
         startDate: start,
         endDate: end,
-        active: active ?? false,
+        active: isFirstPlan ? true : active ?? false,
       },
     });
 
