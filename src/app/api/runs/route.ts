@@ -22,19 +22,30 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
   const {
-      date,
-      duration,
-      distance,
-      distanceUnit,
-      trainingEnvironment,
-      pace, // expected format: { pace: string, unit: "miles" | "kilometers" } or null
-      elevationGain,
-      elevationGainUnit,
-      notes,
-      userId,
-      shoeId,
-      name,
+    date,
+    duration,
+    distance,
+    distanceUnit,
+    trainingEnvironment,
+    pace, // expected format: { pace: string, unit: "miles" | "kilometers" } or null
+    elevationGain,
+    elevationGainUnit,
+    notes,
+    userId,
+    shoeId,
+    name,
   } = body;
+
+    let finalShoeId: string | undefined = shoeId;
+    if (!finalShoeId && userId) {
+      const user = await prisma.user.findUnique({
+        where: { id: userId },
+        select: { defaultShoeId: true },
+      });
+      if (user?.defaultShoeId) {
+        finalShoeId = user.defaultShoeId;
+      }
+    }
 
     const newRun = await prisma.run.create({
       data: {
@@ -53,13 +64,13 @@ export async function POST(request: NextRequest) {
             : null,
         notes: notes || null,
         user: { connect: { id: userId } },
-        ...(shoeId ? { shoe: { connect: { id: shoeId } } } : {}),
+        ...(finalShoeId ? { shoe: { connect: { id: finalShoeId } } } : {}),
       },
     });
 
-    if (shoeId) {
+    if (finalShoeId) {
       const shoe = await prisma.shoe.findUnique({
-        where: { id: shoeId },
+        where: { id: finalShoeId },
         select: { distanceUnit: true },
       });
       if (shoe) {
@@ -71,7 +82,7 @@ export async function POST(request: NextRequest) {
               : Number(distance) * 1.60934;
         }
         await prisma.shoe.update({
-          where: { id: shoeId },
+          where: { id: finalShoeId },
           data: {
             currentDistance: {
               increment,
