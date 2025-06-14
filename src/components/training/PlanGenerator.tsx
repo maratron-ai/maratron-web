@@ -126,7 +126,10 @@ const [targetDistance, setTargetDistance] = useState<number>(
     }
     // Assign default start and end dates if not provided
     const today = new Date();
-    const assumedStartDate = today.toISOString().slice(0, 10);
+    const base = new Date(Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate()));
+    const diff = (7 - base.getUTCDay()) % 7;
+    base.setUTCDate(base.getUTCDate() + (diff === 0 ? 7 : diff));
+    const assumedStartDate = base.toISOString().slice(0, 10);
     let assumedEndDate = endDate;
 
     if (!endDate) {
@@ -302,14 +305,11 @@ const [targetDistance, setTargetDistance] = useState<number>(
               onClick={async () => {
                 if (!user) return;
                 try {
-                  const planWithDates = startDate || endDate
-                    ? assignDatesToPlan(planData, { startDate, endDate })
-                    : planData;
                   await createRunningPlan({
                     userId: user.id!,
-                    planData: planWithDates,
+                    planData,
                     name: planName,
-                    startDate: startDate ? new Date(startDate) : new Date(),
+                    startDate: startDate ? new Date(startDate) : undefined,
                     endDate: endDate ? new Date(endDate) : undefined,
                     active: false,
                   });

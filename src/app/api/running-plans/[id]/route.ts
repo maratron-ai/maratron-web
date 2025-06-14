@@ -59,6 +59,11 @@ export async function PUT(request: NextRequest, context: { params: { id: string 
       end = addWeeks(start!, Number(newWeeks) - 1);
     } else if (body.endDate && !body.startDate) {
       start = addWeeks(end!, -(Number(newWeeks) - 1));
+    } else if (body.active && !existing.startDate && !body.startDate) {
+      start = parseDateUTC(new Date());
+      if (!end) {
+        end = addWeeks(start, Number(newWeeks) - 1);
+      }
     }
 
     const updated = await prisma.runningPlan.update({

@@ -121,7 +121,7 @@ export function generateShortDistancePlan(
     }
 
     const intervalReps = chooseReps(intervalKm * 1000);
-    const runs: PlannedRun[] = [
+    let runs: PlannedRun[] = [
       {
         type: "easy",
         day: "Monday",
@@ -163,23 +163,32 @@ export function generateShortDistancePlan(
     ];
 
     if (w === weeks) {
-      runs[runs.length - 1] = {
-        ...runs[runs.length - 1],
-        type: "race",
-        mileage: round1(fromKm(raceKm)),
-        targetPace: { unit: distanceUnit, pace: goalPace },
-      };
+      runs = [
+        {
+          type: "race",
+          day: runs[runs.length - 1].day,
+          unit: distanceUnit,
+          mileage: round1(fromKm(raceKm)),
+          targetPace: { unit: distanceUnit, pace: goalPace },
+        },
+      ];
     }
 
     const weeklyMileage = round1(runs.reduce((tot, r) => tot + r.mileage, 0));
 
+    const finalLabel = raceKm >= 10 ? "10K Week!" : "5K Week!";
     schedule.push({
       weekNumber: w,
       phase,
       unit: distanceUnit,
       weeklyMileage,
       runs,
-      notes: phase === "Taper" ? "Taper week" : "Build week",
+      notes:
+        w === weeks
+          ? finalLabel
+          : phase === "Taper"
+          ? "Taper week"
+          : "Build week",
     });
   }
 

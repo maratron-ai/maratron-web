@@ -8,10 +8,8 @@ function parseDateUTC(date: string | Date): Date {
   return new Date(date.includes("T") ? date : `${date}T00:00:00Z`);
 }
 
-function startOfWeekSunday(date: Date): Date {
+function startOfDayUTC(date: Date): Date {
   const d = parseDateUTC(date);
-  const diff = d.getUTCDay();
-  d.setUTCDate(d.getUTCDate() - diff);
   d.setUTCHours(0, 0, 0, 0);
   return d;
 }
@@ -24,6 +22,20 @@ function addDays(date: Date, days: number): Date {
 
 function addWeeks(date: Date, weeks: number): Date {
   return addDays(date, weeks * 7);
+}
+
+function startOfWeekSunday(date: Date): Date {
+  const d = startOfDayUTC(date);
+  const diff = d.getUTCDay();
+  d.setUTCDate(d.getUTCDate() - diff);
+  return d;
+}
+
+function nextSunday(from: Date = new Date()): Date {
+  const base = startOfDayUTC(from);
+  const diff = (7 - base.getUTCDay()) % 7;
+  base.setUTCDate(base.getUTCDate() + (diff === 0 ? 7 : diff));
+  return base;
 }
 
 const dayIndexMap: Record<DayOfWeek, number> = {
@@ -45,21 +57,44 @@ export function assignDatesToPlan(
   opts: { startDate?: string; endDate?: string }
 ): RunningPlanData {
   const { startDate, endDate } = opts;
-  if (!startDate && !endDate) return plan;
-  const baseStart = startDate
-    ? startOfWeekSunday(parseDateUTC(startDate))
-    : addWeeks(startOfWeekSunday(parseDateUTC(endDate!)), -(plan.weeks - 1));
+  let baseStart: Date;
+  if (startDate) {
+    baseStart = startOfDayUTC(parseDateUTC(startDate));
+  } else if (endDate) {
+    baseStart = addWeeks(startOfDayUTC(parseDateUTC(endDate)), -(plan.weeks - 1));
+  } else {
+    baseStart = nextSunday();
+  }
+  const today = startOfDayUTC(new Date());
+  if (baseStart < today) baseStart = today;
+
   const schedule = plan.schedule.map((week, wi) => {
-    const weekStart = addWeeks(baseStart, wi);
+    const weekStart = startOfWeekSunday(addWeeks(baseStart, wi));
     const runs = week.runs.map((r) => {
-      const idx = r.day ? dayIndex(r.day) : 0;
-      const date = addDays(weekStart, idx);
+      let date: Date;
+      if (
+        endDate &&
+        wi === plan.weeks - 1 &&
+        (r.type === "race" || r.type === "marathon")
+      ) {
+        date = startOfDayUTC(parseDateUTC(endDate));
+      } else {
+        const idx = r.day ? dayIndex(r.day) : 0;
+        date = addDays(weekStart, idx);
+        if (wi === 0 && date < baseStart) {
+          date = baseStart;
+        }
+      }
       return { ...r, date: date.toISOString() };
     });
     const done = runs.every((r) => r.done);
     return { ...week, startDate: weekStart.toISOString(), runs, done };
   });
-  const end = addWeeks(baseStart, plan.weeks - 1);
+
+  const end = endDate
+    ? startOfDayUTC(parseDateUTC(endDate))
+    : startOfWeekSunday(addWeeks(baseStart, plan.weeks - 1));
+
   return {
     ...plan,
     schedule,
