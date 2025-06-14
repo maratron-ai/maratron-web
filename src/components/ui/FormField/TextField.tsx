@@ -26,7 +26,7 @@ const TextField: React.FC<TextFieldProps> = ({
     <div className={`space-y-1 ${className}`}>
       <Label htmlFor={name} className="block font-medium">
         {label}
-        {inputProps.required && <span className="text-red-500 ml-1">*</span>}
+        {inputProps.required && <span className="text-brand-orange-dark ml-1">*</span>}
       </Label>
 
       {editing ? (

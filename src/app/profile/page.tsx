@@ -88,7 +88,7 @@ export default function UserPage() {
   }
   if (error) {
     return (
-      <main className="w-full px-4 sm:px-6 lg:px-8 py-6 text-red-600">
+      <main className="w-full px-4 sm:px-6 lg:px-8 py-6 text-brand-orange-dark">
         {error}
       </main>
     );

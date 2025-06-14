@@ -73,7 +73,7 @@ export default function CreateSocialPost({ onCreated }: Props) {
   return (
     <Card className="p-4 mb-6">
       <h3 className="text-lg font-semibold mb-2">Share a Run</h3>
-      {error && <p className="text-red-600 mb-2">{error}</p>}
+      {error && <p className="text-brand-orange-dark mb-2">{error}</p>}
       {success && <p className="text-primary mb-2">{success}</p>}
       <form onSubmit={handleSubmit} className="space-y-2">
         {loadingRuns ? (

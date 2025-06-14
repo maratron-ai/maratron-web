@@ -25,7 +25,7 @@ const TextAreaField: React.FC<TextAreaFieldProps> = ({
     <div className={`space-y-1 ${className}`}>
       <Label htmlFor={name} className="block font-medium">
         {label}
-        {props.required && <span className="text-red-500 ml-1">*</span>}
+        {props.required && <span className="text-brand-orange-dark ml-1">*</span>}
       </Label>
 
       {editing ? (
