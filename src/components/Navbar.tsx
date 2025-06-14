@@ -107,12 +107,13 @@ export default function Navbar() {
                         alt={session.user.name || "User Avatar"}
                         width={32}
                         height={32}
-                        className="w-8 h-8 rounded-full object-cover border border-muted"
+                        className="w-8 h-8 rounded-full object-cover border border-muted bg-muted"
                         priority
                       />
                     ) : (
                       <DefaultAvatar
                         size={32}
+                        className="border border-muted bg-muted"
                       />
                     )}
                   
@@ -163,7 +164,7 @@ export default function Navbar() {
                 aria-expanded={mobileMenuOpen}
                 className="focus:outline-none"
               >
-                <div className="w-8 h-8 rounded-full overflow-hidden">
+                <div className="w-8 h-8 rounded-full overflow-hidden bg-muted border border-muted">
                   {session.user.avatarUrl ? (
                     <Image
                       src={session.user.avatarUrl}
@@ -175,6 +176,7 @@ export default function Navbar() {
                   ) : (
                     <DefaultAvatar
                       size={32}
+                      className="border-none bg-transparent"
                     />
                   )}
                 </div>
