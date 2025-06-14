@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { listRunningPlans, updateRunningPlan } from "@lib/api/plan";
 import { createRun } from "@lib/api/run";
-import { Card, Select, SelectTrigger, SelectContent, SelectItem, SelectValue, Checkbox, Progress } from "@components/ui";
+import { Card, Select, SelectTrigger, SelectContent, SelectItem, SelectValue, Checkbox, Progress, Spinner } from "@components/ui";
 import type { RunningPlan } from "@maratypes/runningPlan";
 import { assignDatesToPlan } from "@utils/running/planDates";
 import { calculateDurationFromPace } from "@utils/running/calculateDuration";
@@ -43,7 +43,12 @@ export default function WeeklyRuns() {
     fetchPlan();
   }, [session?.user?.id, refresh]);
 
-  if (loading) return <p className="text-foreground/60">Loading...</p>;
+  if (loading)
+    return (
+      <div className="flex justify-center py-4">
+        <Spinner className="h-4 w-4" />
+      </div>
+    );
   if (!plan) return <p className="text-foreground/60">No active plan.</p>;
 
   let weekIndex: number;

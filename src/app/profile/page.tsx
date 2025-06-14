@@ -3,6 +3,7 @@
 
 import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
+import { Spinner } from "@components/ui";
 import UserForm from "@components/profile/UserProfileForm";
 import { User } from "@maratypes/user";
 import { getUser, updateUser } from "@lib/api/user/user";
@@ -61,7 +62,11 @@ export default function UserPage() {
   // Not authenticated
   if (status === "loading") {
     return (
-      <main className="w-full px-4 sm:px-6 lg:px-8 py-6">Loading...</main>
+      <main className="w-full px-4 sm:px-6 lg:px-8 py-6">
+        <div className="flex justify-center py-4">
+          <Spinner className="h-4 w-4" />
+        </div>
+      </main>
     );
   }
   if (status !== "authenticated" || !session.user) {
@@ -82,7 +87,9 @@ export default function UserPage() {
   if (loading) {
     return (
       <main className="w-full px-4 sm:px-6 lg:px-8 py-6">
-        Loading profile...
+        <div className="flex justify-center py-4">
+          <Spinner className="h-4 w-4" />
+        </div>
       </main>
     );
   }

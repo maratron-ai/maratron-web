@@ -3,7 +3,7 @@ import { useState, useEffect, FormEvent } from "react";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import type { SocialProfile } from "@maratypes/social";
-import { Input, Button, Card } from "@components/ui";
+import { Input, Button, Card, Spinner } from "@components/ui";
 import FollowUserButton from "@components/social/FollowUserButton";
 import Image from "next/image";
 
@@ -66,7 +66,12 @@ export default function ProfileSearch() {
 
 
   if (!session?.user?.id) return <p>Please log in to search.</p>;
-  if (loading) return <p className="text-foreground/60">Loading...</p>;
+  if (loading)
+    return (
+      <div className="flex justify-center py-4">
+        <Spinner className="h-4 w-4" />
+      </div>
+    );
   if (!myProfileId)
     return (
       <div className="space-y-2">

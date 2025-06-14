@@ -3,7 +3,7 @@ import { useEffect, useState, FormEvent, useCallback } from "react";
 import { useSocialProfile } from "@hooks/useSocialProfile";
 import { listComments, addComment } from "@lib/api/social";
 import type { Comment } from "@maratypes/social";
-import { Button, Input } from "@components/ui";
+import { Button, Input, Spinner } from "@components/ui";
 import Image from "next/image";
 import { MessageCircle } from "lucide-react";
 
@@ -71,7 +71,9 @@ export default function CommentSection({
       {open && (
         <>
           {loading ? (
-            <p className="text-sm text-foreground/60">Loading comments...</p>
+            <div className="flex justify-center py-2">
+              <Spinner className="h-3 w-3" />
+            </div>
           ) : (
             comments.map((c) => (
               <div key={c.id} className="flex items-start gap-2 text-sm">

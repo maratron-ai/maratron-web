@@ -11,7 +11,7 @@ import { useUser } from "@hooks/useUser";
 import { listShoes } from "@lib/api/shoe";
 import { getRunName } from "@utils/running/getRunName";
 
-import { Card, Button } from "@components/ui";
+import { Card, Button, Spinner } from "@components/ui";
 import {
   TextField,
   SelectField,
@@ -161,7 +161,12 @@ const RunForm: React.FC<RunFormProps> = ({ onSubmit }) => {
     }
   };
 
-  if (status === "loading" || profileLoading) return <div>Loading...</div>;
+  if (status === "loading" || profileLoading)
+    return (
+      <div className="flex justify-center py-4">
+        <Spinner className="h-4 w-4" />
+      </div>
+    );
 
   return (
     <Card className="p-6 w-full">

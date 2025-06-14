@@ -6,7 +6,7 @@ import { useUser } from "@hooks/useUser";
 import ProfileInfoCard from "@components/social/ProfileInfoCard";
 import ProfileSearch from "@components/social/ProfileSearch";
 import SocialFeed from "@components/social/SocialFeed";
-import { Button } from "@components/ui";
+import { Button, Spinner } from "@components/ui";
 
 export default function SocialHomePage() {
   const { data: session } = useSession();
@@ -24,7 +24,9 @@ export default function SocialHomePage() {
   if (loading) {
     return (
       <main className="w-full px-4 sm:px-6 lg:px-8 py-6">
-        <p>Loading...</p>
+        <div className="flex justify-center py-4">
+          <Spinner className="h-4 w-4" />
+        </div>
       </main>
     );
   }

@@ -6,6 +6,7 @@ import { listRuns } from "@lib/api/run";
 import { getRunName } from "@utils/running/getRunName";
 import type { Run } from "@maratypes/run";
 import RunModal from "@components/runs/RunModal";
+import { Spinner } from "@components/ui";
 
 export default function RunsList() {
   const { data: session } = useSession();
@@ -36,7 +37,12 @@ export default function RunsList() {
     fetchRuns();
   }, [session?.user?.id]);
 
-  if (loading) return <p className="text-foreground/60">Loading runs...</p>;
+  if (loading)
+    return (
+      <div className="flex justify-center py-4">
+        <Spinner className="h-4 w-4" />
+      </div>
+    );
   if (runs.length === 0)
     return <p className="text-foreground/60">No runs recorded yet.</p>;
 

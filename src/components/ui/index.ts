@@ -26,3 +26,4 @@ export * from './slider';
 export * from './select';
 export { default as AvatarUpload } from './avatar-upload';
 export { default as PhotoUpload } from "./photo-upload";
+export * from './spinner';

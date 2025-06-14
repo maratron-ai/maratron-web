@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useUser } from "@hooks/useUser";
 import { TrainingLevel } from "@maratypes/user";
 import ToggleSwitch from "@components/ToggleSwitch";
+import { Spinner } from "@components/ui";
 import RunningPlanDisplay from "./RunningPlanDisplay";
 import {
   generate5kPlan,
@@ -148,7 +149,9 @@ const [targetDistance, setTargetDistance] = useState<number>(
         Generate Your Running Plan
       </h1>
       {loading ? (
-        <p className="text-center">Loading user profile...</p>
+        <div className="flex justify-center py-4">
+          <Spinner className="h-5 w-5" />
+        </div>
       ) : (
         <form onSubmit={handleGenerate} className="space-y-4">
           {/* Weeks */}
