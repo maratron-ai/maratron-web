@@ -39,7 +39,7 @@ export default function OnboardingProfile() {
     await updateUser(initialUser.id, updated);
     // Refresh session so avatar updates in navbar
     await update({ user: { avatarUrl: updated.avatarUrl ?? null } });
-    router.push("/home");
+    router.push("/signup/vdot");
   };
 
   return (
