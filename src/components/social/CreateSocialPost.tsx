@@ -52,7 +52,7 @@ export default function CreateSocialPost({ onCreated }: Props) {
     }
     try {
       await createPost({
-        socialProfileId: profile.id,
+        socialProfileId: profile!.id,
         distance: run.distance,
         time: run.duration,
         caption: caption || undefined,

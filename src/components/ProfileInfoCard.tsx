@@ -1,10 +1,10 @@
 import Image from "next/image";
 import { Card } from "@components/ui";
 import DefaultAvatar from "@components/DefaultAvatar";
-import type { UserProfile } from "@maratypes/user";
+import type { User } from "@maratypes/user";
 
 interface Props {
-  profile: UserProfile;
+  profile: User;
 }
 
 export default function ProfileInfoCard({ profile }: Props) {
@@ -19,11 +19,7 @@ export default function ProfileInfoCard({ profile }: Props) {
           className="w-24 h-24 rounded-full object-cover"
         />
       ) : (
-        <DefaultAvatar
-          seed={profile.email || profile.name}
-          size={96}
-          className="w-24 h-24"
-        />
+        <DefaultAvatar size={96} className="w-24 h-24" />
       )}
       <h2 className="text-2xl font-bold">{profile.name}</h2>
       {profile.trainingLevel && (
