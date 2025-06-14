@@ -4,6 +4,10 @@ export const calculateVDOTJackDaniels = (
   distanceMeters: number,
   timeSeconds: number
 ): number => {
+
+  if (distanceMeters <= 0 || timeSeconds <= 0) {
+    throw new Error("distance and time must be positive");
+  }
   
   const timeMinutes = timeSeconds / 60;
 
@@ -16,7 +20,10 @@ export const calculateVDOTJackDaniels = (
 
   const vo2 = -4.6 + 0.182258 * velocity + 0.000104 * Math.pow(velocity, 2);
 
-  const vdot = vo2 / vo2MaxPercentage;
+  let vdot = vo2 / vo2MaxPercentage;
+
+  if (vdot > 100) vdot = 100; // cap VDOT at 100 for practical purposes
+  if (vdot < 20) vdot = 20; // minimum VDOT is 1
 
   return vdot;
 };
