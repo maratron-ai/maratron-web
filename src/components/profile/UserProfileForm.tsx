@@ -59,7 +59,7 @@ export default function UserProfileForm({
       </div>
 
       {validationErrors.length > 0 && (
-        <div className="mb-4 p-3 bg-red-700 bg-opacity-10 text-red-400 rounded">
+        <div className="mb-4 p-3 bg-brand-orange-dark/10 text-brand-orange-dark rounded">
           <ul className="list-disc list-inside">
             {validationErrors.map((msg, i) => (
               <li key={i}>{msg}</li>
