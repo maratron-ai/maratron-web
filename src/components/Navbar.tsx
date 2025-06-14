@@ -100,23 +100,21 @@ export default function Navbar() {
                   aria-expanded={desktopMenuOpen}
                   className="focus:outline-none bg-transparent p-0 hover:bg-transparent focus:ring-0"
                 >
-                  
-                    {session.user?.avatarUrl ? (
-                      <Image
-                        src={session.user.avatarUrl}
-                        alt={session.user.name || "User Avatar"}
-                        width={32}
-                        height={32}
-                        className="w-8 h-8 rounded-full object-cover border border-muted bg-muted"
-                        priority
-                      />
-                    ) : (
-                      <DefaultAvatar
-                        size={32}
-                        className="border border-muted bg-muted"
-                      />
-                    )}
-                  
+                  {session.user?.avatarUrl ? (
+                    <Image
+                      src={session.user.avatarUrl}
+                      alt={session.user.name || "User Avatar"}
+                      width={32}
+                      height={32}
+                      className="w-8 h-8 rounded-full object-cover border border-muted bg-muted"
+                      priority
+                    />
+                  ) : (
+                    <DefaultAvatar
+                      size={32}
+                      className="border border-brand-to bg-brand-from"
+                    />
+                  )}
                 </button>
                 {desktopMenuOpen && (
                   <div className="absolute right-0 mt-2 w-40 bg-background border border-accent/20 rounded shadow-md z-50">
@@ -176,7 +174,7 @@ export default function Navbar() {
                   ) : (
                     <DefaultAvatar
                       size={32}
-                      className="border-none bg-transparent"
+                      className="border border-brand-to bg-brand-from"
                     />
                   )}
                 </div>
