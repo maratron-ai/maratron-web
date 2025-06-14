@@ -1,6 +1,7 @@
 import { generateLongDistancePlan, Unit, TrainingLevel } from "./longDistancePlan";
 import { generateShortDistancePlan } from "./shortDistancePlan";
-import type { RunningPlanData } from "@maratypes/runningPlan";
+import type { RunningPlanData, PlannedRun } from "@maratypes/runningPlan";
+import type { DayOfWeek } from "@maratypes/basics";
 
 export interface DistancePlanOptions {
   weeks?: number;
@@ -10,6 +11,7 @@ export interface DistancePlanOptions {
   startingWeeklyMileage?: number;
   targetPace?: string;
   targetTotalTime?: string;
+  runTypeDays?: Partial<Record<PlannedRun["type"], DayOfWeek>>;
 }
 
 function toDistance(unit: Unit, milesVal: number, kmVal: number): number {
@@ -60,6 +62,7 @@ export function generateHalfMarathonPlan(options: DistancePlanOptions): RunningP
     startingWeeklyMileage,
     targetPace,
     targetTotalTime,
+    options.runTypeDays,
   );
 }
 
@@ -83,6 +86,7 @@ export function generateClassicMarathonPlan(options: DistancePlanOptions): Runni
     startingWeeklyMileage,
     targetPace,
     targetTotalTime,
+    options.runTypeDays,
   );
 }
 

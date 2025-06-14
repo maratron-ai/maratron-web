@@ -46,4 +46,38 @@ describe("generateLongDistancePlan cutback weeks", () => {
     const lastWeek = plan.schedule[weeks - 1];
     expect(lastWeek.notes).toBe("Half Marathon Week!");
   });
+
+  it("caps taper long run at week one distance", () => {
+    const plan = generateLongDistancePlan(
+      12,
+      26.2,
+      "miles",
+      TrainingLevel.Beginner,
+      45,
+      26.2
+    );
+    const firstLong = plan.schedule[0].runs.find((r) => r.type === "long")!;
+    const taperWeek = plan.schedule[plan.weeks - 2];
+    const taperLong = taperWeek.runs.find((r) => r.type === "long")!;
+    expect(taperLong.mileage).toBeLessThanOrEqual(firstLong.mileage);
+  });
+
+  it("applies run type day mapping", () => {
+    const plan = generateLongDistancePlan(
+      12,
+      26.2,
+      "miles",
+      TrainingLevel.Beginner,
+      45,
+      26.2,
+      undefined,
+      undefined,
+      { easy: "Monday" }
+    );
+    plan.schedule.forEach((week) => {
+      week.runs
+        .filter((r) => r.type === "easy")
+        .forEach((r) => expect(r.day).toBe("Monday"));
+    });
+  });
 });
