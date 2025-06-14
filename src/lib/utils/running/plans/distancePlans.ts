@@ -6,7 +6,7 @@ export interface DistancePlanOptions {
   weeks?: number;
   distanceUnit: Unit;
   trainingLevel: TrainingLevel;
-  vo2max: number;
+  vdot: number;
   startingWeeklyMileage: number;
   targetPace?: string;
   targetTotalTime?: string;
@@ -21,7 +21,7 @@ export function generate5kPlan(options: DistancePlanOptions): RunningPlanData {
     weeks = 8,
     distanceUnit,
     trainingLevel,
-    vo2max,
+    vdot,
     startingWeeklyMileage,
     targetPace,
     targetTotalTime,
@@ -32,7 +32,7 @@ export function generate5kPlan(options: DistancePlanOptions): RunningPlanData {
     dist,
     distanceUnit,
     trainingLevel,
-    vo2max,
+    vdot,
     startingWeeklyMileage,
     targetPace,
     targetTotalTime,
@@ -44,7 +44,7 @@ export function generate10kPlan(options: DistancePlanOptions): RunningPlanData {
     weeks = 10,
     distanceUnit,
     trainingLevel,
-    vo2max,
+    vdot,
     startingWeeklyMileage,
     targetPace,
     targetTotalTime,
@@ -55,7 +55,7 @@ export function generate10kPlan(options: DistancePlanOptions): RunningPlanData {
     dist,
     distanceUnit,
     trainingLevel,
-    vo2max,
+    vdot,
     startingWeeklyMileage,
     targetPace,
     targetTotalTime,
@@ -67,7 +67,7 @@ export function generateHalfMarathonPlan(options: DistancePlanOptions): RunningP
     weeks = 12,
     distanceUnit,
     trainingLevel,
-    vo2max,
+    vdot,
     startingWeeklyMileage,
     targetPace,
     targetTotalTime,
@@ -78,7 +78,7 @@ export function generateHalfMarathonPlan(options: DistancePlanOptions): RunningP
     dist,
     distanceUnit,
     trainingLevel,
-    vo2max,
+    vdot,
     startingWeeklyMileage,
     targetPace,
     targetTotalTime,
@@ -90,7 +90,7 @@ export function generateClassicMarathonPlan(options: DistancePlanOptions): Runni
     weeks = 16,
     distanceUnit,
     trainingLevel,
-    vo2max,
+    vdot,
     startingWeeklyMileage,
     targetPace,
     targetTotalTime,
@@ -101,7 +101,7 @@ export function generateClassicMarathonPlan(options: DistancePlanOptions): Runni
     dist,
     distanceUnit,
     trainingLevel,
-    vo2max,
+    vdot,
     startingWeeklyMileage,
     targetPace,
     targetTotalTime,

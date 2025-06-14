@@ -1,4 +1,4 @@
-import { calculatePaceForVO2Max } from "../jackDaniels";
+import { calculatePaceForVDOT } from "../jackDaniels";
 import { WeekPlan, RunningPlanData, PlannedRun } from "@maratypes/runningPlan";
 import { formatPace } from "@utils/running/paces";
 
@@ -140,7 +140,7 @@ export function generateLongDistancePlan(
   targetDistance: number,
   distanceUnit: Unit,
   trainingLevel: TrainingLevel,
-  vo2max: number,
+  vdot: number,
   _startingWeeklyMileage: number,
   targetPace?: string,
   targetTotalTime?: string
@@ -177,10 +177,10 @@ export function generateLongDistancePlan(
 
   // -- pace zones
   const zones: PaceZones = {
-    easy: calculatePaceForVO2Max(raceMeters, vo2max, "E"),
-    marathon: calculatePaceForVO2Max(raceMeters, vo2max, "M"),
-    tempo: calculatePaceForVO2Max(raceMeters, vo2max, "T"),
-    interval: calculatePaceForVO2Max(raceMeters, vo2max, "I"),
+    easy: calculatePaceForVDOT(raceMeters, vdot, "E"),
+    marathon: calculatePaceForVDOT(raceMeters, vdot, "M"),
+    tempo: calculatePaceForVDOT(raceMeters, vdot, "T"),
+    interval: calculatePaceForVDOT(raceMeters, vdot, "I"),
   };
   if (goalPaceSec !== undefined) zones.marathon = formatPace(goalPaceSec);
 

@@ -1,6 +1,6 @@
 import { formatPace } from "@utils/running/paces";
 
-export const calculateVO2MaxJackDaniels = (
+export const calculateVDOTJackDaniels = (
   distanceMeters: number,
   timeSeconds: number
 ): number => {
@@ -16,9 +16,9 @@ export const calculateVO2MaxJackDaniels = (
 
   const vo2 = -4.6 + 0.182258 * velocity + 0.000104 * Math.pow(velocity, 2);
 
-  const vo2Max = vo2 / vo2MaxPercentage;
+  const vdot = vo2 / vo2MaxPercentage;
 
-  return vo2Max;
+  return vdot;
 };
 
 type PaceZone = "E" | "M" | "T" | "I" | "R";
@@ -36,17 +36,17 @@ const ZONE_FACTORS: Record<PaceZone, number> = {
  * Invert Daniels’ VO₂→pace model for a given zone.
  *
  * @param distanceMeters  Race distance in meters
- * @param targetVO2Max    Runner’s VDOT/VO₂-max
+ * @param targetVDOT      Runner’s VDOT
  * @param zone            One of "E","M","T","I","R"
  * @returns               Pace string "mm:ss" per mile
  */
-export function calculatePaceForVO2Max(
+export function calculatePaceForVDOT(
   distanceMeters: number,
-  targetVO2Max: number,
+  targetVDOT: number,
   zone: PaceZone
 ): string {
   // adjust VO₂ for zone intensity
-  const zonalVO2 = targetVO2Max * ZONE_FACTORS[zone];
+  const zonalVO2 = targetVDOT * ZONE_FACTORS[zone];
 
   // binary search bounds on race time (in seconds)
   let low = distanceMeters / 10; // super-fast
@@ -55,7 +55,7 @@ export function calculatePaceForVO2Max(
 
   for (let i = 0; i < 50; i++) {
     mid = (low + high) / 2;
-    const vo2 = calculateVO2MaxJackDaniels(distanceMeters, mid);
+    const vo2 = calculateVDOTJackDaniels(distanceMeters, mid);
     if (Math.abs(vo2 - zonalVO2) < 0.1) break;
     if (vo2 < zonalVO2) {
       // mid is too slow (VO₂ too low), speed up

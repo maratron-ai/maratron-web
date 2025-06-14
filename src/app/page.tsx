@@ -115,7 +115,7 @@ export default function Landing() {
                 <Target className="w-6 h-6 text-white" />
               </div>
               <h3 className="text-xl font-semibold mb-4">
-                VO₂ Max & Race Prediction
+                VDOT & Race Prediction
               </h3>
               <p className="text-muted-foreground">
                 Know exactly what you&apos;re capable of. Our AI predicts your

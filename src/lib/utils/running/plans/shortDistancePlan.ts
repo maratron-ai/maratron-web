@@ -1,4 +1,4 @@
-import { calculatePaceForVO2Max } from "../jackDaniels";
+import { calculatePaceForVDOT } from "../jackDaniels";
 import { WeekPlan, RunningPlanData, PlannedRun } from "@maratypes/runningPlan";
 
 export const Units = ["miles", "kilometers"] as const;
@@ -49,7 +49,7 @@ export function generateShortDistancePlan(
   raceDistance: number,
   distanceUnit: Unit,
   trainingLevel: TrainingLevel,
-  vo2max: number,
+  vdot: number,
 ): RunningPlanData {
   if (weeks < MIN_WEEKS) throw new Error(`Plan must be ≥ ${MIN_WEEKS} weeks.`);
   if (raceDistance <= 0) throw new Error("Distance must be > 0");
@@ -64,10 +64,10 @@ export function generateShortDistancePlan(
   const raceKm = toKm(raceDistance);
   const raceMeters = raceKm * 1000;
 
-  const paceE = calculatePaceForVO2Max(raceMeters, vo2max, "E");
-  const paceM = calculatePaceForVO2Max(raceMeters, vo2max, "M");
-  const paceT = calculatePaceForVO2Max(raceMeters, vo2max, "T");
-  const paceI = calculatePaceForVO2Max(raceMeters, vo2max, "I");
+  const paceE = calculatePaceForVDOT(raceMeters, vdot, "E");
+  const paceM = calculatePaceForVDOT(raceMeters, vdot, "M");
+  const paceT = calculatePaceForVDOT(raceMeters, vdot, "T");
+  const paceI = calculatePaceForVDOT(raceMeters, vdot, "I");
 
   const buildWeeks = weeks - TAPER_WEEKS;
   const phases = [

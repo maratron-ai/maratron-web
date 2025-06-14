@@ -30,13 +30,13 @@ const userSchema = Yup.object().shape({
     .oneOf(trainingLevelValues, "Invalid training level")
     .nullable()
     .default(TrainingLevel.Beginner),
-  VO2Max: Yup.number()
+  VDOT: Yup.number()
     .transform((value, originalValue) =>
       originalValue === "" || originalValue === null
         ? undefined
         : Number(originalValue)
     )
-    .min(10, "VO2Max must be at least 10")
+    .min(10, "VDOT must be at least 10")
     .nullable()
     .default(undefined),
   goals: Yup.array().of(Yup.string()),
