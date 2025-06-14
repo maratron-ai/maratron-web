@@ -1,6 +1,7 @@
 :root {
   --background: #f9fafb;
   --foreground: #1f2937;
+  --muted: #f3f4f6; /* Tailwind gray-100 */
   --muted-foreground: #6b7280; /* Tailwind gray-500 */
   --primary-rgb: 99, 102, 241;    /* #6366f1 indigo */
   --secondary-rgb: 79, 70, 229;   /* #4f46e5 */
@@ -19,6 +20,7 @@
   :root {
     --background: #0f172a;
     --foreground: #f8fafc;
+    --muted: #1f2937; /* Tailwind gray-800 */
     --muted-foreground: #9ca3af; /* Tailwind gray-400 */
     --primary-rgb: 165, 180, 252;  /* #a5b4fc */
     --secondary-rgb: 129, 140, 248;/* #818cf8 */
