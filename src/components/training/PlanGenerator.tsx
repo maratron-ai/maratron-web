@@ -14,8 +14,12 @@ import {
 import { RunningPlanData } from "@maratypes/runningPlan";
 import { createRunningPlan, listRunningPlans } from "@lib/api/plan";
 import { assignDatesToPlan } from "@utils/running/planDates";
+import {
+  defaultPlanName,
+  getDistanceLabel,
+  RaceType,
+} from "@utils/running/planName";
 
-type RaceType = "5k" | "10k" | "half" | "full";
 
 const DISTANCE_INFO: Record<RaceType, { miles: number; km: number; weeks: number }> = {
   "5k": { miles: 3.1, km: 5, weeks: 8 },
@@ -45,7 +49,9 @@ const [targetDistance, setTargetDistance] = useState<number>(
   const [planData, setPlanData] = useState<RunningPlanData | null>(null);
   const [showJson, setShowJson] = useState<boolean>(false);
   const [editPlan, setEditPlan] = useState<boolean>(false);
-  const [planName, setPlanName] = useState<string>("Training Plan 1");
+  const [planName, setPlanName] = useState<string>(
+    defaultPlanName(DEFAULT_RACE, 1)
+  );
   const [startDate, setStartDate] = useState<string>("");
   const [endDate, setEndDate] = useState<string>("");
 
@@ -58,14 +64,16 @@ const [targetDistance, setTargetDistance] = useState<number>(
       if (!user?.id) return;
       try {
         const all = await listRunningPlans();
-        const count = all.filter((p: { userId: string }) => p.userId === user.id).length;
-        setPlanName(`Training Plan ${count + 1}`);
+        const userPlans = all.filter((p: { userId: string; name?: string }) => p.userId === user.id);
+        const label = getDistanceLabel(raceType);
+        const count = userPlans.filter(p => p.name?.startsWith(label)).length;
+        setPlanName(defaultPlanName(raceType, count + 1));
       } catch (err) {
         console.error(err);
       }
     };
     fetchName();
-  }, [user?.id]);
+  }, [user?.id, raceType]);
   // const [defaultShoeId, setDefaultShoeId] = useState<string | undefined>(
   //   undefined
   // );
