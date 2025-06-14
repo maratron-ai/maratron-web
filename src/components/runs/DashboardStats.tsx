@@ -18,9 +18,8 @@ export default function DashboardStats() {
     async function fetchRuns() {
       try {
         const runs = await listRuns();
-        const filtered = session?.user
-          ? runs.filter((r) => r.userId === session.user.id)
-          : runs;
+        const userId = session?.user?.id;
+        const filtered = userId ? runs.filter((r) => r.userId === userId) : runs;
         setRunCount(filtered.length);
 
         const defaultUnit = profile?.defaultDistanceUnit || "miles";
