@@ -45,4 +45,7 @@ export interface User {
 
   shoes?: Shoe[];
   defaultShoeId?: string;
+
+  createdAt?: Date;
+  updatedAt?: Date;
 }
