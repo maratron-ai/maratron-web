@@ -321,9 +321,10 @@ export function generateLongDistancePlan(
 
     const weeklyMileage = roundToHalf(runs.reduce((tot, r) => tot + r.mileage, 0));
 
+    const finalLabel = isHalfMarathon ? "Half Marathon Week!" : "Marathon Week!";
     const notes =
       week === weeks
-        ? "Race week"
+        ? finalLabel
         : `${phase} phase${cutback ? " - Cutback" : ""}`;
 
     return {

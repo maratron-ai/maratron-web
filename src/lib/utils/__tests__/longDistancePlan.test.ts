@@ -30,6 +30,20 @@ describe("generateLongDistancePlan cutback weeks", () => {
     expect(lastWeek.runs).toHaveLength(1);
     const lastRun = lastWeek.runs[0];
     expect(lastRun.type).toBe("marathon");
-    expect(lastWeek.notes).toBe("Race week");
+    expect(lastWeek.notes).toBe("Marathon Week!");
+  });
+
+  it("labels half marathon race week", () => {
+    const weeks = 10;
+    const plan = generateLongDistancePlan(
+      weeks,
+      13.1,
+      "miles",
+      TrainingLevel.Beginner,
+      40,
+      13.1
+    );
+    const lastWeek = plan.schedule[weeks - 1];
+    expect(lastWeek.notes).toBe("Half Marathon Week!");
   });
 });

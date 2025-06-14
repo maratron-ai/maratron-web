@@ -19,13 +19,6 @@ function addWeeks(date: Date, weeks: number): Date {
   return addDays(date, weeks * 7);
 }
 
-function nextSunday(): Date {
-  const now = new Date();
-  const today = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()));
-  const diff = (7 - today.getUTCDay()) % 7;
-  today.setUTCDate(today.getUTCDate() + diff);
-  return today;
-}
 
 export async function GET() {
   try {
@@ -75,8 +68,8 @@ export async function POST(request: NextRequest) {
       end = addWeeks(start, Number(derivedWeeks) - 1);
     } else if (end && !start) {
       start = addWeeks(end, -(Number(derivedWeeks) - 1));
-    } else if (!start && !end) {
-      start = nextSunday();
+    } else if ((active || isFirstPlan) && !start) {
+      start = parseDateUTC(new Date());
       end = addWeeks(start, Number(derivedWeeks) - 1);
     }
 

@@ -39,14 +39,21 @@ export default function TrainingPlansList() {
   const setActive = async (id: string) => {
     try {
       await Promise.all(
-        plans.map((p) =>
-          p.id
-            ? updateRunningPlan(p.id, { active: p.id === id })
-            : Promise.resolve()
-        )
+        plans.map((p) => {
+          if (!p.id) return Promise.resolve();
+          const data: Record<string, unknown> = { active: p.id === id };
+          if (p.id === id && !p.startDate) {
+            data.startDate = new Date().toISOString();
+          }
+          return updateRunningPlan(p.id, data);
+        })
       );
       setPlans((prev) =>
-        prev.map((p) => ({ ...p, active: p.id === id }))
+        prev.map((p) =>
+          p.id === id
+            ? { ...p, active: true, startDate: p.startDate || new Date() }
+            : { ...p, active: false }
+        )
       );
       if (typeof window !== "undefined") {
         window.dispatchEvent(new Event("activePlanChanged"));
