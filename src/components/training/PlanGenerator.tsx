@@ -106,7 +106,6 @@ const [targetDistance, setTargetDistance] = useState<number>(
       distanceUnit,
       trainingLevel,
       vdot,
-      startingWeeklyMileage: targetDistance,
       targetPace: useTotalTime ? undefined : targetPace,
       targetTotalTime: useTotalTime ? targetTotalTime : undefined,
     };

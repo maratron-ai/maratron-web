@@ -71,3 +71,32 @@ export function calculatePaceForVDOT(
   const paceSec = mid / (distanceMeters / metersPerMile);
   return formatPace(paceSec);
 }
+
+/**
+ * Predicts race-pace from a VDOT value for the given distance.
+ * This is identical to `calculatePaceForVDOT` but without any
+ * zone adjustment so the result represents goal pace.
+ */
+export function calculateGoalPaceForVDOT(
+  distanceMeters: number,
+  targetVDOT: number
+): string {
+  let low = distanceMeters / 10;
+  let high = distanceMeters;
+  let mid = 0;
+
+  for (let i = 0; i < 50; i++) {
+    mid = (low + high) / 2;
+    const vo2 = calculateVDOTJackDaniels(distanceMeters, mid);
+    if (Math.abs(vo2 - targetVDOT) < 0.1) break;
+    if (vo2 < targetVDOT) {
+      high = mid;
+    } else {
+      low = mid;
+    }
+  }
+
+  const metersPerMile = 1609.34;
+  const paceSec = mid / (distanceMeters / metersPerMile);
+  return formatPace(paceSec);
+}

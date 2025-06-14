@@ -7,7 +7,7 @@ export interface DistancePlanOptions {
   distanceUnit: Unit;
   trainingLevel: TrainingLevel;
   vdot: number;
-  startingWeeklyMileage: number;
+  startingWeeklyMileage?: number;
   targetPace?: string;
   targetTotalTime?: string;
 }
@@ -17,15 +17,7 @@ function toDistance(unit: Unit, milesVal: number, kmVal: number): number {
 }
 
 export function generate5kPlan(options: DistancePlanOptions): RunningPlanData {
-  const {
-    weeks = 8,
-    distanceUnit,
-    trainingLevel,
-    vdot,
-    startingWeeklyMileage,
-    targetPace,
-    targetTotalTime,
-  } = options;
+  const { weeks = 8, distanceUnit, trainingLevel, vdot } = options;
   const dist = toDistance(distanceUnit, 3.1, 5);
   return generateShortDistancePlan(
     weeks,
@@ -33,22 +25,11 @@ export function generate5kPlan(options: DistancePlanOptions): RunningPlanData {
     distanceUnit,
     trainingLevel,
     vdot,
-    startingWeeklyMileage,
-    targetPace,
-    targetTotalTime,
   );
 }
 
 export function generate10kPlan(options: DistancePlanOptions): RunningPlanData {
-  const {
-    weeks = 10,
-    distanceUnit,
-    trainingLevel,
-    vdot,
-    startingWeeklyMileage,
-    targetPace,
-    targetTotalTime,
-  } = options;
+  const { weeks = 10, distanceUnit, trainingLevel, vdot } = options;
   const dist = toDistance(distanceUnit, 6.2, 10);
   return generateShortDistancePlan(
     weeks,
@@ -56,9 +37,6 @@ export function generate10kPlan(options: DistancePlanOptions): RunningPlanData {
     distanceUnit,
     trainingLevel,
     vdot,
-    startingWeeklyMileage,
-    targetPace,
-    targetTotalTime,
   );
 }
 
