@@ -162,7 +162,7 @@ const [targetDistance, setTargetDistance] = useState<number>(
               min={8}
               value={weeks}
               onChange={(e) => setWeeks(Number(e.target.value))}
-              className="border p-2 rounded"
+              className="border p-2 rounded bg-background text-foreground"
             />
           </div>
           {/* Race Date */}
@@ -175,7 +175,7 @@ const [targetDistance, setTargetDistance] = useState<number>(
               type="date"
               value={endDate}
               onChange={(e) => setEndDate(e.target.value)}
-              className="border p-2 rounded"
+              className="border p-2 rounded bg-background text-foreground"
             />
           </div>
           {/* Race Selection */}
@@ -187,7 +187,7 @@ const [targetDistance, setTargetDistance] = useState<number>(
               id="raceType"
               value={raceType}
               onChange={(e) => setRaceType(e.target.value as RaceType)}
-              className="border p-2 rounded"
+              className="border p-2 rounded bg-background text-foreground"
             >
               <option value="5k">5K</option>
               <option value="10k">10K</option>
@@ -209,7 +209,7 @@ const [targetDistance, setTargetDistance] = useState<number>(
               onChange={(e) =>
                 setTrainingLevel(e.target.value as TrainingLevel)
               }
-              className="border p-2 rounded"
+              className="border p-2 rounded bg-background text-foreground"
             >
               <option value="beginner">Beginner</option>
               <option value="intermediate">Intermediate</option>
@@ -239,7 +239,7 @@ const [targetDistance, setTargetDistance] = useState<number>(
                 type="text"
                 value={targetTotalTime}
                 onChange={(e) => setTargetTotalTime(e.target.value)}
-                className="border p-2 rounded"
+                className="border p-2 rounded bg-background text-foreground"
               />
             </div>
           ) : (
@@ -252,7 +252,7 @@ const [targetDistance, setTargetDistance] = useState<number>(
                 type="text"
                 value={targetPace}
                 onChange={(e) => setTargetPace(e.target.value)}
-                className="border p-2 rounded"
+                className="border p-2 rounded bg-background text-foreground"
               />
             </div>
           )}
@@ -273,7 +273,7 @@ const [targetDistance, setTargetDistance] = useState<number>(
             type="text"
             value={planName}
             onChange={(e) => setPlanName(e.target.value)}
-            className="border p-2 rounded w-full"
+            className="border p-2 rounded w-full bg-background text-foreground"
           />
         </div>
         <div className="mb-4 flex gap-8">
