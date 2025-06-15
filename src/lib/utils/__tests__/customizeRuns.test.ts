@@ -18,16 +18,17 @@ describe("customizePlanRuns", () => {
     expect(week2Types).toContain("tempo");
   });
 
-  it("adds cross training placeholders", () => {
+  it("adds the requested number of cross training days", () => {
     const opts: DistancePlanOptions = {
       distanceUnit: "miles",
       trainingLevel: TrainingLevel.Beginner,
       vdot: 40,
       runsPerWeek: 5,
-      includeCrossTraining: true,
+      crossTrainingDays: 2,
     };
     const plan = generate5kPlan(opts);
     const week1 = plan.schedule[0];
-    expect(week1.runs.some((r) => r.type === "cross")).toBe(true);
+    const crossCount = week1.runs.filter((r) => r.type === "cross").length;
+    expect(crossCount).toBe(2);
   });
 });

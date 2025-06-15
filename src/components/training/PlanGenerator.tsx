@@ -57,7 +57,13 @@ const [targetDistance, setTargetDistance] = useState<number>(
     TrainingLevel.Beginner
   );
   const [runsPerWeek, setRunsPerWeek] = useState<number>(4);
-  const [includeCrossTraining, setIncludeCrossTraining] = useState<boolean>(false);
+  const [crossTrainingDays, setCrossTrainingDays] = useState<number>(0);
+
+  useEffect(() => {
+    if (crossTrainingDays > 7 - runsPerWeek) {
+      setCrossTrainingDays(7 - runsPerWeek);
+    }
+  }, [runsPerWeek, crossTrainingDays]);
 
   useEffect(() => {
     const fetchName = async () => {
@@ -109,7 +115,7 @@ const [targetDistance, setTargetDistance] = useState<number>(
       targetPace: useTotalTime ? undefined : targetPace,
       targetTotalTime: useTotalTime ? targetTotalTime : undefined,
       runsPerWeek,
-      includeCrossTraining,
+      crossTrainingDays,
     };
     let plan: RunningPlanData;
     switch (raceType) {
@@ -245,16 +251,23 @@ const [targetDistance, setTargetDistance] = useState<number>(
             className="border p-2 rounded bg-background text-foreground"
           />
         </div>
-        {/* Cross Training */}
-        <label className="flex items-center space-x-2">
+        {/* Cross Training Days */}
+        <div className="flex flex-col">
+          <label htmlFor="crossDays" className="mb-1">
+            Cross Training Days:
+          </label>
           <input
-            type="checkbox"
-            checked={includeCrossTraining}
-            onChange={(e) => setIncludeCrossTraining(e.target.checked)}
-            className="form-checkbox"
+            id="crossDays"
+            type="number"
+            min={0}
+            max={7 - runsPerWeek}
+            value={crossTrainingDays}
+            onChange={(e) =>
+              setCrossTrainingDays(Math.min(7 - runsPerWeek, Number(e.target.value)))
+            }
+            className="border p-2 rounded bg-background text-foreground"
           />
-          <span>Include Cross Training</span>
-        </label>
+        </div>
         {/* Goal Input Mode */}
         <div className="flex flex-col">
             {/* <label htmlFor="inputMode" className="mb-1">

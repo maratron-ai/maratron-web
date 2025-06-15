@@ -14,7 +14,7 @@ export interface DistancePlanOptions {
   targetTotalTime?: string;
   runTypeDays?: Partial<Record<PlannedRun["type"], DayOfWeek>>;
   runsPerWeek?: number;
-  includeCrossTraining?: boolean;
+  crossTrainingDays?: number;
 }
 
 function toDistance(unit: Unit, milesVal: number, kmVal: number): number {
@@ -34,7 +34,7 @@ export function generate5kPlan(options: DistancePlanOptions): RunningPlanData {
   return options.runsPerWeek
     ? customizePlanRuns(plan, {
         runsPerWeek: options.runsPerWeek,
-        includeCrossTraining: options.includeCrossTraining,
+        crossTrainingDays: options.crossTrainingDays,
       })
     : plan;
 }
@@ -52,7 +52,7 @@ export function generate10kPlan(options: DistancePlanOptions): RunningPlanData {
   return options.runsPerWeek
     ? customizePlanRuns(plan, {
         runsPerWeek: options.runsPerWeek,
-        includeCrossTraining: options.includeCrossTraining,
+        crossTrainingDays: options.crossTrainingDays,
       })
     : plan;
 }
@@ -82,7 +82,7 @@ export function generateHalfMarathonPlan(options: DistancePlanOptions): RunningP
   return options.runsPerWeek
     ? customizePlanRuns(plan, {
         runsPerWeek: options.runsPerWeek,
-        includeCrossTraining: options.includeCrossTraining,
+        crossTrainingDays: options.crossTrainingDays,
       })
     : plan;
 }
@@ -112,7 +112,7 @@ export function generateClassicMarathonPlan(options: DistancePlanOptions): Runni
   return options.runsPerWeek
     ? customizePlanRuns(plan, {
         runsPerWeek: options.runsPerWeek,
-        includeCrossTraining: options.includeCrossTraining,
+        crossTrainingDays: options.crossTrainingDays,
       })
     : plan;
 }
