@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
+import { Pencil } from "lucide-react";
 import { useUser } from "@hooks/useUser";
 import { TrainingLevel } from "@maratypes/user";
 import ToggleSwitch from "@components/ToggleSwitch";
@@ -52,6 +53,7 @@ const [targetDistance, setTargetDistance] = useState<number>(
   const [planName, setPlanName] = useState<string>(
     defaultPlanName(DEFAULT_RACE, 1)
   );
+  const [editingName, setEditingName] = useState<boolean>(false);
   const [startDate, setStartDate] = useState<string>("");
   const [endDate, setEndDate] = useState<string>("");
 
@@ -280,14 +282,29 @@ const [targetDistance, setTargetDistance] = useState<number>(
       {planData && (
         <div className="mt-6">
           <h2 className="text-2xl font-bold text-center mb-4">Running Plan:</h2>
-          <div className="mb-4">
-          <label className="block mb-1 font-semibold">Plan Name</label>
-          <input
-            type="text"
-            value={planName}
-            onChange={(e) => setPlanName(e.target.value)}
-            className="border p-2 rounded w-full bg-background text-foreground"
-          />
+        <div className="mb-4 flex items-center gap-2">
+          <span className="font-semibold">Plan Name:</span>
+          {editingName ? (
+            <input
+              type="text"
+              value={planName}
+              onChange={(e) => setPlanName(e.target.value)}
+              onBlur={() => setEditingName(false)}
+              autoFocus
+              className="border p-2 rounded flex-1 bg-background text-foreground"
+            />
+          ) : (
+            <div className="flex items-center gap-2">
+              <span>{planName}</span>
+              <button
+                type="button"
+                onClick={() => setEditingName(true)}
+                className="text-foreground hover:text-primary"
+              >
+                <Pencil className="w-4 h-4" />
+              </button>
+            </div>
+          )}
         </div>
         <div className="mb-4 flex gap-8">
           <div>
