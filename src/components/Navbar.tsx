@@ -135,22 +135,22 @@ export default function Navbar() {
                   )}
                 </button>
                 {desktopMenuOpen && (
-                  <div className="absolute right-0 mt-2 w-40 bg-background border border-accent rounded shadow-md z-50">
+                  <div className="absolute right-0 mt-2 w-40 bg-background border border-accent rounded shadow-md z-50 flex flex-col items-center">
                     <Link
                       href="/profile"
-                      className="text-foreground no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
+                      className="block w-full text-center py-2 text-foreground no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
                     >
                       Profile
                     </Link>
                     <Link
                       href="/settings"
-                      className="text-foreground no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
+                      className="block w-full text-center py-2 text-foreground no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
                     >
                       Settings
                     </Link>
                     <button
                       onClick={() => signOut()}
-                      className="text-foreground no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
+                      className="block w-full text-center py-2 justify-center text-foreground no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
                     >
                       Logout
                     </button>
