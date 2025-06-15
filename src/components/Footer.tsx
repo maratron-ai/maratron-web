@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export default function Footer() {
   return (
-    <footer className="py-8 text-center text-foreground/60 text-sm bg-background border-t border-muted relative z-10">
+    <footer className="py-8 text-center text-foreground text-sm bg-background border-t border-muted relative z-10">
       <div className="w-full px-4 sm:px-6 lg:px-8 space-y-2">
         <Image
           src="/maratron-name.svg"
