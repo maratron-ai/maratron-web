@@ -397,7 +397,7 @@ const BulkDaySetter: React.FC<BulkDaySetterProps> = ({ planData, onPlanChange })
     "Friday",
     "Saturday",
   ];
-  const runTypes: PlannedRun["type"][] = ["easy", "tempo", "interval", "long", "marathon", "cross", "race"];
+  const runTypes: PlannedRun["type"][] = ["easy", "tempo", "interval", "long", "cross"];
   const [type, setType] = useState<PlannedRun["type"]>("easy");
   const [day, setDay] = useState<DayOfWeek>("Monday");
 
