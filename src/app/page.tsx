@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { Button } from "@components/ui/button";
 import { Card } from "@components/ui/card";
 import { Badge } from "@components/ui/badge";
@@ -21,10 +22,17 @@ export default function Landing() {
         <div className="absolute inset-0 bg-background/60 backdrop-blur-sm z-0"></div>
         <div className="w-full px-4 sm:px-6 lg:px-8 py-20 relative">
           <div className="w-full text-center">
+            <Image
+              src="/maratron-name-gradient-purple.svg"
+              alt="Maratron Logo"
+              width={800}
+              height={200}
+              className="mx-auto mb-6 py-4"
+            />
             <Badge className="mb-6 bg-gradient-to-r from-[var(--brand-from)] to-[var(--brand-to)] text-white border-0">
               Powered by Advanced AI Training Science
             </Badge>
-            <h1 className="text-5xl md:text-7xl font-bold mb-6 text-foreground leading-tight drop-shadow-sm">
+            <h1 className="text-5xl md:text-7xl font-bold mb-6 text-foreground leading-tight drop-shadow-sm pt-16">
               Your Personal Marathon Coach,{" "}
               <span className="text-gradient bg-gradient-to-r from-[var(--brand-from)] to-[var(--brand-to)] bg-clip-text text-transparent">
                 Reimagined

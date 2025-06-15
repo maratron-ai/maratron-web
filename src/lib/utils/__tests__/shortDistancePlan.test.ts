@@ -34,4 +34,14 @@ describe("generateShortDistancePlan", () => {
       generateShortDistancePlan(17, 6.2, "miles", TrainingLevel.Beginner, 40)
     ).toThrow();
   });
+
+  it("rounds long runs to the nearest half unit", () => {
+    const plan = generateShortDistancePlan(8, 6.2, "miles", TrainingLevel.Beginner, 40);
+    plan.schedule.forEach((week) => {
+      const longRun = week.runs.find((r) => r.type === "long");
+      if (longRun) {
+        expect(longRun.mileage * 2).toBeCloseTo(Math.round(longRun.mileage * 2));
+      }
+    });
+  });
 });

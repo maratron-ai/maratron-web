@@ -88,6 +88,7 @@ export function generateShortDistancePlan(
   const { start: LS, peak: LP } = LONG_RUN_PCT[trainingLevel];
 
   const round1 = (n: number) => Math.round(n * 10) / 10;
+  const roundToHalf = (n: number): number => Math.round(n * 2) / 2;
 
   for (let w = 1; w <= weeks; w++) {
     const phase = phases[w - 1];
@@ -156,7 +157,7 @@ export function generateShortDistancePlan(
         type: "long",
         day: "Sunday",
         unit: distanceUnit,
-        mileage: round1(fromKm(longKm)),
+        mileage: roundToHalf(fromKm(longKm)),
         targetPace: { unit: distanceUnit, pace: paceE },
         notes: `${longKm.toFixed(1)} km @ E-pace`,
       },

@@ -177,7 +177,7 @@ const CollapsibleWeek: React.FC<CollapsibleWeekProps> = ({
     "Friday",
     "Saturday",
   ];
-  const runTypes = ["easy", "tempo", "interval", "long", "marathon"] as const;
+  const runTypes = ["easy", "tempo", "interval", "long", "marathon", "cross", "race"] as const;
 
   return (
     <div
@@ -397,7 +397,7 @@ const BulkDaySetter: React.FC<BulkDaySetterProps> = ({ planData, onPlanChange })
     "Friday",
     "Saturday",
   ];
-  const runTypes: PlannedRun["type"][] = ["easy", "tempo", "interval", "long", "marathon"];
+  const runTypes: PlannedRun["type"][] = ["easy", "tempo", "interval", "long", "marathon", "cross", "race"];
   const [type, setType] = useState<PlannedRun["type"]>("easy");
   const [day, setDay] = useState<DayOfWeek>("Monday");
 

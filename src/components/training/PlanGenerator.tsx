@@ -56,6 +56,14 @@ const [targetDistance, setTargetDistance] = useState<number>(
   const [trainingLevel, setTrainingLevel] = useState<TrainingLevel>(
     TrainingLevel.Beginner
   );
+  const [runsPerWeek, setRunsPerWeek] = useState<number>(4);
+  const [crossTrainingDays, setCrossTrainingDays] = useState<number>(0);
+
+  useEffect(() => {
+    if (crossTrainingDays > 7 - runsPerWeek) {
+      setCrossTrainingDays(7 - runsPerWeek);
+    }
+  }, [runsPerWeek, crossTrainingDays]);
 
   useEffect(() => {
     const fetchName = async () => {
@@ -106,6 +114,8 @@ const [targetDistance, setTargetDistance] = useState<number>(
       vdot,
       targetPace: useTotalTime ? undefined : targetPace,
       targetTotalTime: useTotalTime ? targetTotalTime : undefined,
+      runsPerWeek,
+      crossTrainingDays,
     };
     let plan: RunningPlanData;
     switch (raceType) {
@@ -224,10 +234,42 @@ const [targetDistance, setTargetDistance] = useState<number>(
               <option value="beginner">Beginner</option>
               <option value="intermediate">Intermediate</option>
               <option value="advanced">Advanced</option>
-            </select>
-          </div>
-          {/* Goal Input Mode */}
-          <div className="flex flex-col">
+          </select>
+        </div>
+        {/* Runs Per Week */}
+        <div className="flex flex-col">
+          <label htmlFor="runsPerWeek" className="mb-1">
+            Runs per Week:
+          </label>
+          <input
+            id="runsPerWeek"
+            type="number"
+            min={2}
+            max={5}
+            value={runsPerWeek}
+            onChange={(e) => setRunsPerWeek(Number(e.target.value))}
+            className="border p-2 rounded bg-background text-foreground"
+          />
+        </div>
+        {/* Cross Training Days */}
+        <div className="flex flex-col">
+          <label htmlFor="crossDays" className="mb-1">
+            Cross Training Days:
+          </label>
+          <input
+            id="crossDays"
+            type="number"
+            min={0}
+            max={7 - runsPerWeek}
+            value={crossTrainingDays}
+            onChange={(e) =>
+              setCrossTrainingDays(Math.min(7 - runsPerWeek, Number(e.target.value)))
+            }
+            className="border p-2 rounded bg-background text-foreground"
+          />
+        </div>
+        {/* Goal Input Mode */}
+        <div className="flex flex-col">
             {/* <label htmlFor="inputMode" className="mb-1">
               Goal Input:
             </label> */}

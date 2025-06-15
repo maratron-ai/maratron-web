@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { useState, useEffect } from "react";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Menu } from "lucide-react";
 import DefaultAvatar from "@components/DefaultAvatar";
 import { Sheet, SheetContent, SheetTrigger } from "@components/ui";
@@ -15,6 +15,7 @@ export default function Navbar() {
   const [desktopMenuOpen, setDesktopMenuOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const pathname = usePathname();
+  const router = useRouter();
 
   // Close dropdowns when route changes
   useEffect(() => {
@@ -50,13 +51,24 @@ export default function Navbar() {
         {/* Left: Logo and links */}
         <div className="flex items-center">
           <Link href="/" className="text-xl font-bold mr-2">
-            <Image
-              src="/maratron-name.svg"
-              alt="Maratron Logo"
-              width={160}
-              height={40}
-              className="h-8 w-auto"
-            />
+            <div className="relative w-auto px-8">
+              {/* Light-mode logo */}
+              <Image
+                src="/maratron-name-dark.svg"
+                alt="Maratron Logo"
+                width={140}
+                height={60}
+                className="block dark:hidden"
+              />
+              {/* Dark-mode logo */}
+              <Image
+                src="/maratron-name-light.svg"
+                alt="Maratron Logo"
+                width={140}
+                height={60}
+                className="hidden dark:block"
+              />
+            </div>
           </Link>
           <div className="hidden md:flex space-x-4">
             {status !== "loading" && session?.user ? (
@@ -64,7 +76,14 @@ export default function Navbar() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="text-foreground hover:text-[rgb(var(--primary-rgb))] transition-colors"
+                  className="
+                      text-foreground 
+                      no-underline 
+                      transition-colors 
+                      hover:text-background 
+                      hover:no-underline
+                      hover:bg-brand-from
+                    "
                 >
                   {link.label}
                 </Link>
@@ -73,13 +92,13 @@ export default function Navbar() {
               <>
                 <Link
                   href="/about"
-                  className="text-foreground hover:text-[rgb(var(--primary-rgb))] transition-colors"
+                  className="text-foreground no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
                 >
                   About
                 </Link>
                 <Link
                   href="/contact"
-                  className="text-foreground hover:text-[rgb(var(--primary-rgb))] transition-colors"
+                  className="text-foreground no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
                 >
                   Contact
                 </Link>
@@ -117,22 +136,22 @@ export default function Navbar() {
                   )}
                 </button>
                 {desktopMenuOpen && (
-                  <div className="absolute right-0 mt-2 w-40 bg-background border border-accent/20 rounded shadow-md z-50">
+                  <div className="absolute right-0 mt-2 w-40 bg-background border border-accent rounded shadow-md z-50 flex flex-col items-center">
                     <Link
                       href="/profile"
-                      className="block px-4 py-2 hover:bg-accent/20"
+                      className="block w-full text-center py-2 text-foreground no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
                     >
                       Profile
                     </Link>
                     <Link
                       href="/settings"
-                      className="block px-4 py-2 hover:bg-accent/20"
+                      className="block w-full text-center py-2 text-foreground no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
                     >
                       Settings
                     </Link>
                     <button
                       onClick={() => signOut()}
-                      className="block w-full text-left px-4 py-2 hover:bg-accent/20"
+                      className="block w-full text-center py-2 justify-center text-foreground no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
                     >
                       Logout
                     </button>
@@ -143,7 +162,7 @@ export default function Navbar() {
           ) : (
             <button
               onClick={() => signIn()}
-              className="hover:text-primary transition-colors"
+              className="text-foreground no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
             >
               Sign In
             </button>
@@ -157,7 +176,10 @@ export default function Navbar() {
           {status !== "loading" && session?.user && (
             <div className="relative mr-2">
               <button
-                onClick={() => setMobileMenuOpen((o) => !o)}
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  router.push("/home");
+                }}
                 aria-label="Toggle user menu"
                 aria-expanded={mobileMenuOpen}
                 className="focus:outline-none"
@@ -179,31 +201,6 @@ export default function Navbar() {
                   )}
                 </div>
               </button>
-              {mobileMenuOpen && (
-                <div className="absolute right-0 mt-2 w-40 bg-background border border-accent/20 rounded shadow-md z-50">
-                  <Link
-                    href="/profile"
-                    className="block px-4 py-2 hover:bg-accent/20"
-                  >
-                    Profile
-                  </Link>
-                  <Link
-                    href="/settings"
-                    className="block px-4 py-2 hover:bg-accent/20"
-                  >
-                    Settings
-                  </Link>
-                  <button
-                    onClick={() => {
-                      signOut();
-                      setMobileMenuOpen(false);
-                    }}
-                    className="block w-full text-left px-4 py-2 hover:bg-accent/20"
-                  >
-                    Logout
-                  </button>
-                </div>
-              )}
             </div>
           )}
 
@@ -217,36 +214,52 @@ export default function Navbar() {
                 <Menu className="w-6 h-6" />
               </button>
             </SheetTrigger>
-            <SheetContent side="left" className="p-6 space-y-4">
+            <SheetContent side="left" className="p-6 space-y-4 w-1/2">
               {status !== "loading" && session?.user ? (
                 navLinks.map((link) => (
-                  <Link key={link.href} href={link.href} className="block">
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    className="text-foreground no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
+                  >
                     {link.label}
                   </Link>
                 ))
               ) : (
-                <Link href="/about" className="block">
+                <Link
+                  href="/about"
+                  className="text-center text-foreground no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
+                >
                   About
                 </Link>
               )}
               <hr />
               {status !== "loading" && session?.user ? (
                 <>
-                  <Link href="/profile" className="block">
+                  <Link
+                    href="/profile"
+                    className="text-foreground no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
+                  >
                     Profile
                   </Link>
-                  <Link href="/settings" className="block">
+                  <Link
+                    href="/settings"
+                    className="text-foreground no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
+                  >
                     Settings
                   </Link>
                   <button
                     onClick={() => signOut()}
-                    className="w-full text-left"
+                    className="text-foreground no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
                   >
                     Logout
                   </button>
                 </>
               ) : (
-                <button onClick={() => signIn()} className="w-full text-left">
+                <button
+                  onClick={() => signIn()}
+                  className="text-foreground no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
+                >
                   Sign In
                 </button>
               )}

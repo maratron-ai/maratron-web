@@ -80,4 +80,21 @@ describe("generateLongDistancePlan cutback weeks", () => {
         .forEach((r) => expect(r.day).toBe("Monday"));
     });
   });
+
+  it("rounds long runs to the nearest half unit", () => {
+    const plan = generateLongDistancePlan(
+      12,
+      13.1,
+      "miles",
+      TrainingLevel.Beginner,
+      40,
+      13.1
+    );
+    plan.schedule.forEach((week) => {
+      const longRun = week.runs.find((r) => r.type === "long" || r.type === "marathon");
+      if (longRun) {
+        expect(longRun.mileage * 2).toBeCloseTo(Math.round(longRun.mileage * 2));
+      }
+    });
+  });
 });
