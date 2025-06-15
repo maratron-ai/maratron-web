@@ -74,9 +74,9 @@ const RunningPlanDisplay: React.FC<RunningPlanDisplayProps> = ({
     <div className="w-full px-4 sm:px-6 lg:px-8 py-4">
       {showPlanMeta ? (
         <>
-          <h2 className="text-2xl font-bold text-center mb-4">Running Plan:</h2>
+          {/* <h2 className="text-2xl font-bold text-center mb-4">Running Plan:</h2> */}
           <div className="mb-4 flex items-center gap-2">
-            <span className="font-semibold">Plan Name:</span>
+            {/* <span className="font-semibold">Plan Name:</span> */}
             {editingName ? (
               <input
                 type="text"
@@ -84,11 +84,11 @@ const RunningPlanDisplay: React.FC<RunningPlanDisplayProps> = ({
                 onChange={(e) => onPlanNameChange?.(e.target.value)}
                 onBlur={() => setEditingName(false)}
                 autoFocus
-                className="border p-2 rounded flex-1 bg-background text-foreground"
+                className="w-full max-w-md text-2xl font-bold text-center mb-4 block mx-auto"
               />
             ) : (
-              <div className="flex items-center gap-2">
-                <span>{planName}</span>
+              <h2 className="w-full text-2xl font-bold text-center mb-4">
+                {planName}
                 <button
                   type="button"
                   onClick={() => setEditingName(true)}
@@ -96,34 +96,38 @@ const RunningPlanDisplay: React.FC<RunningPlanDisplayProps> = ({
                 >
                   <Pencil className="w-4 h-4" />
                 </button>
-              </div>
+              </h2>
             )}
           </div>
-          <div className="mb-4 flex gap-8">
-            <div>
-              <label className="block mb-1 font-semibold">Start Date</label>
-              <p className="text-foreground">{planData.startDate?.slice(0, 10)}</p>
-            </div>
-            <div>
-              <label className="block mb-1 font-semibold">Race Date</label>
-              <p className="text-foreground">{planData.endDate?.slice(0, 10)}</p>
-            </div>
-          </div>
-          <div className="mt-4 flex justify-center gap-4">
+          <div className="mt-4 flex justify-center gap-4 py-5">
             <button
               type="button"
               onClick={handleSave}
-              className="bg-primary text-foreground px-4 py-2 rounded hover:bg-primary/80"
+              className="bg-muted-foreground text-underline text-foreground px-4 py-2 rounded hover:bg-brand-to hover:text-background"
             >
               Save Plan
             </button>
             <button
               type="button"
               onClick={() => setIsEditable((e) => !e)}
-              className="bg-secondary text-foreground px-4 py-2 rounded hover:bg-secondary/80"
+              className="bg-muted-foreground text-underline text-foreground px-4 py-2 rounded hover:bg-brand-to hover:text-background"
             >
               {isEditable ? "Done" : "Edit"}
             </button>
+          </div>
+          <div className="mb-4 justify-center flex gap-8">
+            <div>
+              <label className="block mb-1 font-semibold">Start Date</label>
+              <p className="text-foreground">
+                {planData.startDate?.slice(0, 10)}
+              </p>
+            </div>
+            <div>
+              <label className="block mb-1 font-semibold">Race Date</label>
+              <p className="text-foreground">
+                {planData.endDate?.slice(0, 10)}
+              </p>
+            </div>
           </div>
         </>
       ) : (
@@ -132,10 +136,7 @@ const RunningPlanDisplay: React.FC<RunningPlanDisplayProps> = ({
         </h2>
       )}
       {(isEditable || showBulkDaySetter) && (
-        <BulkDaySetter
-          planData={planData}
-          onPlanChange={onPlanChange}
-        />
+        <BulkDaySetter planData={planData} onPlanChange={onPlanChange} />
       )}
       {planData.schedule.map((weekPlan, wi) => (
         <CollapsibleWeek
