@@ -1,5 +1,6 @@
 import { generateLongDistancePlan, Unit, TrainingLevel } from "./longDistancePlan";
 import { generateShortDistancePlan } from "./shortDistancePlan";
+import { customizePlanRuns } from "./customizeRuns";
 import type { RunningPlanData, PlannedRun } from "@maratypes/runningPlan";
 import type { DayOfWeek } from "@maratypes/basics";
 
@@ -12,6 +13,8 @@ export interface DistancePlanOptions {
   targetPace?: string;
   targetTotalTime?: string;
   runTypeDays?: Partial<Record<PlannedRun["type"], DayOfWeek>>;
+  runsPerWeek?: number;
+  includeCrossTraining?: boolean;
 }
 
 function toDistance(unit: Unit, milesVal: number, kmVal: number): number {
@@ -21,25 +24,37 @@ function toDistance(unit: Unit, milesVal: number, kmVal: number): number {
 export function generate5kPlan(options: DistancePlanOptions): RunningPlanData {
   const { weeks = 8, distanceUnit, trainingLevel, vdot } = options;
   const dist = toDistance(distanceUnit, 3.1, 5);
-  return generateShortDistancePlan(
+  const plan = generateShortDistancePlan(
     weeks,
     dist,
     distanceUnit,
     trainingLevel,
     vdot,
   );
+  return options.runsPerWeek
+    ? customizePlanRuns(plan, {
+        runsPerWeek: options.runsPerWeek,
+        includeCrossTraining: options.includeCrossTraining,
+      })
+    : plan;
 }
 
 export function generate10kPlan(options: DistancePlanOptions): RunningPlanData {
   const { weeks = 10, distanceUnit, trainingLevel, vdot } = options;
   const dist = toDistance(distanceUnit, 6.2, 10);
-  return generateShortDistancePlan(
+  const plan = generateShortDistancePlan(
     weeks,
     dist,
     distanceUnit,
     trainingLevel,
     vdot,
   );
+  return options.runsPerWeek
+    ? customizePlanRuns(plan, {
+        runsPerWeek: options.runsPerWeek,
+        includeCrossTraining: options.includeCrossTraining,
+      })
+    : plan;
 }
 
 export function generateHalfMarathonPlan(options: DistancePlanOptions): RunningPlanData {
@@ -53,7 +68,7 @@ export function generateHalfMarathonPlan(options: DistancePlanOptions): RunningP
     targetTotalTime,
   } = options;
   const dist = toDistance(distanceUnit, 13.1, 21.1);
-  return generateLongDistancePlan(
+  const plan = generateLongDistancePlan(
     weeks,
     dist,
     distanceUnit,
@@ -64,6 +79,12 @@ export function generateHalfMarathonPlan(options: DistancePlanOptions): RunningP
     targetTotalTime,
     options.runTypeDays,
   );
+  return options.runsPerWeek
+    ? customizePlanRuns(plan, {
+        runsPerWeek: options.runsPerWeek,
+        includeCrossTraining: options.includeCrossTraining,
+      })
+    : plan;
 }
 
 export function generateClassicMarathonPlan(options: DistancePlanOptions): RunningPlanData {
@@ -77,7 +98,7 @@ export function generateClassicMarathonPlan(options: DistancePlanOptions): Runni
     targetTotalTime,
   } = options;
   const dist = toDistance(distanceUnit, 26.2, 42.2);
-  return generateLongDistancePlan(
+  const plan = generateLongDistancePlan(
     weeks,
     dist,
     distanceUnit,
@@ -88,6 +109,12 @@ export function generateClassicMarathonPlan(options: DistancePlanOptions): Runni
     targetTotalTime,
     options.runTypeDays,
   );
+  return options.runsPerWeek
+    ? customizePlanRuns(plan, {
+        runsPerWeek: options.runsPerWeek,
+        includeCrossTraining: options.includeCrossTraining,
+      })
+    : plan;
 }
 
 export { generateLongDistancePlan as generateMarathonBasePlan } from "./longDistancePlan";

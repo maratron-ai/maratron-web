@@ -20,7 +20,14 @@ export interface RunningPlan {
 }
 
 export interface PlannedRun {
-  type: "easy" | "tempo" | "interval" | "long" | "marathon";
+  type:
+    | "easy"
+    | "tempo"
+    | "interval"
+    | "long"
+    | "marathon"
+    | "race"
+    | "cross";
   unit: DistanceUnit;
   targetPace: Pace;
   mileage: number;
