@@ -258,6 +258,7 @@ export function generateLongDistancePlan(
         progressWeeks === 1 ? 1 : (week - 1) / (progressWeeks - 1);
       longDist = initialLong + (peakLong - initialLong) * ratio;
     }
+    longDist = roundToHalf(longDist);
 
     // Interval workout with rep-specific pace
     const workout = INTERVAL_WORKOUTS[(week - 1) % INTERVAL_WORKOUTS.length];
