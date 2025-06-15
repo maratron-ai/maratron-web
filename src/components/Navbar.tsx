@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { useState, useEffect } from "react";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Menu } from "lucide-react";
 import DefaultAvatar from "@components/DefaultAvatar";
 import { Sheet, SheetContent, SheetTrigger } from "@components/ui";
@@ -15,6 +15,7 @@ export default function Navbar() {
   const [desktopMenuOpen, setDesktopMenuOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const pathname = usePathname();
+  const router = useRouter();
 
   // Close dropdowns when route changes
   useEffect(() => {
@@ -175,7 +176,10 @@ export default function Navbar() {
           {status !== "loading" && session?.user && (
             <div className="relative mr-2">
               <button
-                onClick={() => setMobileMenuOpen((o) => !o)}
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  router.push("/home");
+                }}
                 aria-label="Toggle user menu"
                 aria-expanded={mobileMenuOpen}
                 className="focus:outline-none"
@@ -197,31 +201,6 @@ export default function Navbar() {
                   )}
                 </div>
               </button>
-              {mobileMenuOpen && (
-                <div className="absolute right-0 mt-2 w-40 bg-background border border-accent/20 rounded shadow-md z-50">
-                  <Link
-                    href="/profile"
-                    className="text-foreground no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
-                  >
-                    Profile
-                  </Link>
-                  <Link
-                    href="/settings"
-                    className="text-foreground no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
-                  >
-                    Settings
-                  </Link>
-                  <button
-                    onClick={() => {
-                      signOut();
-                      setMobileMenuOpen(false);
-                    }}
-                    className="text-foreground no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
-                  >
-                    Logout
-                  </button>
-                </div>
-              )}
             </div>
           )}
 
