@@ -85,7 +85,12 @@ export function customizePlanRuns(
 
     const weeklyMileage = runs.reduce((tot, r) => tot + (r.mileage || 0), 0);
 
-    return { ...week, runs, weeklyMileage };
+    let notes = week.notes;
+    if (runsPerWeek < 4 && notes) {
+      notes = notes.replace(/\s*-?\s*Cutback\b/i, "").trim();
+    }
+
+    return { ...week, runs, weeklyMileage, notes };
   });
 
   return { ...plan, schedule };

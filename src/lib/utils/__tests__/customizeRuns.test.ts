@@ -71,4 +71,14 @@ describe("customizePlanRuns", () => {
     const q2 = w2Types.find((t) => t === "tempo" || t === "interval");
     expect(q1).not.toBe(q2);
   });
+
+  it("removes cutback notes when under four runs", () => {
+    const plan = generateHalfMarathonPlan({
+      distanceUnit: "miles",
+      trainingLevel: TrainingLevel.Beginner,
+      vdot: 40,
+      runsPerWeek: 3,
+    });
+    expect(plan.schedule.some((w) => /Cutback/i.test(w.notes || ""))).toBe(false);
+  });
 });
