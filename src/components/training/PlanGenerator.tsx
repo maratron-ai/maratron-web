@@ -1,6 +1,5 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { Pencil } from "lucide-react";
 import { useUser } from "@hooks/useUser";
 import { TrainingLevel } from "@maratypes/user";
 import ToggleSwitch from "@components/ToggleSwitch";
@@ -13,7 +12,7 @@ import {
   generateClassicMarathonPlan,
 } from "@utils/running/plans/distancePlans";
 import { RunningPlanData } from "@maratypes/runningPlan";
-import { createRunningPlan, listRunningPlans } from "@lib/api/plan";
+import { listRunningPlans } from "@lib/api/plan";
 import { assignDatesToPlan } from "@utils/running/planDates";
 import {
   defaultPlanName,
@@ -49,12 +48,9 @@ const [targetDistance, setTargetDistance] = useState<number>(
   const [targetTotalTime, setTargetTotalTime] = useState<string>("3:45:00");
   const [planData, setPlanData] = useState<RunningPlanData | null>(null);
   const [showJson, setShowJson] = useState<boolean>(false);
-  const [editPlan, setEditPlan] = useState<boolean>(false);
   const [planName, setPlanName] = useState<string>(
     defaultPlanName(DEFAULT_RACE, 1)
   );
-  const [editingName, setEditingName] = useState<boolean>(false);
-  const [startDate, setStartDate] = useState<string>("");
   const [endDate, setEndDate] = useState<string>("");
 
   const [trainingLevel, setTrainingLevel] = useState<TrainingLevel>(
@@ -151,7 +147,6 @@ const [targetDistance, setTargetDistance] = useState<number>(
       endDate: assumedEndDate,
     });
     setPlanData(withDates);
-    setStartDate(withDates.startDate?.slice(0, 10) ?? "");
     setEndDate(withDates.endDate?.slice(0, 10) ?? "");
   };
 
@@ -281,81 +276,12 @@ const [targetDistance, setTargetDistance] = useState<number>(
       )}
       {planData && (
         <div className="mt-6">
-          <h2 className="text-2xl font-bold text-center mb-4">Running Plan:</h2>
-        <div className="mb-4 flex items-center gap-2">
-          <span className="font-semibold">Plan Name:</span>
-          {editingName ? (
-            <input
-              type="text"
-              value={planName}
-              onChange={(e) => setPlanName(e.target.value)}
-              onBlur={() => setEditingName(false)}
-              autoFocus
-              className="border p-2 rounded flex-1 bg-background text-foreground"
-            />
-          ) : (
-            <div className="flex items-center gap-2">
-              <span>{planName}</span>
-              <button
-                type="button"
-                onClick={() => setEditingName(true)}
-                className="text-foreground hover:text-primary"
-              >
-                <Pencil className="w-4 h-4" />
-              </button>
-            </div>
-          )}
-        </div>
-        <div className="mb-4 flex gap-8">
-          <div>
-            <label className="block mb-1 font-semibold">Start Date</label>
-            <p className="text-foreground">{startDate}</p>
-          </div>
-          <div>
-            <label className="block mb-1 font-semibold">Race Date</label>
-            <p className="text-foreground">{endDate}</p>
-          </div>
-        </div>
-          <div className="mt-4 flex justify-center gap-4">
-            <button
-              type="button"
-              onClick={async () => {
-                if (!user) return;
-                try {
-                  await createRunningPlan({
-                    userId: user.id!,
-                    planData,
-                    name: planName,
-                    startDate: startDate ? new Date(startDate) : undefined,
-                    endDate: endDate ? new Date(endDate) : undefined,
-                    active: false,
-                  });
-                  alert("Plan saved");
-                } catch (err) {
-                  console.error(err);
-                  alert("Failed to save plan");
-                }
-              }}
-              className="bg-primary text-foreground px-4 py-2 rounded hover:bg-primary/80"
-            >
-              Save Plan
-            </button>
-            <button
-              type="button"
-              onClick={() => {
-                setEditPlan((prev) => !prev);
-              }}
-              className="bg-secondary text-foreground px-4 py-2 rounded hover:bg-secondary/80"
-            >
-              Edit
-            </button>
-          </div>
-
           <RunningPlanDisplay
             planData={planData}
             planName={planName}
-            editable={editPlan}
+            showPlanMeta
             showBulkDaySetter
+            onPlanNameChange={setPlanName}
             onPlanChange={setPlanData}
           />
           <div className="mt-4">
