@@ -9,8 +9,8 @@ export function customizePlanRuns(
   plan: RunningPlanData,
   { runsPerWeek, crossTrainingDays = 0 }: CustomizeOptions,
 ): RunningPlanData {
-  if (runsPerWeek < 3 || runsPerWeek > 5) {
-    throw new Error("runsPerWeek must be between 3 and 5");
+  if (runsPerWeek < 2 || runsPerWeek > 5) {
+    throw new Error("runsPerWeek must be between 2 and 5");
   }
 
   if (crossTrainingDays < 0) {
@@ -43,27 +43,38 @@ export function customizePlanRuns(
 
     const runs: PlannedRun[] = [];
 
-    if (easyRuns.length > 0) runs.push(easyRuns[0]);
-    if (runsPerWeek >= 4) {
-      if (easyRuns.length > 1) {
-        runs.push(easyRuns[1]);
-      } else if (easyRuns.length === 1) {
-        runs.push({ ...easyRuns[0] });
-      }
+    switch (runsPerWeek) {
+      case 5:
+        if (easyRuns[0]) runs.push(easyRuns[0]);
+        if (easyRuns[1]) runs.push(easyRuns[1]);
+        else if (easyRuns[0]) runs.push({ ...easyRuns[0] });
+        if (tempoRun) runs.push(tempoRun);
+        if (intervalRun) runs.push(intervalRun);
+        if (longRun) runs.push(longRun);
+        break;
+      case 4:
+        if (easyRuns[0]) runs.push(easyRuns[0]);
+        if (tempoRun) runs.push(tempoRun);
+        if (intervalRun) runs.push(intervalRun);
+        if (longRun) runs.push(longRun);
+        break;
+      case 3:
+        if (easyRuns[0]) runs.push(easyRuns[0]);
+        if (longRun) runs.push(longRun);
+        const alt3 = idx % 2 === 0 ? intervalRun : tempoRun;
+        if (alt3) runs.push(alt3);
+        break;
+      case 2:
+        if (longRun) runs.push(longRun);
+        const alt2 = idx % 2 === 0 ? intervalRun : tempoRun;
+        if (alt2) runs.push(alt2);
+        break;
     }
 
-    if (runsPerWeek === 5) {
-      if (tempoRun) runs.push(tempoRun);
-      if (intervalRun) runs.push(intervalRun);
-    } else {
-      const altRun = idx % 2 === 0 ? intervalRun : tempoRun;
-      if (altRun) runs.push(altRun);
-    }
-
-    if (longRun) runs.push(longRun);
-
+    const longIndex = runs.findIndex((r) => r.type === "long" || r.type === "marathon");
+    const insertAt = longIndex === -1 ? runs.length : longIndex;
     for (let i = 0; i < crossTrainingDays; i++) {
-      runs.splice(runs.length - 1, 0, {
+      runs.splice(insertAt, 0, {
         type: "cross",
         unit: week.unit,
         mileage: 0,

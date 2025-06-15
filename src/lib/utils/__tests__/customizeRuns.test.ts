@@ -18,8 +18,12 @@ describe("customizePlanRuns", () => {
     const week2Types = base.schedule[1].runs.map((r) => r.type);
     expect(base.schedule[0].runs).toHaveLength(3);
     expect(base.schedule[1].runs).toHaveLength(3);
-    expect(week1Types).toContain("interval");
-    expect(week2Types).toContain("tempo");
+    expect(week1Types.filter((t) => t === "easy").length).toBe(1);
+    expect(week1Types.filter((t) => t === "long").length).toBe(1);
+    expect(week1Types.some((t) => t === "interval" || t === "tempo")).toBe(true);
+    const week1Quality = week1Types.find((t) => t === "interval" || t === "tempo");
+    const week2Quality = week2Types.find((t) => t === "interval" || t === "tempo");
+    expect(week1Quality).not.toBe(week2Quality);
   });
 
   it("adds the requested number of cross training days", () => {
@@ -36,7 +40,7 @@ describe("customizePlanRuns", () => {
     expect(crossCount).toBe(2);
   });
 
-  it("produces four runs with two easy days when requested", () => {
+  it("produces four runs with tempo and interval", () => {
     const plan = generateHalfMarathonPlan({
       distanceUnit: "miles",
       trainingLevel: TrainingLevel.Beginner,
@@ -44,8 +48,27 @@ describe("customizePlanRuns", () => {
       runsPerWeek: 4,
     });
     const week1 = plan.schedule[0];
-    const easyCount = week1.runs.filter((r) => r.type === "easy").length;
+    const types = week1.runs.map((r) => r.type);
     expect(week1.runs).toHaveLength(4);
-    expect(easyCount).toBe(2);
+    expect(types.filter((t) => t === "easy").length).toBe(1);
+    expect(types).toContain("tempo");
+    expect(types).toContain("interval");
+  });
+
+  it("handles two-run weeks with alternating quality", () => {
+    const plan = generate5kPlan({
+      distanceUnit: "miles",
+      trainingLevel: TrainingLevel.Beginner,
+      vdot: 40,
+      runsPerWeek: 2,
+    });
+    const w1Types = plan.schedule[0].runs.map((r) => r.type);
+    const w2Types = plan.schedule[1].runs.map((r) => r.type);
+    expect(plan.schedule[0].runs).toHaveLength(2);
+    expect(w1Types).toContain("long");
+    expect(w1Types.some((t) => t === "tempo" || t === "interval")).toBe(true);
+    const q1 = w1Types.find((t) => t === "tempo" || t === "interval");
+    const q2 = w2Types.find((t) => t === "tempo" || t === "interval");
+    expect(q1).not.toBe(q2);
   });
 });

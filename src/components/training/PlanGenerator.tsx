@@ -244,7 +244,7 @@ const [targetDistance, setTargetDistance] = useState<number>(
           <input
             id="runsPerWeek"
             type="number"
-            min={3}
+            min={2}
             max={5}
             value={runsPerWeek}
             onChange={(e) => setRunsPerWeek(Number(e.target.value))}
