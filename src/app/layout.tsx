@@ -21,10 +21,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={inter.variable}>
-      <body className="antialiased">
+      <body className="antialiased flex min-h-screen flex-col">
         <Providers>
           <Navbar />
-          {children}
+          <div className="flex-1">{children}</div>
           <Footer />
         </Providers>
       </body>
