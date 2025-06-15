@@ -39,7 +39,7 @@ export default function OnboardingProfile() {
     await updateUser(initialUser.id, updated);
     // Refresh session so avatar updates in navbar
     await update({ user: { avatarUrl: updated.avatarUrl ?? null } });
-    router.push("/signup/vdot");
+    router.push("/home");
   };
 
   return (
@@ -56,6 +56,7 @@ export default function OnboardingProfile() {
               onSave={onSave}
               alwaysEdit
               submitLabel="Finish Setup"
+              showVDOTField={false}
             />
           </Card>
         </div>
