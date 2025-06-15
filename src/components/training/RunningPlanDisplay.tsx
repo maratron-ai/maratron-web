@@ -413,7 +413,7 @@ const BulkDaySetter: React.FC<BulkDaySetterProps> = ({ planData, onPlanChange })
       <select
         value={type}
         onChange={(e) => setType(e.target.value as PlannedRun["type"])}
-        className="border p-1 rounded text-foreground"
+        className="border p-1 rounded text-foreground text-center"
       >
         {runTypes.map((t) => (
           <option key={t} value={t}>
@@ -425,7 +425,7 @@ const BulkDaySetter: React.FC<BulkDaySetterProps> = ({ planData, onPlanChange })
       <select
         value={day}
         onChange={(e) => setDay(e.target.value as DayOfWeek)}
-        className="border p-1 rounded text-foreground"
+        className="border p-1 rounded text-foreground text-center"
       >
         {days.map((d) => (
           <option key={d} value={d}>

@@ -85,14 +85,14 @@ export default function BasicInfoSection({
             editing={isEditing}
             onChange={handleFieldChange}
           />
-          <TextField
+          {/* <TextField
             label="VDOT"
             name="VDOT"
             type="number"
             value={formData.VDOT ?? ""}
             editing={isEditing}
             onChange={handleFieldChange}
-          />
+          /> */}
         </div>
       ) : (
         <dl className={`${styles.list} flex flex-col gap-4`}>

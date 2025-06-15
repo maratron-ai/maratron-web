@@ -59,7 +59,7 @@ export default function VDOTEstimator({ userId, onComplete }: Props) {
           id="time"
           value={time}
           onChange={(e) => setTime(e.target.value)}
-          placeholder="20:00"
+          placeholder="30:00"
         />
       </div>
       {error && <p className="text-brand-orange-dark">{error}</p>}

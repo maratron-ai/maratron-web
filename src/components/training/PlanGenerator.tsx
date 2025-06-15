@@ -64,7 +64,7 @@ const [targetDistance, setTargetDistance] = useState<number>(
         const all = await listRunningPlans();
         const userPlans = all.filter((p: { userId: string; name?: string }) => p.userId === user.id);
         const label = getDistanceLabel(raceType);
-        const count = userPlans.filter(p => p.name?.startsWith(label)).length;
+        const count = userPlans.filter((p: { name: string; }) => p.name?.startsWith(label)).length; // not sure if p's type is right
         setPlanName(defaultPlanName(raceType, count + 1));
       } catch (err) {
         console.error(err);

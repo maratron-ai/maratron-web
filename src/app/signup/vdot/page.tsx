@@ -35,7 +35,7 @@ export default function SignupVDOTPage() {
               Estimate Your VDOT
             </h1>
             <p className="text-center text-sm text-muted-foreground">
-              This should be your fastest total time for the given distance.
+              This should be your fastest time for the given distance.
             </p>
             <VDOTEstimator
               userId={session.user.id!}
