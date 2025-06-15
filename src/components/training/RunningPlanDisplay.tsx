@@ -1,4 +1,8 @@
-import React, { useState } from "react";
+"use client";
+import React, { useEffect, useState } from "react";
+import { Pencil } from "lucide-react";
+import { useUser } from "@hooks/useUser";
+import { createRunningPlan } from "@lib/api/plan";
 import { RunningPlanData, WeekPlan, PlannedRun } from "@maratypes/runningPlan";
 import { DayOfWeek } from "@maratypes/basics";
 import { setDayForRunType } from "@utils/running/setRunDay";
@@ -9,19 +13,34 @@ interface RunningPlanDisplayProps {
   planName?: string;
   editable?: boolean;
   /**
+   * Show controls for editing the plan name and saving the plan.
+   */
+  showPlanMeta?: boolean;
+  /**
    * Show the bulk day setter even when the plan is not editable.
    */
   showBulkDaySetter?: boolean;
   onPlanChange?: (plan: RunningPlanData) => void;
+  onPlanNameChange?: (name: string) => void;
 }
 
 const RunningPlanDisplay: React.FC<RunningPlanDisplayProps> = ({
   planData,
   planName,
   editable = false,
+  showPlanMeta = false,
   showBulkDaySetter = false,
   onPlanChange,
+  onPlanNameChange,
 }) => {
+  const { profile: user } = useUser();
+  const [editingName, setEditingName] = useState(false);
+  const [isEditable, setIsEditable] = useState(editable);
+
+  useEffect(() => {
+    setIsEditable(editable);
+  }, [editable]);
+
   const updateRun = (weekIdx: number, runIdx: number, field: string, value: unknown) => {
     if (!onPlanChange) return;
     const newSchedule = planData.schedule.map((w, wi) => {
@@ -33,12 +52,86 @@ const RunningPlanDisplay: React.FC<RunningPlanDisplayProps> = ({
     });
     onPlanChange({ ...planData, schedule: newSchedule });
   };
+
+  const handleSave = async () => {
+    if (!user) return;
+    try {
+      await createRunningPlan({
+        userId: user.id!,
+        planData,
+        name: planName ?? "Running Plan",
+        startDate: planData.startDate ? new Date(planData.startDate) : undefined,
+        endDate: planData.endDate ? new Date(planData.endDate) : undefined,
+        active: false,
+      });
+      alert("Plan saved");
+    } catch (err) {
+      console.error(err);
+      alert("Failed to save plan");
+    }
+  };
   return (
     <div className="w-full px-4 sm:px-6 lg:px-8 py-4">
-      <h2 className="text-2xl font-bold text-center mb-4">
-        {planName || "Your Running Plan"}
-      </h2>
-      {(editable || showBulkDaySetter) && (
+      {showPlanMeta ? (
+        <>
+          <h2 className="text-2xl font-bold text-center mb-4">Running Plan:</h2>
+          <div className="mb-4 flex items-center gap-2">
+            <span className="font-semibold">Plan Name:</span>
+            {editingName ? (
+              <input
+                type="text"
+                value={planName}
+                onChange={(e) => onPlanNameChange?.(e.target.value)}
+                onBlur={() => setEditingName(false)}
+                autoFocus
+                className="border p-2 rounded flex-1 bg-background text-foreground"
+              />
+            ) : (
+              <div className="flex items-center gap-2">
+                <span>{planName}</span>
+                <button
+                  type="button"
+                  onClick={() => setEditingName(true)}
+                  className="text-foreground hover:text-primary"
+                >
+                  <Pencil className="w-4 h-4" />
+                </button>
+              </div>
+            )}
+          </div>
+          <div className="mb-4 flex gap-8">
+            <div>
+              <label className="block mb-1 font-semibold">Start Date</label>
+              <p className="text-foreground">{planData.startDate?.slice(0, 10)}</p>
+            </div>
+            <div>
+              <label className="block mb-1 font-semibold">Race Date</label>
+              <p className="text-foreground">{planData.endDate?.slice(0, 10)}</p>
+            </div>
+          </div>
+          <div className="mt-4 flex justify-center gap-4">
+            <button
+              type="button"
+              onClick={handleSave}
+              className="bg-primary text-foreground px-4 py-2 rounded hover:bg-primary/80"
+            >
+              Save Plan
+            </button>
+            <button
+              type="button"
+              onClick={() => setIsEditable((e) => !e)}
+              className="bg-secondary text-foreground px-4 py-2 rounded hover:bg-secondary/80"
+            >
+              {isEditable ? "Done" : "Edit"}
+            </button>
+          </div>
+        </>
+      ) : (
+        <h2 className="text-2xl font-bold text-center mb-4">
+          {planName || "Your Running Plan"}
+        </h2>
+      )}
+      {(isEditable || showBulkDaySetter) && (
         <BulkDaySetter
           planData={planData}
           onPlanChange={onPlanChange}
@@ -48,7 +141,7 @@ const RunningPlanDisplay: React.FC<RunningPlanDisplayProps> = ({
         <CollapsibleWeek
           key={weekPlan.weekNumber}
           weekPlan={weekPlan}
-          editable={editable}
+          editable={isEditable}
           weekIndex={wi}
           updateRun={updateRun}
         />
