@@ -3,6 +3,7 @@ import { RunningPlanData, WeekPlan, PlannedRun } from "@maratypes/runningPlan";
 import { DayOfWeek } from "@maratypes/basics";
 import { setDayForRunType } from "@utils/running/setRunDay";
 import { parsePace, formatPace } from "@utils/running/paces";
+import RunTypeDayMatrix from "./RunTypeDayMatrix";
 
 interface RunningPlanDisplayProps {
   planData: RunningPlanData;
@@ -44,6 +45,11 @@ const RunningPlanDisplay: React.FC<RunningPlanDisplayProps> = ({
           onPlanChange={onPlanChange}
         />
       )}
+      <RunTypeDayMatrix
+        planData={planData}
+        editable={editable}
+        onPlanChange={onPlanChange}
+      />
       {planData.schedule.map((weekPlan, wi) => (
         <CollapsibleWeek
           key={weekPlan.weekNumber}
