@@ -1,4 +1,8 @@
-import { generate5kPlan, DistancePlanOptions } from "../running/plans/distancePlans";
+import {
+  generate5kPlan,
+  generateHalfMarathonPlan,
+  DistancePlanOptions,
+} from "../running/plans/distancePlans";
 import { TrainingLevel } from "../running/plans/longDistancePlan";
 
 
@@ -30,5 +34,18 @@ describe("customizePlanRuns", () => {
     const week1 = plan.schedule[0];
     const crossCount = week1.runs.filter((r) => r.type === "cross").length;
     expect(crossCount).toBe(2);
+  });
+
+  it("produces four runs with two easy days when requested", () => {
+    const plan = generateHalfMarathonPlan({
+      distanceUnit: "miles",
+      trainingLevel: TrainingLevel.Beginner,
+      vdot: 40,
+      runsPerWeek: 4,
+    });
+    const week1 = plan.schedule[0];
+    const easyCount = week1.runs.filter((r) => r.type === "easy").length;
+    expect(week1.runs).toHaveLength(4);
+    expect(easyCount).toBe(2);
   });
 });

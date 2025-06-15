@@ -44,7 +44,13 @@ export function customizePlanRuns(
     const runs: PlannedRun[] = [];
 
     if (easyRuns.length > 0) runs.push(easyRuns[0]);
-    if (runsPerWeek >= 4 && easyRuns.length > 1) runs.push(easyRuns[1]);
+    if (runsPerWeek >= 4) {
+      if (easyRuns.length > 1) {
+        runs.push(easyRuns[1]);
+      } else if (easyRuns.length === 1) {
+        runs.push({ ...easyRuns[0] });
+      }
+    }
 
     if (runsPerWeek === 5) {
       if (tempoRun) runs.push(tempoRun);
