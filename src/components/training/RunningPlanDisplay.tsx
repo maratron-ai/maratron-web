@@ -8,6 +8,10 @@ interface RunningPlanDisplayProps {
   planData: RunningPlanData;
   planName?: string;
   editable?: boolean;
+  /**
+   * Show the bulk day setter even when the plan is not editable.
+   */
+  showBulkDaySetter?: boolean;
   onPlanChange?: (plan: RunningPlanData) => void;
 }
 
@@ -15,6 +19,7 @@ const RunningPlanDisplay: React.FC<RunningPlanDisplayProps> = ({
   planData,
   planName,
   editable = false,
+  showBulkDaySetter = false,
   onPlanChange,
 }) => {
   const updateRun = (weekIdx: number, runIdx: number, field: string, value: unknown) => {
@@ -33,7 +38,7 @@ const RunningPlanDisplay: React.FC<RunningPlanDisplayProps> = ({
       <h2 className="text-2xl font-bold text-center mb-4">
         {planName || "Your Running Plan"}
       </h2>
-      {editable && (
+      {(editable || showBulkDaySetter) && (
         <BulkDaySetter
           planData={planData}
           onPlanChange={onPlanChange}
