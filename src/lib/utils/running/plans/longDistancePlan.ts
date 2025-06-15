@@ -15,7 +15,8 @@ const EASY_PERCENT = 0.15;
 const TEMPO_PERCENT = 0.2;
 const WUCD_PERCENT = 0.1; // warm-up/cool-down as fraction of run
 const CUTBACK_FREQUENCY = 4;
-const CUTBACK_FACTOR = 0.85;
+// Cut back long, tempo and easy runs by roughly 25%
+const CUTBACK_RUN_FACTOR = 0.75;
 
 export const Units = ["miles", "kilometers"] as const;
 export type Unit = (typeof Units)[number];
@@ -111,12 +112,10 @@ function computeLinearProgression(
   for (let i = 0; i < progressWeeks; i++) {
     const ratio = progressWeeks === 1 ? 1 : i / (progressWeeks - 1);
     const baseMileage = startMileage + (maxMileage - startMileage) * ratio;
-    let mileage = baseMileage;
-    let cutback = false;
-    if ((i + 1) % CUTBACK_FREQUENCY === 0) {
-      mileage = baseMileage * CUTBACK_FACTOR;
-      cutback = true;
-    }
+    const mileage = baseMileage;
+    const cutback = (i + 1) % CUTBACK_FREQUENCY === 0;
+    // Leave mileage unchanged so progression continues smoothly; runs will be
+    // scaled down later when cutback is true
     let phase: TrainingPhase;
     if (i < baseWeeks) phase = TrainingPhase.Base;
     else if (i < baseWeeks + buildWeeks) phase = TrainingPhase.Build;
@@ -276,8 +275,14 @@ export function generateLongDistancePlan(
     }
 
     // Easy & tempo runs
-    const easyMileage = roundToHalf(mileage * EASY_PERCENT);
-    const tempoMileage = roundToHalf(mileage * TEMPO_PERCENT);
+    let easyMileage = roundToHalf(mileage * EASY_PERCENT);
+    let tempoMileage = roundToHalf(mileage * TEMPO_PERCENT);
+    let adjustedLong = longDist;
+    if (cutback) {
+      easyMileage = roundToHalf(easyMileage * CUTBACK_RUN_FACTOR);
+      tempoMileage = roundToHalf(tempoMileage * CUTBACK_RUN_FACTOR);
+      adjustedLong = roundToHalf(longDist * CUTBACK_RUN_FACTOR);
+    }
     const tempoNotes = `Tempo at T-pace (${
       zones.tempo
     }) for ${tempoMileage} ${distanceUnit}, plus ${WUCD_PERCENT * 100}% WU/CD`;
@@ -317,7 +322,7 @@ export function generateLongDistancePlan(
         {
           type: "long",
           unit: distanceUnit,
-          mileage: roundToHalf(longDist),
+          mileage: adjustedLong,
           targetPace: { unit: distanceUnit, pace: zones.marathon },
         },
       ];
