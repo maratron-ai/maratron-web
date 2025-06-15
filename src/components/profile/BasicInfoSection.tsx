@@ -18,12 +18,15 @@ interface Props {
   formData: Partial<User>;
   isEditing: boolean;
   onChange: (field: keyof User, value: string) => void;
+  /** show the VDOT field when editing */
+  showVDOTField?: boolean;
 }
 
 export default function BasicInfoSection({
   formData,
   isEditing,
   onChange,
+  showVDOTField = true,
 }: Props) {
   const handleFieldChange = (name: string, value: string) =>
     onChange(name as keyof User, value);
@@ -85,14 +88,16 @@ export default function BasicInfoSection({
             editing={isEditing}
             onChange={handleFieldChange}
           />
-          {/* <TextField
-            label="VDOT"
-            name="VDOT"
-            type="number"
-            value={formData.VDOT ?? ""}
-            editing={isEditing}
-            onChange={handleFieldChange}
-          /> */}
+          {showVDOTField && (
+            <TextField
+              label="VDOT"
+              name="VDOT"
+              type="number"
+              value={formData.VDOT ?? ""}
+              editing={isEditing}
+              onChange={handleFieldChange}
+            />
+          )}
         </div>
       ) : (
         <dl className={`${styles.list} flex flex-col gap-4`}>

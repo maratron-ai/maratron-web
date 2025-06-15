@@ -14,13 +14,16 @@ interface Props {
   /** always show fields in edit mode */
   alwaysEdit?: boolean;
   submitLabel?: string;
+  /** show VDOT field when editing */
+  showVDOTField?: boolean;
 }
 
 export default function UserProfileForm({
   initialUser,
   onSave,
-  alwaysEdit = false, 
-  submitLabel = "Save Profile"
+  alwaysEdit = false,
+  submitLabel = "Save Profile",
+  showVDOTField = true,
 }: Props) {
   const {
     formData,
@@ -72,6 +75,7 @@ export default function UserProfileForm({
         formData={formData}
         isEditing={editing}
         onChange={handleChange}
+        showVDOTField={showVDOTField}
       />
       <PhysicalStatsSection
         formData={formData}
