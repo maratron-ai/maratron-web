@@ -338,6 +338,7 @@ const [targetDistance, setTargetDistance] = useState<number>(
             planData={planData}
             planName={planName}
             editable={editPlan}
+            showBulkDaySetter
             onPlanChange={setPlanData}
           />
           <div className="mt-4">
