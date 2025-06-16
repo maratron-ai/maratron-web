@@ -38,7 +38,13 @@ export async function POST(req: NextRequest) {
     );
   }
   try {
-    const group = await prisma.runGroup.create({ data });
+    const group = await prisma.runGroup.create({
+      data,
+    });
+    // add creator as member
+    await prisma.runGroupMember.create({
+      data: { groupId: group.id, socialProfileId: group.ownerId },
+    });
     return NextResponse.json(group, { status: 201 });
   } catch (err) {
     console.error("Error creating group", err);
