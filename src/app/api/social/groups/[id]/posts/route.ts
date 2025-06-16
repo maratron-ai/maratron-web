@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@lib/prisma";
+import { GROUP_POST_LIMIT } from "@lib/socialLimits";
 
 export async function GET(req: NextRequest, ctx: { params: { id: string } }) {
   const { id } = ctx.params;
@@ -15,6 +16,7 @@ export async function GET(req: NextRequest, ctx: { params: { id: string } }) {
           : undefined,
       },
       orderBy: { createdAt: "desc" },
+      take: GROUP_POST_LIMIT,
     });
     const mapped = posts.map((p) => ({
       id: p.id,

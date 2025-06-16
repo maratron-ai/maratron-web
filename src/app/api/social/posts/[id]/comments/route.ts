@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@lib/prisma";
+import { COMMENT_LIMIT } from "@lib/socialLimits";
 
 export async function POST(req: NextRequest, ctx: { params: { id: string } }) {
   const { socialProfileId, text } = await req.json();
@@ -22,6 +23,7 @@ export async function GET(_req: NextRequest, ctx: { params: { id: string } }) {
       where: { postId: id },
       include: { socialProfile: true },
       orderBy: { createdAt: "asc" },
+      take: COMMENT_LIMIT,
     });
     return NextResponse.json(comments);
   } catch (err) {

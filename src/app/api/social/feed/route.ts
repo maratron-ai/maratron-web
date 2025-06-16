@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@lib/prisma";
+import { FEED_POST_LIMIT } from "@lib/socialLimits";
 
 export async function GET(req: NextRequest) {
   const userId = req.nextUrl.searchParams.get("userId");
@@ -33,6 +34,7 @@ export async function GET(req: NextRequest) {
         },
       },
       orderBy: { createdAt: "desc" },
+      take: FEED_POST_LIMIT,
     });
 
     const mapped = posts.map((p) => ({
