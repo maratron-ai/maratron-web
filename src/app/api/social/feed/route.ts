@@ -18,7 +18,10 @@ export async function GET(req: NextRequest) {
     const ids = followed.map((f) => f.followingId);
     if (viewerProfile) ids.push(viewerProfile.id);
     const posts = await prisma.runPost.findMany({
-      where: { socialProfileId: { in: ids } },
+      where: {
+        socialProfileId: { in: ids },
+        groupId: null,
+      },
       include: {
         socialProfile: {
           include: { user: { select: { avatarUrl: true } } },
