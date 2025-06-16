@@ -1,4 +1,5 @@
 "use client";
+import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
@@ -8,17 +9,18 @@ import SocialFeed from "@components/social/SocialFeed";
 import { Button, Spinner, Card } from "@components/ui";
 import type { RunGroup } from "@maratypes/social";
 
-export default function GroupPage({ params }: { params: { id: string } }) {
+export default function GroupPage() {
   const { data: session } = useSession();
   const { profile, loading: profileLoading } = useSocialProfile();
   const router = useRouter();
+  const { id } = useParams() as { id: string };
   const [group, setGroup] = useState<RunGroup | null>(null);
   const [loading, setLoading] = useState(true);
 
   const fetchGroup = async () => {
     try {
       const { data } = await axios.get<RunGroup>(
-        `/api/social/groups/${params.id}?profileId=${profile?.id ?? ""}`
+        `/api/social/groups/${id}?profileId=${profile?.id ?? ""}`
       );
       setGroup(data);
     } catch {
@@ -41,7 +43,7 @@ export default function GroupPage({ params }: { params: { id: string } }) {
       return;
     }
     if (!profile?.id) return;
-    await axios.post(`/api/social/groups/${params.id}/join`, {
+    await axios.post(`/api/social/groups/${id}/join`, {
       profileId: profile.id,
     });
     fetchGroup();
