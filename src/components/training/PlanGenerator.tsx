@@ -384,7 +384,7 @@ const [targetDistance, setTargetDistance] = useState<number>(
           )}
           <button
             type="submit"
-            className="w-full bg-primary text-foreground p-2 rounded hover:bg-primary/80"
+            className="w-full bg-primary text-foreground p-2 rounded hover:bg-primary hover:opacity-80"
           >
             Generate Plan
           </button>

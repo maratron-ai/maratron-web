@@ -80,7 +80,7 @@ export default function TrainingPlansList() {
       </div>
     );
   if (plans.length === 0)
-    return <p className="text-foreground/60">No plans saved.</p>;
+    return <p className="text-foreground opacity-60">No plans saved.</p>;
 
   return (
     <div className="space-y-4">

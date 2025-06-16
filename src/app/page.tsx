@@ -19,7 +19,7 @@ export default function Landing() {
     <div className="min-h-screen bg-background">
       {/* Hero Section */}
       <section className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-background/60 backdrop-blur-sm z-0"></div>
+        <div className="absolute inset-0 bg-background opacity-60 backdrop-blur-sm z-0"></div>
         <div className="w-full px-4 sm:px-6 lg:px-8 py-20 relative">
           <div className="w-full text-center">
             <Image
@@ -47,7 +47,7 @@ export default function Landing() {
               <a href="/signup">
                 <Button
                   size="lg"
-                  className="bg-gradient-to-r from-[var(--brand-from)] to-[var(--brand-to)] hover:from-[var(--brand-from)]/90 hover:to-[var(--brand-to)]/90 text-white border-0 text-lg px-8 py-6"
+                  className="bg-gradient-to-r from-[var(--brand-from)] to-[var(--brand-to)] hover:from-[var(--brand-from)] hover:opacity-90 hover:to-[var(--brand-to)] hover:opacity-90 text-white border-0 text-lg px-8 py-6"
                 >
                   Start Now
                   <ArrowRight className="ml-2 h-5 w-5" />
@@ -104,8 +104,8 @@ export default function Landing() {
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-            <Card className="p-8 border border-muted bg-background/90 dark:bg-background/40 shadow-xl transition-all duration-300">
-              <div className="w-12 h-12 bg-gradient-to-br from-[var(--brand-purple)] to-[var(--brand-blue)] rounded-lg flex items-center justify-center mb-6 ring-2 ring-white/40 dark:ring-white/10">
+            <Card className="p-8 border border-muted bg-background opacity-90 dark:bg-background dark:opacity-40 shadow-xl transition-all duration-300">
+              <div className="w-12 h-12 bg-gradient-to-br from-[var(--brand-purple)] to-[var(--brand-blue)] rounded-lg flex items-center justify-center mb-6 ring-2 ring-white opacity-40 dark:ring-white dark:opacity-10">
                 <Brain className="w-6 h-6 text-white" />
               </div>
               <h3 className="text-xl font-semibold mb-4">
@@ -118,8 +118,8 @@ export default function Landing() {
               </p>
             </Card>
 
-            <Card className="p-8 border border-muted bg-background/90 dark:bg-background/40 shadow-xl transition-all duration-300">
-              <div className="w-12 h-12 bg-gradient-to-br from-[var(--brand-purple)] to-[var(--brand-blue)] rounded-lg flex items-center justify-center mb-6 ring-2 ring-white/40 dark:ring-white/10">
+            <Card className="p-8 border border-muted bg-background opacity-90 dark:bg-background dark:opacity-40 shadow-xl transition-all duration-300">
+              <div className="w-12 h-12 bg-gradient-to-br from-[var(--brand-purple)] to-[var(--brand-blue)] rounded-lg flex items-center justify-center mb-6 ring-2 ring-white opacity-40 dark:ring-white dark:opacity-10">
                 <Target className="w-6 h-6 text-white" />
               </div>
               <h3 className="text-xl font-semibold mb-4">
@@ -132,8 +132,8 @@ export default function Landing() {
               </p>
             </Card>
 
-            <Card className="p-8 border border-muted bg-background/90 dark:bg-background/40 shadow-xl transition-all duration-300">
-              <div className="w-12 h-12 bg-gradient-to-br from-[var(--brand-purple)] to-[var(--brand-blue)] rounded-lg flex items-center justify-center mb-6 ring-2 ring-white/40 dark:ring-white/10">
+            <Card className="p-8 border border-muted bg-background opacity-90 dark:bg-background dark:opacity-40 shadow-xl transition-all duration-300">
+              <div className="w-12 h-12 bg-gradient-to-br from-[var(--brand-purple)] to-[var(--brand-blue)] rounded-lg flex items-center justify-center mb-6 ring-2 ring-white opacity-40 dark:ring-white dark:opacity-10">
                 <Watch className="w-6 h-6 text-white" />
               </div>
               <h3 className="text-xl font-semibold mb-4">
@@ -145,8 +145,8 @@ export default function Landing() {
               </p>
             </Card>
 
-            <Card className="p-8 border border-muted bg-background/90 dark:bg-background/40 shadow-xl transition-all duration-300">
-              <div className="w-12 h-12 bg-gradient-to-br from-[var(--brand-purple)] to-[var(--brand-blue)] rounded-lg flex items-center justify-center mb-6 ring-2 ring-white/40 dark:ring-white/10">
+            <Card className="p-8 border border-muted bg-background opacity-90 dark:bg-background dark:opacity-40 shadow-xl transition-all duration-300">
+              <div className="w-12 h-12 bg-gradient-to-br from-[var(--brand-purple)] to-[var(--brand-blue)] rounded-lg flex items-center justify-center mb-6 ring-2 ring-white opacity-40 dark:ring-white dark:opacity-10">
                 <TrendingUp className="w-6 h-6 text-white" />
               </div>
               <h3 className="text-xl font-semibold mb-4">
@@ -159,8 +159,8 @@ export default function Landing() {
               </p>
             </Card>
 
-            <Card className="p-8 border border-muted bg-background/90 dark:bg-background/40 shadow-xl transition-all duration-300">
-              <div className="w-12 h-12 bg-gradient-to-br from-[var(--brand-purple)] to-[var(--brand-blue)] rounded-lg flex items-center justify-center mb-6 ring-2 ring-white/40 dark:ring-white/10">
+            <Card className="p-8 border border-muted bg-background opacity-90 dark:bg-background dark:opacity-40 shadow-xl transition-all duration-300">
+              <div className="w-12 h-12 bg-gradient-to-br from-[var(--brand-purple)] to-[var(--brand-blue)] rounded-lg flex items-center justify-center mb-6 ring-2 ring-white opacity-40 dark:ring-white dark:opacity-10">
                 <Clock className="w-6 h-6 text-white" />
               </div>
               <h3 className="text-xl font-semibold mb-4">Perfect Tapering</h3>
@@ -170,8 +170,8 @@ export default function Landing() {
               </p>
             </Card>
 
-            <Card className="p-8 border border-muted bg-background/90 dark:bg-background/40 shadow-xl transition-all duration-300">
-              <div className="w-12 h-12 bg-gradient-to-br from-[var(--brand-purple)] to-[var(--brand-blue)] rounded-lg flex items-center justify-center mb-6 ring-2 ring-white/40 dark:ring-white/10">
+            <Card className="p-8 border border-muted bg-background opacity-90 dark:bg-background dark:opacity-40 shadow-xl transition-all duration-300">
+              <div className="w-12 h-12 bg-gradient-to-br from-[var(--brand-purple)] to-[var(--brand-blue)] rounded-lg flex items-center justify-center mb-6 ring-2 ring-white opacity-40 dark:ring-white dark:opacity-10">
                 <Award className="w-6 h-6 text-white" />
               </div>
               <h3 className="text-xl font-semibold mb-4">Proven Science</h3>
@@ -187,7 +187,7 @@ export default function Landing() {
       {/* Science Section */}
       <section
         id="science"
-        className="py-20 bg-background/50 dark:bg-background/20 backdrop-blur"
+        className="py-20 bg-background opacity-50 dark:bg-background dark:opacity-20 backdrop-blur"
       >
         <div className="w-full px-4 sm:px-6 lg:px-8">
           <div className="w-full text-center">
@@ -204,7 +204,7 @@ export default function Landing() {
             </p>
 
             <div className="grid md:grid-cols-2 gap-8">
-              <Card className="p-8 border border-muted bg-background/90 dark:bg-background/40 shadow-xl transition-all duration-300 text-left">
+              <Card className="p-8 border border-muted bg-background opacity-90 dark:bg-background dark:opacity-40 shadow-xl transition-all duration-300 text-left">
                 <h3 className="text-2xl font-semibold mb-4">
                   Jack Daniels&apos; VDOT
                 </h3>
@@ -218,7 +218,7 @@ export default function Landing() {
                 </div>
               </Card>
 
-              <Card className="p-8 border border-muted bg-background/90 dark:bg-background/40 shadow-xl transition-all duration-300 text-left">
+              <Card className="p-8 border border-muted bg-background opacity-90 dark:bg-background dark:opacity-40 shadow-xl transition-all duration-300 text-left">
                 <h3 className="text-2xl font-semibold mb-4">
                   ACWR Load Management
                 </h3>
@@ -253,9 +253,9 @@ export default function Landing() {
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
-            <Card className="p-8 border border-muted bg-background/90 dark:bg-background/40 shadow-xl transition-all duration-300">
+            <Card className="p-8 border border-muted bg-background opacity-90 dark:bg-background dark:opacity-40 shadow-xl transition-all duration-300">
               <div className="flex items-center mb-6">
-                <div className="w-12 h-12 bg-gradient-to-br from-[var(--brand-purple)] to-[var(--brand-blue)] rounded-full flex items-center justify-center text-white font-bold ring-2 ring-white/40 dark:ring-white/10">
+                <div className="w-12 h-12 bg-gradient-to-br from-[var(--brand-purple)] to-[var(--brand-blue)] rounded-full flex items-center justify-center text-white font-bold ring-2 ring-white opacity-40 dark:ring-white dark:opacity-10">
                   S
                 </div>
                 <div className="ml-4">
@@ -275,9 +275,9 @@ export default function Landing() {
               </div>
             </Card>
 
-            <Card className="p-8 border border-muted bg-background/90 dark:bg-background/40 shadow-xl transition-all duration-300">
+            <Card className="p-8 border border-muted bg-background opacity-90 dark:bg-background dark:opacity-40 shadow-xl transition-all duration-300">
               <div className="flex items-center mb-6">
-                <div className="w-12 h-12 bg-gradient-to-br from-[var(--brand-purple)] to-[var(--brand-blue)] rounded-full flex items-center justify-center text-white font-bold ring-2 ring-white/40 dark:ring-white/10">
+                <div className="w-12 h-12 bg-gradient-to-br from-[var(--brand-purple)] to-[var(--brand-blue)] rounded-full flex items-center justify-center text-white font-bold ring-2 ring-white opacity-40 dark:ring-white dark:opacity-10">
                   M
                 </div>
                 <div className="ml-4">
@@ -297,9 +297,9 @@ export default function Landing() {
               </div>
             </Card>
 
-            <Card className="p-8 border border-muted bg-background/90 dark:bg-background/40 shadow-xl transition-all duration-300">
+            <Card className="p-8 border border-muted bg-background opacity-90 dark:bg-background dark:opacity-40 shadow-xl transition-all duration-300">
               <div className="flex items-center mb-6">
-                <div className="w-12 h-12 bg-gradient-to-br from-[var(--brand-purple)] to-[var(--brand-blue)] rounded-full flex items-center justify-center text-white font-bold ring-2 ring-white/40 dark:ring-white/10">
+                <div className="w-12 h-12 bg-gradient-to-br from-[var(--brand-purple)] to-[var(--brand-blue)] rounded-full flex items-center justify-center text-white font-bold ring-2 ring-white opacity-40 dark:ring-white dark:opacity-10">
                   A
                 </div>
                 <div className="ml-4">
@@ -322,7 +322,7 @@ export default function Landing() {
       </section>
 
       {/* Final CTA Section */}
-      <section className="py-20 bg-background/80 dark:bg-background/20 backdrop-blur-sm text-foreground relative overflow-hidden">
+      <section className="py-20 bg-background opacity-80 dark:bg-background dark:opacity-20 backdrop-blur-sm text-foreground relative overflow-hidden">
         <div className="w-full px-4 sm:px-6 lg:px-8 relative">
           <div className="w-full text-center">
             <h2 className="text-4xl md:text-6xl font-bold mb-6">
@@ -351,7 +351,7 @@ export default function Landing() {
                 <Button
                   variant="outline"
                   size="lg"
-                  className="border-foreground text-foreground hover:bg-muted/20 dark:border-foreground dark:text-foreground dark:hover:bg-foreground/10 text-lg px-8 py-6"
+                  className="border-foreground text-foreground hover:bg-muted hover:opacity-20 dark:border-foreground dark:text-foreground dark:hover:bg-foreground dark:hover:opacity-10 text-lg px-8 py-6"
                 >
                   <PlayCircle className="mr-2 h-5 w-5" />
                   See How It Works
