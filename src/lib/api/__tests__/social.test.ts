@@ -10,8 +10,13 @@ import {
   unlikePost,
   addComment,
   listComments,
+  createGroup,
+  joinGroup,
+  leaveGroup,
+  listGroupPosts,
+  listGroups,
 } from "../social";
-import type { RunPost, Comment } from "@maratypes/social";
+import type { RunPost, Comment, RunGroup } from "@maratypes/social";
 
 jest.mock("axios");
 const mockedAxios = axios as jest.Mocked<typeof axios>;
@@ -49,10 +54,36 @@ describe("social api helpers", () => {
   });
 
   it("createPost posts data", async () => {
-    const post: RunPost = { id: "1", socialProfileId: "p", distance: 1, time: "00:10:00", createdAt: new Date(), updatedAt: new Date() } as RunPost;
+    const post: RunPost = {
+      id: "1",
+      socialProfileId: "p",
+      distance: 1,
+      time: "00:10:00",
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    } as RunPost;
     mockedAxios.post.mockResolvedValue({ data: post });
     const result = await createPost({ distance: 1 });
     expect(mockedAxios.post).toHaveBeenCalledWith("/api/social/posts", { distance: 1 });
+    expect(result).toEqual(post);
+  });
+
+  it("createPost posts to group when groupId provided", async () => {
+    const post: RunPost = {
+      id: "1",
+      socialProfileId: "p",
+      distance: 1,
+      time: "00:10:00",
+      groupId: "g1",
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    } as RunPost;
+    mockedAxios.post.mockResolvedValue({ data: post });
+    const result = await createPost({ distance: 1, groupId: "g1" });
+    expect(mockedAxios.post).toHaveBeenCalledWith(
+      "/api/social/groups/g1/posts",
+      { distance: 1 }
+    );
     expect(result).toEqual(post);
   });
 
@@ -106,5 +137,53 @@ describe("social api helpers", () => {
       "/api/social/posts/p/comments"
     );
     expect(result).toEqual(comments);
+  });
+
+  it("createGroup posts data", async () => {
+    mockedAxios.post.mockResolvedValue({ data: { id: "g1" } });
+    const result = await createGroup({ name: "Test", ownerId: "p1" });
+    expect(mockedAxios.post).toHaveBeenCalledWith("/api/social/groups", {
+      name: "Test",
+      ownerId: "p1",
+    });
+    expect(result).toEqual({ id: "g1" });
+  });
+
+  it("joinGroup posts data", async () => {
+    mockedAxios.post.mockResolvedValue({ data: {} });
+    await joinGroup("g1", "p1");
+    expect(mockedAxios.post).toHaveBeenCalledWith(
+      "/api/social/groups/g1/join",
+      { profileId: "p1" }
+    );
+  });
+
+  it("leaveGroup deletes data", async () => {
+    mockedAxios.delete.mockResolvedValue({ data: {} });
+    await leaveGroup("g1", "p1");
+    expect(mockedAxios.delete).toHaveBeenCalledWith(
+      "/api/social/groups/g1/join",
+      { data: { profileId: "p1" } }
+    );
+  });
+
+  it("listGroupPosts gets data", async () => {
+    const posts: RunPost[] = [];
+    mockedAxios.get.mockResolvedValue({ data: posts });
+    const result = await listGroupPosts("g1", "p1");
+    expect(mockedAxios.get).toHaveBeenCalledWith(
+      "/api/social/groups/g1/posts?profileId=p1"
+    );
+    expect(result).toEqual(posts);
+  });
+
+  it("listGroups gets data", async () => {
+    const groups: RunGroup[] = [];
+    mockedAxios.get.mockResolvedValue({ data: groups });
+    const result = await listGroups("p1");
+    expect(mockedAxios.get).toHaveBeenCalledWith(
+      "/api/social/groups?profileId=p1"
+    );
+    expect(result).toEqual(groups);
   });
 });

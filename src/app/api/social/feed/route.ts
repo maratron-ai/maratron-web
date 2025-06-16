@@ -7,13 +7,21 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: "userId required" }, { status: 400 });
   }
   try {
+    const viewerProfile = await prisma.socialProfile.findUnique({
+      where: { userId },
+      select: { id: true },
+    });
     const followed = await prisma.follow.findMany({
       where: { follower: { userId } },
       select: { followingId: true },
     });
     const ids = followed.map((f) => f.followingId);
+    if (viewerProfile) ids.push(viewerProfile.id);
     const posts = await prisma.runPost.findMany({
-      where: { socialProfileId: { in: ids } },
+      where: {
+        socialProfileId: { in: ids },
+        groupId: null,
+      },
       include: {
         socialProfile: {
           include: { user: { select: { avatarUrl: true } } },

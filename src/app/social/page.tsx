@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { useSocialProfile } from "@hooks/useSocialProfile";
 import { useUser } from "@hooks/useUser";
@@ -7,11 +8,32 @@ import ProfileInfoCard from "@components/social/ProfileInfoCard";
 import ProfileSearch from "@components/social/ProfileSearch";
 import SocialFeed from "@components/social/SocialFeed";
 import { Button, Spinner } from "@components/ui";
+import { listGroups } from "@lib/api/social";
+import type { RunGroup } from "@maratypes/social";
 
 export default function SocialHomePage() {
   const { data: session } = useSession();
   const { profile, loading } = useSocialProfile();
   const { profile: user } = useUser();
+  const [groups, setGroups] = useState<RunGroup[]>([]);
+  const [groupsLoading, setGroupsLoading] = useState(true);
+
+  useEffect(() => {
+    const loadGroups = async () => {
+      if (!profile?.id) {
+        setGroups([]);
+        setGroupsLoading(false);
+        return;
+      }
+      try {
+        const data = await listGroups(profile.id);
+        setGroups(data.filter((g) => g.isMember));
+      } finally {
+        setGroupsLoading(false);
+      }
+    };
+    if (!loading) loadGroups();
+  }, [profile?.id, loading]);
 
   if (!session?.user) {
     return (
@@ -53,6 +75,31 @@ export default function SocialHomePage() {
           <div>
             <h2 className="text-lg font-semibold mb-2">Find Runners</h2>
             <ProfileSearch />
+          </div>
+          <div>
+            <h2 className="text-lg font-semibold mb-2">Your Groups</h2>
+            {groupsLoading ? (
+              <div className="flex justify-center py-2">
+                <Spinner className="h-4 w-4" />
+              </div>
+            ) : groups.length > 0 ? (
+              <ul className="list-disc ml-6 space-y-1">
+                {groups.map((g) => (
+                  <li key={g.id}>
+                    <Link href={`/social/groups/${g.id}`} className="hover:underline">
+                      {g.name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="text-sm">You&apos;re not in any groups yet.</p>
+            )}
+            <div className="mt-2">
+              <Button asChild size="sm">
+                <Link href="/social/groups">Browse &amp; Create Groups</Link>
+              </Button>
+            </div>
           </div>
         </aside>
       </main>

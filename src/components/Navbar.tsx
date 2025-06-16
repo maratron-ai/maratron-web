@@ -43,6 +43,7 @@ export default function Navbar() {
     { href: "/social", label: "Social" },
     { href: "/social/feed", label: "Social Feed" },
     { href: "/social/search", label: "Find Runners" },
+    { href: "/social/groups", label: "Groups" }
   ];
 
   return (

@@ -55,6 +55,32 @@ describe("CreateSocialPost", () => {
     expect(await screen.findByText(/posted!/i)).toBeInTheDocument();
   });
 
+  it("includes groupId when provided", async () => {
+    mockedUseProfile.mockReturnValue({ profile: { id: "p1", userId: "u1" } });
+    mockedCreate.mockResolvedValue({ id: "post1" } as any);
+    mockedListRuns.mockResolvedValue([
+      {
+        id: "r1",
+        userId: "u1",
+        date: new Date().toISOString(),
+        distance: 3,
+        distanceUnit: "miles",
+        duration: "00:20:00",
+      } as any,
+    ]);
+    const user = userEvent.setup();
+
+    render(<CreateSocialPost groupId="g1" />);
+
+    await waitFor(() => expect(mockedListRuns).toHaveBeenCalled());
+    await user.selectOptions(await screen.findByLabelText(/run/i), "r1");
+    await user.click(screen.getByRole("button", { name: /post/i }));
+
+    expect(mockedCreate).toHaveBeenCalledWith(
+      expect.objectContaining({ groupId: "g1" })
+    );
+  });
+
   it("shows error when required fields missing", async () => {
     mockedUseProfile.mockReturnValue({ profile: { id: "p1", userId: "u1" } });
     mockedListRuns.mockResolvedValue([

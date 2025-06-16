@@ -5,6 +5,9 @@ export interface SocialProfile {
   bio?: string | null;
   profilePhoto?: string | null;
   avatarUrl?: string | null;
+  user?: {
+    avatarUrl?: string | null;
+  };
   createdAt: Date;
   updatedAt: Date;
   name?: string | null;
@@ -17,6 +20,7 @@ export interface SocialProfile {
 export interface RunPost {
   id: string;
   socialProfileId: string;
+  groupId?: string | null;
   distance: number;
   time: string;
   caption?: string | null;
@@ -55,4 +59,27 @@ export interface Like {
   postId: string;
   socialProfileId: string;
   createdAt: Date;
+}
+
+export interface RunGroup {
+  id: string;
+  name: string;
+  description?: string | null;
+  private: boolean;
+  ownerId: string;
+  createdAt: Date;
+  updatedAt: Date;
+  memberCount?: number;
+  isMember?: boolean;
+  postCount?: number;
+  /** Total distance from all members' runs */
+  totalDistance?: number;
+  /** Social profiles of members */
+  members?: SocialProfile[];
+}
+
+export interface RunGroupMember {
+  groupId: string;
+  socialProfileId: string;
+  joinedAt: Date;
 }

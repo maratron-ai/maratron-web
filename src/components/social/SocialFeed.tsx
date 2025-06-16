@@ -11,7 +11,11 @@ import { Button, Dialog, DialogContent, Spinner } from "@components/ui";
 import Link from "next/link";
 import Image from "next/image";
 
-export default function SocialFeed() {
+interface Props {
+  groupId?: string;
+}
+
+export default function SocialFeed({ groupId }: Props) {
   const { data: session } = useSession();
   const { profile, loading: profileLoading } = useSocialProfile();
   const [posts, setPosts] = useState<RunPost[]>([]);
@@ -21,9 +25,10 @@ export default function SocialFeed() {
   const fetchFeed = async () => {
     if (!session?.user?.id) return;
     try {
-      const { data } = await axios.get<RunPost[]>(
-        `/api/social/feed?userId=${session.user.id}`
-      );
+      const url = groupId
+        ? `/api/social/groups/${groupId}/posts?profileId=${profile?.id ?? ""}`
+        : `/api/social/feed?userId=${session.user.id}`;
+      const { data } = await axios.get<RunPost[]>(url);
       setPosts(data);
     } catch (err) {
       console.error(err);
@@ -35,7 +40,7 @@ export default function SocialFeed() {
   useEffect(() => {
     fetchFeed();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [session?.user?.id]);
+  }, [session?.user?.id, profile?.id, groupId]);
 
   if (!session?.user?.id) return <p>Please log in to view your feed.</p>;
   if (profileLoading || loading)
@@ -56,7 +61,7 @@ export default function SocialFeed() {
 
   return (
     <div className="space-y-6">
-      <CreateSocialPost onCreated={fetchFeed} />
+      <CreateSocialPost onCreated={fetchFeed} groupId={groupId} />
       {posts.length === 0 && <p>No posts yet.</p>}
       {posts.map((post) => (
         <div key={post.id} className="border rounded-md p-4">

@@ -10,7 +10,12 @@ jest.mock("next-auth/react", () => ({ useSession: jest.fn() }));
 jest.mock("@hooks/useSocialProfile", () => ({ useSocialProfile: jest.fn() }));
 jest.mock("axios");
 
-jest.mock("@components/social/CreateSocialPost", () => ({ __esModule: true, default: () => <div data-testid="create-post" /> }));
+const MockCreatePost = jest.fn(() => <div data-testid="create-post" />);
+jest.mock("@components/social/CreateSocialPost", () => ({
+  __esModule: true,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  default: (props: Record<string, any>) => MockCreatePost(props),
+}));
 
 const mockedSession = useSession as jest.Mock;
 const mockedUseProfile = useSocialProfile as jest.Mock;
@@ -39,5 +44,22 @@ describe("SocialFeed", () => {
 
     expect(await screen.findByText(/tester/)).toBeInTheDocument();
     expect(screen.getByText(/3 mi in 00:20:00/)).toBeInTheDocument();
+  });
+
+  it("loads group feed when groupId passed", async () => {
+    mockedSession.mockReturnValue({ data: { user: { id: "u1" } } });
+    mockedUseProfile.mockReturnValue({ profile: { id: "p1" }, loading: false });
+    mockedAxios.get.mockResolvedValue({ data: [] });
+
+    render(<SocialFeed groupId="g1" />);
+
+    await waitFor(() =>
+      expect(mockedAxios.get).toHaveBeenCalledWith(
+        "/api/social/groups/g1/posts?profileId=p1"
+      )
+    );
+    expect(MockCreatePost).toHaveBeenCalledWith(
+      expect.objectContaining({ groupId: "g1" })
+    );
   });
 });
