@@ -6,8 +6,13 @@ import type { SocialProfile } from "@maratypes/social";
 import { Input, Button, Card, Spinner } from "@components/ui";
 import FollowUserButton from "@components/social/FollowUserButton";
 import Image from "next/image";
+import Link from "next/link";
 
-export default function ProfileSearch() {
+interface Props {
+  limit?: number;
+}
+
+export default function ProfileSearch({ limit }: Props) {
   const { data: session } = useSession();
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<SocialProfile[]>([]);
@@ -87,13 +92,14 @@ export default function ProfileSearch() {
       <form onSubmit={handleSearch} className="flex gap-2 mb-4">
         <Input
           placeholder="Search runners"
+          className="placeholder:text-foreground"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
         />
         <Button type="submit">Search</Button>
       </form>
       <div className="space-y-4">
-        {results.map((p) => (
+        {(limit ? results.slice(0, limit) : results).map((p) => (
           <Card key={p.id} className="p-4 flex items-center justify-between">
             <div className="flex items-center gap-4">
               <Image
@@ -119,6 +125,13 @@ export default function ProfileSearch() {
             )}
           </Card>
         ))}
+        {limit && results.length > limit && (
+          <div className="text-center">
+            <Button asChild variant="ghost" size="sm">
+              <Link href="/social/search">See more</Link>
+            </Button>
+          </div>
+        )}
       </div>
     </div>
   );
