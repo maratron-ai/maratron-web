@@ -81,4 +81,17 @@ describe("customizePlanRuns", () => {
     });
     expect(plan.schedule.some((w) => /Cutback/i.test(w.notes || ""))).toBe(false);
   });
+
+  it("forwards runTypeDays to the generator", () => {
+    const plan = generateHalfMarathonPlan({
+      distanceUnit: "miles",
+      trainingLevel: TrainingLevel.Beginner,
+      vdot: 40,
+      runTypeDays: { long: "Sunday", marathon: "Sunday" },
+    });
+    plan.schedule.forEach((w) => {
+      const longRun = w.runs.find((r) => r.type === "long" || r.type === "marathon");
+      if (longRun) expect(longRun.day).toBe("Sunday");
+    });
+  });
 });

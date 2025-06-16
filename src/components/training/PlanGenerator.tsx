@@ -2,6 +2,8 @@
 import React, { useState, useEffect } from "react";
 import { useUser } from "@hooks/useUser";
 import { TrainingLevel } from "@maratypes/user";
+import type { DayOfWeek } from "@maratypes/basics";
+import type { PlannedRun } from "@maratypes/runningPlan";
 import ToggleSwitch from "@components/ToggleSwitch";
 import { Spinner } from "@components/ui";
 import RunningPlanDisplay from "./RunningPlanDisplay";
@@ -58,6 +60,36 @@ const [targetDistance, setTargetDistance] = useState<number>(
   );
   const [runsPerWeek, setRunsPerWeek] = useState<number>(4);
   const [crossTrainingDays, setCrossTrainingDays] = useState<number>(0);
+  const [showAdvanced, setShowAdvanced] = useState<boolean>(false);
+  const [runTypeDays, setRunTypeDays] = useState<
+    Partial<Record<PlannedRun["type"], DayOfWeek>>
+  >({});
+  const days: DayOfWeek[] = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
+  const runTypes: PlannedRun["type"][] = [
+    "easy",
+    "tempo",
+    "interval",
+    "long",
+    "marathon",
+  ];
+
+  const handleRunDayChange = (
+    type: PlannedRun["type"],
+    day: DayOfWeek | ""
+  ) => {
+    setRunTypeDays((prev) => ({
+      ...prev,
+      ...(day ? { [type]: day } : { [type]: undefined }),
+    }));
+  };
 
   useEffect(() => {
     if (crossTrainingDays > 7 - runsPerWeek) {
@@ -116,6 +148,7 @@ const [targetDistance, setTargetDistance] = useState<number>(
       targetTotalTime: useTotalTime ? targetTotalTime : undefined,
       runsPerWeek,
       crossTrainingDays,
+      runTypeDays,
     };
     let plan: RunningPlanData;
     switch (raceType) {
@@ -234,40 +267,81 @@ const [targetDistance, setTargetDistance] = useState<number>(
               <option value="beginner">Beginner</option>
               <option value="intermediate">Intermediate</option>
               <option value="advanced">Advanced</option>
-          </select>
-        </div>
-        {/* Runs Per Week */}
-        <div className="flex flex-col">
-          <label htmlFor="runsPerWeek" className="mb-1">
-            Runs per Week:
-          </label>
-          <input
-            id="runsPerWeek"
-            type="number"
-            min={2}
-            max={5}
-            value={runsPerWeek}
-            onChange={(e) => setRunsPerWeek(Number(e.target.value))}
-            className="border p-2 rounded bg-background text-foreground"
-          />
-        </div>
-        {/* Cross Training Days */}
-        <div className="flex flex-col">
-          <label htmlFor="crossDays" className="mb-1">
-            Cross Training Days:
-          </label>
-          <input
-            id="crossDays"
-            type="number"
-            min={0}
-            max={7 - runsPerWeek}
-            value={crossTrainingDays}
-            onChange={(e) =>
-              setCrossTrainingDays(Math.min(7 - runsPerWeek, Number(e.target.value)))
-            }
-            className="border p-2 rounded bg-background text-foreground"
-          />
-        </div>
+            </select>
+          </div>
+
+          <button
+            type="button"
+            onClick={() => setShowAdvanced((p) => !p)}
+            className="text-primary underline"
+          >
+            {showAdvanced ? "Hide Advanced" : "Show Advanced"}
+          </button>
+
+          {showAdvanced && (
+            <div className="border rounded p-4 space-y-4">
+              {/* Runs Per Week */}
+              <div className="flex flex-col">
+                <label htmlFor="runsPerWeek" className="mb-1">
+                  Runs per Week:
+                </label>
+                <input
+                  id="runsPerWeek"
+                  type="number"
+                  min={2}
+                  max={5}
+                  value={runsPerWeek}
+                  onChange={(e) => setRunsPerWeek(Number(e.target.value))}
+                  className="border p-2 rounded bg-background text-foreground"
+                />
+              </div>
+              {/* Cross Training Days */}
+              <div className="flex flex-col">
+                <label htmlFor="crossDays" className="mb-1">
+                  Cross Training Days:
+                </label>
+                <input
+                  id="crossDays"
+                  type="number"
+                  min={0}
+                  max={7 - runsPerWeek}
+                  value={crossTrainingDays}
+                  onChange={(e) =>
+                    setCrossTrainingDays(
+                      Math.min(7 - runsPerWeek, Number(e.target.value))
+                    )
+                  }
+                  className="border p-2 rounded bg-background text-foreground"
+                />
+              </div>
+              {/* Run Days */}
+              <div className="flex flex-col space-y-2">
+                <span className="font-semibold">Run Days</span>
+                {runTypes.map((t) => (
+                  <label key={t} className="flex items-center gap-2">
+                    <span className="capitalize w-20">{t}:</span>
+                    <select
+                      value={runTypeDays[t] ?? ""}
+                      onChange={(e) =>
+                        handleRunDayChange(
+                          t,
+                          e.target.value as DayOfWeek | ""
+                        )
+                      }
+                      className="border p-1 rounded bg-background text-foreground"
+                    >
+                      <option value="">--</option>
+                      {days.map((d) => (
+                        <option key={d} value={d}>
+                          {d}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                ))}
+              </div>
+            </div>
+          )}
         {/* Goal Input Mode */}
         <div className="flex flex-col">
             {/* <label htmlFor="inputMode" className="mb-1">
