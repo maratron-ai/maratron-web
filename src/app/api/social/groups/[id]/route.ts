@@ -7,9 +7,14 @@ export async function GET(req: NextRequest, ctx: { params: { id: string } }) {
   try {
     const group = await prisma.runGroup.findUnique({
       where: { id },
-      include: { owner: true, _count: { select: { members: true } } },
+      include: {
+        owner: true,
+        members: { include: { socialProfile: { include: { user: { select: { avatarUrl: true } } } } } },
+        _count: { select: { members: true, posts: true } },
+      },
     });
     if (!group) return NextResponse.json({ error: "Not found" }, { status: 404 });
+
     let isMember = false;
     if (profileId) {
       const m = await prisma.runGroupMember.findUnique({
@@ -17,7 +22,21 @@ export async function GET(req: NextRequest, ctx: { params: { id: string } }) {
       });
       isMember = !!m;
     }
-    const data = { ...group, memberCount: group._count.members, isMember };
+
+    const userIds = group.members.map((m) => m.socialProfile.userId);
+    const distAgg = await prisma.run.aggregate({
+      _sum: { distance: true },
+      where: { userId: { in: userIds } },
+    });
+
+    const data = {
+      ...group,
+      memberCount: group._count.members,
+      postCount: group._count.posts,
+      members: group.members.map((m) => m.socialProfile),
+      totalDistance: distAgg._sum.distance ?? 0,
+      isMember,
+    };
     return NextResponse.json(data);
   } catch (err) {
     console.error("Error getting group", err);

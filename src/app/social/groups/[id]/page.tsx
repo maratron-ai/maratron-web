@@ -5,7 +5,7 @@ import { useSession } from "next-auth/react";
 import { useSocialProfile } from "@hooks/useSocialProfile";
 import axios from "axios";
 import SocialFeed from "@components/social/SocialFeed";
-import { Button, Spinner } from "@components/ui";
+import { Button, Spinner, Card } from "@components/ui";
 import type { RunGroup } from "@maratypes/social";
 
 export default function GroupPage({ params }: { params: { id: string } }) {
@@ -57,7 +57,7 @@ export default function GroupPage({ params }: { params: { id: string } }) {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <main className="flex-grow w-full px-4 sm:px-6 lg:px-8 py-6 space-y-4">
+      <main className="flex-grow w-full px-4 sm:px-6 lg:px-8 py-6 space-y-6">
         <div className="flex items-center justify-between">
           <h1 className="text-2xl font-bold">{group.name}</h1>
           {!group.isMember && (
@@ -65,6 +65,27 @@ export default function GroupPage({ params }: { params: { id: string } }) {
           )}
         </div>
         {group.description && <p>{group.description}</p>}
+        <Card className="p-4 space-y-2">
+          <p className="text-sm text-foreground/60">
+            Created {new Date(group.createdAt).toLocaleDateString()}
+          </p>
+          <p className="text-sm">Members: {group.memberCount}</p>
+          {group.totalDistance !== undefined && (
+            <p className="text-sm">
+              Total Distance: {group.totalDistance.toFixed(2)} mi
+            </p>
+          )}
+          {group.members && group.members.length > 0 && (
+            <div>
+              <p className="font-semibold mb-1">Users</p>
+              <ul className="list-disc ml-6">
+                {group.members.map((m) => (
+                  <li key={m.id}>{m.username}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </Card>
         <SocialFeed groupId={group.id} />
       </main>
     </div>

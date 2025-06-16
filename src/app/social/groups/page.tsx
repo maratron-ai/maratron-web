@@ -49,7 +49,10 @@ export default function GroupsPage() {
                     <li key={g.id}>
                       <Link href={`/social/groups/${g.id}`} className="hover:underline">
                         {g.name}
-                      </Link>
+                      </Link>{" "}
+                      <span className="text-sm text-foreground/60">
+                        ({g.memberCount} members)
+                      </span>
                     </li>
                   ))}
                 </ul>
@@ -62,7 +65,10 @@ export default function GroupsPage() {
                   <li key={g.id}>
                     <Link href={`/social/groups/${g.id}`} className="hover:underline">
                       {g.name}
-                    </Link>
+                    </Link>{" "}
+                    <span className="text-sm text-foreground/60">
+                      ({g.memberCount} members)
+                    </span>
                   </li>
                 ))}
               </ul>

@@ -68,6 +68,11 @@ export interface RunGroup {
   updatedAt: Date;
   memberCount?: number;
   isMember?: boolean;
+  postCount?: number;
+  /** Total distance from all members' runs */
+  totalDistance?: number;
+  /** Social profiles of members */
+  members?: SocialProfile[];
 }
 
 export interface RunGroupMember {
