@@ -53,10 +53,36 @@ describe("social api helpers", () => {
   });
 
   it("createPost posts data", async () => {
-    const post: RunPost = { id: "1", socialProfileId: "p", distance: 1, time: "00:10:00", createdAt: new Date(), updatedAt: new Date() } as RunPost;
+    const post: RunPost = {
+      id: "1",
+      socialProfileId: "p",
+      distance: 1,
+      time: "00:10:00",
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    } as RunPost;
     mockedAxios.post.mockResolvedValue({ data: post });
     const result = await createPost({ distance: 1 });
     expect(mockedAxios.post).toHaveBeenCalledWith("/api/social/posts", { distance: 1 });
+    expect(result).toEqual(post);
+  });
+
+  it("createPost posts to group when groupId provided", async () => {
+    const post: RunPost = {
+      id: "1",
+      socialProfileId: "p",
+      distance: 1,
+      time: "00:10:00",
+      groupId: "g1",
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    } as RunPost;
+    mockedAxios.post.mockResolvedValue({ data: post });
+    const result = await createPost({ distance: 1, groupId: "g1" });
+    expect(mockedAxios.post).toHaveBeenCalledWith(
+      "/api/social/groups/g1/posts",
+      { distance: 1 }
+    );
     expect(result).toEqual(post);
   });
 

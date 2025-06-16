@@ -39,9 +39,17 @@ export const isFollowing = async (
 };
 
 export const createPost = async (
-  data: Partial<RunPost>
+  data: Partial<RunPost> & { groupId?: string }
 ): Promise<RunPost> => {
-  const { data: post } = await axios.post<RunPost>("/api/social/posts", data);
+  const { groupId, ...rest } = data;
+  if (groupId) {
+    const { data: post } = await axios.post<RunPost>(
+      `/api/social/groups/${groupId}/posts`,
+      rest
+    );
+    return post;
+  }
+  const { data: post } = await axios.post<RunPost>("/api/social/posts", rest);
   return post;
 };
 

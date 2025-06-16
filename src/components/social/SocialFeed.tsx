@@ -61,7 +61,7 @@ export default function SocialFeed({ groupId }: Props) {
 
   return (
     <div className="space-y-6">
-      <CreateSocialPost onCreated={fetchFeed} />
+      <CreateSocialPost onCreated={fetchFeed} groupId={groupId} />
       {posts.length === 0 && <p>No posts yet.</p>}
       {posts.map((post) => (
         <div key={post.id} className="border rounded-md p-4">

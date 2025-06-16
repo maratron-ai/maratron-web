@@ -10,9 +10,10 @@ import type { Run } from "@maratypes/run";
 
 interface Props {
   onCreated?: () => void;
+  groupId?: string;
 }
 
-export default function CreateSocialPost({ onCreated }: Props) {
+export default function CreateSocialPost({ onCreated, groupId }: Props) {
   const { profile } = useSocialProfile();
   const [runs, setRuns] = useState<Run[]>([]);
   const [selectedRunId, setSelectedRunId] = useState("");
@@ -57,6 +58,7 @@ export default function CreateSocialPost({ onCreated }: Props) {
         time: run.duration,
         caption: caption || undefined,
         photoUrl: photoUrl || undefined,
+        groupId,
       });
       setSuccess("Posted!");
       setSelectedRunId("");

@@ -10,7 +10,12 @@ jest.mock("next-auth/react", () => ({ useSession: jest.fn() }));
 jest.mock("@hooks/useSocialProfile", () => ({ useSocialProfile: jest.fn() }));
 jest.mock("axios");
 
-jest.mock("@components/social/CreateSocialPost", () => ({ __esModule: true, default: () => <div data-testid="create-post" /> }));
+const MockCreatePost = jest.fn(() => <div data-testid="create-post" />);
+jest.mock("@components/social/CreateSocialPost", () => ({
+  __esModule: true,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  default: (props: Record<string, any>) => MockCreatePost(props),
+}));
 
 const mockedSession = useSession as jest.Mock;
 const mockedUseProfile = useSocialProfile as jest.Mock;
@@ -52,6 +57,9 @@ describe("SocialFeed", () => {
       expect(mockedAxios.get).toHaveBeenCalledWith(
         "/api/social/groups/g1/posts?profileId=p1"
       )
+    );
+    expect(MockCreatePost).toHaveBeenCalledWith(
+      expect.objectContaining({ groupId: "g1" })
     );
   });
 });
