@@ -58,15 +58,17 @@ export default function GroupPage() {
   if (!group) return <p className="w-full px-4 py-6">Group not found.</p>;
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <main className="flex-grow w-full px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+    <div className="min-h-screen bg-background">
+      <main className="container mx-auto px-4 max-w-screen-lg py-8 space-y-6">
         <div className="flex items-center justify-between">
           <h1 className="text-2xl font-bold">{group.name}</h1>
           {!group.isMember && (
             <Button onClick={handleJoin}>Join Group</Button>
           )}
         </div>
-        {group.description && <p>{group.description}</p>}
+        {group.description && (
+          <p className="text-foreground/70">{group.description}</p>
+        )}
         <Card className="p-4 space-y-2">
           <p className="text-sm text-foreground/60">
             Created {new Date(group.createdAt).toLocaleDateString()}

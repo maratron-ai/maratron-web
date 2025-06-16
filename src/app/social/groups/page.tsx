@@ -5,6 +5,7 @@ import { useSocialProfile } from "@hooks/useSocialProfile";
 import { listGroups } from "@lib/api/social";
 import type { RunGroup } from "@maratypes/social";
 import { Button, Spinner } from "@components/ui";
+import GroupCard from "@components/social/GroupCard";
 
 export default function GroupsPage() {
   const { profile, loading: profileLoading } = useSocialProfile();
@@ -27,8 +28,8 @@ export default function GroupsPage() {
   const otherGroups = groups.filter((g) => !g.isMember);
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <main className="flex-grow w-full px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+    <div className="min-h-screen bg-background">
+      <main className="container mx-auto px-4 max-w-screen-lg py-8 space-y-6">
         <div className="flex items-center justify-between">
           <h1 className="text-2xl font-bold">Run Groups</h1>
           <Button asChild>
@@ -40,38 +41,24 @@ export default function GroupsPage() {
             <Spinner className="h-4 w-4" />
           </div>
         ) : (
-          <div className="space-y-6">
+          <div className="space-y-8">
             {yourGroups.length > 0 && (
-              <div>
-                <h2 className="text-xl font-semibold mb-2">Your Groups</h2>
-                <ul className="list-disc ml-6 space-y-1">
+              <div className="space-y-4">
+                <h2 className="text-xl font-semibold">Your Groups</h2>
+                <div className="grid md:grid-cols-2 gap-4">
                   {yourGroups.map((g) => (
-                    <li key={g.id}>
-                      <Link href={`/social/groups/${g.id}`} className="hover:underline">
-                        {g.name}
-                      </Link>{" "}
-                      <span className="text-sm text-foreground/60">
-                        ({g.memberCount} members)
-                      </span>
-                    </li>
+                    <GroupCard key={g.id} group={g} />
                   ))}
-                </ul>
+                </div>
               </div>
             )}
-            <div>
-              <h2 className="text-xl font-semibold mb-2">All Groups</h2>
-              <ul className="list-disc ml-6 space-y-1">
+            <div className="space-y-4">
+              <h2 className="text-xl font-semibold">All Groups</h2>
+              <div className="grid md:grid-cols-2 gap-4">
                 {otherGroups.map((g) => (
-                  <li key={g.id}>
-                    <Link href={`/social/groups/${g.id}`} className="hover:underline">
-                      {g.name}
-                    </Link>{" "}
-                    <span className="text-sm text-foreground/60">
-                      ({g.memberCount} members)
-                    </span>
-                  </li>
+                  <GroupCard key={g.id} group={g} />
                 ))}
-              </ul>
+              </div>
             </div>
           </div>
         )}
