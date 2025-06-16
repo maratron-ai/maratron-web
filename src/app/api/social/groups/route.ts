@@ -1,15 +1,25 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@lib/prisma";
 
-export async function GET() {
+export async function GET(req: NextRequest) {
+  const profileId = req.nextUrl.searchParams.get("profileId");
   try {
     const groups = await prisma.runGroup.findMany({
       include: { _count: { select: { members: true } } },
       orderBy: { createdAt: "desc" },
     });
+    let memberships: Set<string> | null = null;
+    if (profileId) {
+      const memberRows = await prisma.runGroupMember.findMany({
+        where: { socialProfileId: profileId },
+        select: { groupId: true },
+      });
+      memberships = new Set(memberRows.map((m) => m.groupId));
+    }
     const mapped = groups.map((g) => ({
       ...g,
       memberCount: g._count.members,
+      isMember: memberships ? memberships.has(g.id) : undefined,
     }));
     return NextResponse.json(mapped);
   } catch (err) {

@@ -13,8 +13,9 @@ import {
   createGroup,
   joinGroup,
   listGroupPosts,
+  listGroups,
 } from "../social";
-import type { RunPost, Comment } from "@maratypes/social";
+import type { RunPost, Comment, RunGroup } from "@maratypes/social";
 
 jest.mock("axios");
 const mockedAxios = axios as jest.Mocked<typeof axios>;
@@ -138,5 +139,15 @@ describe("social api helpers", () => {
       "/api/social/groups/g1/posts?profileId=p1"
     );
     expect(result).toEqual(posts);
+  });
+
+  it("listGroups gets data", async () => {
+    const groups: RunGroup[] = [];
+    mockedAxios.get.mockResolvedValue({ data: groups });
+    const result = await listGroups("p1");
+    expect(mockedAxios.get).toHaveBeenCalledWith(
+      "/api/social/groups?profileId=p1"
+    );
+    expect(result).toEqual(groups);
   });
 });

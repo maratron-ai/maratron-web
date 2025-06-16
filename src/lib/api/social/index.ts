@@ -121,3 +121,13 @@ export const listGroupPosts = async (
   const { data: posts } = await axios.get<RunPost[]>(url);
   return posts;
 };
+
+export const listGroups = async (
+  profileId?: string
+): Promise<RunGroup[]> => {
+  const url = profileId
+    ? `/api/social/groups?profileId=${profileId}`
+    : `/api/social/groups`;
+  const { data: groups } = await axios.get<RunGroup[]>(url);
+  return groups;
+};
