@@ -1,5 +1,6 @@
 import axios from "axios";
 import type { SocialProfile, RunPost, Comment } from "@maratypes/social";
+import type { RunGroup } from "@maratypes/social";
 
 export const createSocialProfile = async (
   data: Pick<SocialProfile, "userId" | "username"> & Partial<SocialProfile>
@@ -91,4 +92,32 @@ export const listComments = async (postId: string): Promise<Comment[]> => {
     `/api/social/posts/${postId}/comments`
   );
   return comments;
+};
+
+export const createGroup = async (
+  data: Pick<RunGroup, "name" | "ownerId"> & Partial<RunGroup>
+): Promise<RunGroup> => {
+  const { data: group } = await axios.post<RunGroup>(
+    "/api/social/groups",
+    data
+  );
+  return group;
+};
+
+export const joinGroup = async (
+  groupId: string,
+  profileId: string
+): Promise<void> => {
+  await axios.post(`/api/social/groups/${groupId}/join`, { profileId });
+};
+
+export const listGroupPosts = async (
+  groupId: string,
+  profileId?: string
+): Promise<RunPost[]> => {
+  const url = profileId
+    ? `/api/social/groups/${groupId}/posts?profileId=${profileId}`
+    : `/api/social/groups/${groupId}/posts`;
+  const { data: posts } = await axios.get<RunPost[]>(url);
+  return posts;
 };
