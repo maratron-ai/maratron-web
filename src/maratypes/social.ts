@@ -5,6 +5,9 @@ export interface SocialProfile {
   bio?: string | null;
   profilePhoto?: string | null;
   avatarUrl?: string | null;
+  user?: {
+    avatarUrl?: string | null;
+  };
   createdAt: Date;
   updatedAt: Date;
   name?: string | null;
