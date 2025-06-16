@@ -52,8 +52,8 @@ export default function UserProfileForm({
             onClick={toggleEditing}
             className={`px-4 py-2 rounded font-medium ${
               editing
-                ? "bg-accent text-foreground hover:bg-accent/80"
-                : "bg-gradient-to-r from-[var(--brand-from)] to-[var(--brand-to)] text-white border-0 hover:from-[var(--brand-from)]/90 hover:to-[var(--brand-to)]/90"
+                ? "bg-accent text-foreground hover:bg-accent hover:opacity-80"
+                : "bg-gradient-to-r from-[var(--brand-from)] to-[var(--brand-to)] text-white border-0 hover:from-[var(--brand-from)] hover:opacity-90 hover:to-[var(--brand-to)] hover:opacity-90"
             }`}
           >
             {editing ? "Cancel" : "Edit"}
@@ -62,7 +62,7 @@ export default function UserProfileForm({
       </div>
 
       {validationErrors.length > 0 && (
-        <div className="mb-4 p-3 bg-brand-orange-dark/10 text-brand-orange-dark rounded">
+        <div className="mb-4 p-3 bg-brand-orange-dark opacity-10 text-brand-orange-dark rounded">
           <ul className="list-disc list-inside">
             {validationErrors.map((msg, i) => (
               <li key={i}>{msg}</li>
@@ -97,7 +97,7 @@ export default function UserProfileForm({
         <div className="mt-6 flex justify-end">
           <Button
             type="submit"
-            className="w-full sm:w-auto bg-gradient-to-r from-[var(--brand-from)] to-[var(--brand-to)] text-white border-0 hover:from-[var(--brand-from)]/90 hover:to-[var(--brand-to)]/90"
+            className="w-full sm:w-auto bg-gradient-to-r from-[var(--brand-from)] to-[var(--brand-to)] text-white border-0 hover:from-[var(--brand-from)] hover:opacity-90 hover:to-[var(--brand-to)] hover:opacity-90"
           >
             {submitLabel}
           </Button>

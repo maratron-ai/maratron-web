@@ -47,7 +47,7 @@ export default function RecentRuns() {
       </div>
     );
   if (runs.length === 0)
-    return <p className="text-foreground/60">No runs recorded yet.</p>;
+    return <p className="text-foreground opacity-60">No runs recorded yet.</p>;
 
   return (
     <>
@@ -55,7 +55,7 @@ export default function RecentRuns() {
         {runs.map((run) => (
           <li
             key={run.id}
-            className="border p-2 rounded cursor-pointer hover:bg-accent/10"
+            className="border p-2 rounded cursor-pointer hover:bg-accent hover:opacity-10"
             onClick={() => setSelectedRun(run)}
           >
             <span className="font-semibold">{run.name || getRunName(run)}</span>

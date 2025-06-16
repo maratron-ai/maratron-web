@@ -107,8 +107,8 @@ export default function ProfileSearch() {
                 <a href={`/u/${p.username}`} className="font-semibold">
                   {p.name ?? p.username}
                 </a>
-                {p.bio && <p className="text-foreground/70">{p.bio}</p>}
-                <div className="text-sm text-foreground/60">
+                {p.bio && <p className="text-foreground opacity-70">{p.bio}</p>}
+                <div className="text-sm text-foreground opacity-60">
                   <span>{p.runCount ?? 0} runs</span>{" "}
                   <span>{p.followerCount ?? 0} followers</span>
                 </div>

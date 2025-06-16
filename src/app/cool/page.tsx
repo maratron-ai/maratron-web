@@ -95,7 +95,7 @@ export default function LandingPage() {
         preload="auto"
         className="pointer-events-none fixed inset-0 w-full h-full object-cover z-0"
       />
-      <div className="fixed inset-0 bg-black/50 z-10 pointer-events-none" />
+      <div className="fixed inset-0 bg-black opacity-50 z-10 pointer-events-none" />
 
       <div
         ref={scrubContainerRef}
@@ -120,20 +120,20 @@ export default function LandingPage() {
             <h1 className="text-5xl sm:text-7xl font-extrabold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
               The AI Coach for Serious Runners
             </h1>
-            <p className="mt-6 text-lg text-foreground/70">
+            <p className="mt-6 text-lg text-foreground opacity-70">
               Maratron helps you train smarter, race faster, and stay
               injury-free with cutting-edge tech.
             </p>
             <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
               <Link
                 href="/signup"
-                className="px-6 py-3 text-white font-semibold bg-primary rounded-md hover:bg-primary/90 transition"
+                className="px-6 py-3 text-white font-semibold bg-primary rounded-md hover:bg-primary hover:opacity-90 transition"
               >
                 Get Started
               </Link>
               <a
                 href="#features"
-                className="px-6 py-3 text-primary border border-primary rounded-md hover:bg-primary/10 transition"
+                className="px-6 py-3 text-primary border border-primary rounded-md hover:bg-primary hover:opacity-10 transition"
               >
                 Learn More
               </a>
@@ -144,7 +144,7 @@ export default function LandingPage() {
 
       <section
         id="features"
-        className="py-24 px-4 sm:px-6 bg-accent/5 relative z-10"
+        className="py-24 px-4 sm:px-6 bg-accent opacity-5 relative z-10"
       >
         <div className="w-full text-center">
           <h2 className="text-3xl sm:text-4xl font-bold mb-12">

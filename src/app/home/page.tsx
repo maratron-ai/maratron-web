@@ -62,34 +62,34 @@ export default function HomePage() {
         <div className="w-full px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             <Link href="/runs/new">
-              <Card className="p-4 flex items-center gap-2 hover:bg-accent-3/10">
+              <Card className="p-4 flex items-center gap-2 hover:bg-accent-3 hover:opacity-10">
                 <PlusCircle className="w-5 h-5" />
                 <span>Add a Run</span>
               </Card>
             </Link>
             <Link href="/plan-generator">
-              <Card className="p-4 flex items-center gap-2 hover:bg-accent-3/10">
+              <Card className="p-4 flex items-center gap-2 hover:bg-accent-3 hover:opacity-10">
                 <CalendarCheck className="w-5 h-5" />
                 <span>Generate Training Plan</span>
               </Card>
             </Link>
             <Link href="/shoes/new">
-              <Card className="p-4 flex items-center gap-2 hover:bg-accent-3/10">
+              <Card className="p-4 flex items-center gap-2 hover:bg-accent-3 hover:opacity-10">
                 <Icon iconNode={sneaker} size={24} />
                 <span>Add New Shoes</span>
               </Card>
             </Link>
             <Link href="/profile">
-              <Card className="p-4 flex items-center gap-2 hover:bg-accent-3/10">
+              <Card className="p-4 flex items-center gap-2 hover:bg-accent-3 hover:opacity-10">
                 <User className="w-5 h-5" />
                 <span>Edit Profile</span>
               </Card>
             </Link>
-            <Card className="p-4 flex items-center gap-2 text-foreground/60">
+            <Card className="p-4 flex items-center gap-2 text-foreground opacity-60">
               <Upload className="w-5 h-5" />
               <span>Upload workout file (coming soon)</span>
             </Card>
-            <Card className="p-4 flex items-center gap-2 text-foreground/60">
+            <Card className="p-4 flex items-center gap-2 text-foreground opacity-60">
               <BarChart3 className="w-5 h-5" />
               <span>View progress analytics (coming soon)</span>
             </Card>

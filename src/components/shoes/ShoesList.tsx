@@ -57,7 +57,7 @@ export default function ShoesList() {
       </div>
     );
   if (shoes.length === 0)
-    return <p className="text-foreground/60">No shoes added.</p>;
+    return <p className="text-foreground opacity-60">No shoes added.</p>;
 
   return (
     <div className="space-y-4">
