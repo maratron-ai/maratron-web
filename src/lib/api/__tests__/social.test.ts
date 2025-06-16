@@ -12,6 +12,7 @@ import {
   listComments,
   createGroup,
   joinGroup,
+  leaveGroup,
   listGroupPosts,
   listGroups,
 } from "../social";
@@ -154,6 +155,15 @@ describe("social api helpers", () => {
     expect(mockedAxios.post).toHaveBeenCalledWith(
       "/api/social/groups/g1/join",
       { profileId: "p1" }
+    );
+  });
+
+  it("leaveGroup deletes data", async () => {
+    mockedAxios.delete.mockResolvedValue({ data: {} });
+    await leaveGroup("g1", "p1");
+    expect(mockedAxios.delete).toHaveBeenCalledWith(
+      "/api/social/groups/g1/join",
+      { data: { profileId: "p1" } }
     );
   });
 

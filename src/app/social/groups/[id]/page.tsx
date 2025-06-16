@@ -6,6 +6,7 @@ import { useSession } from "next-auth/react";
 import { useSocialProfile } from "@hooks/useSocialProfile";
 import axios from "axios";
 import SocialFeed from "@components/social/SocialFeed";
+import GroupMembers from "@components/social/GroupMembers";
 import { Button, Spinner, Card } from "@components/ui";
 import type { RunGroup } from "@maratypes/social";
 
@@ -49,6 +50,14 @@ export default function GroupPage() {
     fetchGroup();
   };
 
+  const handleLeave = async () => {
+    if (!profile?.id) return;
+    await axios.delete(`/api/social/groups/${id}/join`, {
+      data: { profileId: profile.id },
+    });
+    fetchGroup();
+  };
+
   if (loading)
     return (
       <div className="w-full px-4 py-6 flex justify-center">
@@ -62,7 +71,11 @@ export default function GroupPage() {
       <main className="container mx-auto px-4 max-w-screen-lg py-8 space-y-6">
         <div className="flex items-center justify-between">
           <h1 className="text-2xl font-bold">{group.name}</h1>
-          {!group.isMember && (
+          {group.isMember ? (
+            <Button onClick={handleLeave} variant="secondary">
+              Leave Group
+            </Button>
+          ) : (
             <Button onClick={handleJoin}>Join Group</Button>
           )}
         </div>
@@ -80,6 +93,7 @@ export default function GroupPage() {
             </p>
           )}
         </Card>
+        {group.members && <GroupMembers members={group.members} />}
         <SocialFeed groupId={group.id} />
       </main>
     </div>

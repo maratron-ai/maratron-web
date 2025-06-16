@@ -119,6 +119,15 @@ export const joinGroup = async (
   await axios.post(`/api/social/groups/${groupId}/join`, { profileId });
 };
 
+export const leaveGroup = async (
+  groupId: string,
+  profileId: string
+): Promise<void> => {
+  await axios.delete(`/api/social/groups/${groupId}/join`, {
+    data: { profileId },
+  });
+};
+
 export const listGroupPosts = async (
   groupId: string,
   profileId?: string
