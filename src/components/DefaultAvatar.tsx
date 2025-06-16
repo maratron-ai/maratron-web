@@ -1,5 +1,6 @@
 import Image from "next/image";
 import React from "react";
+import { cn } from "@lib/utils/cn";
 
 export interface DefaultAvatarProps {
   /** Size of the avatar circle */
@@ -14,7 +15,10 @@ export default function DefaultAvatar({ size = 32, className = "" }: DefaultAvat
       alt="Default avatar"
       width={size}
       height={size}
-      className={`rounded-full object-cover ${className}`}
+      className={cn(
+        "rounded-full object-cover border border-brand-to bg-brand-from",
+        className,
+      )}
     />
   );
 }
