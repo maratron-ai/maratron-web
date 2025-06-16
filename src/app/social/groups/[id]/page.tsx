@@ -75,16 +75,6 @@ export default function GroupPage({ params }: { params: { id: string } }) {
               Total Distance: {group.totalDistance.toFixed(2)} mi
             </p>
           )}
-          {group.members && group.members.length > 0 && (
-            <div>
-              <p className="font-semibold mb-1">Users</p>
-              <ul className="list-disc ml-6">
-                {group.members.map((m) => (
-                  <li key={m.id}>{m.username}</li>
-                ))}
-              </ul>
-            </div>
-          )}
         </Card>
         <SocialFeed groupId={group.id} />
       </main>
