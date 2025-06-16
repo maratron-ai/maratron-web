@@ -10,6 +10,9 @@ import {
   unlikePost,
   addComment,
   listComments,
+  createGroup,
+  joinGroup,
+  listGroupPosts,
 } from "../social";
 import type { RunPost, Comment } from "@maratypes/social";
 
@@ -106,5 +109,34 @@ describe("social api helpers", () => {
       "/api/social/posts/p/comments"
     );
     expect(result).toEqual(comments);
+  });
+
+  it("createGroup posts data", async () => {
+    mockedAxios.post.mockResolvedValue({ data: { id: "g1" } });
+    const result = await createGroup({ name: "Test", ownerId: "p1" });
+    expect(mockedAxios.post).toHaveBeenCalledWith("/api/social/groups", {
+      name: "Test",
+      ownerId: "p1",
+    });
+    expect(result).toEqual({ id: "g1" });
+  });
+
+  it("joinGroup posts data", async () => {
+    mockedAxios.post.mockResolvedValue({ data: {} });
+    await joinGroup("g1", "p1");
+    expect(mockedAxios.post).toHaveBeenCalledWith(
+      "/api/social/groups/g1/join",
+      { profileId: "p1" }
+    );
+  });
+
+  it("listGroupPosts gets data", async () => {
+    const posts: RunPost[] = [];
+    mockedAxios.get.mockResolvedValue({ data: posts });
+    const result = await listGroupPosts("g1", "p1");
+    expect(mockedAxios.get).toHaveBeenCalledWith(
+      "/api/social/groups/g1/posts?profileId=p1"
+    );
+    expect(result).toEqual(posts);
   });
 });
