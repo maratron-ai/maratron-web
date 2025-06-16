@@ -26,7 +26,7 @@ export default function ProfileInfoCard({ profile, user, isSelf }: Props) {
         alt={profile.username}
         width={64}
         height={64}
-        className="w-16 h-16 rounded-full object-cover"
+        className="w-16 h-16 rounded-full object-cover border border-brand-to bg-brand-from"
       />
       <div className="flex-1 min-w-0 break-words">
         <h2 className="text-xl font-bold truncate">
