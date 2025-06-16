@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useSocialProfile } from "@hooks/useSocialProfile";
 import axios from "axios";
 import SocialFeed from "@components/social/SocialFeed";
 import { Button, Spinner } from "@components/ui";
@@ -9,6 +10,7 @@ import type { RunGroup } from "@maratypes/social";
 
 export default function GroupPage({ params }: { params: { id: string } }) {
   const { data: session } = useSession();
+  const { profile, loading: profileLoading } = useSocialProfile();
   const router = useRouter();
   const [group, setGroup] = useState<RunGroup | null>(null);
   const [loading, setLoading] = useState(true);
@@ -16,7 +18,7 @@ export default function GroupPage({ params }: { params: { id: string } }) {
   const fetchGroup = async () => {
     try {
       const { data } = await axios.get<RunGroup>(
-        `/api/social/groups/${params.id}?profileId=${session?.user?.id ?? ""}`
+        `/api/social/groups/${params.id}?profileId=${profile?.id ?? ""}`
       );
       setGroup(data);
     } catch {
@@ -27,17 +29,20 @@ export default function GroupPage({ params }: { params: { id: string } }) {
   };
 
   useEffect(() => {
-    fetchGroup();
+    if (!profileLoading) {
+      fetchGroup();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [session?.user?.id]);
+  }, [profile?.id, profileLoading]);
 
   const handleJoin = async () => {
     if (!session?.user?.id) {
       router.push("/login");
       return;
     }
+    if (!profile?.id) return;
     await axios.post(`/api/social/groups/${params.id}/join`, {
-      profileId: session.user.id,
+      profileId: profile.id,
     });
     fetchGroup();
   };

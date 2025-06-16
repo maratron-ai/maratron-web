@@ -1,12 +1,14 @@
 "use client";
 import { useState, FormEvent } from "react";
 import { useSession } from "next-auth/react";
+import { useSocialProfile } from "@hooks/useSocialProfile";
 import { createGroup } from "@lib/api/social";
 import { Card, Button, Switch } from "@components/ui";
 import { TextField, TextAreaField } from "@components/ui/FormField";
 
 export default function CreateGroupForm() {
   const { data: session } = useSession();
+  const { profile } = useSocialProfile();
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [isPrivate, setIsPrivate] = useState(false);
@@ -17,7 +19,11 @@ export default function CreateGroupForm() {
     e.preventDefault();
     setError("");
     setSuccess("");
-    if (!session?.user?.id || !name) {
+    if (!session?.user?.id) {
+      setError("Login required");
+      return;
+    }
+    if (!profile?.id || !name) {
       setError("Group name required");
       return;
     }
@@ -26,7 +32,7 @@ export default function CreateGroupForm() {
         name,
         description: description || undefined,
         private: isPrivate,
-        ownerId: session.user.id,
+        ownerId: profile.id,
       });
       setSuccess("Group created!");
       setName("");

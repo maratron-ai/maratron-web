@@ -40,4 +40,18 @@ describe("SocialFeed", () => {
     expect(await screen.findByText(/tester/)).toBeInTheDocument();
     expect(screen.getByText(/3 mi in 00:20:00/)).toBeInTheDocument();
   });
+
+  it("loads group feed when groupId passed", async () => {
+    mockedSession.mockReturnValue({ data: { user: { id: "u1" } } });
+    mockedUseProfile.mockReturnValue({ profile: { id: "p1" }, loading: false });
+    mockedAxios.get.mockResolvedValue({ data: [] });
+
+    render(<SocialFeed groupId="g1" />);
+
+    await waitFor(() =>
+      expect(mockedAxios.get).toHaveBeenCalledWith(
+        "/api/social/groups/g1/posts?profileId=p1"
+      )
+    );
+  });
 });

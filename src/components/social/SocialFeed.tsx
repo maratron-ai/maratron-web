@@ -26,7 +26,7 @@ export default function SocialFeed({ groupId }: Props) {
     if (!session?.user?.id) return;
     try {
       const url = groupId
-        ? `/api/social/groups/${groupId}/posts?profileId=${session.user.id}`
+        ? `/api/social/groups/${groupId}/posts?profileId=${profile?.id ?? ""}`
         : `/api/social/feed?userId=${session.user.id}`;
       const { data } = await axios.get<RunPost[]>(url);
       setPosts(data);
@@ -40,7 +40,7 @@ export default function SocialFeed({ groupId }: Props) {
   useEffect(() => {
     fetchFeed();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [session?.user?.id, groupId]);
+  }, [session?.user?.id, profile?.id, groupId]);
 
   if (!session?.user?.id) return <p>Please log in to view your feed.</p>;
   if (profileLoading || loading)
