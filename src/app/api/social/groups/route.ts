@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@lib/prisma";
+import { GROUP_LIST_LIMIT } from "@lib/socialLimits";
 
 export async function GET(req: NextRequest) {
   const profileId = req.nextUrl.searchParams.get("profileId");
@@ -7,6 +8,7 @@ export async function GET(req: NextRequest) {
     const groups = await prisma.runGroup.findMany({
       include: { _count: { select: { members: true, posts: true } } },
       orderBy: { createdAt: "desc" },
+      take: GROUP_LIST_LIMIT,
     });
     let memberships: Set<string> | null = null;
     if (profileId) {
