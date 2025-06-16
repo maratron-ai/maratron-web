@@ -82,7 +82,7 @@ export default function CommentSection({
                   alt={c.socialProfile?.username || "avatar"}
                   width={24}
                   height={24}
-                  className="w-6 h-6 rounded-full object-cover"
+                  className="w-6 h-6 rounded-full object-cover border border-brand-to bg-brand-from"
                 />
                 <p>
                   <span className="font-semibold">{c.socialProfile?.username}</span>{" "}

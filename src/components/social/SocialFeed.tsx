@@ -68,7 +68,7 @@ export default function SocialFeed() {
               alt={post.socialProfile?.username || "avatar"}
               width={32}
               height={32}
-              className="w-8 h-8 rounded-full object-cover"
+              className="w-8 h-8 rounded-full object-cover border border-brand-to bg-brand-from"
             />
             {post.socialProfile?.username && (
               <Link
