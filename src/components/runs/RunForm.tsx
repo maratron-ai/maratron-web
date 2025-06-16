@@ -251,7 +251,7 @@ const RunForm: React.FC<RunFormProps> = ({ onSubmit }) => {
             onChange={handleFieldChange}
           />
         ) : (
-          <p className="text-sm text-foreground/60">Add a shoe to track mileage.</p>
+          <p className="text-sm text-foreground opacity-60">Add a shoe to track mileage.</p>
         )}
 
         <div className="grid grid-cols-2 gap-4">

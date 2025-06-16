@@ -49,7 +49,7 @@ export default function WeeklyRuns() {
         <Spinner className="h-4 w-4" />
       </div>
     );
-  if (!plan) return <p className="text-foreground/60">No active plan.</p>;
+  if (!plan) return <p className="text-foreground opacity-60">No active plan.</p>;
 
   let weekIndex: number;
   if (plan.planData.startDate) {
@@ -65,13 +65,13 @@ export default function WeeklyRuns() {
   }
   if (weekIndex < 0) {
     return (
-      <p className="text-foreground/60">
+      <p className="text-foreground opacity-60">
         {plan.name} training begins {plan.planData.startDate?.slice(0, 10)}
       </p>
     );
   }
   if (!plan.planData.schedule[weekIndex]) {
-    return <p className="text-foreground/60">Plan completed!</p>;
+    return <p className="text-foreground opacity-60">Plan completed!</p>;
   }
   const week = plan.planData.schedule[weekIndex];
 
@@ -161,7 +161,7 @@ export default function WeeklyRuns() {
       <div className="space-y-4">
         {week.runs.map((r, i) => {
           const classes = r.done
-            ? "bg-accent/10 text-foreground/60 line-through"
+            ? "bg-accent opacity-10 text-foreground opacity-60 line-through"
             : "";
           return (
             <Card key={i} className={`p-6 flex items-center justify-between ${classes}`}>

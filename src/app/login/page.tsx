@@ -67,7 +67,7 @@ const LoginPage: React.FC = () => {
         <div className="flex justify-center">
           <button
             onClick={() => router.push("/home")}
-            className="bg-primary text-foreground px-4 py-2 rounded-md hover:bg-primary/80 transition-colors"
+            className="bg-primary text-foreground px-4 py-2 rounded-md hover:bg-primary hover:opacity-80 transition-colors"
           >
             Go Home
           </button>
@@ -86,7 +86,7 @@ const LoginPage: React.FC = () => {
           <button
             type="button"
             onClick={jacksonLogin}
-            className="border px-4 py-2 rounded-md hover:bg-accent/20 transition"
+            className="border px-4 py-2 rounded-md hover:bg-accent hover:opacity-20 transition"
           >
             Jackson login
           </button>
@@ -120,17 +120,17 @@ const LoginPage: React.FC = () => {
           </div>
           <button
             type="submit"
-            className="w-full bg-primary text-foreground py-2 rounded-md hover:bg-primary/80 transition-colors"
+            className="w-full bg-primary text-foreground py-2 rounded-md hover:bg-primary hover:opacity-80 transition-colors"
           >
             Login
           </button>
           <div className="text-center my-4">
-            <span className="text-foreground/80">or</span>
+            <span className="text-foreground opacity-80">or</span>
           </div>
           <button
             type="button"
             onClick={() => router.push("/signup")}
-            className="w-full border border-primary text-primary py-2 rounded-md hover:bg-primary/20 transition-colors"
+            className="w-full border border-primary text-primary py-2 rounded-md hover:bg-primary hover:opacity-20 transition-colors"
           >
             Not registered? Sign up
           </button>

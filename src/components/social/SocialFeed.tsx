@@ -84,7 +84,7 @@ export default function SocialFeed({ groupId }: Props) {
               </Link>
             )}
           </div>
-          <div className="text-sm text-foreground/60 mb-2">
+          <div className="text-sm text-foreground opacity-60 mb-2">
             {new Date(post.createdAt).toLocaleString()}
           </div>
           <p className="font-medium">

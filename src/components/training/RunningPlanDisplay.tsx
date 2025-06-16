@@ -182,12 +182,12 @@ const CollapsibleWeek: React.FC<CollapsibleWeekProps> = ({
   return (
     <div
       className={`border border-accent rounded shadow-sm mb-4 ${
-        isWeekComplete ? "bg-background text-foreground/60" : ""
+        isWeekComplete ? "bg-background text-foreground opacity-60" : ""
       }`}
     >
       <div
         className={`flex justify-between items-center p-4 cursor-pointer ${
-          isWeekComplete ? "bg-accent" : "bg-accent/30"
+          isWeekComplete ? "bg-accent" : "bg-accent opacity-30"
         }`}
         onClick={() => setIsOpen((prev) => !prev)}
       >
@@ -204,7 +204,7 @@ const CollapsibleWeek: React.FC<CollapsibleWeekProps> = ({
       {isOpen && (
         <div
           className={`p-4 text-foreground ${
-            isWeekComplete ? "bg-background" : "bg-accent/50"
+            isWeekComplete ? "bg-background" : "bg-accent opacity-50"
           }`}
         >
           <p className="mb-2">Start: {weekPlan.startDate?.slice(0, 10)}</p>
@@ -213,7 +213,7 @@ const CollapsibleWeek: React.FC<CollapsibleWeekProps> = ({
             {weekPlan.runs.map((run, index) => {
               const past = run.date ? new Date(run.date) < new Date() : false;
               const classes =
-                past || run.done ? "text-foreground/60 line-through" : "";
+                past || run.done ? "text-foreground opacity-60 line-through" : "";
               return (
                 <li
                   key={index}

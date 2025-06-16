@@ -13,7 +13,7 @@ export default function RunModal({ run, onClose }: RunModalProps) {
   if (!run) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-foreground/50">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-foreground opacity-50">
       <Card className="relative w-1/2 bg-background p-6 rounded-lg shadow-lg">
         <button
           aria-label="Close"
@@ -23,7 +23,7 @@ export default function RunModal({ run, onClose }: RunModalProps) {
             top-2 right-2
             bg-transparent
             text-2xl font-bold
-            text-foreground/60 dark:text-foreground/60
+            text-foreground opacity-60 dark:text-foreground dark:opacity-60
             hover:text-foreground
             focus:outline-none
           "

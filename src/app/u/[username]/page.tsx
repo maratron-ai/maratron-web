@@ -108,7 +108,7 @@ export default async function UserProfilePage({ params }: Props) {
               <p className="text-base font-semibold">
                 {post.distance} mi in {post.time}
               </p>
-              <div className="text-sm text-foreground/60">
+              <div className="text-sm text-foreground opacity-60">
                 {new Date(post.createdAt).toLocaleString()}
               </div>
               {post.caption && <p className="mt-2">{post.caption}</p>}

@@ -39,7 +39,7 @@ export default function ProfileInfoCard({ profile, user, isSelf }: Props) {
         </h2>
 
         {profile.bio && (
-          <p className="text-sm text-foreground/70 break-words">
+          <p className="text-sm text-foreground opacity-70 break-words">
             {profile.bio}
           </p>
         )}

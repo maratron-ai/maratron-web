@@ -66,7 +66,7 @@ export default function VDOTEstimator({ userId, onComplete }: Props) {
       <Button
         type="submit"
         disabled={saving}
-        className="w-full bg-gradient-to-r from-[var(--brand-from)] to-[var(--brand-to)] text-white border-0 hover:from-[var(--brand-from)]/90 hover:to-[var(--brand-to)]/90"
+        className="w-full bg-gradient-to-r from-[var(--brand-from)] to-[var(--brand-to)] text-white border-0 hover:from-[var(--brand-from)] hover:opacity-90 hover:to-[var(--brand-to)] hover:opacity-90"
       >
         {saving ? "Saving..." : "Save VDOT"}
       </Button>

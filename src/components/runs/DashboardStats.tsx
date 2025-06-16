@@ -49,7 +49,7 @@ export default function DashboardStats() {
   return (
     <div className="grid grid-cols-2 gap-4">
       <Link href="/runs">
-        <Card className="p-4 text-center hover:bg-accent-3/10 cursor-pointer">
+        <Card className="p-4 text-center hover:bg-accent-3 hover:opacity-10 cursor-pointer">
           <div className="text-2xl font-bold">{runCount}</div>
           <div className="text-sm text-muted-foreground">Total Runs</div>
         </Card>
