@@ -1,7 +1,14 @@
 "use client";
 import Image from "next/image";
+import Link from "next/link";
 import type { SocialProfile } from "@maratypes/social";
-import { Card } from "@components/ui";
+import {
+  Card,
+  TooltipProvider,
+  TooltipRoot,
+  TooltipTrigger,
+  TooltipContent,
+} from "@components/ui";
 
 interface Props {
   members: SocialProfile[];
@@ -13,20 +20,30 @@ export default function GroupMembers({ members }: Props) {
   return (
     <div className="space-y-2">
       <h2 className="text-xl font-semibold">Members</h2>
-      <div className="flex items-center gap-2">
-        {visible.map((m) => (
-          <Card key={m.id} className="p-1 rounded-full">
-            <Image
-              src={m.user?.avatarUrl || m.profilePhoto || m.avatarUrl || "/default_profile.png"}
-              alt={m.username}
-              width={32}
-              height={32}
-              className="w-8 h-8 rounded-full object-cover"
-            />
-          </Card>
-        ))}
-        {members.length > 5 && <span className="text-xl">...</span>}
-      </div>
+      <TooltipProvider>
+        <div className="flex items-center gap-2">
+          {visible.map((m) => (
+            <TooltipRoot key={m.id}>
+              <TooltipTrigger asChild>
+                <Link href={`/u/${m.username}`}
+                  className="block">
+                  <Card className="p-1 rounded-full">
+                    <Image
+                      src={m.user?.avatarUrl || m.profilePhoto || m.avatarUrl || "/default_profile.png"}
+                      alt={m.username}
+                      width={32}
+                      height={32}
+                      className="w-8 h-8 rounded-full object-cover"
+                    />
+                  </Card>
+                </Link>
+              </TooltipTrigger>
+              <TooltipContent>@{m.username}</TooltipContent>
+            </TooltipRoot>
+          ))}
+          {members.length > 5 && <span className="text-xl">...</span>}
+        </div>
+      </TooltipProvider>
     </div>
   );
 }
