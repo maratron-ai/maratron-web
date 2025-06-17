@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@lib/prisma";
 import { GROUP_LIST_LIMIT } from "@lib/socialLimits";
+import bcrypt from "bcryptjs";
 
 export async function GET(req: NextRequest) {
   const profileId = req.nextUrl.searchParams.get("profileId");
@@ -44,8 +45,10 @@ export async function POST(req: NextRequest) {
     );
   }
   try {
+    const { password, ...rest } = data;
+    const hashed = password ? await bcrypt.hash(String(password), 10) : undefined;
     const group = await prisma.runGroup.create({
-      data,
+      data: { ...rest, password: hashed },
     });
     // add creator as member
     await prisma.runGroupMember.create({

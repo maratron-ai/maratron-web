@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@lib/prisma";
+import bcrypt from "bcryptjs";
 
 export async function POST(req: NextRequest, ctx: { params: { id: string } }) {
   const { id } = ctx.params;
@@ -12,8 +13,14 @@ export async function POST(req: NextRequest, ctx: { params: { id: string } }) {
     if (!group) {
       return NextResponse.json({ error: "Not found" }, { status: 404 });
     }
-    if (group.private && group.password !== password) {
-      return NextResponse.json({ error: "Invalid password" }, { status: 403 });
+    if (group.private) {
+      if (!password) {
+        return NextResponse.json({ error: "Password required" }, { status: 400 });
+      }
+      const ok = await bcrypt.compare(String(password), group.password ?? "");
+      if (!ok) {
+        return NextResponse.json({ error: "Invalid password" }, { status: 403 });
+      }
     }
     await prisma.runGroupMember.upsert({
       where: { groupId_socialProfileId: { groupId: id, socialProfileId: profileId } },
