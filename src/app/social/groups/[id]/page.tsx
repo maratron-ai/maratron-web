@@ -82,6 +82,14 @@ export default function GroupPage() {
         {group.description && (
           <p className="text-foreground opacity-70">{group.description}</p>
         )}
+        {group.imageUrl && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={group.imageUrl}
+            alt={group.name}
+            className="w-32 h-32 object-cover rounded-md"
+          />
+        )}
         <Card className="p-4 space-y-2">
           <p className="text-sm text-foreground opacity-60">
             Created {new Date(group.createdAt).toLocaleDateString()}

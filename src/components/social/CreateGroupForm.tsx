@@ -3,7 +3,7 @@ import { useState, FormEvent } from "react";
 import { useSession } from "next-auth/react";
 import { useSocialProfile } from "@hooks/useSocialProfile";
 import { createGroup } from "@lib/api/social";
-import { Card, Button, Switch } from "@components/ui";
+import { Card, Button, Switch, PhotoUpload } from "@components/ui";
 import { TextField, TextAreaField } from "@components/ui/FormField";
 
 export default function CreateGroupForm() {
@@ -11,6 +11,7 @@ export default function CreateGroupForm() {
   const { profile } = useSocialProfile();
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
   const [isPrivate, setIsPrivate] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -31,12 +32,14 @@ export default function CreateGroupForm() {
       await createGroup({
         name,
         description: description || undefined,
+        imageUrl: imageUrl || undefined,
         private: isPrivate,
         ownerId: profile.id,
       });
       setSuccess("Group created!");
       setName("");
       setDescription("");
+      setImageUrl("");
       setIsPrivate(false);
     } catch {
       setError("Failed to create group");
@@ -63,6 +66,7 @@ export default function CreateGroupForm() {
           onChange={(_n, v) => setDescription(String(v))}
           rows={2}
         />
+        <PhotoUpload value={imageUrl} onChange={(url) => setImageUrl(url)} />
         <div className="flex items-center gap-2">
           <Switch
             id="private"
