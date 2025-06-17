@@ -37,6 +37,7 @@ export default function PhotoUpload({ value, onChange, disabled }: PhotoUploadPr
           size="sm"
           onClick={() => inputRef.current?.click()}
           disabled={disabled}
+          className="block w-auto text-foreground bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
         >
           Upload Photo
         </Button>

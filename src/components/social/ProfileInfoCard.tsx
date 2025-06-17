@@ -45,21 +45,33 @@ export default function ProfileInfoCard({ profile, user, isSelf }: Props) {
         )}
         <div className="flex flex-col sm:flex-row justify-center items-center text-center gap-4 text-sm text-muted-foreground mt-2">
           <div className="flex items-baseline justify-center w-full sm:w-auto gap-1">
-            <span className="text-lg font-semibold">{profile.runCount ?? 0} runs</span>
+            <span className="text-lg font-semibold">
+              {profile.runCount ?? 0} runs
+            </span>
           </div>
           <div className="flex items-baseline justify-center w-full sm:w-auto gap-1">
-            <span className="text-lg font-semibold">{profile.totalDistance ?? 0} mi</span>
+            <span className="text-lg font-semibold">
+              {profile.totalDistance ?? 0} mi
+            </span>
           </div>
           <div className="flex items-baseline justify-center w-full sm:w-auto gap-1">
-            <span className="text-lg font-semibold">{profile.followerCount ?? 0} followers</span>
+            <span className="text-lg font-semibold">
+              {profile.followerCount ?? 0} followers
+            </span>
           </div>
           <div className="flex items-baseline justify-center w-full sm:w-auto gap-1">
-            <span className="text-lg font-semibold">{profile.followingCount ?? 0} following</span>
+            <span className="text-lg font-semibold">
+              {profile.followingCount ?? 0} following
+            </span>
           </div>
         </div>
       </div>
       {isSelf && (
-        <Button asChild size="sm" className="absolute top-4 right-4">
+        <Button
+          asChild
+          size="sm"
+          className="block mx-auto w-auto text-foreground bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
+        >
           <Link href="/social/profile/edit">Edit</Link>
         </Button>
       )}

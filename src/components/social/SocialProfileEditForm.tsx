@@ -59,7 +59,11 @@ export default function SocialProfileEditForm({ profile, onUpdated }: Props) {
           rows={2}
         />
         <div className="flex justify-end">
-          <Button type="submit" disabled={saving}>
+          <Button
+            type="submit"
+            disabled={saving}
+            className="block mx-auto w-auto text-foreground bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
+          >
             Save Changes
           </Button>
         </div>
@@ -67,3 +71,4 @@ export default function SocialProfileEditForm({ profile, onUpdated }: Props) {
     </Card>
   );
 }
+

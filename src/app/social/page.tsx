@@ -57,7 +57,10 @@ export default function SocialHomePage() {
     return (
       <main className="w-full px-4 sm:px-6 lg:px-8 py-6 space-y-2">
         <p>Create your social profile first.</p>
-        <Button asChild>
+        <Button
+          asChild
+          className="block mx-auto w-auto text-foreground bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
+        >
           <Link href="/social/profile/new">Create Social Profile</Link>
         </Button>
       </main>
@@ -86,7 +89,10 @@ export default function SocialHomePage() {
               <ul className="list-disc ml-6 space-y-1">
                 {groups.map((g) => (
                   <li key={g.id}>
-                    <Link href={`/social/groups/${g.id}`} className="hover:underline">
+                    <Link
+                      href={`/social/groups/${g.id}`}
+                      className="hover:underline"
+                    >
                       {g.name}
                     </Link>
                   </li>
@@ -96,7 +102,10 @@ export default function SocialHomePage() {
               <p className="text-sm">You&apos;re not in any groups yet.</p>
             )}
             <div className="mt-2">
-              <Button asChild size="sm">
+              <Button
+                asChild
+                className="block text-center w-auto text-foreground bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
+              >
                 <Link href="/social/groups">Browse &amp; Create Groups</Link>
               </Button>
             </div>

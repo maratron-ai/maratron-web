@@ -78,7 +78,12 @@ export default function CreateGroupForm() {
           <span className="text-sm">{isPrivate ? "Private group" : "Public group"}</span>
         </div>
         <div className="flex justify-end">
-          <Button type="submit">Create Group</Button>
+          <Button
+            type="submit"
+            className="block mx-auto w-auto text-foreground bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
+          >
+            Create Group
+          </Button>
         </div>
       </form>
     </Card>

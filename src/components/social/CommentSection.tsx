@@ -63,7 +63,7 @@ export default function CommentSection({
         size="sm"
         variant={open ? "secondary" : "outline"}
         onClick={() => setOpen((o) => !o)}
-        className="flex items-center gap-1"
+        className="flex items-center gap-1 text-foreground bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
       >
         <MessageCircle className="w-4 h-4" />
         {count}
@@ -85,7 +85,9 @@ export default function CommentSection({
                   className="w-6 h-6 rounded-full object-cover border border-brand-to bg-brand-from"
                 />
                 <p>
-                  <span className="font-semibold">{c.socialProfile?.username}</span>{" "}
+                  <span className="font-semibold">
+                    {c.socialProfile?.username}
+                  </span>{" "}
                   {c.text}
                 </p>
               </div>
@@ -99,7 +101,11 @@ export default function CommentSection({
                 placeholder="Add a comment"
                 className="h-8"
               />
-              <Button type="submit" size="sm" disabled={submitting || !text.trim()}>
+              <Button
+                type="submit"
+                size="sm"
+                disabled={submitting || !text.trim()}
+              >
                 Post
               </Button>
             </form>

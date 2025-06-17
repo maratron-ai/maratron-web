@@ -91,7 +91,10 @@ const LoginPage: React.FC = () => {
             Jackson login
           </button>
         </div>
-        <form onSubmit={handleLogin} className="space-y-4 w-full max-w-sm mx-auto">
+        <form
+          onSubmit={handleLogin}
+          className="space-y-4 w-full max-w-sm mx-auto"
+        >
           <div className="mb-4">
             <label htmlFor="email" className="block text-foreground mb-2">
               Email:
@@ -120,17 +123,17 @@ const LoginPage: React.FC = () => {
           </div>
           <button
             type="submit"
-            className="w-full bg-primary text-foreground py-2 rounded-md hover:bg-primary hover:opacity-80 transition-colors"
+            className="block mx-auto w-auto text-foreground bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
           >
             Login
           </button>
           <div className="text-center my-4">
-            <span className="text-foreground opacity-80">or</span>
+            <span className="text-foreground opacity-50">or</span>
           </div>
           <button
             type="button"
             onClick={() => router.push("/signup")}
-            className="w-full border border-primary text-primary py-2 rounded-md hover:bg-primary hover:opacity-20 transition-colors"
+            className="block mx-auto w-auto text-foreground bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
           >
             Not registered? Sign up
           </button>

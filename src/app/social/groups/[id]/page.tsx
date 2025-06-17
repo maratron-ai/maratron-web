@@ -72,11 +72,20 @@ export default function GroupPage() {
         <div className="flex items-center justify-between">
           <h1 className="text-2xl font-bold">{group.name}</h1>
           {group.isMember ? (
-            <Button onClick={handleLeave} variant="secondary">
+            <Button
+              onClick={handleLeave}
+              variant="secondary"
+              className="block w-auto text-foreground border-none bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
+            >
               Leave Group
             </Button>
           ) : (
-            <Button onClick={handleJoin}>Join Group</Button>
+            <Button
+              onClick={handleJoin}
+              className="block w-auto text-foreground border-none bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
+            >
+              Join Group
+            </Button>
           )}
         </div>
         {group.description && (
