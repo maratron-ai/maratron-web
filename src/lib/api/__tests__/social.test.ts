@@ -141,10 +141,11 @@ describe("social api helpers", () => {
 
   it("createGroup posts data", async () => {
     mockedAxios.post.mockResolvedValue({ data: { id: "g1" } });
-    const result = await createGroup({ name: "Test", ownerId: "p1" });
+    const result = await createGroup({ name: "Test", ownerId: "p1", imageUrl: "img" });
     expect(mockedAxios.post).toHaveBeenCalledWith("/api/social/groups", {
       name: "Test",
       ownerId: "p1",
+      imageUrl: "img",
     });
     expect(result).toEqual({ id: "g1" });
   });

@@ -237,6 +237,7 @@ model RunGroup {
   id          String   @id @default(uuid())
   name        String
   description String?
+  imageUrl    String?
   private     Boolean  @default(false)
   ownerId     String
   createdAt   DateTime @default(now())

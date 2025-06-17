@@ -65,6 +65,7 @@ export interface RunGroup {
   id: string;
   name: string;
   description?: string | null;
+  imageUrl?: string | null;
   private: boolean;
   ownerId: string;
   createdAt: Date;
