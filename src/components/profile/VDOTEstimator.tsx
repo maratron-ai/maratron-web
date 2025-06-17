@@ -47,7 +47,7 @@ export default function VDOTEstimator({ userId, onComplete }: Props) {
           id="distance"
           value={distance}
           onChange={(e) => setDistance(e.target.value as "5k" | "10k")}
-          className="w-full border rounded px-2 py-1 focus:outline-none focus:ring focus:ring-primary"
+          className="w-full h-10 rounded-md border border-accent-2 bg-accent-2 opacity-80 px-2 py-1 text-sm text-foreground ring-offset-background focus:outline-none focus:ring-2 focus:ring-accent-2 focus:ring-offset-2"
         >
           <option value="5k">5K</option>
           <option value="10k">10K</option>

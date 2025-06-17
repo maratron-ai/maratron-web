@@ -240,7 +240,7 @@ const [targetDistance, setTargetDistance] = useState<number>(
               id="raceType"
               value={raceType}
               onChange={(e) => setRaceType(e.target.value as RaceType)}
-              className="border p-2 rounded bg-background text-foreground"
+              className="h-10 rounded-md border border-accent-2 bg-accent-2 opacity-80 p-2 text-foreground ring-offset-background focus:outline-none focus:ring-2 focus:ring-accent-2 focus:ring-offset-2"
             >
               <option value="5k">5K</option>
               <option value="10k">10K</option>
@@ -262,7 +262,7 @@ const [targetDistance, setTargetDistance] = useState<number>(
               onChange={(e) =>
                 setTrainingLevel(e.target.value as TrainingLevel)
               }
-              className="border p-2 rounded bg-background text-foreground"
+              className="h-10 rounded-md border border-accent-2 bg-accent-2 opacity-80 p-2 text-foreground ring-offset-background focus:outline-none focus:ring-2 focus:ring-accent-2 focus:ring-offset-2"
             >
               <option value="beginner">Beginner</option>
               <option value="intermediate">Intermediate</option>
@@ -328,7 +328,7 @@ const [targetDistance, setTargetDistance] = useState<number>(
                           e.target.value as DayOfWeek | ""
                         )
                       }
-                      className="border p-1 rounded bg-background text-foreground"
+                      className="h-8 rounded-md border border-accent-2 bg-accent-2 opacity-80 p-1 text-foreground ring-offset-background focus:outline-none focus:ring-2 focus:ring-accent-2 focus:ring-offset-2"
                     >
                       <option value="">--</option>
                       {days.map((d) => (

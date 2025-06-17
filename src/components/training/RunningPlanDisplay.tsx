@@ -233,7 +233,7 @@ const CollapsibleWeek: React.FC<CollapsibleWeekProps> = ({
                               e.target.value
                             )
                           }
-                          className="border p-1 rounded text-foreground"
+                          className="h-8 rounded-md border border-accent-2 bg-accent-2 opacity-80 p-1 text-foreground ring-offset-background focus:outline-none focus:ring-2 focus:ring-accent-2 focus:ring-offset-2"
                         >
                           {runTypes.map((t) => (
                             <option key={t} value={t}>
@@ -286,7 +286,7 @@ const CollapsibleWeek: React.FC<CollapsibleWeekProps> = ({
                               e.target.value as DayOfWeek
                             )
                           }
-                          className="border p-1 rounded text-foreground"
+                          className="h-8 rounded-md border border-accent-2 bg-accent-2 opacity-80 p-1 text-foreground ring-offset-background focus:outline-none focus:ring-2 focus:ring-accent-2 focus:ring-offset-2"
                         >
                           {days.map((d) => (
                             <option key={d} value={d}>
@@ -413,7 +413,7 @@ const BulkDaySetter: React.FC<BulkDaySetterProps> = ({ planData, onPlanChange })
       <select
         value={type}
         onChange={(e) => setType(e.target.value as PlannedRun["type"])}
-        className="border p-1 rounded text-foreground text-center"
+        className="h-8 rounded-md border border-accent-2 bg-accent-2 opacity-80 p-1 text-center text-foreground ring-offset-background focus:outline-none focus:ring-2 focus:ring-accent-2 focus:ring-offset-2"
       >
         {runTypes.map((t) => (
           <option key={t} value={t}>
@@ -425,7 +425,7 @@ const BulkDaySetter: React.FC<BulkDaySetterProps> = ({ planData, onPlanChange })
       <select
         value={day}
         onChange={(e) => setDay(e.target.value as DayOfWeek)}
-        className="border p-1 rounded text-foreground text-center"
+        className="h-8 rounded-md border border-accent-2 bg-accent-2 opacity-80 p-1 text-center text-foreground ring-offset-background focus:outline-none focus:ring-2 focus:ring-accent-2 focus:ring-offset-2"
       >
         {days.map((d) => (
           <option key={d} value={d}>
