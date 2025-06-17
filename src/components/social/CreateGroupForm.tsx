@@ -66,16 +66,25 @@ export default function CreateGroupForm() {
           onChange={(_n, v) => setDescription(String(v))}
           rows={2}
         />
-        <PhotoUpload value={imageUrl} onChange={(url) => setImageUrl(url)} />
         <div className="flex items-center gap-2">
+          <PhotoUpload
+            value={imageUrl}
+            onChange={(url) => setImageUrl(url)}
+            text="Upload Group Profile Picture"
+          />
+
           <LockToggle
             locked={isPrivate}
             onChange={(v) => {
               setIsPrivate(v);
               toast(v ? "group is private" : "group is public");
             }}
+            size="default"
+            className="bg-transparent text-foreground hover:bg-transparent hover:text-foreground border-none ring-0 focus:ring-0 focus:outline-none"
           />
-          <span className="text-sm">{isPrivate ? "Private group" : "Public group"}</span>
+          <span className="text-sm">
+            {isPrivate ? "Private Group" : "Public Group"}
+          </span>
         </div>
         <div className="flex justify-end">
           <Button

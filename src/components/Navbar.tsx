@@ -15,7 +15,7 @@ export default function Navbar() {
   const [desktopMenuOpen, setDesktopMenuOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const pathname = usePathname();
-  const router = useRouter();
+  // const router = useRouter();
 
   // Close dropdowns when route changes
   useEffect(() => {
