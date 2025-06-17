@@ -7,7 +7,7 @@ import { useSocialProfile } from "@hooks/useSocialProfile";
 import axios from "axios";
 import SocialFeed from "@components/social/SocialFeed";
 import GroupMembers from "@components/social/GroupMembers";
-import { Button, Spinner, Card } from "@components/ui";
+import { Button, Spinner, Card, toast } from "@components/ui";
 import type { RunGroup } from "@maratypes/social";
 
 export default function GroupPage() {
@@ -49,11 +49,19 @@ export default function GroupPage() {
       password = window.prompt("Group password") || undefined;
       if (password === undefined) return;
     }
-    await axios.post(`/api/social/groups/${id}/join`, {
-      profileId: profile.id,
-      password,
-    });
-    fetchGroup();
+    try {
+      await axios.post(`/api/social/groups/${id}/join`, {
+        profileId: profile.id,
+        password,
+      });
+      fetchGroup();
+    } catch (err: unknown) {
+      if (axios.isAxiosError(err) && err.response?.status === 403) {
+        toast.error("Invalid password");
+      } else {
+        toast.error("Failed to join group");
+      }
+    }
   };
 
   const handleLeave = async () => {
