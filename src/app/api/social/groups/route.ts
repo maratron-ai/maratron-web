@@ -45,18 +45,18 @@ export async function POST(req: NextRequest) {
     );
   }
   try {
-    const { password, ...rest } = data;
+    const { password, ...groupInput } = data;
     const hashed = password ? await bcrypt.hash(String(password), 10) : undefined;
     const group = await prisma.runGroup.create({
-      data: { ...rest, password: hashed },
+      data: { ...groupInput, password: hashed },
     });
     // add creator as member
     await prisma.runGroupMember.create({
       data: { groupId: group.id, socialProfileId: group.ownerId },
     });
-    const { password: _password, ...rest } = group;
+    const { password: _password, ...groupWithoutPassword } = group;
     void _password;
-    return NextResponse.json(rest, { status: 201 });
+    return NextResponse.json(groupWithoutPassword, { status: 201 });
   } catch (err) {
     console.error("Error creating group", err);
     return NextResponse.json({ error: "Failed" }, { status: 500 });
