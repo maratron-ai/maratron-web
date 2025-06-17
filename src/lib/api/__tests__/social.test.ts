@@ -155,7 +155,7 @@ describe("social api helpers", () => {
     await joinGroup("g1", "p1");
     expect(mockedAxios.post).toHaveBeenCalledWith(
       "/api/social/groups/g1/join",
-      { profileId: "p1" }
+      { profileId: "p1", password: undefined }
     );
   });
 

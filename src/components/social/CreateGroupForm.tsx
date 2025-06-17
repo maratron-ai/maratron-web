@@ -13,6 +13,7 @@ export default function CreateGroupForm() {
   const [description, setDescription] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [isPrivate, setIsPrivate] = useState(false);
+  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
@@ -34,6 +35,7 @@ export default function CreateGroupForm() {
         description: description || undefined,
         imageUrl: imageUrl || undefined,
         private: isPrivate,
+        password: isPrivate ? password : undefined,
         ownerId: profile.id,
       });
       setSuccess("Group created!");
@@ -41,6 +43,7 @@ export default function CreateGroupForm() {
       setDescription("");
       setImageUrl("");
       setIsPrivate(false);
+      setPassword("");
     } catch {
       setError("Failed to create group");
     }
@@ -86,6 +89,16 @@ export default function CreateGroupForm() {
             {isPrivate ? "Private Group" : "Public Group"}
           </span>
         </div>
+        {isPrivate && (
+          <TextField
+            label="Group Password"
+            name="password"
+            type="password"
+            value={password}
+            onChange={(_n, v) => setPassword(String(v))}
+            required
+          />
+        )}
         <div className="flex justify-end">
           <Button
             type="submit"

@@ -18,12 +18,16 @@ export async function GET(req: NextRequest) {
       });
       memberships = new Set(memberRows.map((m) => m.groupId));
     }
-    const mapped = groups.map((g) => ({
-      ...g,
-      memberCount: g._count.members,
-      postCount: g._count.posts,
-      isMember: memberships ? memberships.has(g.id) : undefined,
-    }));
+    const mapped = groups.map((g) => {
+      const { password: _password, ...rest } = g;
+      void _password;
+      return {
+        ...rest,
+        memberCount: g._count.members,
+        postCount: g._count.posts,
+        isMember: memberships ? memberships.has(g.id) : undefined,
+      };
+    });
     return NextResponse.json(mapped);
   } catch (err) {
     console.error("Error listing groups", err);
@@ -47,7 +51,9 @@ export async function POST(req: NextRequest) {
     await prisma.runGroupMember.create({
       data: { groupId: group.id, socialProfileId: group.ownerId },
     });
-    return NextResponse.json(group, { status: 201 });
+    const { password: _password, ...rest } = group;
+    void _password;
+    return NextResponse.json(rest, { status: 201 });
   } catch (err) {
     console.error("Error creating group", err);
     return NextResponse.json({ error: "Failed" }, { status: 500 });
