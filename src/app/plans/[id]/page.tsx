@@ -69,7 +69,10 @@ export default function PlanPage({ params }: PageProps) {
     <main className="w-full px-4 sm:px-6 lg:px-8 py-4 space-y-4">
       <h1 className="text-2xl font-bold mb-4">{plan.name}</h1>
       <div className="mb-4 space-x-2">
-        <Button onClick={() => setEditing((e) => !e)}>
+        <Button
+          onClick={() => setEditing((e) => !e)}
+          className="block w-auto border-none focus:outline-none focus:ring-0 text-foreground bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
+        >
           {editing ? "Cancel" : "Edit"}
         </Button>
         {editing && (
@@ -84,7 +87,7 @@ export default function PlanPage({ params }: PageProps) {
                 console.error(err);
               }
             }}
-            className="bg-primary ml-2"
+            className="block w-auto border-none focus:outline-none focus:ring-0 text-foreground bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
           >
             Save
           </Button>
