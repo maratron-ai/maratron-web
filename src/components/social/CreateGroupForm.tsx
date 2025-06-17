@@ -3,7 +3,7 @@ import { useState, FormEvent } from "react";
 import { useSession } from "next-auth/react";
 import { useSocialProfile } from "@hooks/useSocialProfile";
 import { createGroup } from "@lib/api/social";
-import { Card, Button, Switch, PhotoUpload } from "@components/ui";
+import { Card, Button, PhotoUpload, LockToggle, toast } from "@components/ui";
 import { TextField, TextAreaField } from "@components/ui/FormField";
 
 export default function CreateGroupForm() {
@@ -68,14 +68,14 @@ export default function CreateGroupForm() {
         />
         <PhotoUpload value={imageUrl} onChange={(url) => setImageUrl(url)} />
         <div className="flex items-center gap-2">
-          <Switch
-            id="private"
-            checked={isPrivate}
-            onCheckedChange={(v) => setIsPrivate(v)}
+          <LockToggle
+            locked={isPrivate}
+            onChange={(v) => {
+              setIsPrivate(v);
+              toast(v ? "group is private" : "group is public");
+            }}
           />
-          <label htmlFor="private" className="text-sm">
-            Private group
-          </label>
+          <span className="text-sm">{isPrivate ? "Private group" : "Public group"}</span>
         </div>
         <div className="flex justify-end">
           <Button type="submit">Create Group</Button>
