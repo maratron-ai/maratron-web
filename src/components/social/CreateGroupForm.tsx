@@ -1,6 +1,7 @@
 "use client";
 import { useState, FormEvent } from "react";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { useSocialProfile } from "@hooks/useSocialProfile";
 import { createGroup } from "@lib/api/social";
 import { Card, Button, PhotoUpload, LockToggle, toast } from "@components/ui";
@@ -8,6 +9,7 @@ import { TextField, TextAreaField } from "@components/ui/FormField";
 
 export default function CreateGroupForm() {
   const { data: session } = useSession();
+  const router = useRouter();
   const { profile } = useSocialProfile();
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -15,12 +17,10 @@ export default function CreateGroupForm() {
   const [isPrivate, setIsPrivate] = useState(false);
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError("");
-    setSuccess("");
     if (!session?.user?.id) {
       setError("Login required");
       return;
@@ -30,7 +30,7 @@ export default function CreateGroupForm() {
       return;
     }
     try {
-      await createGroup({
+      const group = await createGroup({
         name,
         description: description || undefined,
         imageUrl: imageUrl || undefined,
@@ -38,12 +38,7 @@ export default function CreateGroupForm() {
         password: isPrivate ? password : undefined,
         ownerId: profile.id,
       });
-      setSuccess("Group created!");
-      setName("");
-      setDescription("");
-      setImageUrl("");
-      setIsPrivate(false);
-      setPassword("");
+      router.push(`/social/groups/${group.id}`);
     } catch {
       setError("Failed to create group");
     }
@@ -53,7 +48,6 @@ export default function CreateGroupForm() {
     <Card className="p-6 w-full max-w-md">
       <h2 className="text-2xl font-semibold mb-4">Create Run Group</h2>
       {error && <p className="text-brand-orange-dark mb-2">{error}</p>}
-      {success && <p className="text-primary mb-2">{success}</p>}
       <form onSubmit={handleSubmit} className="space-y-4">
         <TextField
           label="Name"
