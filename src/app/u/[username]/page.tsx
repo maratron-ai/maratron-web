@@ -8,6 +8,7 @@ import LikeButton from "@components/social/LikeButton";
 import CommentSection from "@components/social/CommentSection";
 import { Card } from "@components/ui";
 import { prisma } from "@lib/prisma";
+import { PROFILE_POST_LIMIT } from "@lib/socialLimits";
 
 async function getProfileData(username: string) {
   const profile = await prisma.socialProfile.findUnique({
@@ -36,6 +37,7 @@ async function getProfileData(username: string) {
     where: { socialProfileId: profile.id },
     include: { _count: { select: { likes: true, comments: true } } },
     orderBy: { createdAt: "desc" },
+    take: PROFILE_POST_LIMIT,
   });
   const likeActivity = await prisma.like.count({ where: { socialProfileId: profile.id } });
   const commentActivity = await prisma.comment.count({ where: { socialProfileId: profile.id } });

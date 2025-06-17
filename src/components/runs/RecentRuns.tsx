@@ -55,7 +55,7 @@ export default function RecentRuns() {
         {runs.map((run) => (
           <li
             key={run.id}
-            className="border p-2 rounded cursor-pointer hover:bg-accent hover:opacity-10"
+            className="border p-2 rounded cursor-pointer p-4 flex items-center gap-2 text-foreground hover:bg-primary hover:text-background transition-colors hover:border-muted-foreground"
             onClick={() => setSelectedRun(run)}
           >
             <span className="font-semibold">{run.name || getRunName(run)}</span>

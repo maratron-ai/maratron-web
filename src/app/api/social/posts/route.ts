@@ -1,11 +1,13 @@
 import { NextResponse, NextRequest } from "next/server";
 import { prisma } from "@lib/prisma";
+import { PROFILE_POST_LIMIT } from "@lib/socialLimits";
 
 export async function GET() {
   try {
     const posts = await prisma.runPost.findMany({
       include: { socialProfile: true },
       orderBy: { createdAt: "desc" },
+      take: PROFILE_POST_LIMIT,
     });
     return NextResponse.json(posts);
   } catch (err) {

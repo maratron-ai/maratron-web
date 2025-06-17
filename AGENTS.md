@@ -44,3 +44,21 @@
 - Add new UI components under `src/components/ui/` when building shared widgets.
 - Always ensure components are responsive and keyboard-accessible.
 - For feedback and notifications, use `Toast` or `sonner` (via `shadcn/ui`).
+- For coloring here are the colors you can use:
+```ts
+colors: {
+  background: "var(--background)",
+  foreground: "var(--foreground)",
+  muted: "var(--muted)",
+  "muted-foreground": "var(--muted-foreground)",
+  primary: "(var(--primary) / <alpha-value>)",
+  secondary: "(var(--secondary) / <alpha-value>)",
+  accent: "(var(--accent) / <alpha-value>)",
+  "brand-from": "var(--brand-from)",
+  "brand-to": "var(--brand-to)",
+  "brand-orange": "var(--brand-orange)",
+  "brand-blue": "var(--brand-blue)",
+  "brand-purple": "var(--brand-purple)",
+  "brand-orange-dark": "var(--brand-orange-dark)",
+}
+```

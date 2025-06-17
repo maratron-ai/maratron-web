@@ -80,7 +80,7 @@ export default function GroupPage() {
           )}
         </div>
         {group.description && (
-          <p className="text-foreground/70">{group.description}</p>
+          <p className="text-foreground opacity-70">{group.description}</p>
         )}
         {group.imageUrl && (
           // eslint-disable-next-line @next/next/no-img-element
@@ -91,7 +91,7 @@ export default function GroupPage() {
           />
         )}
         <Card className="p-4 space-y-2">
-          <p className="text-sm text-foreground/60">
+          <p className="text-sm text-foreground opacity-60">
             Created {new Date(group.createdAt).toLocaleDateString()}
           </p>
           <p className="text-sm">Members: {group.memberCount}</p>
