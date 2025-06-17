@@ -82,7 +82,12 @@ export default function ProfileSearch({ limit }: Props) {
       <div className="space-y-2">
         <p>Create your social profile first.</p>
         <Button asChild>
-          <a href="/social/profile/new">Create Social Profile</a>
+          <a
+            href="/social/profile/new"
+            className="block mx-auto w-auto text-foreground bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
+          >
+            Create Social Profile
+          </a>
         </Button>
       </div>
     );
@@ -96,7 +101,12 @@ export default function ProfileSearch({ limit }: Props) {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
         />
-        <Button type="submit">Search</Button>
+        <Button
+          type="submit"
+          className="block mx-auto w-auto text-foreground bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
+        >
+          Search
+        </Button>
       </form>
       <div className="space-y-4">
         {(limit ? results.slice(0, limit) : results).map((p) => (

@@ -90,7 +90,9 @@ export default function CreateSocialPost({ onCreated, groupId }: Props) {
             name="run"
             options={runs.map((r) => ({
               value: r.id ?? "",
-              label: `${r.name || getRunName(r)} - ${r.distance} ${r.distanceUnit}`,
+              label: `${r.name || getRunName(r)} - ${r.distance} ${
+                r.distanceUnit
+              }`,
             }))}
             value={selectedRunId}
             onChange={(_n, v) => setSelectedRunId(String(v))}
@@ -106,7 +108,11 @@ export default function CreateSocialPost({ onCreated, groupId }: Props) {
         />
         <PhotoUpload value={photoUrl} onChange={(url) => setPhotoUrl(url)} />
         <div className="flex justify-end">
-          <Button type="submit" size="sm">
+          <Button
+            type="submit"
+            size="sm"
+            className="block w-auto text-foreground bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
+          >
             Post
           </Button>
         </div>

@@ -54,7 +54,12 @@ export default function SocialFeed({ groupId }: Props) {
       <div className="space-y-2">
         <p>You need a social profile to use the feed.</p>
         <Button asChild>
-          <a href="/social/profile/new">Create Social Profile</a>
+          <a
+            href="/social/profile/new"
+            className="block mx-auto w-auto text-foreground bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
+          >
+            Create Social Profile
+          </a>
         </Button>
       </div>
     );

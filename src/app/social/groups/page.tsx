@@ -33,7 +33,12 @@ export default function GroupsPage() {
         <div className="flex items-center justify-between">
           <h1 className="text-2xl font-bold">Run Groups</h1>
           <Button asChild>
-            <Link href="/social/groups/new">Create Group</Link>
+            <Link
+              href="/social/groups/new"
+              className="block w-auto text-foreground bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
+            >
+              Create Group
+            </Link>
           </Button>
         </div>
         {loading ? (

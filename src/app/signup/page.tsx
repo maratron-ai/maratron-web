@@ -52,8 +52,12 @@ export default function SignupPage() {
         <div className="absolute inset-0 bg-background opacity-80 backdrop-blur-sm" />
         <div className="relative w-full px-4 sm:px-6 lg:px-8 flex justify-center">
           <Card className="w-full max-w-md p-8 bg-background opacity-90 dark:bg-background dark:opacity-40 shadow-xl space-y-6">
-            <h1 className="text-3xl font-bold text-center">Create Your Account</h1>
-            {error && <p className="text-brand-orange-dark text-center">{error}</p>}
+            <h1 className="text-3xl font-bold text-center">
+              Create Your Account
+            </h1>
+            {error && (
+              <p className="text-brand-orange-dark text-center">{error}</p>
+            )}
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="name">Name</Label>
@@ -86,7 +90,7 @@ export default function SignupPage() {
               </div>
               <Button
                 type="submit"
-                className="w-full bg-gradient-to-r from-[var(--brand-from)] to-[var(--brand-to)] text-white border-0 hover:from-[var(--brand-from)] hover:opacity-90 hover:to-[var(--brand-to)] hover:opacity-90"
+                className="block mx-auto w-auto text-foreground bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
               >
                 Sign Up
               </Button>
