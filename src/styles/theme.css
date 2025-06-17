@@ -8,8 +8,8 @@
   --accent-rgb: 16, 185, 129;     /* #10b981 emerald */
   --accent-2-rgb: 253, 224, 71;   /* #fde047 yellow */
   --accent-3-rgb: 251, 113, 133;  /* #fb7185 rose */
-  --accent: #10b981;         /* emerald-500 */
-  --accent-2: #fde047;       /* yellow-400 */
+  --accent: #6b7280;         /* emerald-500 */
+  --accent-2: #6b72804d;       /* yellow-400 */
   --accent-3: #fb7185;       /* rose-400 */
   --accent-foreground: #ffffff;
   --primary: #6366f1;          /* indigo-500 */
@@ -33,8 +33,8 @@
   --accent-rgb: 52, 211, 153;    /* #34d399 */
   --accent-2-rgb: 253, 224, 71;  /* #fde047 */
   --accent-3-rgb: 251, 113, 133; /* #fb7185 */
-  --accent: #34d399;         /* emerald-400 */
-  --accent-2: #fde047;       /* yellow-400 */
+  --accent: #6b7280;         /* emerald-400 */
+  --accent-2: #6b72804d;       /* yellow-400 */
   --accent-3: #fb7185;       /* rose-400 */
   --accent-foreground: #ffffff;
   --primary: #a5b4fc;          /* indigo-300 */
