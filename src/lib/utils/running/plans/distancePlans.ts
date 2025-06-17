@@ -30,6 +30,8 @@ export function generate5kPlan(options: DistancePlanOptions): RunningPlanData {
     distanceUnit,
     trainingLevel,
     vdot,
+    options.targetPace,
+    options.targetTotalTime,
   );
   return options.runsPerWeek
     ? customizePlanRuns(plan, {
@@ -48,6 +50,8 @@ export function generate10kPlan(options: DistancePlanOptions): RunningPlanData {
     distanceUnit,
     trainingLevel,
     vdot,
+    options.targetPace,
+    options.targetTotalTime,
   );
   return options.runsPerWeek
     ? customizePlanRuns(plan, {
