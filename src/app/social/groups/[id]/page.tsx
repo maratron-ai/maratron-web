@@ -44,8 +44,14 @@ export default function GroupPage() {
       return;
     }
     if (!profile?.id) return;
+    let password: string | undefined = undefined;
+    if (group?.private) {
+      password = window.prompt("Group password") || undefined;
+      if (password === undefined) return;
+    }
     await axios.post(`/api/social/groups/${id}/join`, {
       profileId: profile.id,
+      password,
     });
     fetchGroup();
   };

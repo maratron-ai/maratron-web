@@ -29,8 +29,10 @@ export async function GET(req: NextRequest, ctx: { params: { id: string } }) {
       where: { userId: { in: userIds } },
     });
 
+    const { password: _password, ...rest } = group;
+    void _password;
     const data = {
-      ...group,
+      ...rest,
       memberCount: group._count.members,
       postCount: group._count.posts,
       members: group.members.map((m) => m.socialProfile),

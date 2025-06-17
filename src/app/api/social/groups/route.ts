@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@lib/prisma";
 import { GROUP_LIST_LIMIT } from "@lib/socialLimits";
+import bcrypt from "bcryptjs";
 
 export async function GET(req: NextRequest) {
   const profileId = req.nextUrl.searchParams.get("profileId");
@@ -18,12 +19,16 @@ export async function GET(req: NextRequest) {
       });
       memberships = new Set(memberRows.map((m) => m.groupId));
     }
-    const mapped = groups.map((g) => ({
-      ...g,
-      memberCount: g._count.members,
-      postCount: g._count.posts,
-      isMember: memberships ? memberships.has(g.id) : undefined,
-    }));
+    const mapped = groups.map((g) => {
+      const { password: _password, ...rest } = g;
+      void _password;
+      return {
+        ...rest,
+        memberCount: g._count.members,
+        postCount: g._count.posts,
+        isMember: memberships ? memberships.has(g.id) : undefined,
+      };
+    });
     return NextResponse.json(mapped);
   } catch (err) {
     console.error("Error listing groups", err);
@@ -40,14 +45,18 @@ export async function POST(req: NextRequest) {
     );
   }
   try {
+    const { password, ...rest } = data;
+    const hashed = password ? await bcrypt.hash(String(password), 10) : undefined;
     const group = await prisma.runGroup.create({
-      data,
+      data: { ...rest, password: hashed },
     });
     // add creator as member
     await prisma.runGroupMember.create({
       data: { groupId: group.id, socialProfileId: group.ownerId },
     });
-    return NextResponse.json(group, { status: 201 });
+    const { password: _password, ...rest } = group;
+    void _password;
+    return NextResponse.json(rest, { status: 201 });
   } catch (err) {
     console.error("Error creating group", err);
     return NextResponse.json({ error: "Failed" }, { status: 500 });

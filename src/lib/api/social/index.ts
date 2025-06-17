@@ -102,9 +102,16 @@ export const listComments = async (postId: string): Promise<Comment[]> => {
   return comments;
 };
 
-export const createGroup = async (
-  data: Pick<RunGroup, "name" | "ownerId"> & Partial<RunGroup>
-): Promise<RunGroup> => {
+export interface NewGroupData {
+  name: string;
+  ownerId: string;
+  description?: string;
+  imageUrl?: string;
+  private?: boolean;
+  password?: string;
+}
+
+export const createGroup = async (data: NewGroupData): Promise<RunGroup> => {
   const { data: group } = await axios.post<RunGroup>(
     "/api/social/groups",
     data
@@ -114,9 +121,13 @@ export const createGroup = async (
 
 export const joinGroup = async (
   groupId: string,
-  profileId: string
+  profileId: string,
+  password?: string
 ): Promise<void> => {
-  await axios.post(`/api/social/groups/${groupId}/join`, { profileId });
+  await axios.post(`/api/social/groups/${groupId}/join`, {
+    profileId,
+    password,
+  });
 };
 
 export const leaveGroup = async (
