@@ -1,5 +1,6 @@
 import { calculateGoalPaceForVDOT } from "../jackDaniels";
 import { parsePace, getPacesFromRacePace } from "../paces";
+import { parseDuration } from "@utils/time";
 import { WeekPlan, RunningPlanData, PlannedRun } from "@maratypes/runningPlan";
 
 export const Units = ["miles", "kilometers"] as const;
@@ -54,6 +55,8 @@ export function generateShortDistancePlan(
   distanceUnit: Unit,
   trainingLevel: TrainingLevel,
   vdot: number,
+  targetPace?: string,
+  targetTotalTime?: string,
 ): RunningPlanData {
   if (!Number.isInteger(weeks) || weeks < MIN_WEEKS || weeks > MAX_WEEKS)
     throw new Error(
@@ -73,9 +76,15 @@ export function generateShortDistancePlan(
   const raceKm = toKm(raceDistance);
   const raceMeters = raceKm * 1000;
 
-  const goalPace = calculateGoalPaceForVDOT(raceMeters, vdot);
-  const { easy: paceE, threshold: paceT, interval: paceI } =
-    getPacesFromRacePace(parsePace(goalPace));
+  let goalPaceSec = parsePace(calculateGoalPaceForVDOT(raceMeters, vdot));
+  if (targetTotalTime) {
+    goalPaceSec = parseDuration(targetTotalTime) / raceDistance;
+  } else if (targetPace) {
+    goalPaceSec = parseDuration(targetPace);
+  }
+
+  const { easy: paceE, threshold: paceT, interval: paceI, race: goalPace } =
+    getPacesFromRacePace(goalPaceSec);
 
   const buildWeeks = weeks - TAPER_WEEKS;
   const phases = [
@@ -106,17 +115,23 @@ export function generateShortDistancePlan(
 
     const easyKmTotal = weeklyMileageKm * EASY_PCT;
     const easyKmSplit = easyKmTotal / 2;
-    const intervalKm = weeklyMileageKm * INTERVAL_PCT;
+    let intervalKm = weeklyMileageKm * INTERVAL_PCT;
     let tempoKm = weeklyMileageKm * TEMPO_PCT;
     if (phase !== "Taper") {
       tempoKm = Math.max(tempoKm, raceKm * MIN_TEMPO_RATIO);
     }
+    intervalKm = Math.min(intervalKm, raceKm);
+    tempoKm = Math.min(tempoKm, raceKm);
 
     const longPct =
       phase === "Build"
         ? LS + (LP - LS) * ((w - 1) / (buildWeeks - 1))
         : LP;
     let longKm = raceKm * longPct;
+    const MAX_LONG_PCT = 1.5;
+    if (longKm > raceKm * MAX_LONG_PCT) {
+      longKm = raceKm * MAX_LONG_PCT;
+    }
     if (phase === "Taper") {
       longKm *= TAPER_FACTOR;
     }

@@ -2,6 +2,7 @@ import { calculatePaceForVDOT } from "../jackDaniels";
 import { WeekPlan, RunningPlanData, PlannedRun } from "@maratypes/runningPlan";
 import { DayOfWeek } from "@maratypes/basics";
 import { formatPace } from "@utils/running/paces";
+import { parseDuration } from "@utils/time";
 
 // const formatPace = (sec: number): string => {
 //   const m = Math.floor(sec / 60);
@@ -155,21 +156,14 @@ export function generateLongDistancePlan(
   }
 
   // -- helpers
-  const parseHMS = (s: string): number => {
-    const parts = s.split(":").map(Number);
-    return parts.length === 3
-      ? parts[0] * 3600 + parts[1] * 60 + parts[2]
-      : parts[0] * 60 + parts[1];
-  };
-
   const roundToHalf = (n: number): number => Math.round(n * 2) / 2;
 
   // -- compute goal pace override
   let goalPaceSec: number | undefined;
   if (targetTotalTime) {
-    goalPaceSec = parseHMS(targetTotalTime) / targetDistance;
+    goalPaceSec = parseDuration(targetTotalTime) / targetDistance;
   } else if (targetPace) {
-    goalPaceSec = parseHMS(targetPace);
+    goalPaceSec = parseDuration(targetPace);
   }
 
   // -- distance conversions
@@ -186,9 +180,9 @@ export function generateLongDistancePlan(
   if (goalPaceSec !== undefined) zones.marathon = formatPace(goalPaceSec);
 
   // -- edge-case validation for tempo pace
-  const easySec = parseHMS(zones.easy);
-  let tempoSecNum = parseHMS(zones.tempo);
-  const marathonSec = parseHMS(zones.marathon);
+  const easySec = parseDuration(zones.easy);
+  let tempoSecNum = parseDuration(zones.tempo);
+  const marathonSec = parseDuration(zones.marathon);
   if (tempoSecNum >= easySec) {
     tempoSecNum = easySec * 0.95; // Adjust tempo pace to be generically faster than easy pace
     // throw new Error(
@@ -265,7 +259,7 @@ export function generateLongDistancePlan(
     const intervalMileage = roundToHalf(
       (workout.reps * workout.distanceMeters) / toMeters
     );
-    const baseIntervalPaceSec = parseHMS(zones.interval);
+    const baseIntervalPaceSec = parseDuration(zones.interval);
     const repDistanceUnits = workout.distanceMeters / toMeters;
     const repPaceSec = baseIntervalPaceSec * repDistanceUnits;
     const repPace = formatPace(repPaceSec);
