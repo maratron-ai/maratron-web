@@ -8,6 +8,9 @@
   --accent-rgb: 16, 185, 129;     /* #10b981 emerald */
   --accent-2-rgb: 253, 224, 71;   /* #fde047 yellow */
   --accent-3-rgb: 251, 113, 133;  /* #fb7185 rose */
+  --primary: #6366f1;          /* indigo-500 */
+  --secondary: #4f46e5;       /* indigo-600 */
+  --accent: #10b981;         /* emerald-500 */
   --brand-from: #6366f1;
   --brand-to: #4f46e5;
   --brand-orange: #f97316;        /* orange-500 */
@@ -27,6 +30,9 @@
     --accent-rgb: 52, 211, 153;    /* #34d399 */
     --accent-2-rgb: 253, 224, 71;  /* #fde047 */
     --accent-3-rgb: 251, 113, 133; /* #fb7185 */
+    --primary: #a5b4fc;          /* indigo-300 */
+    --secondary: #818cf8;       /* indigo-400 */
+    --accent: #34d399;         /* emerald-400 */
     --brand-from: #a5b4fc;
     --brand-to: #818cf8;
     --brand-orange: #fb923c;       /* orange-400 */

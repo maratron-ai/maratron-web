@@ -62,7 +62,7 @@ export default function HomePage() {
         <div className="w-full px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             <Link href="/runs/new">
-              <Card className="p-4 flex items-center gap-2 hover:bg-accent-3 hover:opacity-10">
+              <Card className="p-4 flex items-center gap-2 hover:text-white hover:opacity-90">
                 <PlusCircle className="w-5 h-5" />
                 <span>Add a Run</span>
               </Card>
