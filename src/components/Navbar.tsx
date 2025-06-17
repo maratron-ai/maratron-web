@@ -140,19 +140,19 @@ export default function Navbar() {
                   <div className="absolute right-0 mt-2 w-40 bg-background border border-accent rounded shadow-md z-50 flex flex-col items-center">
                     <Link
                       href="/profile"
-                      className="block w-full text-center py-2 text-foreground no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
+                      className="block w-full text-center py-2 bg-transparent justify-center text-foreground no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
                     >
                       Profile
                     </Link>
                     <Link
                       href="/settings"
-                      className="block w-full text-center py-2 text-foreground no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
+                      className="block w-full text-center py-2 bg-transparent justify-center text-foreground no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
                     >
                       Settings
                     </Link>
                     <button
                       onClick={() => signOut()}
-                      className="block w-full text-center py-2 justify-center text-foreground no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
+                      className="block w-full text-center py-2 bg-transparent justify-center text-foreground no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
                     >
                       Logout
                     </button>
@@ -175,34 +175,28 @@ export default function Navbar() {
         <div className="md:hidden flex items-center">
           {/* Avatar (mobile) */}
           {status !== "loading" && session?.user && (
-            <div className="relative mr-2">
-              <button
-                onClick={() => {
-                  setMobileMenuOpen(false);
-                  router.push("/home");
-                }}
-                aria-label="Toggle user menu"
-                aria-expanded={mobileMenuOpen}
-                className="focus:outline-none"
-              >
-                <div className="w-8 h-8 rounded-full overflow-hidden bg-muted border border-muted">
-                  {session.user.avatarUrl ? (
-                    <Image
-                      src={session.user.avatarUrl}
-                      alt="avatar"
-                      width={24}
-                      height={24}
-                      className="object-cover"
-                    />
-                  ) : (
-                    <DefaultAvatar
-                      size={32}
-                      className="border border-brand-to bg-brand-from"
-                    />
-                  )}
-                </div>
-              </button>
-            </div>
+            <button
+              onClick={() => setDesktopMenuOpen((o) => !o)}
+              aria-label="Toggle user menu"
+              aria-expanded={desktopMenuOpen}
+              className="focus:outline-none bg-transparent p-4 hover:bg-transparent focus:ring-0"
+            >
+              {session.user?.avatarUrl ? (
+                <Image
+                  src={session.user.avatarUrl}
+                  alt={session.user.name || "User Avatar"}
+                  width={32}
+                  height={32}
+                  className="w-8 h-8 rounded-full object-cover border border-muted bg-muted"
+                  priority
+                />
+              ) : (
+                <DefaultAvatar
+                  size={32}
+                  className="border border-brand-to bg-brand-from"
+                />
+              )}
+            </button>
           )}
 
           {/* Hamburger icon (mobile) */}
@@ -210,7 +204,7 @@ export default function Navbar() {
             <SheetTrigger asChild>
               <button
                 aria-label="Toggle mobile menu"
-                className="p-2 focus:outline-none"
+                className="p-2 focus:outline-none bg-transparent hover:bg-transparent focus:ring-0 hover:text-primary transition-colors"
               >
                 <Menu className="w-6 h-6" />
               </button>
@@ -221,7 +215,7 @@ export default function Navbar() {
                   <Link
                     key={link.href}
                     href={link.href}
-                    className="text-foreground no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
+                    className="block mx-auto w-auto text-foreground bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
                   >
                     {link.label}
                   </Link>
@@ -229,7 +223,7 @@ export default function Navbar() {
               ) : (
                 <Link
                   href="/about"
-                  className="text-center text-foreground no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
+                  className="block mx-auto w-auto text-foreground bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
                 >
                   About
                 </Link>
@@ -239,19 +233,19 @@ export default function Navbar() {
                 <>
                   <Link
                     href="/profile"
-                    className="text-foreground no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
+                    className="block mx-auto w-auto text-foreground bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
                   >
                     Profile
                   </Link>
                   <Link
                     href="/settings"
-                    className="text-foreground no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
+                    className="block mx-auto w-auto text-foreground bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
                   >
                     Settings
                   </Link>
                   <button
                     onClick={() => signOut()}
-                    className="text-foreground no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
+                    className="block mx-auto w-auto text-foreground bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from border-none"
                   >
                     Logout
                   </button>
