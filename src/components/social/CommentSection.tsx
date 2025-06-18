@@ -49,7 +49,7 @@ export default function CommentSection({
     setSubmitting(true);
     try {
       const comment = await addComment(postId, profile.id, text.trim());
-      setComments((c) => [...c, comment]);
+      setComments((c) => [...c, { ...comment, socialProfile: profile }]);
       setCount((c) => c + 1);
       onCommentAdded?.();
       setText("");
