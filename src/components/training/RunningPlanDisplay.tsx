@@ -7,11 +7,20 @@ import { RunningPlanData, WeekPlan, PlannedRun } from "@maratypes/runningPlan";
 import { DayOfWeek } from "@maratypes/basics";
 import { setDayForRunType } from "@utils/running/setRunDay";
 import { parsePace, formatPace } from "@utils/running/paces";
+import { Button } from "@components/ui";
 
 interface RunningPlanDisplayProps {
   planData: RunningPlanData;
   planName?: string;
+  /**
+   * Set the initial editable state of the plan schedule.
+   */
   editable?: boolean;
+  /**
+   * Allows the user to toggle edit mode and save changes. Used when
+   * displaying an existing plan.
+   */
+  allowEditable?: boolean;
   /**
    * Show controls for editing the plan name and saving the plan.
    */
@@ -22,16 +31,23 @@ interface RunningPlanDisplayProps {
   showBulkDaySetter?: boolean;
   onPlanChange?: (plan: RunningPlanData) => void;
   onPlanNameChange?: (name: string) => void;
+  /**
+   * Callback invoked when the Save button is clicked while editing an
+   * existing plan. The updated plan data is provided.
+   */
+  onSave?: (planData: RunningPlanData) => Promise<void> | void;
 }
 
 const RunningPlanDisplay: React.FC<RunningPlanDisplayProps> = ({
   planData,
   planName,
   editable = false,
+  allowEditable = false,
   showPlanMeta = false,
   showBulkDaySetter = false,
   onPlanChange,
   onPlanNameChange,
+  onSave,
 }) => {
   const { profile: user } = useUser();
   const [editingName, setEditingName] = useState(false);
@@ -131,9 +147,32 @@ const RunningPlanDisplay: React.FC<RunningPlanDisplayProps> = ({
           </div>
         </>
       ) : (
-        <h2 className="text-2xl font-bold text-center mb-4">
-          {planName || "Your Running Plan"}
-        </h2>
+        <>
+          <h2 className="text-2xl font-bold text-center mb-2">
+            {planName || "Your Running Plan"}
+          </h2>
+          {allowEditable && (
+            <div className="mb-4 flex justify-center gap-2">
+              <Button
+                onClick={() => setIsEditable((e) => !e)}
+                className="border-none bg-transparent text-foreground hover:bg-brand-from hover:text-background"
+              >
+                {isEditable ? "Cancel" : "Edit"}
+              </Button>
+              {isEditable && (
+                <Button
+                  onClick={async () => {
+                    await onSave?.(planData);
+                    setIsEditable(false);
+                  }}
+                  className="border-none bg-transparent text-foreground hover:bg-brand-from hover:text-background"
+                >
+                  Save
+                </Button>
+              )}
+            </div>
+          )}
+        </>
       )}
       {(isEditable || showBulkDaySetter) && (
         <BulkDaySetter planData={planData} onPlanChange={onPlanChange} />
