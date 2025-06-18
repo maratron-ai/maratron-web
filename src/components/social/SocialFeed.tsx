@@ -105,7 +105,7 @@ export default function SocialFeed({ groupId }: Props) {
               onClick={() => setSelectedImage(post.photoUrl!)}
             />
           )}
-          <div className="flex gap-2 mt-2">
+          <div className="flex items-center gap-2 mt-2">
             <LikeButton
               postId={post.id}
               initialLiked={post.liked ?? false}

@@ -17,7 +17,7 @@ export async function POST(req: NextRequest, ctx: { params: { id: string } }) {
 }
 
 export async function GET(_req: NextRequest, ctx: { params: { id: string } }) {
-  const { id } = ctx.params;
+  const { id } = await ctx.params;
   try {
     const comments = await prisma.comment.findMany({
       where: { postId: id },

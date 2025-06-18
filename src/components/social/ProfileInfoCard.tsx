@@ -1,6 +1,7 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
+// import { usePathname } from "next/navigation";
 import type { SocialProfile } from "@maratypes/social";
 import type { User } from "@maratypes/user";
 import { Card, Button } from "@components/ui";
@@ -19,8 +20,10 @@ export default function ProfileInfoCard({ profile, user, isSelf }: Props) {
     year: "2-digit",
   });
 
+  // const pathname = usePathname();
+
   return (
-    <Card className="relative p-4 pr-16 flex flex-wrap flex-col sm:flex-row gap-4 items-start overflow-hidden">
+    <Card className="relative p-4 flex flex-wrap flex-col sm:flex-row gap-4 items-start overflow-hidden">
       <Image
         src={avatar}
         alt={profile.username}
@@ -43,39 +46,36 @@ export default function ProfileInfoCard({ profile, user, isSelf }: Props) {
             {profile.bio}
           </p>
         )}
-        <div className="flex flex-col sm:flex-row justify-center items-center text-center gap-4 text-sm text-muted-foreground mt-2">
-          <div className="flex items-baseline justify-center w-full sm:w-auto gap-1">
-            <span className="text-lg font-semibold">
-              {profile.runCount ?? 0} runs
-            </span>
-          </div>
-          <div className="flex items-baseline justify-center w-full sm:w-auto gap-1">
-            <span className="text-lg font-semibold">
-              {profile.postCount ?? 0} posts
-            </span>
-          </div>
-          <div className="flex items-baseline justify-center w-full sm:w-auto gap-1">
-            <span className="text-lg font-semibold">
-              {profile.totalDistance ?? 0} mi
-            </span>
-          </div>
-          <div className="flex items-baseline justify-center w-full sm:w-auto gap-1">
-            <span className="text-lg font-semibold">
-              {profile.followerCount ?? 0} followers
-            </span>
-          </div>
-          <div className="flex items-baseline justify-center w-full sm:w-auto gap-1">
-            <span className="text-lg font-semibold">
-              {profile.followingCount ?? 0} following
-            </span>
-          </div>
+      </div>
+      <div className="w-full flex flex-col sm:flex-row justify-center items-center text-center gap-4 text-sm text-muted-foreground">
+        <div className="flex items-baseline justify-center w-full sm:w-auto gap-1">
+          <span className="text-lg font-semibold">
+            {profile.runCount ?? 0}{" "}<span className="text-sm">runs</span>
+          </span>
+        </div>
+        <div className="flex items-baseline justify-center w-full sm:w-auto gap-1">
+          <span className="text-lg font-semibold">
+            {profile.totalDistance ?? 0} <span className="text-sm">mi</span>
+          </span>
+        </div>
+        <div className="flex items-baseline justify-center w-full sm:w-auto gap-1">
+          <span className="text-lg font-semibold">
+            {profile.followerCount ?? 0}{" "}
+            <span className="text-sm">followers</span>
+          </span>
+        </div>
+        <div className="flex items-baseline justify-center w-full sm:w-auto gap-1">
+          <span className="text-lg font-semibold">
+            {profile.followingCount ?? 0}{" "}
+            <span className="text-sm">following</span>
+          </span>
         </div>
       </div>
       {isSelf && (
         <Button
           asChild
           size="sm"
-          className="block mx-auto w-auto text-foreground bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
+          className="absolute top-4 right-4 text-foreground bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
         >
           <Link href="/social/profile/edit">Edit</Link>
         </Button>

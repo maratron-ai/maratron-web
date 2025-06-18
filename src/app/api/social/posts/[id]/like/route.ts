@@ -3,7 +3,7 @@ import { prisma } from "@lib/prisma";
 
 export async function POST(req: NextRequest, ctx: { params: { id: string } }) {
   const { socialProfileId } = await req.json();
-  const { id } = ctx.params;
+  const { id } = await ctx.params;
   try {
     const like = await prisma.like.upsert({
       where: { postId_socialProfileId: { postId: id, socialProfileId } },

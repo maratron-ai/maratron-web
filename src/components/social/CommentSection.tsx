@@ -58,12 +58,20 @@ export default function CommentSection({
   };
 
   return (
-    <div className="mt-2 space-y-2">
+    <div className="">
       <Button
         size="sm"
         variant={open ? "secondary" : "outline"}
         onClick={() => setOpen((o) => !o)}
-        className="flex items-center gap-1 text-foreground bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
+        className="
+          flex items-center gap-1
+          text-foreground bg-transparent
+          transition-colors
+          hover:bg-transparent hover:ring-0
+          border-none
+          focus:outline-none focus:ring-0
+          focus-visible:outline-none focus-visible:ring-0
+        "
       >
         <MessageCircle className="w-4 h-4" />
         {count}
@@ -97,7 +105,9 @@ export default function CommentSection({
             <form onSubmit={onSubmit} className="flex gap-2 mt-2">
               <Input
                 value={text}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setText(e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  setText(e.target.value)
+                }
                 placeholder="Add a comment"
                 className="h-8"
               />

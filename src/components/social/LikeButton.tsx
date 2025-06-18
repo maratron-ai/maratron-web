@@ -48,7 +48,7 @@ export default function LikeButton({ postId, initialLiked = false, initialCount 
       variant={liked ? "secondary" : "outline"}
       onClick={toggleLike}
       disabled={processing}
-      className="flex items-center gap-1 text-foreground bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
+      className="flex items-center gap-1 text-foreground bg-transparent transition-colors hover:bg-transparent hover:ring-0 border-none"
       aria-label={liked ? "Unlike" : "Like"}
     >
       <Heart

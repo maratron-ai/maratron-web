@@ -86,7 +86,7 @@ export default function SocialHomePage() {
                 <Spinner className="h-4 w-4" />
               </div>
             ) : groups.length > 0 ? (
-              <ul className="list-disc ml-6 space-y-1">
+              <ul className="list-none ml-0 space-y-1">
                 {groups.map((g) => (
                   <li key={g.id}>
                     <Link
