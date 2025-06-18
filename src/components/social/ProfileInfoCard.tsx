@@ -50,24 +50,27 @@ export default function ProfileInfoCard({ profile, user, isSelf }: Props) {
       <div className="w-full flex flex-col sm:flex-row justify-center items-center text-center gap-4 text-sm text-muted-foreground">
         <div className="flex items-baseline justify-center w-full sm:w-auto gap-1">
           <span className="text-lg font-semibold">
-            {profile.runCount ?? 0}{" "}<span className="text-sm">runs</span>
+            {profile.runCount ?? 0} runs
           </span>
         </div>
         <div className="flex items-baseline justify-center w-full sm:w-auto gap-1">
           <span className="text-lg font-semibold">
-            {profile.totalDistance ?? 0} <span className="text-sm">mi</span>
+            {profile.postCount ?? 0} posts
           </span>
         </div>
         <div className="flex items-baseline justify-center w-full sm:w-auto gap-1">
           <span className="text-lg font-semibold">
-            {profile.followerCount ?? 0}{" "}
-            <span className="text-sm">followers</span>
+            {profile.totalDistance ?? 0} mi
           </span>
         </div>
         <div className="flex items-baseline justify-center w-full sm:w-auto gap-1">
           <span className="text-lg font-semibold">
-            {profile.followingCount ?? 0}{" "}
-            <span className="text-sm">following</span>
+            {profile.followerCount ?? 0} followers
+          </span>
+        </div>
+        <div className="flex items-baseline justify-center w-full sm:w-auto gap-1">
+          <span className="text-lg font-semibold">
+            {profile.followingCount ?? 0} following
           </span>
         </div>
       </div>
