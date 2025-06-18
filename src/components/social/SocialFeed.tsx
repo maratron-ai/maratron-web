@@ -105,7 +105,7 @@ export default function SocialFeed({ groupId }: Props) {
               onClick={() => setSelectedImage(post.photoUrl!)}
             />
           )}
-          <div className="flex items-center gap-2 mt-2 items-start">
+          <div className="flex items-start gap-2 mt-2">
             <LikeButton
               postId={post.id}
               initialLiked={post.liked ?? false}
@@ -118,7 +118,10 @@ export default function SocialFeed({ groupId }: Props) {
           </div>
         </div>
       ))}
-      <Dialog open={!!selectedImage} onOpenChange={(o) => !o && setSelectedImage(null)}>
+      <Dialog
+        open={!!selectedImage}
+        onOpenChange={(o) => !o && setSelectedImage(null)}
+      >
         <DialogContent className="p-0">
           {selectedImage && (
             // eslint-disable-next-line @next/next/no-img-element
