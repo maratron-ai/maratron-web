@@ -214,7 +214,7 @@ const [targetDistance, setTargetDistance] = useState<number>(
             type="number"
             min={8}
             value={String(weeks)}
-            onChange={(_n, v) => setWeeks(Number(v))}
+            onChange={(e) => setWeeks(Number(e.target.value))}
             className="mt-1"
           />
           {/* Race Date */}
@@ -223,7 +223,7 @@ const [targetDistance, setTargetDistance] = useState<number>(
             name="raceDate"
             type="date"
             value={endDate}
-            onChange={(_n, v) => setEndDate(v)}
+            onChange={(e) => setEndDate(e.target.value)}
             className="mt-1"
           />
           {/* Race Selection */}
@@ -274,7 +274,7 @@ const [targetDistance, setTargetDistance] = useState<number>(
                 min={2}
                 max={5}
                 value={String(runsPerWeek)}
-                onChange={(_n, v) => setRunsPerWeek(Number(v))}
+                onChange={(e) => setRunsPerWeek(Number(e.target.value))}
                 className="mt-1"
               />
               <Input
@@ -284,8 +284,10 @@ const [targetDistance, setTargetDistance] = useState<number>(
                 min={0}
                 max={7 - runsPerWeek}
                 value={String(crossTrainingDays)}
-                onChange={(_n, v) =>
-                  setCrossTrainingDays(Math.min(7 - runsPerWeek, Number(v)))
+                onChange={(e) =>
+                  setCrossTrainingDays(
+                    Math.min(7 - runsPerWeek, Number(e.target.value))
+                  )
                 }
                 className="mt-1"
               />
@@ -322,7 +324,7 @@ const [targetDistance, setTargetDistance] = useState<number>(
               name="targetTotalTime"
               type="text"
               value={targetTotalTime}
-              onChange={(_n, v) => setTargetTotalTime(v)}
+              onChange={(e) => setTargetTotalTime(e.target.value)}
               className="mt-1"
             />
           ) : (
@@ -331,7 +333,7 @@ const [targetDistance, setTargetDistance] = useState<number>(
               name="targetPace"
               type="text"
               value={targetPace}
-              onChange={(_n, v) => setTargetPace(v)}
+              onChange={(e) => setTargetPace(e.target.value)}
               className="mt-1"
             />
           )}
