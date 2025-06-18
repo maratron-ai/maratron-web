@@ -57,16 +57,30 @@ export function assignDatesToPlan(
   opts: { startDate?: string; endDate?: string }
 ): RunningPlanData {
   const { startDate, endDate } = opts;
+
+  const weeks = plan.schedule.length || plan.weeks;
   let baseStart: Date;
+  let finalEnd: Date;
+
   if (startDate) {
     baseStart = startOfDayUTC(parseDateUTC(startDate));
+    finalEnd = endDate ? startOfDayUTC(parseDateUTC(endDate)) : addWeeks(baseStart, weeks);
+    if (Math.abs(finalEnd.getTime() - baseStart.getTime()) !== weeks * 7 * 24 * 60 * 60 * 1000) {
+      finalEnd = addWeeks(baseStart, weeks);
+    }
   } else if (endDate) {
-    baseStart = addWeeks(startOfDayUTC(parseDateUTC(endDate)), -(plan.weeks - 1));
+    finalEnd = startOfDayUTC(parseDateUTC(endDate));
+    baseStart = addWeeks(finalEnd, -weeks);
   } else {
     baseStart = nextSunday();
+    finalEnd = addWeeks(baseStart, weeks);
   }
+
   const today = startOfDayUTC(new Date());
-  if (baseStart < today) baseStart = today;
+  if (baseStart < today) {
+    baseStart = today;
+    finalEnd = addWeeks(baseStart, weeks);
+  }
 
   const schedule = plan.schedule.map((week, wi) => {
     const weekStart = startOfWeekSunday(addWeeks(baseStart, wi));
@@ -74,7 +88,7 @@ export function assignDatesToPlan(
       let date: Date;
       if (
         endDate &&
-        wi === plan.weeks - 1 &&
+        wi === weeks - 1 &&
         (r.type === "race" || r.type === "marathon")
       ) {
         date = startOfDayUTC(parseDateUTC(endDate));
@@ -91,15 +105,12 @@ export function assignDatesToPlan(
     return { ...week, startDate: weekStart.toISOString(), runs, done };
   });
 
-  const end = endDate
-    ? startOfDayUTC(parseDateUTC(endDate))
-    : startOfWeekSunday(addWeeks(baseStart, plan.weeks - 1));
-
   return {
     ...plan,
+    weeks,
     schedule,
     startDate: baseStart.toISOString(),
-    endDate: end.toISOString(),
+    endDate: finalEnd.toISOString(),
   };
 }
 
