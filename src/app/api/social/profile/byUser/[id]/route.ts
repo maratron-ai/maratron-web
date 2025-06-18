@@ -10,7 +10,7 @@ export async function GET(_req: NextRequest, ctx: { params: { id: string } }) {
         user: {
           select: { name: true, avatarUrl: true, _count: { select: { runs: true } } },
         },
-        _count: { select: { followers: true, following: true } },
+        _count: { select: { followers: true, following: true, posts: true } },
       },
     });
     if (!profile) return NextResponse.json({ error: "Not found" }, { status: 404 });
@@ -33,6 +33,7 @@ export async function GET(_req: NextRequest, ctx: { params: { id: string } }) {
       totalDistance: total._sum.distance ?? 0,
       followerCount: profile._count.followers,
       followingCount: profile._count.following,
+      postCount: profile._count.posts,
     };
 
     return NextResponse.json(data);

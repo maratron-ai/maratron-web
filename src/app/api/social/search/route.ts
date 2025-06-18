@@ -17,7 +17,7 @@ export async function GET(req: NextRequest) {
       },
       include: {
         user: { select: { name: true, avatarUrl: true, _count: { select: { runs: true } } } },
-        _count: { select: { followers: true, following: true } },
+        _count: { select: { followers: true, following: true, posts: true } },
       },
       take: 10,
     });
@@ -42,6 +42,7 @@ export async function GET(req: NextRequest) {
           totalDistance: total._sum.distance ?? 0,
           followerCount: p._count.followers,
           followingCount: p._count.following,
+          postCount: p._count.posts,
         };
       })
     );

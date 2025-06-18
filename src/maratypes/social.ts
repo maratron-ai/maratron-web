@@ -15,6 +15,7 @@ export interface SocialProfile {
   totalDistance?: number;
   followerCount?: number;
   followingCount?: number;
+  postCount?: number;
 }
 
 export interface RunPost {

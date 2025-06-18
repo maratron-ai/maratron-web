@@ -51,6 +51,11 @@ export default function ProfileInfoCard({ profile, user, isSelf }: Props) {
           </div>
           <div className="flex items-baseline justify-center w-full sm:w-auto gap-1">
             <span className="text-lg font-semibold">
+              {profile.postCount ?? 0} posts
+            </span>
+          </div>
+          <div className="flex items-baseline justify-center w-full sm:w-auto gap-1">
+            <span className="text-lg font-semibold">
               {profile.totalDistance ?? 0} mi
             </span>
           </div>
