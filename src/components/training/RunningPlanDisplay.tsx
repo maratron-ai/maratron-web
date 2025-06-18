@@ -8,7 +8,6 @@ import { DayOfWeek } from "@maratypes/basics";
 import { setDayForRunType } from "@utils/running/setRunDay";
 import { parsePace, formatPace } from "@utils/running/paces";
 import { Button } from "@components/ui";
-import { Input } from "@components/ui/input";
 import { SelectField } from "@components/ui/FormField";
 
 interface RunningPlanDisplayProps {
@@ -96,13 +95,13 @@ const RunningPlanDisplay: React.FC<RunningPlanDisplayProps> = ({
           <div className="mb-4 flex items-center gap-2">
             {/* <span className="font-semibold">Plan Name:</span> */}
             {editingName ? (
-              <Input
+              <input
                 type="text"
                 value={planName}
                 onChange={(e) => onPlanNameChange?.(e.target.value)}
                 onBlur={() => setEditingName(false)}
                 autoFocus
-                className="w-full max-w-md text-2xl font-bold text-center mb-4 block mx-auto"
+                className="w-full max-w-md text-2xl font-bold text-center mb-4 block mx-auto rounded-md border border-accent-2 bg-accent-2 opacity-80 px-2 py-1 text-foreground"
               />
             ) : (
               <h2 className="w-full text-2xl font-bold text-center mb-4">
@@ -277,7 +276,7 @@ const CollapsibleWeek: React.FC<CollapsibleWeekProps> = ({
                       </label>
                       <label className="block">
                         <span className="mr-2">Mileage:</span>
-                        <Input
+                        <input
                           type="number"
                           step="0.1"
                           value={run.mileage}
@@ -295,7 +294,7 @@ const CollapsibleWeek: React.FC<CollapsibleWeekProps> = ({
                       </label>
                       <label className="block">
                         <span className="mr-2">Target Pace:</span>
-                        <Input
+                        <input
                           type="text"
                           value={run.targetPace.pace}
                           onChange={(e) =>
@@ -327,7 +326,7 @@ const CollapsibleWeek: React.FC<CollapsibleWeekProps> = ({
                       </label>
                       <label className="block">
                         <span className="mr-2">Notes:</span>
-                        <Input
+                        <input
                           type="text"
                           value={run.notes || ""}
                           onChange={(e) =>
@@ -337,7 +336,7 @@ const CollapsibleWeek: React.FC<CollapsibleWeekProps> = ({
                         />
                       </label>
                       <label className="block">
-                        <Input
+                        <input
                           type="checkbox"
                           checked={run.done || false}
                           onChange={(e) =>
@@ -383,7 +382,7 @@ const CollapsibleWeek: React.FC<CollapsibleWeekProps> = ({
                       )}
                       {typeof run.done !== "undefined" && (
                         <p>
-                          <Input
+                          <input
                             type="checkbox"
                             checked={run.done}
                             onChange={(e) =>
