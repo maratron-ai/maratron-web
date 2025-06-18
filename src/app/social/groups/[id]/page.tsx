@@ -125,7 +125,11 @@ export default function GroupPage() {
           )}
         </Card>
         {group.members && <GroupMembers members={group.members} />}
-        <SocialFeed groupId={group.id} />
+        {group.private && !group.isMember ? (
+          <p>This group is private. Join to view posts.</p>
+        ) : (
+          <SocialFeed groupId={group.id} />
+        )}
       </main>
     </div>
   );
