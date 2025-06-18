@@ -7,8 +7,7 @@ import isYupValidationError from "@lib/utils/validation/isYupValidationError";
 import { useSession } from "next-auth/react";
 import { useUser } from "@hooks/useUser";
 
-import { Card, Button, Spinner } from "@components/ui";
-import { Input } from "@components/ui/input";
+import { Card, Button, Spinner, Checkbox, Label } from "@components/ui";
 import {
   TextField,
   SelectField,
@@ -184,18 +183,18 @@ const ShoeForm: React.FC<ShoeFormProps> = ({ onSubmit, initialData }) => {
           />
         </div>
 
-        <label className="flex items-center space-x-2">
-          <Input
-            type="checkbox"
-            name="makeDefault"
+        <div className="flex items-center space-x-2">
+          <Checkbox
+            id="makeDefault"
             checked={form.makeDefault}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              handleFieldChange("makeDefault", e.target.checked)
+            onCheckedChange={(checked: boolean) =>
+              handleFieldChange("makeDefault", Boolean(checked))
             }
-            className="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded"
           />
-          <span>Set as default shoe</span>
-        </label>
+          <Label htmlFor="makeDefault" className="text-sm">
+            Set as default shoe
+          </Label>
+        </div>
 
         <div className="flex justify-end">
           <Button
