@@ -119,7 +119,7 @@ export default function Navbar() {
                   onClick={() => setDesktopMenuOpen((o) => !o)}
                   aria-label="Toggle user menu"
                   aria-expanded={desktopMenuOpen}
-                  className="focus:outline-none bg-transparent p-0 hover:bg-transparent focus:ring-0 block w-auto text-foreground bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
+                  className="focus:outline-none bg-transparent p-0 hover:bg-transparent focus:ring-0 block w-auto text-foreground no-underline transition-colors hover:text-background hover:no-underline"
                 >
                   {session.user?.avatarUrl ? (
                     <Image

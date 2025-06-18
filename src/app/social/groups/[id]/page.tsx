@@ -89,14 +89,14 @@ export default function GroupPage() {
             <Button
               onClick={handleLeave}
               variant="secondary"
-              className="block w-auto text-foreground border-none bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
+              className="block w-auto text-foreground border-none bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from focus:ring-0 border-none"
             >
               Leave Group
             </Button>
           ) : (
             <Button
               onClick={handleJoin}
-              className="block w-auto text-foreground border-none bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
+              className="block w-auto text-foreground border-none bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from focus:ring-0 border-none"
             >
               Join Group
             </Button>
