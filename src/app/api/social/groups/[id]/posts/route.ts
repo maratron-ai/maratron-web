@@ -6,6 +6,23 @@ export async function GET(req: NextRequest, ctx: { params: { id: string } }) {
   const { id } = ctx.params;
   const profileId = req.nextUrl.searchParams.get("profileId");
   try {
+    const group = await prisma.runGroup.findUnique({
+      where: { id },
+      select: { private: true },
+    });
+    if (!group)
+      return NextResponse.json({ error: "Not found" }, { status: 404 });
+    if (group.private) {
+      if (!profileId)
+        return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
+      const member = await prisma.runGroupMember.findUnique({
+        where: {
+          groupId_socialProfileId: { groupId: id, socialProfileId: profileId },
+        },
+      });
+      if (!member)
+        return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
+    }
     const posts = await prisma.runPost.findMany({
       where: { groupId: id },
       include: {
