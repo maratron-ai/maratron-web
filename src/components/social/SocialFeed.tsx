@@ -45,7 +45,7 @@ export default function SocialFeed({ groupId }: Props) {
   if (!session?.user?.id) return <p>Please log in to view your feed.</p>;
   if (profileLoading || loading)
     return (
-      <div className="flex justify-center py-4">
+      <div className="center-loading">
         <Spinner className="h-4 w-4" />
       </div>
     );
@@ -56,7 +56,7 @@ export default function SocialFeed({ groupId }: Props) {
         <Button asChild>
           <a
             href="/social/profile/new"
-            className="block mx-auto w-auto text-foreground bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
+            className="btn-link"
           >
             Create Social Profile
           </a>

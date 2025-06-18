@@ -42,7 +42,7 @@ export default function VDOTEstimator({ userId, onComplete }: Props) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      <div className="space-y-1">
+      <div className="form-group">
         <Label htmlFor="distance">Race Distance</Label>
         <SelectField
           name="distance"
@@ -53,10 +53,10 @@ export default function VDOTEstimator({ userId, onComplete }: Props) {
             { value: "5k", label: "5K" },
             { value: "10k", label: "10K" },
           ]}
-          className="w-full h-10 rounded-md border border-accent-2 bg-accent-2 opacity-80 px-2 py-1 text-sm text-foreground ring-offset-background focus:outline-none focus:ring-2 focus:ring-accent-2 focus:ring-offset-2"
+          className="form-control"
         />
       </div>
-      <div className="space-y-1">
+      <div className="form-group">
         <Label htmlFor="time">Race Time (mm:ss or hh:mm:ss)</Label>
         <Input
           id="time"
@@ -69,7 +69,7 @@ export default function VDOTEstimator({ userId, onComplete }: Props) {
       <Button
         type="submit"
         disabled={saving}
-        className="block mx-auto w-auto text-foreground bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
+        className="btn-link"
       >
         {saving ? "Saving..." : "Save VDOT"}
       </Button>

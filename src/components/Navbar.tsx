@@ -49,7 +49,7 @@ export default function Navbar() {
 
   return (
     <nav className="bg-background border-b border-transparent backdrop-blur-sm relative z-20">
-      <div className="w-full px-4 sm:px-6 lg:px-8 flex items-center justify-between py-6">
+      <div className="page-container flex items-center justify-between py-6">
         {/* Left: Logo and links */}
         <div className="flex items-center">
           <Link href="/" className="text-xl font-bold mr-2">
@@ -180,7 +180,7 @@ export default function Navbar() {
               onClick={() => setDesktopMenuOpen((o) => !o)}
               aria-label="Toggle user menu"
               aria-expanded={desktopMenuOpen}
-              className="focus:outline-none bg-transparent p-4 hover:bg-transparent focus:ring-0 block w-auto text-foreground bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
+              className="focus:outline-none bg-transparent p-4 hover:bg-transparent focus:ring-0 btn-link"
             >
               {session.user?.avatarUrl ? (
                 <Image
@@ -216,7 +216,7 @@ export default function Navbar() {
                   <Link
                     key={link.href}
                     href={link.href}
-                    className="block mx-auto w-auto text-foreground bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
+                    className="btn-link"
                   >
                     {link.label}
                   </Link>
@@ -224,7 +224,7 @@ export default function Navbar() {
               ) : (
                 <Link
                   href="/about"
-                  className="block mx-auto w-auto text-foreground bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
+                  className="btn-link"
                 >
                   About
                 </Link>
@@ -234,19 +234,19 @@ export default function Navbar() {
                 <>
                   <Link
                     href="/profile"
-                    className="block mx-auto w-auto text-foreground bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
+                    className="btn-link"
                   >
                     Profile
                   </Link>
                   <Link
                     href="/settings"
-                    className="block mx-auto w-auto text-foreground bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
+                    className="btn-link"
                   >
                     Settings
                   </Link>
                   <Button
                     onClick={() => signOut()}
-                    className="block mx-auto w-auto text-foreground bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from border-none"
+                    className="btn-link border-none"
                   >
                     Logout
                   </Button>

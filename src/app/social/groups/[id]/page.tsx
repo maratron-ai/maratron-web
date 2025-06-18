@@ -82,7 +82,7 @@ export default function GroupPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      <main className="container mx-auto px-4 max-w-screen-lg py-8 space-y-6">
+      <main className="max-container py-8 space-y-6">
         <div className="flex items-center justify-between">
           <h1 className="text-2xl font-bold">{group.name}</h1>
           {group.isMember ? (

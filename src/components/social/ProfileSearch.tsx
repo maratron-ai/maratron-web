@@ -73,7 +73,7 @@ export default function ProfileSearch({ limit }: Props) {
   if (!session?.user?.id) return <p>Please log in to search.</p>;
   if (loading)
     return (
-      <div className="flex justify-center py-4">
+      <div className="center-loading">
         <Spinner className="h-4 w-4" />
       </div>
     );
@@ -84,7 +84,7 @@ export default function ProfileSearch({ limit }: Props) {
         <Button asChild>
           <a
             href="/social/profile/new"
-            className="block mx-auto w-auto text-foreground bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
+            className="btn-link"
           >
             Create Social Profile
           </a>
@@ -103,7 +103,7 @@ export default function ProfileSearch({ limit }: Props) {
         />
         <Button
           type="submit"
-          className="block mx-auto w-auto text-foreground bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
+          className="btn-link"
         >
           Search
         </Button>

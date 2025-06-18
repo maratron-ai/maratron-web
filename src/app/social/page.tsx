@@ -37,7 +37,7 @@ export default function SocialHomePage() {
 
   if (!session?.user) {
     return (
-      <main className="w-full px-4 sm:px-6 lg:px-8 py-6">
+      <main className="page-main">
         <p>Please log in to access social features.</p>
       </main>
     );
@@ -45,8 +45,8 @@ export default function SocialHomePage() {
 
   if (loading) {
     return (
-      <main className="w-full px-4 sm:px-6 lg:px-8 py-6">
-        <div className="flex justify-center py-4">
+      <main className="page-main">
+        <div className="center-loading">
           <Spinner className="h-4 w-4" />
         </div>
       </main>
@@ -55,11 +55,11 @@ export default function SocialHomePage() {
 
   if (!profile) {
     return (
-      <main className="w-full px-4 sm:px-6 lg:px-8 py-6 space-y-2">
+      <main className="page-main space-y-2">
         <p>Create your social profile first.</p>
         <Button
           asChild
-          className="block mx-auto w-auto text-foreground bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
+          className="btn-link"
         >
           <Link href="/social/profile/new">Create Social Profile</Link>
         </Button>
@@ -69,7 +69,7 @@ export default function SocialHomePage() {
 
   return (
     <div className="min-h-screen bg-background">
-      <main className="container mx-auto px-4 max-w-screen-lg py-8 flex flex-col lg:flex-row gap-8">
+      <main className="max-container py-8 flex flex-col lg:flex-row gap-8">
         <section className="lg:w-2/3 order-2 lg:order-1 space-y-6">
           <SocialFeed />
         </section>

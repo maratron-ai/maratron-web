@@ -197,12 +197,12 @@ const [targetDistance, setTargetDistance] = useState<number>(
   };
 
   return (
-    <div className="w-full px-4 sm:px-6 lg:px-8 p-4 space-y-4">
+    <div className="page-container p-4 space-y-4">
       <h1 className="text-2xl font-bold text-center mb-4">
         Generate Your Running Plan
       </h1>
       {loading ? (
-        <div className="flex justify-center py-4">
+        <div className="center-loading">
           <Spinner className="h-5 w-5" />
         </div>
       ) : (
@@ -215,7 +215,6 @@ const [targetDistance, setTargetDistance] = useState<number>(
             min={8}
             value={String(weeks)}
             onChange={(_n, v) => setWeeks(Number(v))}
-            className="mt-1"
           />
           {/* Race Date */}
           <Input
@@ -224,7 +223,6 @@ const [targetDistance, setTargetDistance] = useState<number>(
             type="date"
             value={endDate}
             onChange={(_n, v) => setEndDate(v)}
-            className="mt-1"
           />
           {/* Race Selection */}
           <SelectField
@@ -238,7 +236,6 @@ const [targetDistance, setTargetDistance] = useState<number>(
             ]}
             value={raceType}
             onChange={(_n, v) => setRaceType(v as RaceType)}
-            className="mt-1"
           />
           <span className="text-sm mt-1">
             Target Distance: {targetDistance} {distanceUnit}
@@ -254,7 +251,6 @@ const [targetDistance, setTargetDistance] = useState<number>(
             ]}
             value={trainingLevel}
             onChange={(_n, v) => setTrainingLevel(v as TrainingLevel)}
-            className="mt-1"
           />
 
           <Button
@@ -275,7 +271,6 @@ const [targetDistance, setTargetDistance] = useState<number>(
                 max={5}
                 value={String(runsPerWeek)}
                 onChange={(_n, v) => setRunsPerWeek(Number(v))}
-                className="mt-1"
               />
               <Input
                 label="Cross Training Days"
@@ -287,7 +282,6 @@ const [targetDistance, setTargetDistance] = useState<number>(
                 onChange={(_n, v) =>
                   setCrossTrainingDays(Math.min(7 - runsPerWeek, Number(v)))
                 }
-                className="mt-1"
               />
               <div className="flex flex-col space-y-2">
                 <span className="font-semibold">Run Days</span>
@@ -302,7 +296,6 @@ const [targetDistance, setTargetDistance] = useState<number>(
                     ]}
                     value={runTypeDays[t] ?? ""}
                     onChange={(_n, v) => handleRunDayChange(t, v as DayOfWeek)}
-                    className="mt-1"
                   />
                 ))}
               </div>
@@ -323,7 +316,6 @@ const [targetDistance, setTargetDistance] = useState<number>(
               type="text"
               value={targetTotalTime}
               onChange={(_n, v) => setTargetTotalTime(v)}
-              className="mt-1"
             />
           ) : (
             <Input
@@ -332,12 +324,11 @@ const [targetDistance, setTargetDistance] = useState<number>(
               type="text"
               value={targetPace}
               onChange={(_n, v) => setTargetPace(v)}
-              className="mt-1"
             />
           )}
           <Button
             type="submit"
-            className="w-full bg-primary p-2 rounded hover:bg-primary hover:opacity-80 block w-auto text-foreground bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
+            className="w-full btn-link"
           >
             Generate Plan
           </Button>

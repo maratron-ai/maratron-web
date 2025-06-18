@@ -48,8 +48,8 @@ export default function PlanPage({ params }: PageProps) {
 
   if (status === "loading" || loading) {
     return (
-      <main className="w-full px-4 sm:px-6 lg:px-8 py-4">
-        <div className="flex justify-center py-4">
+      <main className="page-container py-4">
+        <div className="center-loading">
           <Spinner className="h-5 w-5" />
         </div>
       </main>
@@ -58,7 +58,7 @@ export default function PlanPage({ params }: PageProps) {
 
   if (!plan) {
     return (
-      <main className="w-full px-4 sm:px-6 lg:px-8 py-4">
+      <main className="page-container py-4">
         Plan not found.
       </main>
     );
@@ -75,7 +75,7 @@ export default function PlanPage({ params }: PageProps) {
   };
 
   return (
-    <main className="w-full px-4 sm:px-6 lg:px-8 py-4 space-y-4">
+    <main className="page-container py-4 space-y-4">
       <h1 className="text-2xl font-bold mb-4">{plan.name}</h1>
       {planData && (
         <RunningPlanDisplay

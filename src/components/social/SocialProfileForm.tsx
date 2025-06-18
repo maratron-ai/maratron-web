@@ -69,7 +69,7 @@ export default function SocialProfileForm({ onCreated }: Props) {
         <div className="flex justify-end">
           <Button 
             type="submit" 
-            className="block mx-auto w-auto text-foreground bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from">
+            className="btn-link">
             Create Profile
           </Button>
         </div>

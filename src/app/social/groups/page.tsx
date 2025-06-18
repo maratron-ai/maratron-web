@@ -29,20 +29,20 @@ export default function GroupsPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      <main className="container mx-auto px-4 max-w-screen-lg py-8 space-y-6">
+      <main className="max-container py-8 space-y-6">
         <div className="flex items-center justify-between">
           <h1 className="text-2xl font-bold">Run Groups</h1>
           <Button asChild>
             <Link
               href="/social/groups/new"
-              className="block w-auto text-foreground bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
+              className="btn-link"
             >
               Create Group
             </Link>
           </Button>
         </div>
         {loading ? (
-          <div className="flex justify-center py-4">
+          <div className="center-loading">
             <Spinner className="h-4 w-4" />
           </div>
         ) : (

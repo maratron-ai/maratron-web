@@ -55,9 +55,9 @@ p {
 }
 
 @layer base {
-  input,
-  select,
-  textarea {
+input,
+select,
+textarea {
     @apply border
            text-muted-foreground
            rounded-md
@@ -68,9 +68,10 @@ p {
            placeholder:text-gray-500    /* ← use a default gray */
            focus:outline-none
            focus:ring-2 focus:ring-accent-2
+           ring-offset-background focus:ring-offset-2
            disabled:cursor-not-allowed
            disabled:opacity-50;
-  }
+}
   select {
     @apply appearance-none;
   }
@@ -82,4 +83,33 @@ button {
 }
 button.avatar-btn {
   @apply bg-transparent hover:bg-transparent p-0 text-transparent rounded-none focus:outline-none focus:ring-0;
+}
+@layer components {
+  .page-container {
+    @apply w-full px-4 sm:px-6 lg:px-8;
+  }
+  .page-main {
+    @apply w-full px-4 sm:px-6 lg:px-8 py-6;
+  }
+  .page-main-space {
+    @apply w-full px-4 sm:px-6 lg:px-8 py-6 space-y-6;
+  }
+  .btn-link {
+    @apply block mx-auto w-auto text-foreground bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from;
+  }
+  .center-loading {
+    @apply flex justify-center py-4;
+  }
+  .hover-card {
+    @apply p-4 flex items-center gap-2 text-foreground hover:bg-primary hover:text-background transition-colors hover:border-muted-foreground;
+  }
+  .max-container {
+    @apply container mx-auto px-4 max-w-screen-lg;
+  }
+  .form-control {
+    @apply mt-1 h-10 w-full text-sm ring-offset-background focus:ring-offset-2;
+  }
+  .form-group {
+    @apply space-y-1;
+  }
 }

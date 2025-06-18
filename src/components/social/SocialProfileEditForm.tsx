@@ -62,7 +62,7 @@ export default function SocialProfileEditForm({ profile, onUpdated }: Props) {
           <Button
             type="submit"
             disabled={saving}
-            className="block mx-auto w-auto text-foreground bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
+            className="btn-link"
           >
             Save Changes
           </Button>

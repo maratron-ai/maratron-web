@@ -38,7 +38,7 @@ const CreateShoe: React.FC = () => {
 
   if (status === "loading")
     return (
-      <div className="flex justify-center py-4">
+      <div className="center-loading">
         <Spinner className="h-4 w-4" />
       </div>
     );

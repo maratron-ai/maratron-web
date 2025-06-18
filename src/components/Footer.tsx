@@ -8,7 +8,7 @@ export default function Footer() {
   const year = new Date().getFullYear();
   return (
     <footer className="bg-background border-t border-muted text-sm text-foreground relative z-10">
-      <div className="w-full px-4 sm:px-6 lg:px-8 py-12 space-y-8">
+      <div className="page-container py-12 space-y-8">
         <div className="flex justify-center mb-8">
           <Image
             src="/maratron-name-gradient-to-orange.svg"
