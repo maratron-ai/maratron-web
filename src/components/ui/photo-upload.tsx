@@ -2,7 +2,6 @@
 
 import { useRef } from "react";
 import { Button } from "@components/ui";
-import { Input } from "@components/ui/input";
 import { uploadImage } from "@lib/api/upload";
 
 interface PhotoUploadProps {
@@ -23,7 +22,7 @@ export default function PhotoUpload({ value, onChange, disabled, text }: PhotoUp
   };
 
   return (
-    <div className="flex items-center space-x-4">
+    <div className="flex items-center gap-4">
       {value && (
         // eslint-disable-next-line @next/next/no-img-element
         <img
@@ -36,14 +35,21 @@ export default function PhotoUpload({ value, onChange, disabled, text }: PhotoUp
         <Button
           type="button"
           variant="outline"
-          size="sm"
           onClick={() => inputRef.current?.click()}
           disabled={disabled}
-          className="block w-auto text-foreground bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
+          className="
+            inline-block max-w-xs h-auto
+            whitespace-normal break-words
+            px-4 py-2
+            text-foreground bg-transparent no-underline
+            transition-colors border-none
+            hover:text-background hover:no-underline hover:bg-brand-from
+            focus:ring-0 
+          "
         >
           {text || "Upload Photo"}
         </Button>
-        <Input
+        <input
           ref={inputRef}
           type="file"
           accept="image/*"
