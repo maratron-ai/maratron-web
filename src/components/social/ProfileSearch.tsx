@@ -43,7 +43,7 @@ export default function ProfileSearch({ limit }: Props) {
     e.preventDefault();
     try {
       const { data } = await axios.get<SocialProfile[]>(
-        `/api/social/search?q=${encodeURIComponent(query)}`
+        `/api/social/search?q=${encodeURIComponent(query)}${myProfileId ? `&profileId=${myProfileId}` : ""}`
       );
       setResults(data);
     } catch (err) {
@@ -59,7 +59,7 @@ export default function ProfileSearch({ limit }: Props) {
     const timeout = setTimeout(async () => {
       try {
         const { data } = await axios.get<SocialProfile[]>(
-          `/api/social/search?q=${encodeURIComponent(query)}`
+          `/api/social/search?q=${encodeURIComponent(query)}${myProfileId ? `&profileId=${myProfileId}` : ""}`
         );
         setResults(data);
       } catch (err) {
@@ -67,7 +67,7 @@ export default function ProfileSearch({ limit }: Props) {
       }
     }, 300);
     return () => clearTimeout(timeout);
-  }, [query]);
+  }, [query, myProfileId]);
 
 
   if (!session?.user?.id) return <p>Please log in to search.</p>;
