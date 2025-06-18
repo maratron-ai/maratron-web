@@ -16,6 +16,8 @@ export interface SocialProfile {
   followerCount?: number;
   followingCount?: number;
   postCount?: number;
+  /** Indicates whether the viewer follows this profile */
+  following?: boolean;
 }
 
 export interface RunPost {

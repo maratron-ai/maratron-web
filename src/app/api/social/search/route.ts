@@ -3,6 +3,7 @@ import { prisma } from "@lib/prisma";
 
 export async function GET(req: NextRequest) {
   const q = req.nextUrl.searchParams.get("q") || "";
+  const profileId = req.nextUrl.searchParams.get("profileId");
   if (!q) return NextResponse.json([]);
   const tokens = q.split(/\s+/).filter(Boolean);
   try {
@@ -21,6 +22,18 @@ export async function GET(req: NextRequest) {
       },
       take: 10,
     });
+
+    let followingSet: Set<string> | null = null;
+    if (profileId) {
+      const follows = await prisma.follow.findMany({
+        where: {
+          followerId: profileId,
+          followingId: { in: profiles.map((p) => p.id) },
+        },
+        select: { followingId: true },
+      });
+      followingSet = new Set(follows.map((f) => f.followingId));
+    }
 
     const results = await Promise.all(
       profiles.map(async (p) => {
@@ -43,9 +56,12 @@ export async function GET(req: NextRequest) {
           followerCount: p._count.followers,
           followingCount: p._count.following,
           postCount: p._count.posts,
+          following: followingSet ? followingSet.has(p.id) : undefined,
         };
       })
     );
+
+    results.sort((a, b) => Number(Boolean(b.following)) - Number(Boolean(a.following)));
 
     return NextResponse.json(results);
   } catch (err) {
