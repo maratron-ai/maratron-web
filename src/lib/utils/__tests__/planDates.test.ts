@@ -72,6 +72,41 @@ describe("assignDatesToPlan", () => {
     expect(result.startDate).toBe(base.toISOString());
   });
 
+  it("calculates end date from start date and weeks", () => {
+    const plan: RunningPlanData = {
+      weeks: 2,
+      schedule: [
+        { weekNumber: 1, weeklyMileage: 10, unit: "miles", runs: [] },
+        { weekNumber: 2, weeklyMileage: 10, unit: "miles", runs: [] },
+      ],
+    };
+    const start = new Date();
+    start.setUTCDate(start.getUTCDate() + 3); // later this week
+    const str = start.toISOString().slice(0, 10);
+    const result = assignDatesToPlan(plan, { startDate: str });
+    const expectedEnd = new Date(Date.UTC(start.getUTCFullYear(), start.getUTCMonth(), start.getUTCDate()));
+    expectedEnd.setUTCDate(expectedEnd.getUTCDate() + plan.weeks * 7);
+    expect(result.endDate).toBe(expectedEnd.toISOString());
+  });
+
+  it("computes start date when only end date provided", () => {
+    const plan: RunningPlanData = {
+      weeks: 3,
+      schedule: [
+        { weekNumber: 1, weeklyMileage: 10, unit: "miles", runs: [] },
+        { weekNumber: 2, weeklyMileage: 10, unit: "miles", runs: [] },
+        { weekNumber: 3, weeklyMileage: 10, unit: "miles", runs: [] },
+      ],
+    };
+    const end = new Date();
+    end.setUTCDate(end.getUTCDate() + 30);
+    const str = end.toISOString().slice(0, 10);
+    const result = assignDatesToPlan(plan, { endDate: str });
+    const expectedStart = new Date(Date.UTC(end.getUTCFullYear(), end.getUTCMonth(), end.getUTCDate()));
+    expectedStart.setUTCDate(expectedStart.getUTCDate() - plan.weeks * 7);
+    expect(result.startDate).toBe(expectedStart.toISOString());
+  });
+
   it("clears all dates from the plan", () => {
     const data: RunningPlanData = {
       weeks: 1,
