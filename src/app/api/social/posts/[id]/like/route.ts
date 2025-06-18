@@ -19,7 +19,7 @@ export async function POST(req: NextRequest, ctx: { params: { id: string } }) {
 
 export async function DELETE(req: NextRequest, ctx: { params: { id: string } }) {
   const { socialProfileId } = await req.json();
-  const { id } = ctx.params;
+  const { id } = await ctx.params;
   try {
     await prisma.like.delete({
       where: { postId_socialProfileId: { postId: id, socialProfileId } },

@@ -58,7 +58,7 @@ export default function CommentSection({
   };
 
   return (
-    <div className="">
+    <div className="space-y-2">
       <Button
         size="sm"
         variant={open ? "secondary" : "outline"}

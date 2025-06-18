@@ -118,7 +118,7 @@ export default async function UserProfilePage({ params }: Props) {
                 // eslint-disable-next-line @next/next/no-img-element
                 <img src={post.photoUrl} alt="Run photo" className="mt-2 rounded-md" />
               )}
-              <div className="flex gap-2 mt-2">
+              <div className="flex gap-2 mt-2 items-start">
                 <LikeButton
                   postId={post.id}
                   initialLiked={false}
