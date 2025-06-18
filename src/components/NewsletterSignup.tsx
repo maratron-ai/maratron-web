@@ -30,16 +30,22 @@ export default function NewsletterSignup() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex space-x-2">
+    <form onSubmit={handleSubmit} className="flex items-center space-x-2">
       <Input
         type="email"
         placeholder="Your email"
         value={email}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+          setEmail(e.target.value)
+        }
         className="max-w-xs"
         required
       />
-      <Button type="submit" size="sm">
+      <Button
+        type="submit"
+        size="sm"
+        className="block w-auto text-foreground bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
+      >
         Subscribe
       </Button>
       {sent && <p className="text-primary ml-2">Thanks!</p>}

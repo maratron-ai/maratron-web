@@ -23,6 +23,8 @@ export default function Footer() {
             <div className="flex space-x-4 pt-2">
               <a
                 href="https://twitter.com"
+                target="_blank"
+                rel="noopener noreferrer"
                 aria-label="Twitter"
                 className="hover:text-primary"
               >
@@ -30,6 +32,8 @@ export default function Footer() {
               </a>
               <a
                 href="https://www.facebook.com"
+                target="_blank"
+                rel="noopener noreferrer"
                 aria-label="Facebook"
                 className="hover:text-primary"
               >
@@ -37,6 +41,8 @@ export default function Footer() {
               </a>
               <a
                 href="https://www.instagram.com/maratron.ai/"
+                target="_blank"
+                rel="noopener noreferrer"
                 aria-label="Instagram"
                 className="hover:text-primary"
               >

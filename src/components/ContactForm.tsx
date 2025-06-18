@@ -39,18 +39,24 @@ export default function ContactForm() {
         type="email"
         placeholder="Your email"
         value={email}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+          setEmail(e.target.value)
+        }
         required
       />
       <Textarea
         placeholder="Message"
         value={message}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setMessage(e.target.value)}
+        onChange={(e) => setMessage(e.target.value)}
         rows={3}
         required
       />
       <div className="flex justify-end">
-        <Button type="submit" size="sm">
+        <Button
+          type="submit"
+          size="sm"
+          className="block w-auto text-foreground bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
+        >
           Send
         </Button>
       </div>

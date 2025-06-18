@@ -351,7 +351,7 @@ export default function Landing() {
                 <Button
                   variant="outline"
                   size="lg"
-                  className="border-foreground text-foreground hover:bg-muted dark:border-foreground dark:text-foreground dark:hover:bg-background dark:hover:opacity-70 text-lg px-8 py-6"
+                  className="text-lg px-8 py-6"
                 >
                   <PlayCircle className="mr-2 h-5 w-5" />
                   See How It Works
