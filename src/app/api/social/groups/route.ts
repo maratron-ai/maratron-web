@@ -50,10 +50,12 @@ export async function POST(req: NextRequest) {
     const group = await prisma.runGroup.create({
       data: { ...groupInput, password: hashed },
     });
-    // add creator as member
-    await prisma.runGroupMember.create({
-      data: { groupId: group.id, socialProfileId: group.ownerId },
-    });
+    // ensure creator is a member for private groups
+    if (group.private) {
+      await prisma.runGroupMember.create({
+        data: { groupId: group.id, socialProfileId: group.ownerId },
+      });
+    }
     const { password: _password, ...groupWithoutPassword } = group;
     void _password;
     return NextResponse.json(groupWithoutPassword, { status: 201 });
