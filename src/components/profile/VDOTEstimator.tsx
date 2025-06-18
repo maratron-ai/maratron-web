@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Button, Input, Label } from "@components/ui";
+import { SelectField } from "@components/ui/FormField";
 import { calculateVDOTJackDaniels } from "@utils/running/jackDaniels";
 import { parseDuration } from "@utils/time";
 import { updateUser } from "@lib/api/user/user";
@@ -43,15 +44,17 @@ export default function VDOTEstimator({ userId, onComplete }: Props) {
     <form onSubmit={handleSubmit} className="space-y-4">
       <div className="space-y-1">
         <Label htmlFor="distance">Race Distance</Label>
-        <select
-          id="distance"
+        <SelectField
+          name="distance"
+          label=""
           value={distance}
-          onChange={(e) => setDistance(e.target.value as "5k" | "10k")}
+          onChange={(_, value) => setDistance(value as "5k" | "10k")}
+          options={[
+            { value: "5k", label: "5K" },
+            { value: "10k", label: "10K" },
+          ]}
           className="w-full h-10 rounded-md border border-accent-2 bg-accent-2 opacity-80 px-2 py-1 text-sm text-foreground ring-offset-background focus:outline-none focus:ring-2 focus:ring-accent-2 focus:ring-offset-2"
-        >
-          <option value="5k">5K</option>
-          <option value="10k">10K</option>
-        </select>
+        />
       </div>
       <div className="space-y-1">
         <Label htmlFor="time">Race Time (mm:ss or hh:mm:ss)</Label>

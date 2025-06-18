@@ -2,6 +2,7 @@
 
 import { useRef } from "react";
 import { Button } from "@components/ui";
+import { Input } from "@components/ui/input";
 import { uploadImage } from "@lib/api/upload";
 
 interface PhotoUploadProps {
@@ -42,7 +43,7 @@ export default function PhotoUpload({ value, onChange, disabled, text }: PhotoUp
         >
           {text || "Upload Photo"}
         </Button>
-        <input
+        <Input
           ref={inputRef}
           type="file"
           accept="image/*"

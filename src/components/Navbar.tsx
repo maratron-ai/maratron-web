@@ -8,6 +8,7 @@ import { usePathname } from "next/navigation";
 import { Menu } from "lucide-react";
 import DefaultAvatar from "@components/DefaultAvatar";
 import { Sheet, SheetContent, SheetTrigger } from "@components/ui";
+import { Button } from "@components/ui/button";
 // import ModeToggle from "@components/ModeToggle";
 
 export default function Navbar() {
@@ -114,11 +115,11 @@ export default function Navbar() {
             <>
               {/* User Avatar + Dropdown */}
               <div className="relative">
-                <button
+                <Button
                   onClick={() => setDesktopMenuOpen((o) => !o)}
                   aria-label="Toggle user menu"
                   aria-expanded={desktopMenuOpen}
-                  className="focus:outline-none bg-transparent p-0 hover:bg-transparent focus:ring-0"
+                  className="focus:outline-none bg-transparent p-0 hover:bg-transparent focus:ring-0 block w-auto text-foreground bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
                 >
                   {session.user?.avatarUrl ? (
                     <Image
@@ -135,7 +136,7 @@ export default function Navbar() {
                       className="border border-brand-to bg-brand-from"
                     />
                   )}
-                </button>
+                </Button>
                 {desktopMenuOpen && (
                   <div className="absolute right-0 mt-2 w-40 bg-background border border-accent rounded shadow-md z-50 flex flex-col items-center">
                     <Link
@@ -150,23 +151,23 @@ export default function Navbar() {
                     >
                       Settings
                     </Link>
-                    <button
+                    <Button
                       onClick={() => signOut()}
                       className="block w-full text-center py-2 bg-transparent justify-center text-foreground no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
                     >
                       Logout
-                    </button>
+                    </Button>
                   </div>
                 )}
               </div>
             </>
           ) : (
-            <button
+            <Button
               onClick={() => signIn()}
-              className="text-foreground no-underline transition-colors bg-transparent hover:text-background hover:no-underline hover:bg-brand-from"
+              className="text-foreground no-underline transition-colors bg-transparent hover:text-background hover:no-underline hover:bg-brand-from block w-auto"
             >
               Sign In
-            </button>
+            </Button>
           )}
           {/* <ModeToggle /> */}
         </div>
@@ -175,11 +176,11 @@ export default function Navbar() {
         <div className="md:hidden flex items-center">
           {/* Avatar (mobile) */}
           {status !== "loading" && session?.user && (
-            <button
+            <Button
               onClick={() => setDesktopMenuOpen((o) => !o)}
               aria-label="Toggle user menu"
               aria-expanded={desktopMenuOpen}
-              className="focus:outline-none bg-transparent p-4 hover:bg-transparent focus:ring-0"
+              className="focus:outline-none bg-transparent p-4 hover:bg-transparent focus:ring-0 block w-auto text-foreground bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
             >
               {session.user?.avatarUrl ? (
                 <Image
@@ -196,18 +197,18 @@ export default function Navbar() {
                   className="border border-brand-to bg-brand-from"
                 />
               )}
-            </button>
+            </Button>
           )}
 
           {/* Hamburger icon (mobile) */}
           <Sheet>
             <SheetTrigger asChild>
-              <button
+              <Button
                 aria-label="Toggle mobile menu"
-                className="p-2 focus:outline-none bg-transparent hover:bg-transparent focus:ring-0 hover:text-primary transition-colors"
+                className="p-2 focus:outline-none bg-transparent hover:bg-transparent focus:ring-0 hover:text-primary transition-colors block w-auto text-foreground bg-transparent no-underline hover:text-background hover:no-underline hover:bg-brand-from"
               >
                 <Menu className="w-6 h-6" />
-              </button>
+              </Button>
             </SheetTrigger>
             <SheetContent side="left" className="p-6 space-y-4 w-1/2">
               {status !== "loading" && session?.user ? (
@@ -243,20 +244,20 @@ export default function Navbar() {
                   >
                     Settings
                   </Link>
-                  <button
+                  <Button
                     onClick={() => signOut()}
                     className="block mx-auto w-auto text-foreground bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from border-none"
                   >
                     Logout
-                  </button>
+                  </Button>
                 </>
               ) : (
-                <button
+                <Button
                   onClick={() => signIn()}
-                  className="text-foreground no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
+                  className="text-foreground no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from block w-auto"
                 >
                   Sign In
-                </button>
+                </Button>
               )}
               {/* <ModeToggle /> */}
             </SheetContent>

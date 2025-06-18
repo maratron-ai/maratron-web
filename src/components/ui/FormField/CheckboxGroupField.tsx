@@ -2,6 +2,7 @@
 
 import React from "react";
 import { Label } from "@components/ui";
+import { Input } from "@components/ui/input";
 
 export interface CheckboxGroupFieldProps
   extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "onChange"> {
@@ -34,7 +35,7 @@ const CheckboxGroupField: React.FC<CheckboxGroupFieldProps> = ({
         <div className="flex flex-wrap gap-4">
           {options.map((opt) => (
             <label key={opt.value} className="inline-flex items-center">
-              <input
+              <Input
                 id={opt.value}
                 name={name}
                 type="checkbox"
