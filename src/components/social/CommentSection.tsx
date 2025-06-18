@@ -5,6 +5,7 @@ import { listComments, addComment } from "@lib/api/social";
 import type { Comment } from "@maratypes/social";
 import { Button, Input, Spinner } from "@components/ui";
 import Image from "next/image";
+import Link from "next/link";
 import { MessageCircle } from "lucide-react";
 
 interface Props {
@@ -93,9 +94,16 @@ export default function CommentSection({
                   className="w-6 h-6 rounded-full object-cover border border-brand-to bg-brand-from"
                 />
                 <p>
-                  <span className="font-semibold">
-                    {c.socialProfile?.username}
-                  </span>{" "}
+                  {c.socialProfile?.username ? (
+                    <Link
+                      href={`/u/${c.socialProfile.username}`}
+                      className="font-semibold hover:underline"
+                    >
+                      {c.socialProfile.username}
+                    </Link>
+                  ) : (
+                    <span className="font-semibold">{c.socialProfile?.username}</span>
+                  )}{" "}
                   {c.text}
                 </p>
               </div>
