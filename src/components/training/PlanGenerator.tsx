@@ -6,6 +6,9 @@ import type { DayOfWeek } from "@maratypes/basics";
 import type { PlannedRun } from "@maratypes/runningPlan";
 import ToggleSwitch from "@components/ToggleSwitch";
 import { Spinner } from "@components/ui";
+import { Input } from "@components/ui/input";
+import { SelectField } from "@components/ui/FormField";
+import { Button } from "@components/ui/button";
 import RunningPlanDisplay from "./RunningPlanDisplay";
 import {
   generate5kPlan,
@@ -209,7 +212,7 @@ const [targetDistance, setTargetDistance] = useState<number>(
             <label htmlFor="weeks" className="mb-1">
               Weeks:
             </label>
-            <input
+            <Input
               id="weeks"
               type="number"
               min={8}
@@ -223,7 +226,7 @@ const [targetDistance, setTargetDistance] = useState<number>(
             <label htmlFor="raceDate" className="mb-1">
               Race Date:
             </label>
-            <input
+            <Input
               id="raceDate"
               type="date"
               value={endDate}
@@ -236,17 +239,19 @@ const [targetDistance, setTargetDistance] = useState<number>(
             <label htmlFor="raceType" className="mb-1">
               Race Distance:
             </label>
-            <select
-              id="raceType"
+            <SelectField
+              label="Race Distance:"
+              name="raceType"
               value={raceType}
-              onChange={(e) => setRaceType(e.target.value as RaceType)}
+              onChange={(_, value) => setRaceType(value as RaceType)}
+              options={[
+                { value: "5k", label: "5K" },
+                { value: "10k", label: "10K" },
+                { value: "half", label: "Half Marathon" },
+                { value: "full", label: "Marathon" },
+              ]}
               className="h-10 rounded-md border border-accent-2 bg-accent-2 opacity-80 p-2 text-foreground ring-offset-background focus:outline-none focus:ring-2 focus:ring-accent-2 focus:ring-offset-2"
-            >
-              <option value="5k">5K</option>
-              <option value="10k">10K</option>
-              <option value="half">Half Marathon</option>
-              <option value="full">Marathon</option>
-            </select>
+            />
             <span className="text-sm mt-1">
               Target Distance: {targetDistance} {distanceUnit}
             </span>
@@ -256,27 +261,29 @@ const [targetDistance, setTargetDistance] = useState<number>(
             <label htmlFor="trainingLevel" className="mb-1">
               Training Level:
             </label>
-            <select
-              id="trainingLevel"
+            <SelectField
+              label="Training Level:"
+              name="trainingLevel"
               value={trainingLevel}
-              onChange={(e) =>
-                setTrainingLevel(e.target.value as TrainingLevel)
+              onChange={(_, value) =>
+                setTrainingLevel(value as TrainingLevel)
               }
+              options={[
+                { value: "beginner", label: "Beginner" },
+                { value: "intermediate", label: "Intermediate" },
+                { value: "advanced", label: "Advanced" },
+              ]}
               className="h-10 rounded-md border border-accent-2 bg-accent-2 opacity-80 p-2 text-foreground ring-offset-background focus:outline-none focus:ring-2 focus:ring-accent-2 focus:ring-offset-2"
-            >
-              <option value="beginner">Beginner</option>
-              <option value="intermediate">Intermediate</option>
-              <option value="advanced">Advanced</option>
-            </select>
+            />
           </div>
 
-          <button
+          <Button
             type="button"
             onClick={() => setShowAdvanced((p) => !p)}
-            className="text-primary underline"
+            className="text-primary underline block w-auto bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
           >
             {showAdvanced ? "Hide Advanced" : "Show Advanced"}
-          </button>
+          </Button>
 
           {showAdvanced && (
             <div className="border rounded p-4 space-y-4">
@@ -285,7 +292,7 @@ const [targetDistance, setTargetDistance] = useState<number>(
                 <label htmlFor="runsPerWeek" className="mb-1">
                   Runs per Week:
                 </label>
-                <input
+                <Input
                   id="runsPerWeek"
                   type="number"
                   min={2}
@@ -300,7 +307,7 @@ const [targetDistance, setTargetDistance] = useState<number>(
                 <label htmlFor="crossDays" className="mb-1">
                   Cross Training Days:
                 </label>
-                <input
+                <Input
                   id="crossDays"
                   type="number"
                   min={0}
@@ -320,23 +327,19 @@ const [targetDistance, setTargetDistance] = useState<number>(
                 {runTypes.map((t) => (
                   <label key={t} className="flex items-center gap-2">
                     <span className="capitalize w-20">{t}:</span>
-                    <select
+                    <SelectField
+                      name={t}
+                      label=""
                       value={runTypeDays[t] ?? ""}
-                      onChange={(e) =>
-                        handleRunDayChange(
-                          t,
-                          e.target.value as DayOfWeek | ""
-                        )
+                      onChange={(_, value) =>
+                        handleRunDayChange(t, value as DayOfWeek | "")
                       }
+                      options={[
+                        { value: "", label: "--" },
+                        ...days.map((d) => ({ value: d, label: d })),
+                      ]}
                       className="h-8 rounded-md border border-accent-2 bg-accent-2 opacity-80 p-1 text-foreground ring-offset-background focus:outline-none focus:ring-2 focus:ring-accent-2 focus:ring-offset-2"
-                    >
-                      <option value="">--</option>
-                      {days.map((d) => (
-                        <option key={d} value={d}>
-                          {d}
-                        </option>
-                      ))}
-                    </select>
+                    />
                   </label>
                 ))}
               </div>
@@ -360,7 +363,7 @@ const [targetDistance, setTargetDistance] = useState<number>(
               <label htmlFor="targetTotalTime" className="mb-1">
                 Target Total Time (hh:mm:ss or mm:ss):
               </label>
-              <input
+              <Input
                 id="targetTotalTime"
                 type="text"
                 value={targetTotalTime}
@@ -373,7 +376,7 @@ const [targetDistance, setTargetDistance] = useState<number>(
               <label htmlFor="targetPace" className="mb-1">
                 Target Pace (mm:ss):
               </label>
-              <input
+              <Input
                 id="targetPace"
                 type="text"
                 value={targetPace}
@@ -382,12 +385,12 @@ const [targetDistance, setTargetDistance] = useState<number>(
               />
             </div>
           )}
-          <button
+          <Button
             type="submit"
-            className="w-full bg-primary text-foreground p-2 rounded hover:bg-primary hover:opacity-80"
+            className="w-full bg-primary p-2 rounded hover:bg-primary hover:opacity-80 block w-auto text-foreground bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
           >
             Generate Plan
-          </button>
+          </Button>
         </form>
       )}
       {planData && (
@@ -402,7 +405,7 @@ const [targetDistance, setTargetDistance] = useState<number>(
           />
           <div className="mt-4">
             <label className="flex items-center space-x-2">
-              <input
+              <Input
                 type="checkbox"
                 checked={showJson}
                 onChange={(e) => setShowJson(e.target.checked)}
@@ -410,7 +413,7 @@ const [targetDistance, setTargetDistance] = useState<number>(
               />
               <span>Show JSON</span>
               {showJson && (
-                <button
+                <Button
                   type="button"
                   onClick={() => {
                     navigator.clipboard.writeText(
@@ -418,10 +421,10 @@ const [targetDistance, setTargetDistance] = useState<number>(
                     );
                     alert("JSON copied to clipboard!");
                   }}
-                  className="ml-2 text-primary underline"
+                  className="ml-2 text-primary underline block w-auto bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
                 >
                   Copy JSON
-                </button>
+                </Button>
               )}
             </label>
             {showJson && (

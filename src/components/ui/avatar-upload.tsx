@@ -2,6 +2,7 @@
 
 import { useRef } from "react";
 import { Avatar, AvatarImage, AvatarFallback, Button } from "@components/ui";
+import { Input } from "@components/ui/input";
 import { uploadAvatar } from "@lib/api/user/user";
 import DefaultAvatar from "@components/DefaultAvatar";
 
@@ -42,7 +43,7 @@ export default function AvatarUpload({ value, onChange, disabled }: AvatarUpload
         >
           Upload
         </Button>
-        <input
+        <Input
           ref={inputRef}
           type="file"
           accept="image/*"

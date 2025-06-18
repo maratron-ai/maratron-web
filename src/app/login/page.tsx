@@ -4,6 +4,8 @@ import React, { useState, FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { signIn, useSession } from "next-auth/react";
 import { Spinner } from "@components/ui";
+import { Input } from "@components/ui/input";
+import { Button } from "@components/ui/button";
 
 const LoginPage: React.FC = () => {
   const { data: session, status } = useSession();
@@ -65,12 +67,12 @@ const LoginPage: React.FC = () => {
       <main className="w-full px-4 sm:px-6 lg:px-8 py-6 space-y-6">
         <h1 className="text-3xl font-bold text-center">You are logged in!</h1>
         <div className="flex justify-center">
-          <button
+          <Button
             onClick={() => router.push("/home")}
-            className="bg-primary text-foreground px-4 py-2 rounded-md hover:bg-primary hover:opacity-80 transition-colors"
+            className="bg-primary px-4 py-2 rounded-md hover:bg-primary hover:opacity-80 block w-auto text-foreground bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
           >
             Go Home
-          </button>
+          </Button>
         </div>
       </main>
     );
@@ -83,13 +85,13 @@ const LoginPage: React.FC = () => {
         <h1 className="text-3xl font-bold text-center">Login</h1>
         {error && <p className="text-brand-orange-dark text-center">{error}</p>}
         <div className="flex justify-center">
-          <button
+          <Button
             type="button"
             onClick={jacksonLogin}
-            className="border px-4 py-2 rounded-md hover:bg-accent hover:opacity-20 transition"
+            className="border px-4 py-2 rounded-md hover:bg-accent hover:opacity-20 transition block w-auto text-foreground bg-transparent no-underline hover:text-background hover:no-underline hover:bg-brand-from"
           >
             Jackson login
-          </button>
+          </Button>
         </div>
         <form
           onSubmit={handleLogin}
@@ -99,7 +101,7 @@ const LoginPage: React.FC = () => {
             <label htmlFor="email" className="block text-foreground mb-2">
               Email:
             </label>
-            <input
+            <Input
               id="email"
               type="email"
               value={email}
@@ -112,7 +114,7 @@ const LoginPage: React.FC = () => {
             <label htmlFor="password" className="block text-foreground mb-2">
               Password:
             </label>
-            <input
+            <Input
               id="password"
               type="password"
               value={password}
@@ -121,22 +123,22 @@ const LoginPage: React.FC = () => {
               className="w-full px-3 py-2 border rounded focus:outline-none focus:ring"
             />
           </div>
-          <button
+          <Button
             type="submit"
             className="block mx-auto w-auto text-foreground bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
           >
             Login
-          </button>
+          </Button>
           <div className="text-center my-4">
             <span className="text-foreground opacity-50">or</span>
           </div>
-          <button
+          <Button
             type="button"
             onClick={() => router.push("/signup")}
             className="block mx-auto w-auto text-foreground bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
           >
             Not registered? Sign up
-          </button>
+          </Button>
         </form>
       </main>
     </div>
