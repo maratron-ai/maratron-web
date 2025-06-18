@@ -42,7 +42,7 @@ export default function RecentRuns() {
 
   if (loading)
     return (
-      <div className="flex justify-center py-4">
+      <div className="center-loading">
         <Spinner className="h-4 w-4" />
       </div>
     );
@@ -55,7 +55,7 @@ export default function RecentRuns() {
         {runs.map((run) => (
           <li
             key={run.id}
-            className="border p-2 rounded cursor-pointer p-4 flex items-center gap-2 text-foreground hover:bg-primary hover:text-background transition-colors hover:border-muted-foreground"
+            className="border p-2 rounded cursor-pointer hover-card"
             onClick={() => setSelectedRun(run)}
           >
             <span className="font-semibold">{run.name || getRunName(run)}</span>

@@ -24,8 +24,8 @@ const SelectField: React.FC<SelectFieldProps> = ({
   ...selectProps
 }) => {
   return (
-    <div className={`space-y-1 ${className}`}>
-      <Label htmlFor={name} className="block font-medium">
+    <div className={`form-group ${className}`}>
+      <Label htmlFor={name}>
         {label}
         {selectProps.required && <span className="text-brand-orange-dark ml-1">*</span>}
       </Label>
@@ -36,7 +36,7 @@ const SelectField: React.FC<SelectFieldProps> = ({
           name={name}
           value={value}
           onChange={(e) => onChange(name, e.target.value)}
-          className="mt-1 h-10 w-full rounded-md border border-accent-2 bg-accent-2 opacity-80 px-2 py-1 text-sm text-foreground ring-offset-background focus:outline-none focus:ring-2 focus:ring-accent-2 focus:ring-offset-2"
+          className="form-control"
           {...selectProps}
         >
           <option value="" disabled>

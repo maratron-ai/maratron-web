@@ -32,7 +32,7 @@ const AuthTest: React.FC = () => {
 
   if (status === "loading") {
     return (
-      <div className="flex justify-center py-4">
+      <div className="center-loading">
         <Spinner className="h-4 w-4" />
       </div>
     );
@@ -46,7 +46,7 @@ const AuthTest: React.FC = () => {
           <p>Email: {session.user.email}</p>
           <Button
             onClick={handleLogout}
-            className="block w-auto text-foreground bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
+            className="btn-link"
           >
             Logout
           </Button>
@@ -77,7 +77,7 @@ const AuthTest: React.FC = () => {
             <Button
               type="submit"
               style={{ marginTop: "1rem" }}
-              className="block w-auto text-foreground bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
+              className="btn-link"
             >
               Login
             </Button>

@@ -62,8 +62,8 @@ export default function UserPage() {
   // Not authenticated
   if (status === "loading") {
     return (
-      <main className="w-full px-4 sm:px-6 lg:px-8 py-6">
-        <div className="flex justify-center py-4">
+      <main className="page-main">
+        <div className="center-loading">
           <Spinner className="h-4 w-4" />
         </div>
       </main>
@@ -71,7 +71,7 @@ export default function UserPage() {
   }
   if (status !== "authenticated" || !session.user) {
     return (
-      <main className="w-full px-4 sm:px-6 lg:px-8 py-6">
+      <main className="page-main">
         <p>
           Please{" "}
           <a href="/login" className="underline text-primary">
@@ -86,8 +86,8 @@ export default function UserPage() {
   // Profile loading or error
   if (loading) {
     return (
-      <main className="w-full px-4 sm:px-6 lg:px-8 py-6">
-        <div className="flex justify-center py-4">
+      <main className="page-main">
+        <div className="center-loading">
           <Spinner className="h-4 w-4" />
         </div>
       </main>
@@ -95,7 +95,7 @@ export default function UserPage() {
   }
   if (error) {
     return (
-      <main className="w-full px-4 sm:px-6 lg:px-8 py-6 text-brand-orange-dark">
+      <main className="page-main text-brand-orange-dark">
         {error}
       </main>
     );
@@ -103,7 +103,7 @@ export default function UserPage() {
 
   // Render the form
   return (
-    <main className="w-full px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+    <main className="page-main-space">
       <div className="flex justify-end mb-6">
         {/* <button
           onClick={() => signOut()}

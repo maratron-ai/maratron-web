@@ -23,8 +23,8 @@ const TextField: React.FC<TextFieldProps> = ({
   ...inputProps
 }) => {
   return (
-    <div className={`space-y-1 ${className}`}>
-      <Label htmlFor={name} className="block font-medium">
+    <div className={`form-group ${className}`}>
+      <Label htmlFor={name}>
         {label}
         {inputProps.required && <span className="text-brand-orange-dark ml-1">*</span>}
       </Label>

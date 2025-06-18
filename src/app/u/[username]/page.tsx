@@ -93,7 +93,7 @@ export default async function UserProfilePage({ params }: Props) {
 
   return (
     <div className="min-h-screen bg-background">
-      <main className="container mx-auto px-4 max-w-screen-lg py-8 flex flex-col gap-8">
+      <main className="max-container py-8 flex flex-col gap-8">
         <div className="w-full flex flex-col items-stretch space-y-4">
           <ProfileInfoCard
             profile={profile}

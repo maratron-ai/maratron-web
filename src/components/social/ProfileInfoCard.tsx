@@ -70,7 +70,7 @@ export default function ProfileInfoCard({ profile, user, isSelf }: Props) {
         <Button
           asChild
           size="sm"
-          className="block mx-auto w-auto text-foreground bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
+          className="btn-link"
         >
           <Link href="/social/profile/edit">Edit</Link>
         </Button>

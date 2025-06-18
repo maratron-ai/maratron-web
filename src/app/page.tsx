@@ -20,7 +20,7 @@ export default function Landing() {
       {/* Hero Section */}
       <section className="relative overflow-hidden">
         <div className="absolute inset-0 bg-background backdrop-blur-sm z-0"></div>
-        <div className="w-full px-4 sm:px-6 lg:px-8 py-20 relative">
+        <div className="page-container py-20 relative">
           <div className="w-full text-center">
             <Image
               src="/maratron-name-gradient-purple.svg"
@@ -88,7 +88,7 @@ export default function Landing() {
 
       {/* Features Section */}
       <section id="features" className="py-20">
-        <div className="w-full px-4 sm:px-6 lg:px-8">
+        <div className="page-container">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
               Training That Actually{" "}
@@ -189,7 +189,7 @@ export default function Landing() {
         id="science"
         className="py-20 bg-background dark:bg-background backdrop-blur"
       >
-        <div className="w-full px-4 sm:px-6 lg:px-8">
+        <div className="page-container">
           <div className="w-full text-center">
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
               Backed by Science, Powered by{" "}
@@ -238,7 +238,7 @@ export default function Landing() {
 
       {/* Testimonials Section */}
       <section id="testimonials" className="py-20">
-        <div className="w-full px-4 sm:px-6 lg:px-8">
+        <div className="page-container">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
               Real Runners, Real{" "}
@@ -323,7 +323,7 @@ export default function Landing() {
 
       {/* Final CTA Section */}
       <section className="py-20 bg-background dark:bg-background backdrop-blur-sm text-foreground relative overflow-hidden">
-        <div className="w-full px-4 sm:px-6 lg:px-8 relative">
+        <div className="page-container relative">
           <div className="w-full text-center">
             <h2 className="text-4xl md:text-6xl font-bold mb-6">
               Ready to Rewrite Your Running Story?

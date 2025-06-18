@@ -53,7 +53,7 @@ const PaceCalculator: React.FC = () => {
 
       <Button
         onClick={handleCalculate}
-        className="block w-auto text-foreground bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
+        className="btn-link"
       >
         Calculate Predictions
       </Button>

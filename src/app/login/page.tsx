@@ -53,8 +53,8 @@ const LoginPage: React.FC = () => {
   // Show loading state while NextAuth checks session (optional)
   if (status === "loading") {
     return (
-      <main className="w-full px-4 sm:px-6 lg:px-8 py-6">
-        <div className="flex justify-center py-4">
+      <main className="page-main">
+        <div className="center-loading">
           <Spinner className="h-4 w-4" />
         </div>
       </main>
@@ -64,12 +64,12 @@ const LoginPage: React.FC = () => {
   // If already logged in
   if (session?.user) {
     return (
-      <main className="w-full px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+      <main className="page-main-space">
         <h1 className="text-3xl font-bold text-center">You are logged in!</h1>
         <div className="flex justify-center">
           <Button
             onClick={() => router.push("/home")}
-            className="bg-primary px-4 py-2 rounded-md hover:bg-primary hover:opacity-80 block w-auto text-foreground bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
+            className="bg-primary px-4 py-2 rounded-md hover:bg-primary hover:opacity-80 btn-link"
           >
             Go Home
           </Button>
@@ -81,7 +81,7 @@ const LoginPage: React.FC = () => {
   // If not logged in, show the login form
   return (
     <div className="min-h-screen flex flex-col">
-      <main className="flex-grow w-full px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+      <main className="flex-grow page-main-space">
         <h1 className="text-3xl font-bold text-center">Login</h1>
         {error && <p className="text-brand-orange-dark text-center">{error}</p>}
         <div className="flex justify-center">
@@ -125,7 +125,7 @@ const LoginPage: React.FC = () => {
           </div>
           <Button
             type="submit"
-            className="block mx-auto w-auto text-foreground bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
+            className="btn-link"
           >
             Login
           </Button>
@@ -135,7 +135,7 @@ const LoginPage: React.FC = () => {
           <Button
             type="button"
             onClick={() => router.push("/signup")}
-            className="block mx-auto w-auto text-foreground bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
+            className="btn-link"
           >
             Not registered? Sign up
           </Button>

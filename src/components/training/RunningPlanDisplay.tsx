@@ -89,7 +89,7 @@ const RunningPlanDisplay: React.FC<RunningPlanDisplayProps> = ({
     }
   };
   return (
-    <div className="w-full px-4 sm:px-6 lg:px-8 py-4">
+    <div className="page-container py-4">
       {showPlanMeta ? (
         <>
           {/* <h2 className="text-2xl font-bold text-center mb-4">Running Plan:</h2> */}
@@ -121,14 +121,14 @@ const RunningPlanDisplay: React.FC<RunningPlanDisplayProps> = ({
             <Button
               type="button"
               onClick={handleSave}
-              className="bg-muted-foreground text-underline px-4 py-2 rounded hover:bg-brand-to hover:text-background block w-auto text-foreground bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
+              className="bg-muted-foreground text-underline px-4 py-2 rounded hover:bg-brand-to hover:text-background btn-link"
             >
               Save Plan
             </Button>
             <Button
               type="button"
               onClick={() => setIsEditable((e) => !e)}
-              className="bg-muted-foreground text-underline px-4 py-2 rounded hover:bg-brand-to hover:text-background block w-auto text-foreground bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
+              className="bg-muted-foreground text-underline px-4 py-2 rounded hover:bg-brand-to hover:text-background btn-link"
             >
               {isEditable ? "Done" : "Edit"}
             </Button>
@@ -272,7 +272,7 @@ const CollapsibleWeek: React.FC<CollapsibleWeekProps> = ({
                           onChange={(_, value) =>
                             updateRun(weekIndex, index, "type", value)
                           }
-                          className="h-8 rounded-md border border-accent-2 bg-accent-2 opacity-80 p-1 text-foreground ring-offset-background focus:outline-none focus:ring-2 focus:ring-accent-2 focus:ring-offset-2"
+                          className="form-control h-8 p-1"
                         />
                       </label>
                       <label className="block">
@@ -289,7 +289,7 @@ const CollapsibleWeek: React.FC<CollapsibleWeekProps> = ({
                               Math.round(Number(e.target.value) * 10) / 10
                             )
                           }
-                          className="border p-1 rounded text-foreground"
+                          className="p-1"
                         />
                         <span className="ml-1">{run.unit}</span>
                       </label>
@@ -304,7 +304,7 @@ const CollapsibleWeek: React.FC<CollapsibleWeekProps> = ({
                               pace: formatPace(parsePace(e.target.value)),
                             })
                           }
-                          className="border p-1 rounded text-foreground"
+                          className="p-1"
                         />
                       </label>
                       <label className="block">
@@ -322,7 +322,7 @@ const CollapsibleWeek: React.FC<CollapsibleWeekProps> = ({
                               value as DayOfWeek
                             )
                           }
-                          className="h-8 rounded-md border border-accent-2 bg-accent-2 opacity-80 p-1 text-foreground ring-offset-background focus:outline-none focus:ring-2 focus:ring-accent-2 focus:ring-offset-2"
+                          className="form-control h-8 p-1"
                         />
                       </label>
                       <label className="block">
@@ -333,7 +333,7 @@ const CollapsibleWeek: React.FC<CollapsibleWeekProps> = ({
                           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                             updateRun(weekIndex, index, "notes", e.target.value)
                           }
-                          className="border p-1 rounded text-foreground w-full"
+                          className="p-1 w-full"
                         />
                       </label>
                       <label className="block">
@@ -458,7 +458,7 @@ const BulkDaySetter: React.FC<BulkDaySetterProps> = ({ planData, onPlanChange })
       <Button
         type="button"
         onClick={apply}
-        className="bg-primary px-3 py-1 rounded block w-auto text-foreground bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
+        className="px-3 py-1 btn-link"
       >
         Apply
       </Button>
