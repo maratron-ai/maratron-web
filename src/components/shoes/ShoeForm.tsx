@@ -192,12 +192,18 @@ const ShoeForm: React.FC<ShoeFormProps> = ({ onSubmit, initialData }) => {
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               handleFieldChange("makeDefault", e.target.checked)
             }
+            className="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded"
           />
           <span>Set as default shoe</span>
         </label>
 
         <div className="flex justify-end">
-          <Button type="submit">Add Shoe</Button>
+          <Button
+            type="submit"
+            className="block text-center py-2 bg-transparent justify-center text-foreground no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
+          >
+            Add Shoe
+          </Button>
         </div>
       </form>
     </Card>

@@ -87,16 +87,20 @@ export default function TrainingPlansList() {
       {plans.map((plan) => (
         <Card key={plan.id} className="p-6 flex justify-between items-start">
           <div className="space-y-1">
-            <Link href={`/plans/${plan.id ?? ""}`} className="font-semibold underline">
+            <Link
+              href={`/plans/${plan.id ?? ""}`}
+              className="font-semibold underline"
+            >
               {plan.name}
             </Link>
             <div className="text-sm space-y-1">
               {plan.planData?.weeks && <span>{plan.planData.weeks} weeks</span>}
               {plan.startDate && (
                 <span className="ml-2">
-                  {new Date(plan.startDate).toLocaleDateString()} -
-                  {" "}
-                  {plan.endDate ? new Date(plan.endDate).toLocaleDateString() : ""}
+                  {new Date(plan.startDate).toLocaleDateString()} -{" "}
+                  {plan.endDate
+                    ? new Date(plan.endDate).toLocaleDateString()
+                    : ""}
                 </span>
               )}
               {plan.active && (
@@ -106,7 +110,10 @@ export default function TrainingPlansList() {
           </div>
           <div className="flex gap-2 space-x-4">
             {!plan.active && plan.id && (
-              <Button onClick={() => setActive(plan.id!)} className="text-sm px-2 py-1">
+              <Button
+                onClick={() => setActive(plan.id!)}
+                className="block w-auto text-foreground bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
+              >
                 Set Active
               </Button>
             )}

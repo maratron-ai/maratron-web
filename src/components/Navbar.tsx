@@ -147,13 +147,13 @@ export default function Navbar() {
                     </Link>
                     <Link
                       href="/settings"
-                      className="block w-full text-center py-2 bg-transparent justify-center text-foreground no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
+                      className="block w-full text-center py-2 bg-transparent justify-center text-foreground no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from "
                     >
                       Settings
                     </Link>
                     <Button
                       onClick={() => signOut()}
-                      className="block w-full text-center py-2 bg-transparent justify-center text-foreground no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
+                      className="block w-full text-center py-2 bg-transparent justify-center text-foreground no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from rounded-none"
                     >
                       Logout
                     </Button>

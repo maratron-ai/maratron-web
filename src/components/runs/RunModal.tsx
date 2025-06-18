@@ -14,12 +14,25 @@ export default function RunModal({ run, onClose }: RunModalProps) {
   if (!run) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-foreground opacity-50">
-      <Card className="relative w-1/2 bg-background p-6 rounded-lg shadow-lg">
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40"
+      onClick={onClose}
+    >
+      <Card
+        onClick={(e) => e.stopPropagation()}
+        className="relative w-full max-w-lg p-6 rounded-lg shadow-lg bg-background"
+      >
         <Button
           aria-label="Close"
           onClick={onClose}
-          className="absolute top-2 right-2 bg-transparent text-2xl font-bold text-foreground opacity-60 dark:text-foreground dark:opacity-60 hover:text-foreground focus:outline-none block w-auto no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
+          className="
+            absolute top-2 right-2
+            bg-transparent
+            text-2xl font-bold text-foreground text-opacity-60
+            hover:text-primary hover:bg-transparent
+            focus:outline-none focus:ring-0 focus-visible:ring-0
+            transition-colors
+          "
         >
           ×
         </Button>

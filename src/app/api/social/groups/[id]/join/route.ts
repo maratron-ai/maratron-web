@@ -3,7 +3,7 @@ import { prisma } from "@lib/prisma";
 import bcrypt from "bcryptjs";
 
 export async function POST(req: NextRequest, ctx: { params: { id: string } }) {
-  const { id } = ctx.params;
+  const { id } = await ctx.params;
   const { profileId, password } = await req.json();
   if (!profileId) {
     return NextResponse.json({ error: "profileId required" }, { status: 400 });
