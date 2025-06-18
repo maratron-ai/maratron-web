@@ -110,14 +110,14 @@ const RunningPlanDisplay: React.FC<RunningPlanDisplayProps> = ({
                 <Button
                   type="button"
                   onClick={() => setEditingName(true)}
-                  className="text-foreground hover:text-primary block w-auto bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
+                  className="text-foreground hover:text-primary w-auto bg-transparent no-underline transition-colors hover:bg-transparent"
                 >
                   <Pencil className="w-4 h-4" />
                 </Button>
               </h2>
             )}
           </div>
-          <div className="mt-4 flex justify-center gap-4 py-5">
+          <div className="mt-4 flex justify-center gap-4 pb-5">
             <Button
               type="button"
               onClick={handleSave}
@@ -446,7 +446,6 @@ const BulkDaySetter: React.FC<BulkDaySetterProps> = ({ planData, onPlanChange })
         value={type}
         options={runTypes.map((t) => ({ label: t, value: t }))}
         onChange={(_, value) => setType(value as PlannedRun["type"])}
-        className="h-8 rounded-md border border-accent-2 bg-accent-2 opacity-80 p-1 text-center text-foreground ring-offset-background focus:outline-none focus:ring-2 focus:ring-accent-2 focus:ring-offset-2"
       />
       <span>runs to</span>
       <SelectField
@@ -455,7 +454,6 @@ const BulkDaySetter: React.FC<BulkDaySetterProps> = ({ planData, onPlanChange })
         value={day}
         options={days.map((d) => ({ label: d, value: d }))}
         onChange={(_, value) => setDay(value as DayOfWeek)}
-        className="h-8 rounded-md border border-accent-2 bg-accent-2 opacity-80 p-1 text-center text-foreground ring-offset-background focus:outline-none focus:ring-2 focus:ring-accent-2 focus:ring-offset-2"
       />
       <Button
         type="button"

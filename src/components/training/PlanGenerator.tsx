@@ -208,74 +208,54 @@ const [targetDistance, setTargetDistance] = useState<number>(
       ) : (
         <form onSubmit={handleGenerate} className="space-y-4">
           {/* Weeks */}
-          <div className="flex flex-col">
-            <label htmlFor="weeks" className="mb-1">
-              Weeks:
-            </label>
-            <Input
-              id="weeks"
-              type="number"
-              min={8}
-              value={weeks}
-              onChange={(e) => setWeeks(Number(e.target.value))}
-              className="border p-2 rounded bg-background text-foreground"
-            />
-          </div>
+          <Input
+            label="Weeks"
+            name="weeks"
+            type="number"
+            min={8}
+            value={String(weeks)}
+            onChange={(_n, v) => setWeeks(Number(v))}
+            className="mt-1"
+          />
           {/* Race Date */}
-          <div className="flex flex-col">
-            <label htmlFor="raceDate" className="mb-1">
-              Race Date:
-            </label>
-            <Input
-              id="raceDate"
-              type="date"
-              value={endDate}
-              onChange={(e) => setEndDate(e.target.value)}
-              className="border p-2 rounded bg-background text-foreground"
-            />
-          </div>
+          <Input
+            label="Race Date"
+            name="raceDate"
+            type="date"
+            value={endDate}
+            onChange={(_n, v) => setEndDate(v)}
+            className="mt-1"
+          />
           {/* Race Selection */}
-          <div className="flex flex-col">
-            <label htmlFor="raceType" className="mb-1">
-              Race Distance:
-            </label>
-            <SelectField
-              label="Race Distance:"
-              name="raceType"
-              value={raceType}
-              onChange={(_, value) => setRaceType(value as RaceType)}
-              options={[
-                { value: "5k", label: "5K" },
-                { value: "10k", label: "10K" },
-                { value: "half", label: "Half Marathon" },
-                { value: "full", label: "Marathon" },
-              ]}
-              className="h-10 rounded-md border border-accent-2 bg-accent-2 opacity-80 p-2 text-foreground ring-offset-background focus:outline-none focus:ring-2 focus:ring-accent-2 focus:ring-offset-2"
-            />
-            <span className="text-sm mt-1">
-              Target Distance: {targetDistance} {distanceUnit}
-            </span>
-          </div>
+          <SelectField
+            label="Race Distance"
+            name="raceType"
+            options={[
+              { value: "5k", label: "5K" },
+              { value: "10k", label: "10K" },
+              { value: "half", label: "Half Marathon" },
+              { value: "full", label: "Marathon" },
+            ]}
+            value={raceType}
+            onChange={(_n, v) => setRaceType(v as RaceType)}
+            className="mt-1"
+          />
+          <span className="text-sm mt-1">
+            Target Distance: {targetDistance} {distanceUnit}
+          </span>
           {/* Training Level */}
-          <div className="flex flex-col">
-            <label htmlFor="trainingLevel" className="mb-1">
-              Training Level:
-            </label>
-            <SelectField
-              label="Training Level:"
-              name="trainingLevel"
-              value={trainingLevel}
-              onChange={(_, value) =>
-                setTrainingLevel(value as TrainingLevel)
-              }
-              options={[
-                { value: "beginner", label: "Beginner" },
-                { value: "intermediate", label: "Intermediate" },
-                { value: "advanced", label: "Advanced" },
-              ]}
-              className="h-10 rounded-md border border-accent-2 bg-accent-2 opacity-80 p-2 text-foreground ring-offset-background focus:outline-none focus:ring-2 focus:ring-accent-2 focus:ring-offset-2"
-            />
-          </div>
+          <SelectField
+            label="Training Level"
+            name="trainingLevel"
+            options={[
+              { value: TrainingLevel.Beginner, label: "Beginner" },
+              { value: TrainingLevel.Intermediate, label: "Intermediate" },
+              { value: TrainingLevel.Advanced, label: "Advanced" },
+            ]}
+            value={trainingLevel}
+            onChange={(_n, v) => setTrainingLevel(v as TrainingLevel)}
+            className="mt-1"
+          />
 
           <Button
             type="button"
@@ -287,103 +267,73 @@ const [targetDistance, setTargetDistance] = useState<number>(
 
           {showAdvanced && (
             <div className="border rounded p-4 space-y-4">
-              {/* Runs Per Week */}
-              <div className="flex flex-col">
-                <label htmlFor="runsPerWeek" className="mb-1">
-                  Runs per Week:
-                </label>
-                <Input
-                  id="runsPerWeek"
-                  type="number"
-                  min={2}
-                  max={5}
-                  value={runsPerWeek}
-                  onChange={(e) => setRunsPerWeek(Number(e.target.value))}
-                  className="border p-2 rounded bg-background text-foreground"
-                />
-              </div>
-              {/* Cross Training Days */}
-              <div className="flex flex-col">
-                <label htmlFor="crossDays" className="mb-1">
-                  Cross Training Days:
-                </label>
-                <Input
-                  id="crossDays"
-                  type="number"
-                  min={0}
-                  max={7 - runsPerWeek}
-                  value={crossTrainingDays}
-                  onChange={(e) =>
-                    setCrossTrainingDays(
-                      Math.min(7 - runsPerWeek, Number(e.target.value))
-                    )
-                  }
-                  className="border p-2 rounded bg-background text-foreground"
-                />
-              </div>
-              {/* Run Days */}
+              <Input
+                label="Runs per Week"
+                name="runsPerWeek"
+                type="number"
+                min={2}
+                max={5}
+                value={String(runsPerWeek)}
+                onChange={(_n, v) => setRunsPerWeek(Number(v))}
+                className="mt-1"
+              />
+              <Input
+                label="Cross Training Days"
+                name="crossDays"
+                type="number"
+                min={0}
+                max={7 - runsPerWeek}
+                value={String(crossTrainingDays)}
+                onChange={(_n, v) =>
+                  setCrossTrainingDays(Math.min(7 - runsPerWeek, Number(v)))
+                }
+                className="mt-1"
+              />
               <div className="flex flex-col space-y-2">
                 <span className="font-semibold">Run Days</span>
                 {runTypes.map((t) => (
-                  <label key={t} className="flex items-center gap-2">
-                    <span className="capitalize w-20">{t}:</span>
-                    <SelectField
-                      name={t}
-                      label=""
-                      value={runTypeDays[t] ?? ""}
-                      onChange={(_, value) =>
-                        handleRunDayChange(t, value as DayOfWeek | "")
-                      }
-                      options={[
-                        { value: "", label: "--" },
-                        ...days.map((d) => ({ value: d, label: d })),
-                      ]}
-                      className="h-8 rounded-md border border-accent-2 bg-accent-2 opacity-80 p-1 text-foreground ring-offset-background focus:outline-none focus:ring-2 focus:ring-accent-2 focus:ring-offset-2"
-                    />
-                  </label>
+                  <SelectField
+                    key={t}
+                    label={t.charAt(0).toUpperCase() + t.slice(1)}
+                    name={t}
+                    options={[
+                      { value: "", label: "--" },
+                      ...days.map((d) => ({ value: d, label: d })),
+                    ]}
+                    value={runTypeDays[t] ?? ""}
+                    onChange={(_n, v) => handleRunDayChange(t, v as DayOfWeek)}
+                    className="mt-1"
+                  />
                 ))}
               </div>
             </div>
           )}
-        {/* Goal Input Mode */}
-        <div className="flex flex-col">
-            {/* <label htmlFor="inputMode" className="mb-1">
-              Goal Input:
-            </label> */}
-            <ToggleSwitch
-              checked={useTotalTime}
-              onChange={(c) => setUseTotalTime(c)}
-              leftLabel="Pace"
-              rightLabel="Total Time"
-            />
-          </div>
+          {/* Goal Input Mode */}
+          <ToggleSwitch
+            checked={useTotalTime}
+            onChange={(c) => setUseTotalTime(c)}
+            leftLabel="Pace"
+            rightLabel="Total Time"
+          />
           {/* Target Pace or Total Time */}
           {useTotalTime ? (
-            <div className="flex flex-col">
-              <label htmlFor="targetTotalTime" className="mb-1">
-                Target Total Time (hh:mm:ss or mm:ss):
-              </label>
-              <Input
-                id="targetTotalTime"
-                type="text"
-                value={targetTotalTime}
-                onChange={(e) => setTargetTotalTime(e.target.value)}
-                className="border p-2 rounded bg-background text-foreground"
-              />
-            </div>
+            <Input
+              label="Target Total Time (hh:mm:ss or mm:ss)"
+              name="targetTotalTime"
+              type="text"
+              value={targetTotalTime}
+              onChange={(_n, v) => setTargetTotalTime(v)}
+              className="mt-1"
+            />
           ) : (
-            <div className="flex flex-col">
-              <label htmlFor="targetPace" className="mb-1">
-                Target Pace (mm:ss):
-              </label>
-              <Input
-                id="targetPace"
-                type="text"
-                value={targetPace}
-                onChange={(e) => setTargetPace(e.target.value)}
-                className="border p-2 rounded bg-background text-foreground"
-              />
-            </div>
+            <Input
+              label="Target Pace (mm:ss)"
+              name="targetPace"
+              type="text"
+              value={targetPace}
+              onChange={(_n, v) => setTargetPace(v)}
+              className="mt-1"
+            />
           )}
           <Button
             type="submit"
@@ -405,12 +355,18 @@ const [targetDistance, setTargetDistance] = useState<number>(
           />
           <div className="mt-4">
             <label className="flex items-center space-x-2">
-              <Input
-                type="checkbox"
-                checked={showJson}
-                onChange={(e) => setShowJson(e.target.checked)}
-                className="form-checkbox"
-              />
+              <label htmlFor="showJson" className="flex items-center space-x-2">
+                {/* Keep this as input not Input */}
+                <input
+                  id="showJson"
+                  name="showJson"
+                  type="checkbox"
+                  checked={showJson}
+                  onChange={(e) => setShowJson(e.target.checked)}
+                  className="form-checkbox"
+                />
+                <span>Show JSON</span>
+              </label>
               <span>Show JSON</span>
               {showJson && (
                 <Button

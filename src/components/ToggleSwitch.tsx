@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import { Input } from "@components/ui/input";
 
 interface ToggleSwitchProps {
   checked?: boolean;
@@ -18,11 +17,12 @@ const ToggleSwitch: React.FC<ToggleSwitchProps> = ({
 }) => {
   return (
     <label className="toggle-container">
-      <Input
+      {/* keep this as input not Input */}
+      <input
         type="checkbox"
         checked={checked}
         onChange={(e) => onChange?.(e.target.checked)}
-        className="toggle-input"
+        className="toggle-input hidden"
         aria-checked={checked}
         role="switch"
       />
