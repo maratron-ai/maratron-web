@@ -15,6 +15,7 @@ const profile: SocialProfile = {
   updatedAt: new Date("2024-01-02"),
   name: "Runner",
   runCount: 5,
+  postCount: 2,
   totalDistance: 20,
   followerCount: 3,
   followingCount: 4,
@@ -30,6 +31,7 @@ describe("ProfileInfoCard", () => {
     render(<ProfileInfoCard profile={profile} user={user} isSelf />);
     expect(screen.getByRole("heading", { name: /runner/i })).toBeInTheDocument();
     expect(screen.getByText(/5 runs/)).toBeInTheDocument();
+    expect(screen.getByText(/2 posts/)).toBeInTheDocument();
     expect(screen.getByRole("link", { name: /edit/i })).toBeInTheDocument();
   });
 });

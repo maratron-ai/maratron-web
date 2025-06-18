@@ -27,6 +27,7 @@ export default function GroupCard({ group }: Props) {
         </div>
         <div className="flex flex-col items-end text-sm text-foreground opacity-60 gap-1">
           <span>{group.memberCount ?? 0} members</span>
+          <span>{group.postCount ?? 0} posts</span>
           {group.private && <Badge variant="secondary">Private</Badge>}
         </div>
       </div>

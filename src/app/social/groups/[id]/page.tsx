@@ -118,6 +118,7 @@ export default function GroupPage() {
             Created {new Date(group.createdAt).toLocaleDateString()}
           </p>
           <p className="text-sm">Members: {group.memberCount}</p>
+          <p className="text-sm">Posts: {group.postCount}</p>
           {group.totalDistance !== undefined && (
             <p className="text-sm">
               Total Distance: {group.totalDistance.toFixed(2)} mi
