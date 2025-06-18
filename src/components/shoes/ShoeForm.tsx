@@ -183,20 +183,18 @@ const ShoeForm: React.FC<ShoeFormProps> = ({ onSubmit, initialData }) => {
           />
         </div>
 
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center justify-end space-x-2">
           <Checkbox
             id="makeDefault"
             checked={form.makeDefault}
             onCheckedChange={(checked: boolean) =>
               handleFieldChange("makeDefault", Boolean(checked))
             }
+            className="h-4 w-4 bg-foreground text-background"
           />
           <Label htmlFor="makeDefault" className="text-sm">
             Set as default shoe
           </Label>
-        </div>
-
-        <div className="flex justify-end">
           <Button
             type="submit"
             className="block text-center py-2 bg-transparent justify-center text-foreground no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
