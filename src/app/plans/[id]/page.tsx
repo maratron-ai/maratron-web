@@ -7,7 +7,7 @@ import { getRunningPlan, updateRunningPlan } from "@lib/api/plan";
 import { assignDatesToPlan } from "@utils/running/planDates";
 import type { RunningPlan } from "@maratypes/runningPlan";
 import RunningPlanDisplay from "@components/training/RunningPlanDisplay";
-import { Button, Spinner } from "@components/ui";
+import { Spinner } from "@components/ui";
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -18,7 +18,6 @@ export default function PlanPage({ params }: PageProps) {
   const { data: session, status } = useSession();
   const [plan, setPlan] = useState<RunningPlan | null>(null);
   const [planData, setPlanData] = useState<RunningPlan["planData"] | null>(null);
-  const [editing, setEditing] = useState(false);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
@@ -65,37 +64,26 @@ export default function PlanPage({ params }: PageProps) {
     );
   }
 
+  const handleSave = async (updated: RunningPlan["planData"]) => {
+    if (!plan?.id) return;
+    try {
+      await updateRunningPlan(plan.id, { planData: updated });
+      setPlan((p) => (p ? { ...p, planData: updated } : p));
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   return (
     <main className="w-full px-4 sm:px-6 lg:px-8 py-4 space-y-4">
       <h1 className="text-2xl font-bold mb-4">{plan.name}</h1>
-      <div className="mb-4 space-x-2">
-        <Button onClick={() => setEditing((e) => !e)}>
-          {editing ? "Cancel" : "Edit"}
-        </Button>
-        {editing && (
-          <Button
-            onClick={async () => {
-              if (!plan.id || !planData) return;
-              try {
-                await updateRunningPlan(plan.id, { planData });
-                setEditing(false);
-                setPlan((p) => (p ? { ...p, planData } : p));
-              } catch (err) {
-                console.error(err);
-              }
-            }}
-            className="bg-primary ml-2"
-          >
-            Save
-          </Button>
-        )}
-      </div>
       {planData && (
         <RunningPlanDisplay
           planData={planData}
           planName={plan.name}
-          editable={editing}
+          allowEditable
           onPlanChange={setPlanData}
+          onSave={handleSave}
         />
       )}
     </main>

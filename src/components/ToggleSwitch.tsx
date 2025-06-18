@@ -17,11 +17,12 @@ const ToggleSwitch: React.FC<ToggleSwitchProps> = ({
 }) => {
   return (
     <label className="toggle-container">
+      {/* keep this as input not Input */}
       <input
         type="checkbox"
         checked={checked}
         onChange={(e) => onChange?.(e.target.checked)}
-        className="toggle-input"
+        className="toggle-input hidden"
         aria-checked={checked}
         role="switch"
       />

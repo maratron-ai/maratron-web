@@ -2,15 +2,17 @@
 
 import { useRef } from "react";
 import { Button } from "@components/ui";
+import { Input } from "@components/ui/input";
 import { uploadImage } from "@lib/api/upload";
 
 interface PhotoUploadProps {
   value?: string;
   onChange?: (url: string) => void;
   disabled?: boolean;
+  text?: string;
 }
 
-export default function PhotoUpload({ value, onChange, disabled }: PhotoUploadProps) {
+export default function PhotoUpload({ value, onChange, disabled, text }: PhotoUploadProps) {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -39,9 +41,9 @@ export default function PhotoUpload({ value, onChange, disabled }: PhotoUploadPr
           disabled={disabled}
           className="block w-auto text-foreground bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
         >
-          Upload Photo
+          {text || "Upload Photo"}
         </Button>
-        <input
+        <Input
           ref={inputRef}
           type="file"
           accept="image/*"

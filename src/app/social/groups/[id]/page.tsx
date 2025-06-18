@@ -7,7 +7,7 @@ import { useSocialProfile } from "@hooks/useSocialProfile";
 import axios from "axios";
 import SocialFeed from "@components/social/SocialFeed";
 import GroupMembers from "@components/social/GroupMembers";
-import { Button, Spinner, Card } from "@components/ui";
+import { Button, Spinner, Card, toast } from "@components/ui";
 import type { RunGroup } from "@maratypes/social";
 
 export default function GroupPage() {
@@ -44,10 +44,24 @@ export default function GroupPage() {
       return;
     }
     if (!profile?.id) return;
-    await axios.post(`/api/social/groups/${id}/join`, {
-      profileId: profile.id,
-    });
-    fetchGroup();
+    let password: string | undefined = undefined;
+    if (group?.private) {
+      password = window.prompt("Group password") || undefined;
+      if (password === undefined) return;
+    }
+    try {
+      await axios.post(`/api/social/groups/${id}/join`, {
+        profileId: profile.id,
+        password,
+      });
+      fetchGroup();
+    } catch (err: unknown) {
+      if (axios.isAxiosError(err) && err.response?.status === 403) {
+        toast.error("Invalid password");
+      } else {
+        toast.error("Failed to join group");
+      }
+    }
   };
 
   const handleLeave = async () => {
@@ -111,7 +125,11 @@ export default function GroupPage() {
           )}
         </Card>
         {group.members && <GroupMembers members={group.members} />}
-        <SocialFeed groupId={group.id} />
+        {group.private && !group.isMember ? (
+          <p>This group is private. Join to view posts.</p>
+        ) : (
+          <SocialFeed groupId={group.id} />
+        )}
       </main>
     </div>
   );

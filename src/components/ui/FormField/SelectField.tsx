@@ -36,7 +36,7 @@ const SelectField: React.FC<SelectFieldProps> = ({
           name={name}
           value={value}
           onChange={(e) => onChange(name, e.target.value)}
-          className="mt-1 w-full border rounded px-2 py-1 focus:outline-none focus:ring focus:ring-primary"
+          className="mt-1 h-10 w-full rounded-md border border-accent-2 bg-accent-2 opacity-80 px-2 py-1 text-sm text-foreground ring-offset-background focus:outline-none focus:ring-2 focus:ring-accent-2 focus:ring-offset-2"
           {...selectProps}
         >
           <option value="" disabled>

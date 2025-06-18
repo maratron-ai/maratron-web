@@ -6,6 +6,8 @@ import {
   RacePrediction,
   calculateRacePaces,
 } from "@lib/utils/running/calculateRacePaces";
+import { Input } from "@components/ui/input";
+import { Button } from "@components/ui/button";
 
 const PaceCalculator: React.FC = () => {
   const [raceTime, setRaceTime] = useState(""); // Known race time in minutes
@@ -34,20 +36,27 @@ const PaceCalculator: React.FC = () => {
     <div>
       <h2>Race Pace Calculator</h2>
       <label>Known Race Time (minutes):</label>
-      <input
+      <Input
         type="number"
         value={raceTime}
-        onChange={(e) => setRaceTime(e.target.value)}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+          setRaceTime(e.target.value)
+        }
       />
 
       <label>Known Race Distance (km):</label>
-      <input
+      <Input
         type="number"
         value={distance}
-        onChange={(e) => setDistance(e.target.value)}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setDistance(e.target.value)}
       />
 
-      <button onClick={handleCalculate}>Calculate Predictions</button>
+      <Button
+        onClick={handleCalculate}
+        className="block w-auto text-foreground bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
+      >
+        Calculate Predictions
+      </Button>
 
       {predictions.length > 0 && (
         <div>

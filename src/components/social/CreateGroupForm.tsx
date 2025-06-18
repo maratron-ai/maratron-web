@@ -1,25 +1,26 @@
 "use client";
 import { useState, FormEvent } from "react";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { useSocialProfile } from "@hooks/useSocialProfile";
 import { createGroup } from "@lib/api/social";
-import { Card, Button, Switch, PhotoUpload } from "@components/ui";
+import { Card, Button, PhotoUpload, LockToggle, toast } from "@components/ui";
 import { TextField, TextAreaField } from "@components/ui/FormField";
 
 export default function CreateGroupForm() {
   const { data: session } = useSession();
+  const router = useRouter();
   const { profile } = useSocialProfile();
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [isPrivate, setIsPrivate] = useState(false);
+  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError("");
-    setSuccess("");
     if (!session?.user?.id) {
       setError("Login required");
       return;
@@ -29,18 +30,15 @@ export default function CreateGroupForm() {
       return;
     }
     try {
-      await createGroup({
+      const group = await createGroup({
         name,
         description: description || undefined,
         imageUrl: imageUrl || undefined,
         private: isPrivate,
+        password: isPrivate ? password : undefined,
         ownerId: profile.id,
       });
-      setSuccess("Group created!");
-      setName("");
-      setDescription("");
-      setImageUrl("");
-      setIsPrivate(false);
+      router.push(`/social/groups/${group.id}`);
     } catch {
       setError("Failed to create group");
     }
@@ -50,7 +48,6 @@ export default function CreateGroupForm() {
     <Card className="p-6 w-full max-w-md">
       <h2 className="text-2xl font-semibold mb-4">Create Run Group</h2>
       {error && <p className="text-brand-orange-dark mb-2">{error}</p>}
-      {success && <p className="text-primary mb-2">{success}</p>}
       <form onSubmit={handleSubmit} className="space-y-4">
         <TextField
           label="Name"
@@ -66,17 +63,36 @@ export default function CreateGroupForm() {
           onChange={(_n, v) => setDescription(String(v))}
           rows={2}
         />
-        <PhotoUpload value={imageUrl} onChange={(url) => setImageUrl(url)} />
         <div className="flex items-center gap-2">
-          <Switch
-            id="private"
-            checked={isPrivate}
-            onCheckedChange={(v) => setIsPrivate(v)}
+          <PhotoUpload
+            value={imageUrl}
+            onChange={(url) => setImageUrl(url)}
+            text="Upload Group Profile Picture"
           />
-          <label htmlFor="private" className="text-sm">
-            Private group
-          </label>
+
+          <LockToggle
+            locked={isPrivate}
+            onChange={(v) => {
+              setIsPrivate(v);
+              toast(v ? "group is private" : "group is public");
+            }}
+            size="default"
+            className="bg-transparent text-foreground hover:bg-transparent hover:text-foreground border-none ring-0 focus:ring-0 focus:outline-none"
+          />
+          <span className="text-sm">
+            {isPrivate ? "Private Group" : "Public Group"}
+          </span>
         </div>
+        {isPrivate && (
+          <TextField
+            label="Group Password"
+            name="password"
+            type="password"
+            value={password}
+            onChange={(_n, v) => setPassword(String(v))}
+            required
+          />
+        )}
         <div className="flex justify-end">
           <Button
             type="submit"

@@ -8,6 +8,7 @@ import { useSession } from "next-auth/react";
 import { useUser } from "@hooks/useUser";
 
 import { Card, Button, Spinner } from "@components/ui";
+import { Input } from "@components/ui/input";
 import {
   TextField,
   SelectField,
@@ -184,11 +185,11 @@ const ShoeForm: React.FC<ShoeFormProps> = ({ onSubmit, initialData }) => {
         </div>
 
         <label className="flex items-center space-x-2">
-          <input
+          <Input
             type="checkbox"
             name="makeDefault"
             checked={form.makeDefault}
-            onChange={(e) =>
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               handleFieldChange("makeDefault", e.target.checked)
             }
           />

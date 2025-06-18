@@ -7,11 +7,22 @@ import { RunningPlanData, WeekPlan, PlannedRun } from "@maratypes/runningPlan";
 import { DayOfWeek } from "@maratypes/basics";
 import { setDayForRunType } from "@utils/running/setRunDay";
 import { parsePace, formatPace } from "@utils/running/paces";
+import { Button } from "@components/ui";
+import { Input } from "@components/ui/input";
+import { SelectField } from "@components/ui/FormField";
 
 interface RunningPlanDisplayProps {
   planData: RunningPlanData;
   planName?: string;
+  /**
+   * Set the initial editable state of the plan schedule.
+   */
   editable?: boolean;
+  /**
+   * Allows the user to toggle edit mode and save changes. Used when
+   * displaying an existing plan.
+   */
+  allowEditable?: boolean;
   /**
    * Show controls for editing the plan name and saving the plan.
    */
@@ -22,16 +33,23 @@ interface RunningPlanDisplayProps {
   showBulkDaySetter?: boolean;
   onPlanChange?: (plan: RunningPlanData) => void;
   onPlanNameChange?: (name: string) => void;
+  /**
+   * Callback invoked when the Save button is clicked while editing an
+   * existing plan. The updated plan data is provided.
+   */
+  onSave?: (planData: RunningPlanData) => Promise<void> | void;
 }
 
 const RunningPlanDisplay: React.FC<RunningPlanDisplayProps> = ({
   planData,
   planName,
   editable = false,
+  allowEditable = false,
   showPlanMeta = false,
   showBulkDaySetter = false,
   onPlanChange,
   onPlanNameChange,
+  onSave,
 }) => {
   const { profile: user } = useUser();
   const [editingName, setEditingName] = useState(false);
@@ -78,10 +96,10 @@ const RunningPlanDisplay: React.FC<RunningPlanDisplayProps> = ({
           <div className="mb-4 flex items-center gap-2">
             {/* <span className="font-semibold">Plan Name:</span> */}
             {editingName ? (
-              <input
+              <Input
                 type="text"
                 value={planName}
-                onChange={(e) => onPlanNameChange?.(e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => onPlanNameChange?.(e.target.value)}
                 onBlur={() => setEditingName(false)}
                 autoFocus
                 className="w-full max-w-md text-2xl font-bold text-center mb-4 block mx-auto"
@@ -89,31 +107,31 @@ const RunningPlanDisplay: React.FC<RunningPlanDisplayProps> = ({
             ) : (
               <h2 className="w-full text-2xl font-bold text-center mb-4">
                 {planName}
-                <button
+                <Button
                   type="button"
                   onClick={() => setEditingName(true)}
-                  className="text-foreground hover:text-primary"
+                  className="text-foreground hover:text-primary w-auto bg-transparent no-underline transition-colors hover:bg-transparent"
                 >
                   <Pencil className="w-4 h-4" />
-                </button>
+                </Button>
               </h2>
             )}
           </div>
-          <div className="mt-4 flex justify-center gap-4 py-5">
-            <button
+          <div className="mt-4 flex justify-center gap-4 pb-5">
+            <Button
               type="button"
               onClick={handleSave}
-              className="bg-muted-foreground text-underline text-foreground px-4 py-2 rounded hover:bg-brand-to hover:text-background"
+              className="bg-muted-foreground text-underline px-4 py-2 rounded hover:bg-brand-to hover:text-background block w-auto text-foreground bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
             >
               Save Plan
-            </button>
-            <button
+            </Button>
+            <Button
               type="button"
               onClick={() => setIsEditable((e) => !e)}
-              className="bg-muted-foreground text-underline text-foreground px-4 py-2 rounded hover:bg-brand-to hover:text-background"
+              className="bg-muted-foreground text-underline px-4 py-2 rounded hover:bg-brand-to hover:text-background block w-auto text-foreground bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
             >
               {isEditable ? "Done" : "Edit"}
-            </button>
+            </Button>
           </div>
           <div className="mb-4 justify-center flex gap-8">
             <div>
@@ -131,9 +149,32 @@ const RunningPlanDisplay: React.FC<RunningPlanDisplayProps> = ({
           </div>
         </>
       ) : (
-        <h2 className="text-2xl font-bold text-center mb-4">
-          {planName || "Your Running Plan"}
-        </h2>
+        <>
+          <h2 className="text-2xl font-bold text-center mb-2">
+            {planName || "Your Running Plan"}
+          </h2>
+          {allowEditable && (
+            <div className="mb-4 flex justify-center gap-2">
+              <Button
+                onClick={() => setIsEditable((e) => !e)}
+                className="border-none bg-transparent text-foreground hover:bg-brand-from hover:text-background"
+              >
+                {isEditable ? "Cancel" : "Edit"}
+              </Button>
+              {isEditable && (
+                <Button
+                  onClick={async () => {
+                    await onSave?.(planData);
+                    setIsEditable(false);
+                  }}
+                  className="border-none bg-transparent text-foreground hover:bg-brand-from hover:text-background"
+                >
+                  Save
+                </Button>
+              )}
+            </div>
+          )}
+        </>
       )}
       {(isEditable || showBulkDaySetter) && (
         <BulkDaySetter planData={planData} onPlanChange={onPlanChange} />
@@ -223,32 +264,24 @@ const CollapsibleWeek: React.FC<CollapsibleWeekProps> = ({
                     <div className="space-y-1">
                       <label className="block">
                         <span className="mr-2">Type:</span>
-                        <select
+                        <SelectField
+                          name="type"
+                          label=""
+                          options={runTypes.map((t) => ({ label: t, value: t }))}
                           value={run.type}
-                          onChange={(e) =>
-                            updateRun(
-                              weekIndex,
-                              index,
-                              "type",
-                              e.target.value
-                            )
+                          onChange={(_, value) =>
+                            updateRun(weekIndex, index, "type", value)
                           }
-                          className="border p-1 rounded text-foreground"
-                        >
-                          {runTypes.map((t) => (
-                            <option key={t} value={t}>
-                              {t}
-                            </option>
-                          ))}
-                        </select>
+                          className="h-8 rounded-md border border-accent-2 bg-accent-2 opacity-80 p-1 text-foreground ring-offset-background focus:outline-none focus:ring-2 focus:ring-accent-2 focus:ring-offset-2"
+                        />
                       </label>
                       <label className="block">
                         <span className="mr-2">Mileage:</span>
-                        <input
+                        <Input
                           type="number"
                           step="0.1"
                           value={run.mileage}
-                          onChange={(e) =>
+                          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                             updateRun(
                               weekIndex,
                               index,
@@ -262,10 +295,10 @@ const CollapsibleWeek: React.FC<CollapsibleWeekProps> = ({
                       </label>
                       <label className="block">
                         <span className="mr-2">Target Pace:</span>
-                        <input
+                        <Input
                           type="text"
                           value={run.targetPace.pace}
-                          onChange={(e) =>
+                          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                             updateRun(weekIndex, index, "targetPace", {
                               ...run.targetPace,
                               pace: formatPace(parsePace(e.target.value)),
@@ -276,41 +309,38 @@ const CollapsibleWeek: React.FC<CollapsibleWeekProps> = ({
                       </label>
                       <label className="block">
                         <span className="mr-2">Day:</span>
-                        <select
+                        <SelectField
+                          name="day"
+                          label=""
+                          options={days.map((d) => ({ label: d, value: d }))}
                           value={run.day || "Sunday"}
-                          onChange={(e) =>
+                          onChange={(_, value) =>
                             updateRun(
                               weekIndex,
                               index,
                               "day",
-                              e.target.value as DayOfWeek
+                              value as DayOfWeek
                             )
                           }
-                          className="border p-1 rounded text-foreground"
-                        >
-                          {days.map((d) => (
-                            <option key={d} value={d}>
-                              {d}
-                            </option>
-                          ))}
-                        </select>
+                          className="h-8 rounded-md border border-accent-2 bg-accent-2 opacity-80 p-1 text-foreground ring-offset-background focus:outline-none focus:ring-2 focus:ring-accent-2 focus:ring-offset-2"
+                        />
                       </label>
                       <label className="block">
                         <span className="mr-2">Notes:</span>
-                        <input
+                        <Input
                           type="text"
                           value={run.notes || ""}
-                          onChange={(e) =>
+                          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                             updateRun(weekIndex, index, "notes", e.target.value)
                           }
                           className="border p-1 rounded text-foreground w-full"
                         />
                       </label>
                       <label className="block">
-                        <input
+                        <Input
                           type="checkbox"
                           checked={run.done || false}
-                          onChange={(e) =>
+                          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                             updateRun(
                               weekIndex,
                               index,
@@ -353,10 +383,10 @@ const CollapsibleWeek: React.FC<CollapsibleWeekProps> = ({
                       )}
                       {typeof run.done !== "undefined" && (
                         <p>
-                          <input
+                          <Input
                             type="checkbox"
                             checked={run.done}
-                            onChange={(e) =>
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                               updateRun(
                                 weekIndex,
                                 index,
@@ -410,36 +440,28 @@ const BulkDaySetter: React.FC<BulkDaySetterProps> = ({ planData, onPlanChange })
   return (
     <div className="mb-4 flex items-center gap-2 justify-center">
       <span>Set all</span>
-      <select
+      <SelectField
+        name="bulkType"
+        label=""
         value={type}
-        onChange={(e) => setType(e.target.value as PlannedRun["type"])}
-        className="border p-1 rounded text-foreground text-center"
-      >
-        {runTypes.map((t) => (
-          <option key={t} value={t}>
-            {t}
-          </option>
-        ))}
-      </select>
+        options={runTypes.map((t) => ({ label: t, value: t }))}
+        onChange={(_, value) => setType(value as PlannedRun["type"])}
+      />
       <span>runs to</span>
-      <select
+      <SelectField
+        name="bulkDay"
+        label=""
         value={day}
-        onChange={(e) => setDay(e.target.value as DayOfWeek)}
-        className="border p-1 rounded text-foreground text-center"
-      >
-        {days.map((d) => (
-          <option key={d} value={d}>
-            {d}
-          </option>
-        ))}
-      </select>
-      <button
+        options={days.map((d) => ({ label: d, value: d }))}
+        onChange={(_, value) => setDay(value as DayOfWeek)}
+      />
+      <Button
         type="button"
         onClick={apply}
-        className="bg-primary text-foreground px-3 py-1 rounded"
+        className="bg-primary px-3 py-1 rounded block w-auto text-foreground bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
       >
         Apply
-      </button>
+      </Button>
     </div>
   );
 };
