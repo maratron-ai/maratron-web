@@ -39,14 +39,16 @@ const PaceCalculator: React.FC = () => {
       <Input
         type="number"
         value={raceTime}
-        onChange={(e) => setRaceTime(e.target.value)}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+          setRaceTime(e.target.value)
+        }
       />
 
       <label>Known Race Distance (km):</label>
       <Input
         type="number"
         value={distance}
-        onChange={(e) => setDistance(e.target.value)}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setDistance(e.target.value)}
       />
 
       <Button

@@ -99,7 +99,7 @@ export default function ProfileSearch({ limit }: Props) {
           placeholder="Search runners"
           className="placeholder:text-foreground"
           value={query}
-          onChange={(e) => setQuery(e.target.value)}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setQuery(e.target.value)}
         />
         <Button
           type="submit"

@@ -97,7 +97,7 @@ export default function CommentSection({
             <form onSubmit={onSubmit} className="flex gap-2 mt-2">
               <Input
                 value={text}
-                onChange={(e) => setText(e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setText(e.target.value)}
                 placeholder="Add a comment"
                 className="h-8"
               />

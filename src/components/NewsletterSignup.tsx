@@ -35,7 +35,7 @@ export default function NewsletterSignup() {
         type="email"
         placeholder="Your email"
         value={email}
-        onChange={(e) => setEmail(e.target.value)}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
         className="max-w-xs"
         required
       />

@@ -189,7 +189,7 @@ const ShoeForm: React.FC<ShoeFormProps> = ({ onSubmit, initialData }) => {
             type="checkbox"
             name="makeDefault"
             checked={form.makeDefault}
-            onChange={(e) =>
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               handleFieldChange("makeDefault", e.target.checked)
             }
           />

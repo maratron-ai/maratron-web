@@ -61,7 +61,7 @@ export default function VDOTEstimator({ userId, onComplete }: Props) {
         <Input
           id="time"
           value={time}
-          onChange={(e) => setTime(e.target.value)}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTime(e.target.value)}
           placeholder="30:00"
         />
       </div>

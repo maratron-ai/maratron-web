@@ -362,7 +362,7 @@ const [targetDistance, setTargetDistance] = useState<number>(
                   name="showJson"
                   type="checkbox"
                   checked={showJson}
-                  onChange={(e) => setShowJson(e.target.checked)}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setShowJson(e.target.checked)}
                   className="form-checkbox"
                 />
                 <span>Show JSON</span>

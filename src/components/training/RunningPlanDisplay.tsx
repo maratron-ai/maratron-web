@@ -99,7 +99,7 @@ const RunningPlanDisplay: React.FC<RunningPlanDisplayProps> = ({
               <Input
                 type="text"
                 value={planName}
-                onChange={(e) => onPlanNameChange?.(e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => onPlanNameChange?.(e.target.value)}
                 onBlur={() => setEditingName(false)}
                 autoFocus
                 className="w-full max-w-md text-2xl font-bold text-center mb-4 block mx-auto"
@@ -281,7 +281,7 @@ const CollapsibleWeek: React.FC<CollapsibleWeekProps> = ({
                           type="number"
                           step="0.1"
                           value={run.mileage}
-                          onChange={(e) =>
+                          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                             updateRun(
                               weekIndex,
                               index,
@@ -298,7 +298,7 @@ const CollapsibleWeek: React.FC<CollapsibleWeekProps> = ({
                         <Input
                           type="text"
                           value={run.targetPace.pace}
-                          onChange={(e) =>
+                          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                             updateRun(weekIndex, index, "targetPace", {
                               ...run.targetPace,
                               pace: formatPace(parsePace(e.target.value)),
@@ -330,7 +330,7 @@ const CollapsibleWeek: React.FC<CollapsibleWeekProps> = ({
                         <Input
                           type="text"
                           value={run.notes || ""}
-                          onChange={(e) =>
+                          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                             updateRun(weekIndex, index, "notes", e.target.value)
                           }
                           className="border p-1 rounded text-foreground w-full"
@@ -340,7 +340,7 @@ const CollapsibleWeek: React.FC<CollapsibleWeekProps> = ({
                         <Input
                           type="checkbox"
                           checked={run.done || false}
-                          onChange={(e) =>
+                          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                             updateRun(
                               weekIndex,
                               index,
@@ -386,7 +386,7 @@ const CollapsibleWeek: React.FC<CollapsibleWeekProps> = ({
                           <Input
                             type="checkbox"
                             checked={run.done}
-                            onChange={(e) =>
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                               updateRun(
                                 weekIndex,
                                 index,

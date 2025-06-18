@@ -39,13 +39,13 @@ export default function ContactForm() {
         type="email"
         placeholder="Your email"
         value={email}
-        onChange={(e) => setEmail(e.target.value)}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
         required
       />
       <Textarea
         placeholder="Message"
         value={message}
-        onChange={(e) => setMessage(e.target.value)}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setMessage(e.target.value)}
         rows={3}
         required
       />
