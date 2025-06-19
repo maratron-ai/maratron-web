@@ -77,7 +77,7 @@ export default function SocialHomePage() {
           <ProfileInfoCard profile={profile} user={user ?? undefined} isSelf />
           <div>
             <h2 className="text-lg font-semibold mb-2">Find Runners</h2>
-            <ProfileSearch limit={5} />
+            <ProfileSearch limit={3} />
           </div>
           <div>
             <h2 className="text-lg font-semibold mb-2">Your Groups</h2>

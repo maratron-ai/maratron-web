@@ -7,17 +7,21 @@ import { Input, Button, Card, Spinner } from "@components/ui";
 import FollowUserButton from "@components/social/FollowUserButton";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+
 
 interface Props {
   limit?: number;
 }
 
-export default function ProfileSearch({ limit }: Props) {
+export default function ProfileSearch({ limit = 1 }: Props) {
+  const [visibleCount, setVisibleCount] = useState<number>(limit);
   const { data: session } = useSession();
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<SocialProfile[]>([]);
   const [myProfileId, setMyProfileId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const pathname = usePathname();
 
   useEffect(() => {
     const fetchMyProfile = async () => {
@@ -69,6 +73,10 @@ export default function ProfileSearch({ limit }: Props) {
     return () => clearTimeout(timeout);
   }, [query, myProfileId]);
 
+  const showMore = () => {
+    setVisibleCount(prev => prev + (5-limit)%5); // output should be a multiple of 5
+  };
+
 
   if (!session?.user?.id) return <p>Please log in to search.</p>;
   if (loading)
@@ -94,22 +102,24 @@ export default function ProfileSearch({ limit }: Props) {
 
   return (
     <div>
-      <form onSubmit={handleSearch} className="flex gap-2 mb-4">
+      <form onSubmit={handleSearch} className="flex items-center gap-2 mb-4">
         <Input
           placeholder="Search runners"
           className="placeholder:text-foreground"
           value={query}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setQuery(e.target.value)}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setQuery(e.target.value)
+          }
         />
         <Button
           type="submit"
-          className="block mx-auto w-auto text-foreground bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
+          className="w-auto text-foreground bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from focus:ring-0"
         >
           Search
         </Button>
       </form>
       <div className="space-y-4">
-        {(limit ? results.slice(0, limit) : results).map((p) => (
+        {results.slice(0, visibleCount).map((p) => (
           <Card key={p.id} className="p-4 flex items-center justify-between">
             <div className="flex items-center gap-4">
               <Image
@@ -135,10 +145,30 @@ export default function ProfileSearch({ limit }: Props) {
             )}
           </Card>
         ))}
-        {limit && results.length > limit && (
-          <div className="text-center">
-            <Button asChild variant="ghost" size="sm">
-              <Link href="/social/search">See more</Link>
+        {results.length > visibleCount && pathname != "/social/search" && (
+          <div className="flex justify-center mt-4">
+            <Link
+              href="/social/search"
+              passHref
+              style={{ textDecoration: "none" }}
+            >
+              <Button
+                size="sm"
+                className="block w-auto text-foreground bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from focus:ring-0"
+              >
+                See more
+              </Button>
+            </Link>
+          </div>
+        )}
+        {results.length > visibleCount && (
+          <div className="flex justify-center mt-4">
+            <Button
+              size="sm"
+              className="block w-auto text-foreground bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from focus:ring-0"
+              onClick={showMore}
+            >
+              See more
             </Button>
           </div>
         )}
