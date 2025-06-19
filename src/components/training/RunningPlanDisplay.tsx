@@ -10,6 +10,7 @@ import { parsePace, formatPace } from "@utils/running/paces";
 import { Button } from "@components/ui";
 import { Input } from "@components/ui/input";
 import { SelectField } from "@components/ui/FormField";
+import { useRouter } from "next/navigation";
 
 interface RunningPlanDisplayProps {
   planData: RunningPlanData;
@@ -54,6 +55,7 @@ const RunningPlanDisplay: React.FC<RunningPlanDisplayProps> = ({
   const { profile: user } = useUser();
   const [editingName, setEditingName] = useState(false);
   const [isEditable, setIsEditable] = useState(editable);
+  const router = useRouter();
 
   useEffect(() => {
     setIsEditable(editable);
@@ -74,7 +76,7 @@ const RunningPlanDisplay: React.FC<RunningPlanDisplayProps> = ({
   const handleSave = async () => {
     if (!user) return;
     try {
-      await createRunningPlan({
+      const plan = await createRunningPlan({
         userId: user.id!,
         planData,
         name: planName ?? "Running Plan",
@@ -83,6 +85,7 @@ const RunningPlanDisplay: React.FC<RunningPlanDisplayProps> = ({
         active: false,
       });
       alert("Plan saved");
+      router.push(`/plans/${plan.id}`);
     } catch (err) {
       console.error(err);
       alert("Failed to save plan");
@@ -99,7 +102,9 @@ const RunningPlanDisplay: React.FC<RunningPlanDisplayProps> = ({
               <Input
                 type="text"
                 value={planName}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => onPlanNameChange?.(e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  onPlanNameChange?.(e.target.value)
+                }
                 onBlur={() => setEditingName(false)}
                 autoFocus
                 className="w-full max-w-md text-2xl font-bold text-center mb-4 block mx-auto"
@@ -121,14 +126,14 @@ const RunningPlanDisplay: React.FC<RunningPlanDisplayProps> = ({
             <Button
               type="button"
               onClick={handleSave}
-              className="bg-muted-foreground text-underline px-4 py-2 rounded hover:bg-brand-to hover:text-background block w-auto text-foreground bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
+              className="bg-muted-foreground text-underline px-4 py-2 rounded hover:bg-brand-to hover:text-background block w-auto text-foreground bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from focus:ring-0"
             >
               Save Plan
             </Button>
             <Button
               type="button"
               onClick={() => setIsEditable((e) => !e)}
-              className="bg-muted-foreground text-underline px-4 py-2 rounded hover:bg-brand-to hover:text-background block w-auto text-foreground bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
+              className="bg-muted-foreground text-underline px-4 py-2 rounded hover:bg-brand-to hover:text-background block w-auto text-foreground bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from focus:ring-0"
             >
               {isEditable ? "Done" : "Edit"}
             </Button>

@@ -22,7 +22,7 @@ function addWeeks(date: Date, weeks: number): Date {
 export async function GET(request: NextRequest, context: { params: { id: string } }) {
   try {
     const { params } = context
-    const { id } = params
+    const { id } = await params
     const plan = await prisma.runningPlan.findUnique({ where: { id } });
     if (!plan) {
       return NextResponse.json({ error: "Plan not found" }, { status: 404 });
@@ -84,7 +84,7 @@ export async function PUT(request: NextRequest, context: { params: { id: string 
 export async function DELETE(request: NextRequest, context: { params: { id: string } }) {
   try {
     const { params } = context
-    const { id } = params
+    const { id } = await params
     await prisma.runningPlan.delete({ where: { id } });
     return NextResponse.json({ message: "Plan deleted" }, { status: 200 });
   } catch (error) {

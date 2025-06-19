@@ -76,12 +76,11 @@ const [targetDistance, setTargetDistance] = useState<number>(
     "Friday",
     "Saturday",
   ];
-  const runTypes: PlannedRun["type"][] = [
+  const runTypes: PlannedRun["type"][] = [ // doesn't include race
     "easy",
     "tempo",
     "interval",
     "long",
-    "marathon",
   ];
 
   const handleRunDayChange = (
@@ -257,57 +256,6 @@ const [targetDistance, setTargetDistance] = useState<number>(
             className="mt-1"
           />
 
-          <Button
-            type="button"
-            onClick={() => setShowAdvanced((p) => !p)}
-            className="text-primary underline block w-auto bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
-          >
-            {showAdvanced ? "Hide Advanced" : "Show Advanced"}
-          </Button>
-
-          {showAdvanced && (
-            <div className="border rounded p-4 space-y-4">
-              <Input
-                label="Runs per Week"
-                name="runsPerWeek"
-                type="number"
-                min={2}
-                max={5}
-                value={String(runsPerWeek)}
-                onChange={(_n, v) => setRunsPerWeek(Number(v))}
-                className="mt-1"
-              />
-              <Input
-                label="Cross Training Days"
-                name="crossDays"
-                type="number"
-                min={0}
-                max={7 - runsPerWeek}
-                value={String(crossTrainingDays)}
-                onChange={(_n, v) =>
-                  setCrossTrainingDays(Math.min(7 - runsPerWeek, Number(v)))
-                }
-                className="mt-1"
-              />
-              <div className="flex flex-col space-y-2">
-                <span className="font-semibold">Run Days</span>
-                {runTypes.map((t) => (
-                  <SelectField
-                    key={t}
-                    label={t.charAt(0).toUpperCase() + t.slice(1)}
-                    name={t}
-                    options={[
-                      { value: "", label: "--" },
-                      ...days.map((d) => ({ value: d, label: d })),
-                    ]}
-                    value={runTypeDays[t] ?? ""}
-                    onChange={(_n, v) => handleRunDayChange(t, v as DayOfWeek)}
-                    className="mt-1"
-                  />
-                ))}
-              </div>
-            </div>
-          )}
           {/* Goal Input Mode */}
           <ToggleSwitch
             checked={useTotalTime}
@@ -335,12 +283,76 @@ const [targetDistance, setTargetDistance] = useState<number>(
               className="mt-1"
             />
           )}
-          <Button
-            type="submit"
-            className="w-full bg-primary p-2 rounded hover:bg-primary hover:opacity-80 block w-auto text-foreground bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
-          >
-            Generate Plan
-          </Button>
+          <div className="flex items-center w-full space-x-2">
+            <Button
+              type="button"
+              onClick={() => setShowAdvanced((p) => !p)}
+              className="w-auto text-foreground bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from focus:ring-0"
+            >
+              {showAdvanced ? "Hide Advanced" : "Show Advanced"}
+            </Button>
+          </div>
+          {showAdvanced && (
+            <div className="space-y-4">
+              {/* Runs Per Week */}
+              <Input
+                label="Runs Per Week"
+                name="runsPerWeek"
+                type="number"
+                min={1}
+                max={7}
+                value={String(runsPerWeek)}
+                onChange={(_n, v) => setRunsPerWeek(Number(v))}
+                className="mt-1"
+              />
+              {/* Cross Training Days */}
+              <Input
+                label="Cross Training Days"
+                name="crossTrainingDays"
+                type="number"
+                min={0}
+                max={7 - runsPerWeek}
+                value={String(crossTrainingDays)}
+                onChange={(_n, v) => setCrossTrainingDays(Number(v))}
+                className="mt-1"
+              />
+              {/* VDOT */}
+              <Input
+                label="VDOT"
+                name="vdot"
+                type="number"
+                min={20}
+                max={60}
+                value={String(vdot)}
+                onChange={(_n, v) => setVdot(Number(v))}
+                className="mt-1"
+              />
+              {/* Run Type Days
+              <div className="grid grid-cols-2 gap-4">
+                {runTypes.map((type) => (
+                  <SelectField
+                    key={type}
+                    label={`${type.charAt(0).toUpperCase() + type.slice(1)} Day`}
+                    name={`runType-${type}`}
+                    options={[
+                      { value: "", label: "None" },
+                      ...days.map((day) => ({ value: day, label: day })),
+                    ]}
+                    value={runTypeDays[type] || ""}
+                    onChange={(_n, v) => handleRunDayChange(type, v as DayOfWeek)}
+                  />
+                ))}
+              </div> */}
+            </div>
+          )}
+          <div className="flex-1 flex justify-center">
+            <Button
+              type="submit"
+              className="w-auto text-foreground bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from focus:ring-0"
+            >
+              Generate Plan
+            </Button>
+          </div>
         </form>
       )}
       {planData && (
@@ -362,12 +374,13 @@ const [targetDistance, setTargetDistance] = useState<number>(
                   name="showJson"
                   type="checkbox"
                   checked={showJson}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setShowJson(e.target.checked)}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    setShowJson(e.target.checked)
+                  }
                   className="form-checkbox"
                 />
                 <span>Show JSON</span>
               </label>
-              <span>Show JSON</span>
               {showJson && (
                 <Button
                   type="button"
