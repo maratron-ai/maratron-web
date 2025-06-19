@@ -162,7 +162,7 @@ const RunningPlanDisplay: React.FC<RunningPlanDisplayProps> = ({
             <div className="mb-4 flex justify-center gap-2">
               <Button
                 onClick={() => setIsEditable((e) => !e)}
-                className="border-none bg-transparent text-foreground hover:bg-brand-from hover:text-background"
+                className="border-none bg-transparent text-foreground hover:bg-brand-from hover:text-background focus:ring-0"
               >
                 {isEditable ? "Cancel" : "Edit"}
               </Button>
@@ -463,7 +463,7 @@ const BulkDaySetter: React.FC<BulkDaySetterProps> = ({ planData, onPlanChange })
       <Button
         type="button"
         onClick={apply}
-        className="bg-primary px-3 py-1 rounded block w-auto text-foreground bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
+        className="bg-primary px-3 py-1 rounded block w-auto text-foreground bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from focus:ring-0"
       >
         Apply
       </Button>
