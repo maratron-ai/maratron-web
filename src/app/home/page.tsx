@@ -61,25 +61,25 @@ export default function HomePage() {
         {/* Wrap grid in a max-width container */}
         <div className="w-full px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            <Link href="/runs/new">
+            <Link href="/runs/new" style={{ textDecoration: "none" }}>
               <Card className="p-4 flex items-center gap-2 text-foreground hover:bg-primary hover:text-background transition-colors hover:border-muted-foreground">
                 <PlusCircle className="w-5 h-5" />
                 <span>Add a Run</span>
               </Card>
             </Link>
-            <Link href="/plan-generator">
+            <Link href="/plan-generator" style={{ textDecoration: "none" }}>
               <Card className="p-4 flex items-center gap-2 text-foreground hover:bg-primary hover:text-background transition-colors hover:border-muted-foreground">
                 <CalendarCheck className="w-5 h-5" />
                 <span>Generate Training Plan</span>
               </Card>
             </Link>
-            <Link href="/shoes/new">
+            <Link href="/shoes/new" style={{ textDecoration: "none" }}>
               <Card className="p-4 flex items-center gap-2 text-foreground hover:bg-primary hover:text-background transition-colors hover:border-muted-foreground">
                 <Icon iconNode={sneaker} size={24} />
                 <span>Add New Shoes</span>
               </Card>
             </Link>
-            <Link href="/profile">
+            <Link href="/profile" style={{ textDecoration: "none" }}>
               <Card className="p-4 flex items-center gap-2 text-foreground hover:bg-primary hover:text-background transition-colors hover:border-muted-foreground">
                 <User className="w-5 h-5" />
                 <span>Edit Profile</span>

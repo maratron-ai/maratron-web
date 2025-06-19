@@ -88,7 +88,7 @@ const LoginPage: React.FC = () => {
           <Button
             type="button"
             onClick={jacksonLogin}
-            className="border px-4 py-2 rounded-md hover:bg-accent hover:opacity-20 transition block w-auto text-foreground bg-transparent no-underline hover:text-background hover:no-underline hover:bg-brand-from"
+            className="block mx-auto w-auto text-foreground bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
           >
             Jackson login
           </Button>
@@ -105,7 +105,9 @@ const LoginPage: React.FC = () => {
               id="email"
               type="email"
               value={email}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setEmail(e.target.value)
+              }
               required
               className="w-full px-3 py-2 border rounded focus:outline-none focus:ring"
             />
@@ -118,7 +120,9 @@ const LoginPage: React.FC = () => {
               id="password"
               type="password"
               value={password}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setPassword(e.target.value)
+              }
               required
               className="w-full px-3 py-2 border rounded focus:outline-none focus:ring"
             />

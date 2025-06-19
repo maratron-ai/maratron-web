@@ -48,9 +48,11 @@ export default function DashboardStats() {
 
   return (
     <div className="grid grid-cols-2 gap-4">
-      <Link href="/runs">
+      <Link href="/runs" style={{ textDecoration: "none" }}>
         <Card className="p-4 text-center cursor-pointer text-foreground hover:bg-primary hover:text-background transition-colors">
-          <div className="text-2xl font-bold">{runCount}</div>
+          <div className="text-2xl font-bold hover:no-underline">
+            {runCount}
+          </div>
           <div className="text-sm">Total Runs</div>
         </Card>
       </Link>
