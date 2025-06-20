@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../api/auth/[...nextauth]/route";
-import type { SocialProfile, RunPost } from "@maratypes/social";
+import type { SocialProfile } from "@maratypes/social";
 import type { Run } from "@maratypes/run";
 import FollowUserButton from "@components/social/FollowUserButton";
 import ProfileInfoCard from "@components/social/ProfileInfoCard";
