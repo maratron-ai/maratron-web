@@ -49,9 +49,9 @@ export default function SignupPage() {
   return (
     <div className="min-h-screen bg-background">
       <section className="relative py-20 overflow-hidden flex items-center justify-center">
-        <div className="absolute inset-0 bg-background opacity-80 backdrop-blur-sm" />
+        <div className="absolute inset-0 bg-background backdrop-blur-sm" />
         <div className="relative w-full px-4 sm:px-6 lg:px-8 flex justify-center">
-          <Card className="w-full max-w-md p-8 bg-background opacity-90 dark:bg-background dark:opacity-40 shadow-xl space-y-6">
+          <Card className="w-full max-w-md p-8 bg-background dark:bg-background shadow-xl space-y-6">
             <h1 className="text-3xl font-bold text-center">
               Create Your Account
             </h1>

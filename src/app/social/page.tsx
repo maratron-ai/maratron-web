@@ -56,13 +56,15 @@ export default function SocialHomePage() {
   if (!profile) {
     return (
       <main className="w-full px-4 sm:px-6 lg:px-8 py-6 space-y-2">
-        <p>Create your social profile first.</p>
-        <Button
-          asChild
-          className="block mx-auto w-auto text-foreground bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
-        >
-          <Link href="/social/profile/new">Create Social Profile</Link>
-        </Button>
+        <div className="flex flex-col items-center text-center pt-8 space-y-4">
+          <h3>You don't have a social profile yet!</h3>
+          <Button
+            asChild
+            className="text-foreground bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
+          >
+            <Link href="/social/profile/new">Create Social Profile</Link>
+          </Button>
+        </div>
       </main>
     );
   }

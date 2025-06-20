@@ -173,8 +173,8 @@ export default function WeeklyRuns() {
                   {r.mileage} {r.unit} @ {r.targetPace.pace}
                 </p>
                 {r.notes && <p className="text-sm">{r.notes}</p>}
-                <label className="block text-sm mt-1">
-                  <span className="mr-2">Day:</span>
+                <label className="block text-sm mt-1 pt-2">
+                  {/* <span className="mr-2">Day:</span> */}
                   <Select
                     value={r.day || "Sunday"}
                     onValueChange={(val) => changeDay(i, val as typeof days[number])}

@@ -53,7 +53,6 @@ export default function VDOTEstimator({ userId, onComplete }: Props) {
             { value: "5k", label: "5K" },
             { value: "10k", label: "10K" },
           ]}
-          className="w-full h-10 rounded-md border border-accent-2 bg-accent-2 opacity-80 px-2 py-1 text-sm text-foreground ring-offset-background focus:outline-none focus:ring-2 focus:ring-accent-2 focus:ring-offset-2"
         />
       </div>
       <div className="space-y-1">
