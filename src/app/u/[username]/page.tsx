@@ -5,9 +5,7 @@ import type { SocialProfile, RunPost } from "@maratypes/social";
 import type { Run } from "@maratypes/run";
 import FollowUserButton from "@components/social/FollowUserButton";
 import ProfileInfoCard from "@components/social/ProfileInfoCard";
-import LikeButton from "@components/social/LikeButton";
-import CommentSection from "@components/social/CommentSection";
-import { Card } from "@components/ui";
+import PostList from "@components/social/PostList";
 import { prisma } from "@lib/prisma";
 import { PROFILE_POST_LIMIT } from "@lib/socialLimits";
 
@@ -114,33 +112,7 @@ export default async function UserProfilePage({ params }: Props) {
         </div>
         <section className="w-full space-y-6">
           <h2 className="text-xl font-semibold">Posts</h2>
-          {data.posts.length === 0 && <p>No posts yet.</p>}
-          {data.posts.map((post: RunPost) => (
-            <Card key={post.id} className="space-y-2 p-4">
-              <p className="text-base font-semibold">
-                {post.distance} mi in {post.time}
-              </p>
-              <div className="text-sm text-foreground opacity-60">
-                {new Date(post.createdAt).toLocaleString()}
-              </div>
-              {post.caption && <p className="mt-2">{post.caption}</p>}
-              {post.photoUrl && (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img src={post.photoUrl} alt="Run photo" className="mt-2 rounded-md" />
-              )}
-              <div className="flex gap-2 mt-2 items-start">
-                <LikeButton
-                  postId={post.id}
-                  initialLiked={false}
-                  initialCount={post._count?.likes ?? 0}
-                />
-                <CommentSection
-                  postId={post.id}
-                  initialCount={post._count?.comments ?? 0}
-                />
-              </div>
-            </Card>
-          ))}
+          {data.posts.length === 0 ? <p>No posts yet.</p> : <PostList posts={data.posts} />}
         </section>
       </main>
     </div>
