@@ -7,7 +7,7 @@ import { RunningPlanData, WeekPlan, PlannedRun } from "@maratypes/runningPlan";
 import { DayOfWeek } from "@maratypes/basics";
 import { setDayForRunType } from "@utils/running/setRunDay";
 import { parsePace, formatPace } from "@utils/running/paces";
-import { Button } from "@components/ui";
+import { Button, Checkbox, Label } from "@components/ui";
 import { Input } from "@components/ui/input";
 import { SelectField } from "@components/ui/FormField";
 import { useRouter } from "next/navigation";
@@ -422,22 +422,22 @@ const CollapsibleWeek: React.FC<CollapsibleWeekProps> = ({
                           className="border p-1 rounded text-foreground w-full"
                         />
                       </label>
-                      <label className="block">
-                        <Input
-                          type="checkbox"
+                      <div className="flex items-center gap-2">
+                        <Checkbox
+                          id={`run-${weekIndex}-${index}-edit-done`}
                           checked={run.done || false}
-                          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                            updateRun(
-                              weekIndex,
-                              index,
-                              "done",
-                              e.target.checked
-                            )
+                          onCheckedChange={(checked: boolean) =>
+                            updateRun(weekIndex, index, "done", Boolean(checked))
                           }
-                          className="mr-2"
+                          className="h-4 w-4 bg-foreground text-background"
                         />
-                        Mark done
-                      </label>
+                        <Label
+                          htmlFor={`run-${weekIndex}-${index}-edit-done`}
+                          className="text-sm"
+                        >
+                          Mark done
+                        </Label>
+                      </div>
                     </div>
                   ) : (
                     <>
@@ -468,23 +468,23 @@ const CollapsibleWeek: React.FC<CollapsibleWeekProps> = ({
                         </p>
                       )}
                       {typeof run.done !== "undefined" && (
-                        <p>
-                          <Input
-                            type="checkbox"
+                        <div className="flex items-center gap-2">
+                          <Checkbox
+                            id={`run-${weekIndex}-${index}-view-done`}
                             checked={run.done}
-                            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                              updateRun(
-                                weekIndex,
-                                index,
-                                "done",
-                                e.target.checked
-                              )
+                            onCheckedChange={(checked: boolean) =>
+                              updateRun(weekIndex, index, "done", Boolean(checked))
                             }
-                            className="mr-2"
+                            className="h-4 w-4 bg-foreground text-background"
                             disabled={editable}
                           />
-                          <span>Done</span>
-                        </p>
+                          <Label
+                            htmlFor={`run-${weekIndex}-${index}-view-done`}
+                            className="text-sm"
+                          >
+                            Done
+                          </Label>
+                        </div>
                       )}
                     </>
                   )}
