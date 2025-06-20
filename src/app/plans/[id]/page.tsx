@@ -74,6 +74,25 @@ export default function PlanPage({ params }: PageProps) {
     }
   };
 
+  const handleStartNow = async (updated: RunningPlan["planData"]) => {
+    if (!plan?.id) return;
+    try {
+      const result: RunningPlan = await updateRunningPlan(plan.id, {
+        planData: updated,
+        startDate: updated.startDate,
+        endDate: updated.endDate,
+        active: true,
+      });
+      setPlan(result);
+      setPlanData(updated);
+      if (typeof window !== "undefined") {
+        window.dispatchEvent(new Event("activePlanChanged"));
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   return (
     <main className="w-full px-4 sm:px-6 lg:px-8 py-4 space-y-4">
       <h1 className="text-2xl font-bold mb-4">{plan.name}</h1>
@@ -84,6 +103,7 @@ export default function PlanPage({ params }: PageProps) {
           allowEditable
           onPlanChange={setPlanData}
           onSave={handleSave}
+          onStartNow={handleStartNow}
         />
       )}
     </main>

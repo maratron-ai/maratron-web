@@ -40,6 +40,11 @@ interface RunningPlanDisplayProps {
    * existing plan. The updated plan data is provided.
    */
   onSave?: (planData: RunningPlanData) => Promise<void> | void;
+  /**
+   * Callback invoked when the "Start Now" button is clicked. Useful for
+   * persisting the new start date or toggling active state.
+   */
+  onStartNow?: (planData: RunningPlanData) => Promise<void> | void;
 }
 
 const RunningPlanDisplay: React.FC<RunningPlanDisplayProps> = ({
@@ -52,6 +57,7 @@ const RunningPlanDisplay: React.FC<RunningPlanDisplayProps> = ({
   onPlanChange,
   onPlanNameChange,
   onSave,
+  onStartNow,
 }) => {
   const { profile: user } = useUser();
   const [editingName, setEditingName] = useState(false);
@@ -101,14 +107,16 @@ const RunningPlanDisplay: React.FC<RunningPlanDisplayProps> = ({
     onPlanChange({ ...planData, endDate: date, schedule: sched });
   };
 
-  const startToday = () => {
+  const startToday = async () => {
     const today = new Date().toISOString().slice(0, 10);
-    if (!onPlanChange) return;
     const updated = assignDatesToPlan(planData, {
       startDate: today,
       endDate: planData.endDate,
     });
-    onPlanChange(updated);
+    onPlanChange?.(updated);
+    if (onStartNow) {
+      await onStartNow(updated);
+    }
   };
 
   const handleSave = async () => {
