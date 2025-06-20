@@ -316,7 +316,7 @@ const CollapsibleWeek: React.FC<CollapsibleWeekProps> = ({
     >
       <div
         className={`flex justify-between items-center p-4 cursor-pointer ${
-          isWeekComplete ? "bg-accent" : "bg-accent opacity-30"
+          isWeekComplete ? "bg-accent" : "bg-accent-2 opacity-80"
         }`}
         onClick={() => setIsOpen((prev) => !prev)}
       >
@@ -333,7 +333,7 @@ const CollapsibleWeek: React.FC<CollapsibleWeekProps> = ({
       {isOpen && (
         <div
           className={`p-4 text-foreground ${
-            isWeekComplete ? "bg-background" : "bg-accent opacity-50"
+            isWeekComplete ? "bg-background" : "bg-accent-2 opacity-80"
           }`}
         >
           <p className="mb-2">Start: {weekPlan.startDate?.slice(0, 10)}</p>
@@ -360,7 +360,6 @@ const CollapsibleWeek: React.FC<CollapsibleWeekProps> = ({
                           onChange={(_, value) =>
                             updateRun(weekIndex, index, "type", value)
                           }
-                          className="h-8 rounded-md border border-accent-2 bg-accent-2 opacity-80 p-1 text-foreground ring-offset-background focus:outline-none focus:ring-2 focus:ring-accent-2 focus:ring-offset-2"
                         />
                       </label>
                       <label className="block">
@@ -410,7 +409,6 @@ const CollapsibleWeek: React.FC<CollapsibleWeekProps> = ({
                               value as DayOfWeek
                             )
                           }
-                          className="h-8 rounded-md border border-accent-2 bg-accent-2 opacity-80 p-1 text-foreground ring-offset-background focus:outline-none focus:ring-2 focus:ring-accent-2 focus:ring-offset-2"
                         />
                       </label>
                       <label className="block">
@@ -483,7 +481,7 @@ const CollapsibleWeek: React.FC<CollapsibleWeekProps> = ({
                               )
                             }
                             className="mr-2"
-                            disabled={!editable}
+                            disabled={editable}
                           />
                           <span>Done</span>
                         </p>
