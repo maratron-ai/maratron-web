@@ -57,7 +57,7 @@ export default function SocialHomePage() {
     return (
       <main className="w-full px-4 sm:px-6 lg:px-8 py-6 space-y-2">
         <div className="flex flex-col items-center text-center pt-8 space-y-4">
-          <h3>You don't have a social profile yet!</h3>
+          <h3>You don&apo;st have a social profile yet!</h3>
           <Button
             asChild
             className="text-foreground bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
