@@ -50,7 +50,7 @@ export default function PostList({ posts }: Props) {
             <img
               src={post.photoUrl}
               alt="Run photo"
-              className="mt-2 rounded-md h-64 w-full object-cover cursor-pointer"
+              className="mt-2 rounded-md h-64 w-64 object-cover cursor-pointer"
               onClick={() => setSelectedImage(post.photoUrl!)}
             />
           )}

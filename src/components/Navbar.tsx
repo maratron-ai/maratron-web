@@ -124,13 +124,13 @@ export default function Navbar() {
                       alt={session.user.name || "User Avatar"}
                       width={32}
                       height={32}
-                      className="w-8 h-8 rounded-full object-cover border border-muted bg-muted"
+                      className="w-8 h-8 rounded-full object-cover border border-brand-to bg-brand-from"
                       priority
                     />
                   ) : (
                     <DefaultAvatar
                       size={32}
-                      className="border border-brand-to bg-brand-from"
+                      className="border border-brand-to bg-brand-from "
                     />
                   )}
                 </Button>
@@ -185,7 +185,7 @@ export default function Navbar() {
                   alt={session.user.name || "User Avatar"}
                   width={32}
                   height={32}
-                  className="w-8 h-8 rounded-full object-cover border border-muted bg-muted"
+                  className="w-8 h-8 rounded-full object-cover border border-muted border-brand-to bg-brand-from"
                   priority
                 />
               ) : (
