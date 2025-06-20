@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import type { RunPost } from "@maratypes/social";
 import { useSession } from "next-auth/react";
@@ -20,6 +20,9 @@ export default function SocialFeed({ groupId }: Props) {
   const { profile, loading: profileLoading } = useSocialProfile();
   const [posts, setPosts] = useState<RunPost[]>([]);
   const [loading, setLoading] = useState(true);
+  const [visibleCount, setVisibleCount] = useState(10);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const bottomRef = useRef<HTMLDivElement | null>(null);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   const fetchFeed = async () => {
@@ -30,6 +33,7 @@ export default function SocialFeed({ groupId }: Props) {
         : `/api/social/feed?userId=${session.user.id}`;
       const { data } = await axios.get<RunPost[]>(url);
       setPosts(data);
+      setVisibleCount(10);
     } catch (err) {
       console.error(err);
     } finally {
@@ -41,6 +45,22 @@ export default function SocialFeed({ groupId }: Props) {
     fetchFeed();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session?.user?.id, profile?.id, groupId]);
+
+  useEffect(() => {
+    if (typeof IntersectionObserver === "undefined") return;
+    if (!bottomRef.current) return;
+    const observer = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting && posts.length > visibleCount && !loadingMore) {
+        setLoadingMore(true);
+        setTimeout(() => {
+          setVisibleCount((c) => c + 10);
+          setLoadingMore(false);
+        }, 1000);
+      }
+    });
+    observer.observe(bottomRef.current);
+    return () => observer.disconnect();
+  }, [posts.length, visibleCount, loadingMore]);
 
   if (!session?.user?.id) return <p>Please log in to view your feed.</p>;
   if (profileLoading || loading)
@@ -68,7 +88,7 @@ export default function SocialFeed({ groupId }: Props) {
     <div className="space-y-6">
       <CreateSocialPost onCreated={fetchFeed} groupId={groupId} />
       {posts.length === 0 && <p>No posts yet.</p>}
-      {posts.map((post) => (
+      {posts.slice(0, visibleCount).map((post) => (
         <div key={post.id} className="border rounded-md p-4">
           <div className="flex items-center gap-2 mb-1">
             <Image
@@ -118,6 +138,12 @@ export default function SocialFeed({ groupId }: Props) {
           </div>
         </div>
       ))}
+      <div ref={bottomRef} className="h-1" />
+      {loadingMore && (
+        <div className="flex justify-center py-2">
+          <Spinner className="h-4 w-4" />
+        </div>
+      )}
       <Dialog
         open={!!selectedImage}
         onOpenChange={(o) => !o && setSelectedImage(null)}

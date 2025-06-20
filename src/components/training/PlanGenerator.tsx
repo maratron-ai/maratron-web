@@ -64,9 +64,19 @@ const [targetDistance, setTargetDistance] = useState<number>(
   const [runsPerWeek, setRunsPerWeek] = useState<number>(4);
   const [crossTrainingDays, setCrossTrainingDays] = useState<number>(0);
   const [showAdvanced, setShowAdvanced] = useState<boolean>(false);
-  const [runTypeDays, setRunTypeDays] = useState<
+  /*
+   * Advanced run scheduling options. These are currently disabled but
+   * retained for future enhancements.
+   */
+  const [_runTypeDays] = useState<
     Partial<Record<PlannedRun["type"], DayOfWeek>>
   >({});
+  /*
+   * The following variables and handler will be used for advanced run
+   * scheduling features. They are currently unused but kept for future
+   * development.
+   */
+  /*
   const days: DayOfWeek[] = [
     "Sunday",
     "Monday",
@@ -76,7 +86,7 @@ const [targetDistance, setTargetDistance] = useState<number>(
     "Friday",
     "Saturday",
   ];
-  const runTypes: PlannedRun["type"][] = [ // doesn't include race
+  const runTypes: PlannedRun["type"][] = [
     "easy",
     "tempo",
     "interval",
@@ -92,6 +102,7 @@ const [targetDistance, setTargetDistance] = useState<number>(
       ...(day ? { [type]: day } : { [type]: undefined }),
     }));
   };
+  */
 
   useEffect(() => {
     if (crossTrainingDays > 7 - runsPerWeek) {
@@ -150,7 +161,7 @@ const [targetDistance, setTargetDistance] = useState<number>(
       targetTotalTime: useTotalTime ? targetTotalTime : undefined,
       runsPerWeek,
       crossTrainingDays,
-      runTypeDays,
+      _runTypeDays,
     };
     let plan: RunningPlanData;
     switch (raceType) {
