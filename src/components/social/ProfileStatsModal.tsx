@@ -1,6 +1,6 @@
 "use client";
 
-import { Dialog, DialogContent } from "@components/ui";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@components/ui";
 import { Button } from "@components/ui/button";
 import { X } from "lucide-react";
 
@@ -29,7 +29,9 @@ export default function ProfileStatsModal({
         >
           <X className="h-4 w-4" />
         </Button>
-        <h3 className="text-lg font-semibold text-center mb-2">{title}</h3>
+        <DialogHeader>
+          <DialogTitle className="mb-2">{title}</DialogTitle>
+        </DialogHeader>
         <div className="max-h-60 overflow-y-auto text-sm space-y-1">
           {children}
         </div>
