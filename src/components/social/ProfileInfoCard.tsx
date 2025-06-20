@@ -7,6 +7,7 @@ import type { SocialProfile } from "@maratypes/social";
 import type { User } from "@maratypes/user";
 import type { Run } from "@maratypes/run";
 import { Card, Button, Dialog, DialogContent } from "@components/ui";
+import FollowUserButton from "@components/social/FollowUserButton";
 
 interface Props {
   profile: SocialProfile;
@@ -103,7 +104,7 @@ export default function ProfileInfoCard({
           </span>
         </div>
       </div>
-      {isSelf && (
+      {isSelf ? (
         <Button
           asChild
           size="sm"
@@ -111,6 +112,10 @@ export default function ProfileInfoCard({
         >
           <Link href="/social/profile/edit">Edit</Link>
         </Button>
+      ) : (
+        <div className="absolute top-4 right-4">
+          <FollowUserButton profileId={profile.id} />
+        </div>
       )}
     </Card>
 
