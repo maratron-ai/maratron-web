@@ -16,10 +16,33 @@ describe("assignDatesToPlan", () => {
     const str = future.toISOString().slice(0, 10);
     const result = assignDatesToPlan(data, { startDate: str });
     const start = new Date(str);
-    const startOfWeek = new Date(start);
-    startOfWeek.setUTCDate(start.getUTCDate() - start.getUTCDay());
-    expect(result.schedule[0].startDate).toBe(startOfWeek.toISOString());
+    expect(result.schedule[0].startDate).toBe(start.toISOString());
     expect(result.schedule[0].runs[0].date).toBe(`${str}T00:00:00.000Z`);
+  });
+
+  it("uses partial first week and snaps following weeks to Sunday", () => {
+    const plan: RunningPlanData = {
+      weeks: 3,
+      schedule: [
+        { weekNumber: 1, weeklyMileage: 10, unit: "miles", runs: [] },
+        { weekNumber: 2, weeklyMileage: 10, unit: "miles", runs: [] },
+        { weekNumber: 3, weeklyMileage: 10, unit: "miles", runs: [] },
+      ],
+    };
+    const start = new Date();
+    start.setUTCDate(start.getUTCDate() + 2); // future arbitrary weekday
+    start.setUTCHours(0, 0, 0, 0);
+    const end = new Date(start);
+    end.setUTCDate(end.getUTCDate() + 24); // three weeks later
+    const result = assignDatesToPlan(plan, {
+      startDate: start.toISOString().slice(0, 10),
+      endDate: end.toISOString().slice(0, 10),
+    });
+    expect(result.schedule[0].startDate).toBe(start.toISOString());
+    const week2Start = new Date(start);
+    week2Start.setUTCDate(week2Start.getUTCDate() + (7 - week2Start.getUTCDay()));
+    week2Start.setUTCHours(0, 0, 0, 0);
+    expect(result.schedule[1].startDate).toBe(week2Start.toISOString());
   });
 
   it("prevents past start dates", () => {

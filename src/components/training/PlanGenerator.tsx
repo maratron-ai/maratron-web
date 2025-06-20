@@ -67,7 +67,8 @@ const [targetDistance, setTargetDistance] = useState<number>(
   const [runTypeDays, setRunTypeDays] = useState<
     Partial<Record<PlannedRun["type"], DayOfWeek>>
   >({});
-  const days: DayOfWeek[] = [
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const _days: DayOfWeek[] = [
     "Sunday",
     "Monday",
     "Tuesday",
@@ -76,14 +77,16 @@ const [targetDistance, setTargetDistance] = useState<number>(
     "Friday",
     "Saturday",
   ];
-  const runTypes: PlannedRun["type"][] = [ // doesn't include race
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const _runTypes: PlannedRun["type"][] = [ // doesn't include race
     "easy",
     "tempo",
     "interval",
     "long",
   ];
 
-  const handleRunDayChange = (
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const _handleRunDayChange = (
     type: PlannedRun["type"],
     day: DayOfWeek | ""
   ) => {

@@ -14,7 +14,7 @@ interface Props {
   limit?: number;
 }
 
-export default function ProfileSearch({ limit = 1 }: Props) {
+export default function ProfileSearch({ limit = 5 }: Props) {
   const [visibleCount, setVisibleCount] = useState<number>(limit);
   const { data: session } = useSession();
   const [query, setQuery] = useState("");

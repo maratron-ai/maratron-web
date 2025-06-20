@@ -65,9 +65,6 @@ export function assignDatesToPlan(
   if (startDate) {
     baseStart = startOfDayUTC(parseDateUTC(startDate));
     finalEnd = endDate ? startOfDayUTC(parseDateUTC(endDate)) : addWeeks(baseStart, weeks);
-    if (Math.abs(finalEnd.getTime() - baseStart.getTime()) !== weeks * 7 * 24 * 60 * 60 * 1000) {
-      finalEnd = addWeeks(baseStart, weeks);
-    }
   } else if (endDate) {
     finalEnd = startOfDayUTC(parseDateUTC(endDate));
     baseStart = addWeeks(finalEnd, -weeks);
@@ -83,7 +80,7 @@ export function assignDatesToPlan(
   }
 
   const schedule = plan.schedule.map((week, wi) => {
-    const weekStart = startOfWeekSunday(addWeeks(baseStart, wi));
+    const weekStart = wi === 0 ? baseStart : startOfWeekSunday(addWeeks(baseStart, wi));
     const runs = week.runs.map((r) => {
       let date: Date;
       if (
@@ -94,9 +91,12 @@ export function assignDatesToPlan(
         date = startOfDayUTC(parseDateUTC(endDate));
       } else {
         const idx = r.day ? dayIndex(r.day) : 0;
-        date = addDays(weekStart, idx);
-        if (wi === 0 && date < baseStart) {
-          date = baseStart;
+        if (wi === 0) {
+          const startDow = baseStart.getUTCDay();
+          const diff = idx - startDow;
+          date = addDays(baseStart, diff >= 0 ? diff : 7 + diff);
+        } else {
+          date = addDays(weekStart, idx);
         }
       }
       return { ...r, date: date.toISOString() };
