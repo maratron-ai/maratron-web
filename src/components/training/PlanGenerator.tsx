@@ -2,8 +2,8 @@
 import React, { useState, useEffect } from "react";
 import { useUser } from "@hooks/useUser";
 import { TrainingLevel } from "@maratypes/user";
-import type { DayOfWeek } from "@maratypes/basics";
-import type { PlannedRun } from "@maratypes/runningPlan";
+// import type { DayOfWeek } from "@maratypes/basics";
+// import type { PlannedRun } from "@maratypes/runningPlan";
 import ToggleSwitch from "@components/ToggleSwitch";
 import { Spinner } from "@components/ui";
 import { Input } from "@components/ui/input";
@@ -64,45 +64,34 @@ const [targetDistance, setTargetDistance] = useState<number>(
   const [runsPerWeek, setRunsPerWeek] = useState<number>(4);
   const [crossTrainingDays, setCrossTrainingDays] = useState<number>(0);
   const [showAdvanced, setShowAdvanced] = useState<boolean>(false);
-  /*
-   * Advanced run scheduling options. These are currently disabled but
-   * retained for future enhancements.
-   */
-  const [_runTypeDays] = useState<
-    Partial<Record<PlannedRun["type"], DayOfWeek>>
-  >({});
-  /*
-   * The following variables and handler will be used for advanced run
-   * scheduling features. They are currently unused but kept for future
-   * development.
-   */
-  /*
-  const days: DayOfWeek[] = [
-    "Sunday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-  ];
-  const runTypes: PlannedRun["type"][] = [
-    "easy",
-    "tempo",
-    "interval",
-    "long",
-  ];
+  // const [runTypeDays, setRunTypeDays] = useState<
+  //   Partial<Record<PlannedRun["type"], DayOfWeek>>
+  // >({});
+  // const days: DayOfWeek[] = [
+  //   "Sunday",
+  //   "Monday",
+  //   "Tuesday",
+  //   "Wednesday",
+  //   "Thursday",
+  //   "Friday",
+  //   "Saturday",
+  // ];
+  // const runTypes: PlannedRun["type"][] = [ // doesn't include race
+  //   "easy",
+  //   "tempo",
+  //   "interval",
+  //   "long",
+  // ];
 
-  const handleRunDayChange = (
-    type: PlannedRun["type"],
-    day: DayOfWeek | ""
-  ) => {
-    setRunTypeDays((prev) => ({
-      ...prev,
-      ...(day ? { [type]: day } : { [type]: undefined }),
-    }));
-  };
-  */
+  // const handleRunDayChange = (
+  //   type: PlannedRun["type"],
+  //   day: DayOfWeek | ""
+  // ) => {
+  //   setRunTypeDays((prev) => ({
+  //     ...prev,
+  //     ...(day ? { [type]: day } : { [type]: undefined }),
+  //   }));
+  // };
 
   useEffect(() => {
     if (crossTrainingDays > 7 - runsPerWeek) {
@@ -161,7 +150,7 @@ const [targetDistance, setTargetDistance] = useState<number>(
       targetTotalTime: useTotalTime ? targetTotalTime : undefined,
       runsPerWeek,
       crossTrainingDays,
-      _runTypeDays,
+      // runTypeDays,
     };
     let plan: RunningPlanData;
     switch (raceType) {

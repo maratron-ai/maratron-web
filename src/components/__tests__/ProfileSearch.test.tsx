@@ -19,7 +19,7 @@ describe("ProfileSearch", () => {
 
   it("requires login", () => {
     mockedSession.mockReturnValue({ data: null });
-    render(<ProfileSearch />);
+    render(<ProfileSearch limit={5} />);
     expect(screen.getByText(/please log in/i)).toBeInTheDocument();
   });
 
@@ -36,7 +36,7 @@ describe("ProfileSearch", () => {
     });
     const user = userEvent.setup();
 
-    render(<ProfileSearch />);
+    render(<ProfileSearch limit={5} />);
 
     await waitFor(() => expect(mockedAxios.get).toHaveBeenCalledWith("/api/social/profile/byUser/u1"));
     await waitFor(() => screen.getByPlaceholderText(/search runners/i));
@@ -69,7 +69,7 @@ describe("ProfileSearch", () => {
     });
     const user = userEvent.setup();
 
-    render(<ProfileSearch />);
+    render(<ProfileSearch limit={5} />);
 
     await waitFor(() =>
       expect(mockedAxios.get).toHaveBeenCalledWith(

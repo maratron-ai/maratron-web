@@ -1,7 +1,8 @@
 import { notFound } from "next/navigation";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../api/auth/[...nextauth]/route";
-import type { SocialProfile } from "@maratypes/social";
+import type { SocialProfile, RunPost } from "@maratypes/social";
+import type { Run } from "@maratypes/run";
 import FollowUserButton from "@components/social/FollowUserButton";
 import ProfileInfoCard from "@components/social/ProfileInfoCard";
 import PostList from "@components/social/PostList";
@@ -40,6 +41,11 @@ async function getProfileData(username: string) {
   const likeActivity = await prisma.like.count({ where: { socialProfileId: profile.id } });
   const commentActivity = await prisma.comment.count({ where: { socialProfileId: profile.id } });
 
+  const runs: Run[] = await prisma.run.findMany({
+    where: { userId: profile.userId },
+    orderBy: { date: "desc" },
+  });
+
   return {
     id: profile.id,
     userId: profile.userId,
@@ -55,6 +61,7 @@ async function getProfileData(username: string) {
     followerCount: profile._count.followers,
     followingCount: profile._count.following,
     posts,
+    runs,
     followers: profile.followers.map((f) => f.follower),
     following: profile.following.map((f) => f.following),
     likeActivity,
@@ -97,6 +104,9 @@ export default async function UserProfilePage({ params }: Props) {
             profile={profile}
             user={{ avatarUrl: data.avatarUrl ?? undefined, createdAt: data.userCreatedAt }}
             isSelf={isSelf}
+            followers={data.followers}
+            following={data.following}
+            runs={data.runs}
           />
           {!isSelf && <FollowUserButton profileId={data.id} />}
         </div>
