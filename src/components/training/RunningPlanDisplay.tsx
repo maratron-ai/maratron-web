@@ -11,6 +11,7 @@ import { Button } from "@components/ui";
 import { Input } from "@components/ui/input";
 import { SelectField } from "@components/ui/FormField";
 import { useRouter } from "next/navigation";
+import { assignDatesToPlan } from "@utils/running/planDates";
 
 interface RunningPlanDisplayProps {
   planData: RunningPlanData;
@@ -71,6 +72,43 @@ const RunningPlanDisplay: React.FC<RunningPlanDisplayProps> = ({
       return { ...w, runs };
     });
     onPlanChange({ ...planData, schedule: newSchedule });
+  };
+
+  const updateStartDate = (date: string) => {
+    if (!onPlanChange) return;
+    const updated = assignDatesToPlan(planData, {
+      startDate: date,
+      endDate: planData.endDate,
+    });
+    onPlanChange(updated);
+  };
+
+  const updateEndDateCreation = (date: string) => {
+    if (!onPlanChange) return;
+    const updated = assignDatesToPlan(planData, {
+      startDate: planData.startDate,
+      endDate: date,
+    });
+    onPlanChange(updated);
+  };
+
+  const updateEndDateSaved = (date: string) => {
+    if (!onPlanChange) return;
+    const recalculated = assignDatesToPlan(planData, { endDate: date });
+    const last = recalculated.schedule[recalculated.schedule.length - 1];
+    const sched = [...planData.schedule];
+    sched[sched.length - 1] = last;
+    onPlanChange({ ...planData, endDate: date, schedule: sched });
+  };
+
+  const startToday = () => {
+    const today = new Date().toISOString().slice(0, 10);
+    if (!onPlanChange) return;
+    const updated = assignDatesToPlan(planData, {
+      startDate: today,
+      endDate: planData.endDate,
+    });
+    onPlanChange(updated);
   };
 
   const handleSave = async () => {
@@ -137,19 +175,36 @@ const RunningPlanDisplay: React.FC<RunningPlanDisplayProps> = ({
             >
               {isEditable ? "Done" : "Edit"}
             </Button>
+            <Button
+              type="button"
+              onClick={startToday}
+              className="bg-muted-foreground text-underline px-4 py-2 rounded hover:bg-brand-to hover:text-background block w-auto text-foreground bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from focus:ring-0"
+            >
+              Start Now
+            </Button>
           </div>
           <div className="mb-4 justify-center flex gap-8">
             <div>
               <label className="block mb-1 font-semibold">Start Date</label>
-              <p className="text-foreground">
-                {planData.startDate?.slice(0, 10)}
-              </p>
+              <Input
+                type="date"
+                value={planData.startDate?.slice(0, 10) || ""}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  updateStartDate(e.target.value)
+                }
+                className="text-foreground"
+              />
             </div>
             <div>
               <label className="block mb-1 font-semibold">Race Date</label>
-              <p className="text-foreground">
-                {planData.endDate?.slice(0, 10)}
-              </p>
+              <Input
+                type="date"
+                value={planData.endDate?.slice(0, 10) || ""}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  updateEndDateCreation(e.target.value)
+                }
+                className="text-foreground"
+              />
             </div>
           </div>
         </>
@@ -166,6 +221,13 @@ const RunningPlanDisplay: React.FC<RunningPlanDisplayProps> = ({
               >
                 {isEditable ? "Cancel" : "Edit"}
               </Button>
+              <Button
+                type="button"
+                onClick={startToday}
+                className="border-none bg-transparent text-foreground hover:bg-brand-from hover:text-background focus:ring-0"
+              >
+                Start Now
+              </Button>
               {isEditable && (
                 <Button
                   onClick={async () => {
@@ -179,6 +241,19 @@ const RunningPlanDisplay: React.FC<RunningPlanDisplayProps> = ({
               )}
             </div>
           )}
+          <div className="mb-4 flex justify-center">
+            <div>
+              <label className="block mb-1 font-semibold">Race Date</label>
+              <Input
+                type="date"
+                value={planData.endDate?.slice(0, 10) || ""}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  updateEndDateSaved(e.target.value)
+                }
+                className="text-foreground"
+              />
+            </div>
+          </div>
         </>
       )}
       {(isEditable || showBulkDaySetter) && (

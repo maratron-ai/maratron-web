@@ -92,7 +92,6 @@ const [targetDistance, setTargetDistance] = useState<number>(
   //     ...(day ? { [type]: day } : { [type]: undefined }),
   //   }));
   // };
-
   useEffect(() => {
     if (crossTrainingDays > 7 - runsPerWeek) {
       setCrossTrainingDays(7 - runsPerWeek);
