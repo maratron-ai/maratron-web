@@ -6,7 +6,8 @@ import { useState } from "react";
 import type { SocialProfile } from "@maratypes/social";
 import type { User } from "@maratypes/user";
 import type { Run } from "@maratypes/run";
-import { Card, Button, Dialog, DialogContent } from "@components/ui";
+import { Card, Button } from "@components/ui";
+import ProfileStatsModal from "@components/social/ProfileStatsModal";
 import FollowUserButton from "@components/social/FollowUserButton";
 
 interface Props {
@@ -119,62 +120,64 @@ export default function ProfileInfoCard({
       )}
     </Card>
 
-    <Dialog open={showRuns} onOpenChange={setShowRuns}>
-      <DialogContent>
-        <h3 className="text-lg font-semibold mb-2">Runs</h3>
-        {runs && runs.length > 0 ? (
-          <ul className="list-disc ml-4 space-y-1 text-left">
-            {runs.map((r) => (
-              <li key={r.id}>
-                {r.name || new Date(r.date).toLocaleDateString()} - {r.distance}
-                {" "}
-                {r.distanceUnit}
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p>No runs found.</p>
-        )}
-      </DialogContent>
-    </Dialog>
+    <ProfileStatsModal
+      title="Runs"
+      open={showRuns}
+      onOpenChange={setShowRuns}
+    >
+      {runs && runs.length > 0 ? (
+        <ul className="list-disc ml-4 space-y-1 text-left">
+          {runs.map((r) => (
+            <li key={r.id}>
+              {r.name || new Date(r.date).toLocaleDateString()} - {r.distance}{" "}
+              {r.distanceUnit}
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p>No runs found.</p>
+      )}
+    </ProfileStatsModal>
 
-    <Dialog open={showFollowers} onOpenChange={setShowFollowers}>
-      <DialogContent>
-        <h3 className="text-lg font-semibold mb-2">Followers</h3>
-        {followers && followers.length > 0 ? (
-          <ul className="space-y-1">
-            {followers.map((f) => (
-              <li key={f.id}>
-                <Link href={`/u/${f.username}`} className="underline">
-                  @{f.username}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p>No followers yet.</p>
-        )}
-      </DialogContent>
-    </Dialog>
+    <ProfileStatsModal
+      title="Followers"
+      open={showFollowers}
+      onOpenChange={setShowFollowers}
+    >
+      {followers && followers.length > 0 ? (
+        <ul className="space-y-1">
+          {followers.map((f) => (
+            <li key={f.id}>
+              <Link href={`/u/${f.username}`} className="underline">
+                @{f.username}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p>No followers yet.</p>
+      )}
+    </ProfileStatsModal>
 
-    <Dialog open={showFollowing} onOpenChange={setShowFollowing}>
-      <DialogContent>
-        <h3 className="text-lg font-semibold mb-2">Following</h3>
-        {following && following.length > 0 ? (
-          <ul className="space-y-1">
-            {following.map((f) => (
-              <li key={f.id}>
-                <Link href={`/u/${f.username}`} className="underline">
-                  @{f.username}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p>Not following anyone.</p>
-        )}
-      </DialogContent>
-    </Dialog>
+    <ProfileStatsModal
+      title="Following"
+      open={showFollowing}
+      onOpenChange={setShowFollowing}
+    >
+      {following && following.length > 0 ? (
+        <ul className="space-y-1">
+          {following.map((f) => (
+            <li key={f.id}>
+              <Link href={`/u/${f.username}`} className="underline">
+                @{f.username}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p>Not following anyone.</p>
+      )}
+    </ProfileStatsModal>
     </>
   );
 }
