@@ -115,3 +115,19 @@ Prisma Studio is a web-based GUI that makes it easy to view and edit your databa
    ```
 
 2. This command will open a new browser window where you can navigate your database tables and records.
+
+## Device Connections (Experimental)
+
+You can link a Garmin watch, Apple Watch, or Apple Health to your profile.
+The helper in `src/lib/api/device` posts a connection token to
+`/api/devices/connect`. The token is stored and associated with your user.
+
+```
+import { connectDevice } from "@lib/api/device";
+
+await connectDevice({ provider: "garmin", token, userId });
+```
+
+For Garmin devices, refer to Garmin's developer portal for details on obtaining
+OAuth credentials. Apple Watch and Apple Health integrations rely on HealthKit
+and WatchKit; see Apple's documentation for authorization steps.
