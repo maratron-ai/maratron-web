@@ -6,7 +6,7 @@ import { Input, Label } from "@components/ui";
 
 export interface TextFieldProps
   extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "onChange"> {
-  label: string;
+  label: React.ReactNode;
   name: string;
   value: string | number;
   editing?: boolean;
