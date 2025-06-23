@@ -107,6 +107,26 @@ export default function WeeklyRuns() {
     const run = updated.planData.schedule[weekIndex].runs[idx];
     const wasDone = run.done ?? false;
     run.done = !run.done;
+    let completionDate: Date | null = null;
+    if (!wasDone && run.done) {
+      const now = new Date();
+      completionDate = run.date ? new Date(run.date) : now;
+      if (completionDate > now) completionDate = now;
+      const defaultStr = completionDate.toISOString().slice(0, 10);
+      if (typeof window !== "undefined") {
+        const input = window.prompt(
+          "Enter completion date (YYYY-MM-DD)",
+          defaultStr
+        );
+        if (input) {
+          const parsed = new Date(input);
+          if (!isNaN(parsed.getTime())) {
+            completionDate = parsed;
+          }
+        }
+      }
+      run.date = completionDate.toISOString();
+    }
     updated.planData.schedule[weekIndex].done = updated.planData.schedule[
       weekIndex
     ].runs.every((r) => r.done);
@@ -114,7 +134,7 @@ export default function WeeklyRuns() {
       await updateRunningPlan(plan.id, { planData: updated.planData });
       if (!wasDone && run.done) {
         await createRun({
-          date: new Date().toISOString(),
+          date: run.date || new Date().toISOString(),
           duration: calculateDurationFromPace(run.mileage, run.targetPace.pace),
           distance: run.mileage,
           distanceUnit: run.unit,
