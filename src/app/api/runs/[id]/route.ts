@@ -9,7 +9,7 @@ export async function GET(
   context: { params: { id: string } }
 ) {
   try {
-    const { params } = await context
+    const { params } = context
     const { id } = params
     const run = await prisma.run.findUnique({
       where: { id },
@@ -33,7 +33,7 @@ export async function PUT(
 ) {
   try {
     const body = await request.json();
-    const { params } = await context
+    const { params } = context
     const { id } = params
     const updatedRun = await prisma.run.update({
       where: { id },
@@ -73,8 +73,8 @@ export async function DELETE(
   context: { params: { id: string } }
 ) {
   try {
-    const { params } = await context
-    const { id } = await params
+    const { params } = context
+    const { id } = params
     await prisma.run.delete({
       where: { id },
     });

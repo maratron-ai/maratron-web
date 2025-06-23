@@ -35,21 +35,21 @@ const CheckboxGroupField: React.FC<CheckboxGroupFieldProps> = ({
         <div className="flex flex-wrap gap-4">
           {options.map((opt) => (
             <label key={opt.value} className="inline-flex items-center">
-              <Input
-                id={opt.value}
-                name={name}
-                type="checkbox"
-                {...inputProps}
-                checked={value.includes(opt.value)}
-                onChange={(e) => {
-                  const next = e.target.checked
-                    ? [...value, opt.value]
-                    : value.filter((v) => v !== opt.value);
-                  onChange(name, next);
-                }}
-                value={opt.value}
-                className="rounded border-accent text-primary focus:ring-2 focus:ring-primary"
-              />
+                <Input
+                  id={opt.value}
+                  name={name}
+                  type="checkbox"
+                  {...inputProps}
+                  checked={value.includes(opt.value)}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                    const next = e.target.checked
+                      ? [...value, opt.value]
+                      : value.filter((v) => v !== opt.value);
+                    onChange(name, next);
+                  }}
+                  value={opt.value}
+                  className="rounded border-accent text-primary focus:ring-2 focus:ring-primary"
+                />
               <span className="ml-2 text-foreground dark:text-foreground">
                 {opt.label}
               </span>

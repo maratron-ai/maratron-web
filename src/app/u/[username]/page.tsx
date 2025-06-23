@@ -40,10 +40,25 @@ async function getProfileData(username: string) {
   const likeActivity = await prisma.like.count({ where: { socialProfileId: profile.id } });
   const commentActivity = await prisma.comment.count({ where: { socialProfileId: profile.id } });
 
-  const runs: Run[] = await prisma.run.findMany({
+  const dbRuns = await prisma.run.findMany({
     where: { userId: profile.userId },
     orderBy: { date: "desc" },
   });
+  const runs: Run[] = dbRuns.map((r) => ({
+    id: r.id,
+    date: r.date,
+    duration: r.duration,
+    distance: r.distance,
+    distanceUnit: r.distanceUnit,
+    trainingEnvironment: r.trainingEnvironment ?? undefined,
+    name: r.name ?? undefined,
+    pace: r.pace && r.paceUnit ? { pace: r.pace, unit: r.paceUnit } : undefined,
+    elevationGain: r.elevationGain ?? undefined,
+    elevationGainUnit: r.elevationGainUnit ?? undefined,
+    notes: r.notes ?? undefined,
+    userId: r.userId,
+    shoeId: r.shoeId ?? undefined,
+  }));
 
   return {
     id: profile.id,

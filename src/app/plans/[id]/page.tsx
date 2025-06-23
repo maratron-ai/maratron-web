@@ -79,8 +79,8 @@ export default function PlanPage({ params }: PageProps) {
     try {
       const result: RunningPlan = await updateRunningPlan(plan.id, {
         planData: updated,
-        startDate: updated.startDate,
-        endDate: updated.endDate,
+        startDate: updated.startDate ? new Date(updated.startDate) : undefined,
+        endDate: updated.endDate ? new Date(updated.endDate) : undefined,
         active: true,
       });
       setPlan(result);
