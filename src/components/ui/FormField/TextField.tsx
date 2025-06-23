@@ -30,14 +30,16 @@ const TextField: React.FC<TextFieldProps> = ({
       </Label>
 
       {editing ? (
-        <Input
-          id={name}
-          name={name}
-          value={value}
-          onChange={(e) => onChange(name, e.target.value)}
-          className="mt-1"
-          {...inputProps}
-        />
+          <Input
+            id={name}
+            name={name}
+            value={value}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              onChange(name, e.target.value)
+            }
+            className="mt-1"
+            {...inputProps}
+          />
       ) : (
         <p className="mt-1 text-foreground dark:text-foreground">{value ?? "–"}</p>
       )}

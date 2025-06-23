@@ -10,7 +10,11 @@ jest.mock("next-auth/react", () => ({ useSession: jest.fn() }));
 jest.mock("@hooks/useSocialProfile", () => ({ useSocialProfile: jest.fn() }));
 jest.mock("axios");
 
-const MockCreatePost = jest.fn(() => <div data-testid="create-post" />);
+// Allow inspecting props passed to the mocked component
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const MockCreatePost = jest.fn((props?: unknown) => (
+  <div data-testid="create-post" />
+));
 jest.mock("@components/social/CreateSocialPost", () => ({
   __esModule: true,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

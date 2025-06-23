@@ -6,8 +6,8 @@ export async function GET(
   request: NextRequest,
   context: { params: { id: string } }
 ) {
-  const { params } = await context
-  const { id } = await params
+  const { params } = context
+  const { id } = params
   try {
     const user = await prisma.user.findUnique({
       where: { id },
@@ -29,8 +29,8 @@ export async function PUT(
   request: NextRequest,
   context: { params: { id: string } }
 ) {
-  const { params } = await context;
-  const { id } = await params;
+  const { params } = context;
+  const { id } = params;
   try {
     const body = await request.json();
     const updatedUser = await prisma.user.update({
@@ -51,8 +51,8 @@ export async function DELETE(
   request: NextRequest,
   context: { params: { id: string } }
 ) {
-  const { params } = await context;
-  const { id } = await params;
+  const { params } = context;
+  const { id } = params;
   try {
     await prisma.user.delete({
       where: { id },

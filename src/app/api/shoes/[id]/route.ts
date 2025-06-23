@@ -9,7 +9,7 @@ export async function GET(
   context: { params: { id: string } }
 ) {
   try {
-    const { params } = await context
+    const { params } = context
     const { id } = params
     const shoe = await prisma.shoe.findUnique({
       where: { id },
@@ -36,7 +36,7 @@ export async function PUT(
     const body = await request.json();
     await shoeSchema.validate(body, { abortEarly: false, stripUnknown: true });
 
-    const { params } = await context
+    const { params } = context
     const { id } = params
     const updatedShoe = await prisma.shoe.update({
       where: { id },
@@ -58,7 +58,7 @@ export async function DELETE(
   context: { params: { id: string } }
 ) {
   try {
-    const { params } = await context
+    const { params } = context
     const { id } = params
     await prisma.shoe.delete({
       where: { id },
