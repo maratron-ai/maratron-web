@@ -136,18 +136,18 @@ export default function Navbar() {
                 </Button>
                 {desktopMenuOpen && (
                   <div className="absolute right-0 mt-2 w-40 bg-background border border-accent rounded shadow-md z-50 flex flex-col items-center">
-                    <Link
-                      href="/profile"
-                      className="block w-full text-center py-2 bg-transparent justify-center text-foreground no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
+                    <Button
+                      asChild
+                      className="block w-full text-center py-2 bg-transparent justify-center text-foreground no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from rounded-none"
                     >
-                      Profile
-                    </Link>
-                    <Link
-                      href="/settings"
-                      className="block w-full text-center py-2 bg-transparent justify-center text-foreground no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from "
+                      <Link href="/profile">Profile</Link>
+                    </Button>
+                    <Button
+                      asChild
+                      className="block w-full text-center py-2 bg-transparent justify-center text-foreground no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from rounded-none"
                     >
-                      Settings
-                    </Link>
+                      <Link href="/settings">Settings</Link>
+                    </Button>
                     <Button
                       onClick={() => signOut()}
                       className="block w-full text-center py-2 bg-transparent justify-center text-foreground no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from rounded-none"
@@ -210,37 +210,37 @@ export default function Navbar() {
             <SheetContent side="left" className="p-6 space-y-4 w-1/2">
               {status !== "loading" && session?.user ? (
                 navLinks.map((link) => (
-                  <Link
+                  <Button
+                    asChild
                     key={link.href}
-                    href={link.href}
-                    className="block mx-auto w-auto text-foreground bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
+                    className="block mx-auto w-auto text-foreground bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from rounded-none"
                   >
-                    {link.label}
-                  </Link>
+                    <Link href={link.href}>{link.label}</Link>
+                  </Button>
                 ))
               ) : (
-                <Link
-                  href="/about"
-                  className="block mx-auto w-auto text-foreground bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
+                <Button
+                  asChild
+                  className="block mx-auto w-auto text-foreground bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from rounded-none"
                 >
-                  About
-                </Link>
+                  <Link href="/about">About</Link>
+                </Button>
               )}
               <hr />
               {status !== "loading" && session?.user ? (
                 <>
-                  <Link
-                    href="/profile"
-                    className="block mx-auto w-auto text-foreground bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
+                  <Button
+                    asChild
+                    className="block mx-auto w-auto text-foreground bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from rounded-none"
                   >
-                    Profile
-                  </Link>
-                  <Link
-                    href="/settings"
-                    className="block mx-auto w-auto text-foreground bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
+                    <Link href="/profile">Profile</Link>
+                  </Button>
+                  <Button
+                    asChild
+                    className="block mx-auto w-auto text-foreground bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from rounded-none"
                   >
-                    Settings
-                  </Link>
+                    <Link href="/settings">Settings</Link>
+                  </Button>
                   <Button
                     onClick={() => signOut()}
                     className="block mx-auto w-auto text-foreground bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from border-none"
