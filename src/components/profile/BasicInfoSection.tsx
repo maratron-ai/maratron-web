@@ -91,10 +91,10 @@ export default function BasicInfoSection({
           {showVDOTField && (
             <TextField
               label={
-                <>
-                  VDOT
+                <span className="inline-flex items-center space-x-1">
+                  <span>VDOT</span>
                   <InfoTooltip content="VDOT estimates your running fitness based on race times." />
-                </>
+                </span>
               }
               name="VDOT"
               type="number"
@@ -145,9 +145,17 @@ export default function BasicInfoSection({
             </dd>
           </div>
           <div>
-            <dt className={styles.label}>
+            <dt className="inline-flex items-center space-x-1">
               VDOT
-              <InfoTooltip content="VDOT estimates your running fitness based on race times." />
+              <InfoTooltip className="text-center"
+                content={
+                  <>
+                    VDOT estimates your running fitness based on race times.
+                    <br />
+                    This updates dynamically as you log runs.
+                  </>
+                }
+              />
             </dt>
             <dd className={styles.value}>{formData.VDOT ?? "N/A"}</dd>
           </div>
