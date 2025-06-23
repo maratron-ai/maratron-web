@@ -77,7 +77,12 @@ export default function SocialHomePage() {
           <SocialFeed />
         </section>
         <aside className="lg:w-1/3 order-1 lg:order-2 space-y-6">
-          <ProfileInfoCard profile={profile} user={user ?? undefined} isSelf />
+          <ProfileInfoCard
+            profile={profile}
+            user={user ?? undefined}
+            isSelf
+            disableSelfStats
+          />
           <div>
             <h2 className="text-lg font-semibold mb-2">Find Runners</h2>
             <ProfileSearch limit={3} />
