@@ -191,9 +191,11 @@ const RunningPlanDisplay: React.FC<RunningPlanDisplayProps> = ({
               Start Now
             </Button>
           </div>
-          <div className="mb-4 justify-center flex gap-8">
+          <div className="flex flex-row justify-center items-start space-x-8 mb-4">
             <div>
-              <label className="block mb-1 font-semibold">Start Date</label>
+              <label className="block mb-1 font-semibold text-center">
+                Start Date
+              </label>
               <Input
                 type="date"
                 value={planData.startDate?.slice(0, 10) || ""}
@@ -203,8 +205,10 @@ const RunningPlanDisplay: React.FC<RunningPlanDisplayProps> = ({
                 className="text-foreground"
               />
             </div>
-            <div>
-              <label className="block mb-1 font-semibold">Race Date</label>
+            <div className="flex flex-col items-center text-center">
+              <label className="block mb-1 font-semibold text-center">
+                Race Date
+              </label>
               <Input
                 type="date"
                 value={planData.endDate?.slice(0, 10) || ""}
@@ -250,7 +254,7 @@ const RunningPlanDisplay: React.FC<RunningPlanDisplayProps> = ({
             </div>
           )}
           <div className="mb-4 flex justify-center">
-            <div>
+            <div className="flex flex-col items-center text-center">
               <label className="block mb-1 font-semibold">Race Date</label>
               <Input
                 type="date"
@@ -258,7 +262,7 @@ const RunningPlanDisplay: React.FC<RunningPlanDisplayProps> = ({
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                   updateEndDateSaved(e.target.value)
                 }
-                className="text-foreground"
+                className="text-foreground w-auto"
               />
             </div>
           </div>

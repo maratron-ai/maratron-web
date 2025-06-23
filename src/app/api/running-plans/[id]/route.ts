@@ -41,7 +41,7 @@ export async function PUT(request: NextRequest, context: { params: { id: string 
   try {
     const body = await request.json();
     const { params } = context;
-    const { id } = params;
+    const { id } = await params;
 
     const existing = await prisma.runningPlan.findUnique({ where: { id } });
     if (!existing) {
