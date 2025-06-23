@@ -43,6 +43,7 @@
   - `@tailwindcss/forms` for styled inputs
 - Add new UI components under `src/components/ui/` when building shared widgets.
 - Always ensure components are responsive and keyboard-accessible.
+- Use `opacity-##` for instead of slash opacity.
 - For feedback and notifications, use `Toast` or `sonner` (via `shadcn/ui`).
 - For coloring here are the colors you can use:
 ```ts
