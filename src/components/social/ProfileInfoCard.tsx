@@ -8,11 +8,13 @@ import type { Run } from "@maratypes/run";
 import { Card, Button } from "@components/ui";
 import UserStatsDialog from "@components/social/UserStatsDialog";
 import FollowUserButton from "@components/social/FollowUserButton";
+import { PROFILE_STATS_LIMIT } from "@lib/socialLimits";
 
 interface Props {
   profile: SocialProfile;
   user?: Pick<User, "avatarUrl" | "createdAt">;
   isSelf?: boolean;
+  disableSelfStats?: boolean;
   followers?: SocialProfile[];
   following?: SocialProfile[];
   runs?: Run[];
@@ -22,6 +24,7 @@ export default function ProfileInfoCard({
   profile,
   user,
   isSelf,
+  disableSelfStats,
   followers,
   following,
   runs,
@@ -32,6 +35,10 @@ export default function ProfileInfoCard({
     month: "short",
     year: "2-digit",
   });
+
+  const runsList = runs?.slice(0, PROFILE_STATS_LIMIT) ?? [];
+  const followersList = followers?.slice(0, PROFILE_STATS_LIMIT) ?? [];
+  const followingList = following?.slice(0, PROFILE_STATS_LIMIT) ?? [];
 
 
   // const pathname = usePathname();
@@ -63,105 +70,138 @@ export default function ProfileInfoCard({
         )}
       </div>
       <div className="w-full flex flex-col sm:flex-row justify-center items-center text-center gap-4 text-sm text-muted-foreground">
-        <UserStatsDialog
-          title="Runs"
-          trigger={
-            <div className="flex items-baseline justify-center w-full sm:w-auto gap-1 cursor-pointer hover:underline">
-              <span className="text-lg font-semibold">
-                {profile.runCount ?? 0} runs
-              </span>
-            </div>
-          }
-        >
-          {runs && runs.length > 0 ? (
-            <ul className="list-disc ml-4 space-y-1 text-left">
-              {runs.map((r) => (
-                <li key={r.id}>
-                  {r.name || new Date(r.date).toLocaleDateString()} - {r.distance}{" "}
-                  {r.distanceUnit}
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p>No runs found.</p>
-          )}
-        </UserStatsDialog>
+        {isSelf && disableSelfStats ? (
+          <div className="flex items-baseline justify-center w-full sm:w-auto gap-1">
+            <span className="text-lg font-semibold">
+              {profile.runCount ?? 0} runs
+            </span>
+          </div>
+        ) : (
+          <UserStatsDialog
+            title="Runs"
+            trigger={
+              <div className="flex items-baseline justify-center w-full sm:w-auto gap-1 cursor-pointer hover:underline">
+                <span className="text-lg font-semibold">
+                  {profile.runCount ?? 0} runs
+                </span>
+              </div>
+            }
+          >
+            {runsList.length > 0 ? (
+              <ul className="list-disc ml-4 space-y-1 text-left">
+                {runsList.map((r) => (
+                  <li key={r.id}>
+                    {r.name || new Date(r.date).toLocaleDateString()} - {r.distance}{" "}
+                    {r.distanceUnit}
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p>No runs found.</p>
+            )}
+          </UserStatsDialog>
+        )}
         {/* <div className="flex items-baseline justify-center w-full sm:w-auto gap-1">
           <span className="text-lg font-semibold">
             {profile.postCount ?? 0} posts
           </span>
         </div> */}
-        <UserStatsDialog
-          title="Distance"
-          trigger={
-            <div className="flex items-baseline justify-center w-full sm:w-auto gap-1 cursor-pointer hover:underline">
-              <span className="text-lg font-semibold">
-                {profile.totalDistance ?? 0} mi
-              </span>
-            </div>
-          }
-        >
-          {runs && runs.length > 0 ? (
-            <ul className="list-disc ml-4 space-y-1 text-left">
-              {runs.map((r) => (
-                <li key={r.id}>
-                  {r.name || new Date(r.date).toLocaleDateString()} - {r.distance}{" "}
-                  {r.distanceUnit}
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p>No runs found.</p>
-          )}
-        </UserStatsDialog>
-        <UserStatsDialog
-          title="Followers"
-          trigger={
-            <div className="flex items-baseline justify-center w-full sm:w-auto gap-1 cursor-pointer hover:underline">
+        {isSelf && disableSelfStats ? (
+          <div className="flex items-baseline justify-center w-full sm:w-auto gap-1">
+            <span className="text-lg font-semibold">
+              {profile.totalDistance ?? 0} mi
+            </span>
+          </div>
+        ) : (
+          <UserStatsDialog
+            title="Distance"
+            trigger={
+              <div className="flex items-baseline justify-center w-full sm:w-auto gap-1 cursor-pointer hover:underline">
+                <span className="text-lg font-semibold">
+                  {profile.totalDistance ?? 0} mi
+                </span>
+              </div>
+            }
+          >
+            {runsList.length > 0 ? (
+              <ul className="list-disc ml-4 space-y-1 text-left">
+                {runsList.map((r) => (
+                  <li key={r.id}>
+                    {r.name || new Date(r.date).toLocaleDateString()} - {r.distance}{" "}
+                    {r.distanceUnit}
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p>No runs found.</p>
+            )}
+          </UserStatsDialog>
+        )}
+        {isSelf && disableSelfStats ? (
+          <>
+            <div className="flex items-baseline justify-center w-full sm:w-auto gap-1">
               <span className="text-lg font-semibold">
                 {profile.followerCount ?? 0} followers
               </span>
             </div>
-          }
-        >
-          {followers && followers.length > 0 ? (
-            <ul className="space-y-1">
-              {followers.map((f) => (
-                <li key={f.id}>
-                  <Link href={`/u/${f.username}`} className="underline">
-                    @{f.username}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p>No followers yet.</p>
-          )}
-        </UserStatsDialog>
-        <UserStatsDialog
-          title="Following"
-          trigger={
-            <div className="flex items-baseline justify-center w-full sm:w-auto gap-1 cursor-pointer hover:underline">
+            <div className="flex items-baseline justify-center w-full sm:w-auto gap-1">
               <span className="text-lg font-semibold">
                 {profile.followingCount ?? 0} following
               </span>
             </div>
-          }
-        >
-          {following && following.length > 0 ? (
-            <ul className="space-y-1">
-              {following.map((f) => (
-                <li key={f.id}>
-                  <Link href={`/u/${f.username}`} className="underline">
-                    @{f.username}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p>Not following anyone.</p>
-          )}
-        </UserStatsDialog>
+          </>
+        ) : (
+          <>
+            <UserStatsDialog
+              title="Followers"
+              trigger={
+                <div className="flex items-baseline justify-center w-full sm:w-auto gap-1 cursor-pointer hover:underline">
+                  <span className="text-lg font-semibold">
+                    {profile.followerCount ?? 0} followers
+                  </span>
+                </div>
+              }
+            >
+              {followersList.length > 0 ? (
+                <ul className="space-y-1">
+                  {followersList.map((f) => (
+                    <li key={f.id}>
+                      <Link href={`/u/${f.username}`} className="underline">
+                        @{f.username}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p>No followers yet.</p>
+              )}
+            </UserStatsDialog>
+            <UserStatsDialog
+              title="Following"
+              trigger={
+                <div className="flex items-baseline justify-center w-full sm:w-auto gap-1 cursor-pointer hover:underline">
+                  <span className="text-lg font-semibold">
+                    {profile.followingCount ?? 0} following
+                  </span>
+                </div>
+              }
+            >
+              {followingList.length > 0 ? (
+                <ul className="space-y-1">
+                  {followingList.map((f) => (
+                    <li key={f.id}>
+                      <Link href={`/u/${f.username}`} className="underline">
+                        @{f.username}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p>Not following anyone.</p>
+              )}
+            </UserStatsDialog>
+          </>
+        )}
       </div>
       {isSelf ? (
         <Button

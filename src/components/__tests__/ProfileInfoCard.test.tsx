@@ -29,7 +29,15 @@ const user: Pick<User, "avatarUrl" | "createdAt"> = {
 describe("ProfileInfoCard", () => {
   it("shows profile details and edit button", () => {
     render(
-      <ProfileInfoCard profile={profile} user={user} isSelf followers={[]} following={[]} runs={[]} />
+      <ProfileInfoCard
+        profile={profile}
+        user={user}
+        isSelf
+        disableSelfStats
+        followers={[]}
+        following={[]}
+        runs={[]}
+      />
     );
     expect(screen.getByRole("heading", { name: /runner/i })).toBeInTheDocument();
     expect(screen.getByText(/5 runs/)).toBeInTheDocument();
