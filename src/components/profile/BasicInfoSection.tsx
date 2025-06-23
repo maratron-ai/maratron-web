@@ -1,4 +1,4 @@
-import { TextField, SelectField, AvatarUpload } from "@components/ui";
+import { TextField, SelectField, AvatarUpload, InfoTooltip } from "@components/ui";
 import { User } from "@maratypes/user";
 import styles from "./Section.module.css";
 import type { Gender } from "@maratypes/user";
@@ -90,7 +90,12 @@ export default function BasicInfoSection({
           />
           {showVDOTField && (
             <TextField
-              label="VDOT"
+              label={
+                <>
+                  VDOT
+                  <InfoTooltip content="VDOT estimates your running fitness based on race times." />
+                </>
+              }
               name="VDOT"
               type="number"
               value={formData.VDOT ?? ""}
@@ -140,7 +145,10 @@ export default function BasicInfoSection({
             </dd>
           </div>
           <div>
-            <dt className={styles.label}>VDOT</dt>
+            <dt className={styles.label}>
+              VDOT
+              <InfoTooltip content="VDOT estimates your running fitness based on race times." />
+            </dt>
             <dd className={styles.value}>{formData.VDOT ?? "N/A"}</dd>
           </div>
         </dl>
