@@ -85,13 +85,15 @@ export default function HomePage() {
                 <span>Edit Profile</span>
               </Card>
             </Link>
-            <Card className="p-4 flex items-center gap-2 text-foreground">
-              <Upload className="w-5 h-5" />
-              <span>Upload workout file (coming soon)</span>
-            </Card>
+            <Link href="/analytics" style={{ textDecoration: "none" }}>
+              <Card className="p-4 flex items-center gap-2 text-foreground hover:bg-primary hover:text-background transition-colors hover:border-muted-foreground">
+                <User className="w-5 h-5" />
+                <span>View progress analytics</span>
+              </Card>
+            </Link>
             <Card className="p-4 flex items-center gap-2 text-foreground">
               <BarChart3 className="w-5 h-5" />
-              <span>View progress analytics (coming soon)</span>
+              <span>Upload workout file (coming soon)</span>
             </Card>
           </div>
         </div>

@@ -41,7 +41,8 @@ export default function Navbar() {
 
   const navLinks = [
     { href: "/home", label: "Home" },
-    { href: "/social", label: "Social" }
+    { href: "/social", label: "Social" },
+    { href: "/analytics", label: "Analytics" }
   ];
 
   return (
