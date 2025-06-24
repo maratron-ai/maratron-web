@@ -4,10 +4,25 @@ import { prisma } from "@lib/prisma";
 import { calculateVDOTJackDaniels } from "@utils/running/jackDaniels";
 import { parseDuration } from "@utils/time";
 
-export async function GET() {
-  // used to have request: NextRequest as a param
+export async function GET(request: NextRequest) {
   try {
-    const runs = await prisma.run.findMany();
+    // Extract userId from query parameters for proper authorization
+    const { searchParams } = new URL(request.url);
+    const userId = searchParams.get('userId');
+    
+    if (!userId) {
+      return NextResponse.json(
+        { error: "User ID is required" },
+        { status: 400 }
+      );
+    }
+    
+    // Only return runs for the specified user
+    const runs = await prisma.run.findMany({
+      where: { userId },
+      orderBy: { date: 'desc' }
+    });
+    
     return NextResponse.json(runs, { status: 200 });
   } catch (error) {
     console.error("Error fetching runs:", error);
@@ -21,20 +36,45 @@ export async function GET() {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-  const {
-    date,
-    duration,
-    distance,
-    distanceUnit,
-    trainingEnvironment,
-    pace, // expected format: { pace: string, unit: "miles" | "kilometers" } or null
-    elevationGain,
-    elevationGainUnit,
-    notes,
-    userId,
-    shoeId,
-    name,
-  } = body;
+    
+    // Validate required fields
+    const {
+      date,
+      duration,
+      distance,
+      distanceUnit,
+      trainingEnvironment,
+      pace, // expected format: { pace: string, unit: "miles" | "kilometers" } or null
+      elevationGain,
+      elevationGainUnit,
+      notes,
+      userId,
+      shoeId,
+      name,
+    } = body;
+    
+    // Validate required fields
+    if (!date || !duration || !distance || !distanceUnit || !userId) {
+      return NextResponse.json(
+        { error: "Missing required fields: date, duration, distance, distanceUnit, userId" },
+        { status: 400 }
+      );
+    }
+    
+    // Validate data types and ranges
+    if (typeof distance !== 'number' || distance <= 0) {
+      return NextResponse.json(
+        { error: "Distance must be a positive number" },
+        { status: 400 }
+      );
+    }
+    
+    if (!['miles', 'kilometers'].includes(distanceUnit)) {
+      return NextResponse.json(
+        { error: "Distance unit must be 'miles' or 'kilometers'" },
+        { status: 400 }
+      );
+    }
 
     let finalShoeId: string | undefined = shoeId;
     if (!finalShoeId && userId) {

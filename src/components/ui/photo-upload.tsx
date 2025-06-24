@@ -17,8 +17,26 @@ export default function PhotoUpload({ value, onChange, disabled, text }: PhotoUp
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    const url = await uploadImage(file);
-    onChange?.(url);
+    
+    try {
+      // Validate file type and size
+      if (!file.type.startsWith('image/')) {
+        alert('Please select a valid image file.');
+        return;
+      }
+      
+      // Limit file size to 5MB
+      if (file.size > 5 * 1024 * 1024) {
+        alert('File size must be less than 5MB.');
+        return;
+      }
+      
+      const url = await uploadImage(file);
+      onChange?.(url);
+    } catch (error) {
+      console.error('Failed to upload image:', error);
+      alert('Failed to upload image. Please try again.');
+    }
   };
 
   return (
