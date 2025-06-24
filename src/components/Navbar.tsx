@@ -161,7 +161,7 @@ export default function Navbar() {
           ) : (
             <Button
               onClick={() => signIn()}
-              className="text-foreground no-underline transition-colors bg-transparent hover:text-background hover:no-underline hover:bg-brand-from block w-auto"
+              className="text-foreground no-underline transition-colors bg-transparent hover:text-background hover:no-underline hover:bg-brand-from block w-auto hover:ring-0 focus:ring-0"
             >
               Sign In
             </Button>
