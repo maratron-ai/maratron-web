@@ -82,8 +82,8 @@ describe("run api helpers", () => {
 
   it("listRuns gets all runs and maps them", async () => {
     mockedAxios.get.mockResolvedValue({ data: [apiRun] });
-    const result = await listRuns();
-    expect(mockedAxios.get).toHaveBeenCalledWith("/api/runs");
+    const result = await listRuns("user1");
+    expect(mockedAxios.get).toHaveBeenCalledWith("/api/runs?userId=user1");
     expect(result).toEqual([mappedRun]);
   });
 });

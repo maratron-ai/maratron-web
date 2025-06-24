@@ -76,7 +76,7 @@ export default function SocialFeed({ groupId }: Props) {
         <Button asChild>
           <a
             href="/social/profile/new"
-            className="block mx-auto w-auto text-foreground bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
+            className="block mx-auto w-auto text-foreground bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from focus:ring-0"
           >
             Create Social Profile
           </a>

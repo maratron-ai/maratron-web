@@ -27,9 +27,8 @@ export default function CreateSocialPost({ onCreated, groupId }: Props) {
     const fetchRuns = async () => {
       if (!profile?.userId) return;
       try {
-        const allRuns = await listRuns();
+        const allRuns = await listRuns(profile.userId);
         const userRuns = allRuns
-          .filter((r) => r.userId === profile.userId)
           .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
           .slice(0, 5);
         setRuns(userRuns);
@@ -111,7 +110,7 @@ export default function CreateSocialPost({ onCreated, groupId }: Props) {
           <Button
             type="submit"
             size="sm"
-            className="block w-auto text-foreground bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from"
+            className="block w-auto text-foreground bg-transparent no-underline transition-colors hover:text-background hover:no-underline hover:bg-brand-from focus:ring-0"
           >
             Post
           </Button>

@@ -39,17 +39,18 @@ export default function RunsList() {
 
   useEffect(() => {
     const fetchRuns = async () => {
+      const userId = session?.user?.id;
+      if (!userId) {
+        setLoading(false);
+        return;
+      }
+
       try {
-        const allRuns: Run[] = await listRuns();
-        const userId = session?.user?.id;
-        let filtered = allRuns;
-        if (userId) {
-          filtered = allRuns.filter((r) => r.userId === userId);
-        }
-        filtered.sort(
+        const allRuns: Run[] = await listRuns(userId);
+        allRuns.sort(
           (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
         );
-        setRuns(filtered);
+        setRuns(allRuns);
       } catch (err) {
         console.error(err);
       } finally {
@@ -84,18 +85,16 @@ export default function RunsList() {
               {list.map((run) => (
                 <li
                   key={run.id}
-                  className="border p-2 rounded cursor-pointer hover:bg-accent hover:opacity-10"
+                  className="border p-2 rounded cursor-pointer p-4 flex items-center justify-between text-foreground hover:bg-primary hover:text-background transition-colors hover:border-muted-foreground"
                   onClick={() => setSelectedRun(run)}
                 >
-                  <div className="flex justify-between">
-                    <span className="font-semibold">
-                      {run.name || getRunName(run)}
-                    </span>
-                    <span className="text-sm opacity-70">
-                      {new Date(run.date).toISOString().slice(0, 10)}
-                    </span>
+                  <div className="flex items-center gap-2">
+                    <span className="font-semibold">{run.name || getRunName(run)}</span>
+                    <span>{`: ${run.distance} ${run.distanceUnit}`}</span>
                   </div>
-                  <span>{`${run.distance} ${run.distanceUnit}`}</span>
+                  <span className="text-sm opacity-70">
+                    {new Date(run.date).toISOString().slice(0, 10)}
+                  </span>
                 </li>
               ))}
             </ul>

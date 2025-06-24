@@ -16,16 +16,19 @@ export default function DashboardStats() {
 
   useEffect(() => {
     async function fetchRuns() {
+      const userId = session?.user?.id;
+      if (!userId) {
+        return;
+      }
+
       try {
-        const runs = await listRuns();
-        const userId = session?.user?.id;
-        const filtered = userId ? runs.filter((r) => r.userId === userId) : runs;
-        setRunCount(filtered.length);
+        const runs = await listRuns(userId);
+        setRunCount(runs.length);
 
         const defaultUnit = profile?.defaultDistanceUnit || "miles";
         setUnit(defaultUnit);
 
-        const total = filtered.reduce((sum, r) => {
+        const total = runs.reduce((sum, r) => {
           if (r.distanceUnit === defaultUnit) return sum + r.distance;
           if (r.distanceUnit === "miles" && defaultUnit === "kilometers") {
             return sum + r.distance * 1.60934;

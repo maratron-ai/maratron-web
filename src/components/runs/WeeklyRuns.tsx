@@ -145,11 +145,10 @@ export default function WeeklyRuns() {
           window.dispatchEvent(new Event("runsUpdated"));
         }
       } else if (wasDone && !run.done) {
-        const runs = await listRuns();
+        const runs = await listRuns(plan.userId);
         const userRuns = runs
           .filter(
             (r) =>
-              r.userId === plan.userId &&
               r.name === `${plan.name} - Week ${weekIndex + 1} - ${run.type}`
           )
           .sort(

@@ -16,17 +16,18 @@ export default function RecentRuns() {
 
   useEffect(() => {
     const fetchRuns = async () => {
+      const userId = session?.user?.id;
+      if (!userId) {
+        setLoading(false);
+        return;
+      }
+
       try {
-        const allRuns: Run[] = await listRuns();
-        const userId = session?.user?.id;
-        let filtered = allRuns;
-        if (userId) {
-          filtered = allRuns.filter((r) => r.userId === userId);
-        }
-        filtered.sort(
+        const allRuns: Run[] = await listRuns(userId);
+        allRuns.sort(
           (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
         );
-        setRuns(filtered.slice(0, 5));
+        setRuns(allRuns.slice(0, 5));
       } catch (err) {
         console.error(err);
       } finally {
