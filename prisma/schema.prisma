@@ -59,6 +59,12 @@ enum Gender {
   Other
 }
 
+enum DeviceProvider {
+  appleHealth
+  appleWatch
+  garmin
+}
+
 model User {
   id                           String               @id @default(uuid())
   name                         String
@@ -258,4 +264,14 @@ model RunGroupMember {
   socialProfile SocialProfile @relation(fields: [socialProfileId], references: [id])
 
   @@id([groupId, socialProfileId])
+}
+
+model DeviceConnection {
+  id        String         @id @default(uuid())
+  provider  DeviceProvider
+  token     String
+  userId    String
+  createdAt DateTime       @default(now())
+
+  user User @relation(fields: [userId], references: [id])
 }
